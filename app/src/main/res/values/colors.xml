@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="transparent">#00000000</color>
+    <color name="colorPrimary">#3084EC</color>
+    <color name="colorPrimaryDark">#5065da</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="forget_pwd">#60B9F0</color>
+    <color name="register_now">#60B9F0</color>
+    <color name="input_tel">#CFD0D5</color>
+    <color name="input_pwd">#CFD0D5</color>
+    <color name="screamin_green">#66FF66</color>
+    <color name="white">#FFFFFF</color>
+    <color name="white_pressed">#f9f2f2</color>
+    <color name="menu_item_text_color">#E60200</color>
+    <color name="mountain_mist">#929292</color>
+    <color name="cerulean">#1FACEC</color>
+    <color name="picton_blue">#48BDF5</color>
+    <color name="red">#FF0000</color>
+    <color name="white_smoke">#F5F5F5</color>
+    <color name="yukon_gold">#3084EC</color>
+    <color name="pink">#44FF0000</color>R.color.yukon_gold
+    <color name="texas_rose">#FBB057</color>
+    <color name="carnation">#F96066</color>
+    <color name="banana_yellow">#F8D934</color>
+    <color name="black">#000000</color>
+    <color name="nugget">#C3961B</color>
+    <color name="sunset_orange">#FA533D</color>
+    <color name="lily_white">#EAEAEA</color>
+    <color name="concrete">#F2F2F2</color>
+    <color name="gray">#797474</color>
+    <color name="grayDark">#595858</color>
+    <color name="golden_brown">#916112</color>
+    <color name="buttercup">#ECA90C</color>
+    <color name="athens_gray">#DEDEDE</color>
+    <color name="corn_harvest">#917100</color>
+    <color name="gray_chateau">#A2A3A4</color>
+    <color name="light_gray">#D1D1D1</color>
+    <color name="iron">#CBCBCB</color>
+    <color name="pale_brown">#917548</color>
+    <color name="stack">#8A8A8A</color>
+    <color name="roti">#BD9C45</color>
+    <color name="dove_gray">#747474</color>
+    <color name="lust">#E71F19</color>
+    <color name="charcoal">#474747</color>
+    <color name="scan_bg">#7f000000</color>
+
+    <!--蓝色按钮  没按下的时候-->
+    <color name="blue_nopressed_button">#27A2FE</color>
+    <!--蓝色按钮  按下时候-->
+    <color name="blue_pressed_button">#0a7bda</color>
+    <!--蓝色按钮  不能按下时候-->
+    <color name="blue_not_pressed_button">#9DCEF7</color>
+
+    <!--筛选菜单颜色-->
+    <color name="drop_down_selected">#ECA90C</color>
+    <color name="drop_down_unselected">#929292</color>
+    <color name="mask_color">#88888888</color>
+    <color name="check_bg">#f2f2f2</color>
+    <color name="un_press_color">#ECA90C</color>
+    <color name="line_color">#cccccc</color>
+    <color name="edittext_line_color">#000000</color>
+    <color name="StarDust">#A1A1A1</color>
+    <color name="TreePoppy">#FE961F</color>
+    <color name="grey_f6f6f6">#f6f6f6</color>
+    <color name="grey_a5a5a5">#A5A5A5</color>
+    <color name="grey_dde1e7">#DDE1E7</color>
+    <color name="red_f4333c">#F4333C</color>
+    <color name="Seashell">#F1F1F1</color>
+
+
+    <color name="alabaster">#FAFAFA</color>
+
+    <color name="grey_b2b2b2">#B2B2B2</color>
+    <color name="blue_78d2f6">#78D2F6</color>
+    <color name="blue_01aaee">#01AAEE</color>
+    <color name="blue_00aaee">#00AAEE</color>
+    <color name="red_f3323b">#F3323B</color>
+</resources>

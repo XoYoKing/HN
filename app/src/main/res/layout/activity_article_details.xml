@@ -1,0 +1,69 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    android:background="@drawable/layout_background"
+    android:orientation="vertical">
+
+    <include layout="@layout/public_title"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line_color"></View>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/layout_background"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/common_20dp">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:text="标题"
+                android:textColor="@color/black"
+                android:textSize="@dimen/common_18sp" />
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/common_15dp"
+                android:layout_marginTop="@dimen/common_12dp"
+                android:text="2016-15-12 15:15:50"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/common_12sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/common_1dp"
+                android:background="@color/line_color"></View>
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/common_15dp"
+                android:layout_marginRight="@dimen/common_15dp"
+                android:layout_marginTop="30dp"
+                android:autoLink="web"
+                android:textColor="@color/black"
+                android:textSize="@dimen/common_14sp"></TextView>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

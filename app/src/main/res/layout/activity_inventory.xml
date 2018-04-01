@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white_smoke"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+
+    >
+    <include layout="@layout/public_title"></include>
+
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/common_10dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:stretchColumns="0,1">
+
+        <TableRow
+            android:padding="5dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/common_10dp"
+                android:text="订单编号"
+                android:layout_marginLeft="@dimen/common_10dp"
+                android:textSize="@dimen/common_16sp"/>
+
+            <TextView
+                android:id="@+id/tv_order_rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:padding="@dimen/common_10dp"
+                android:textSize="@dimen/common_16sp"/>
+
+        </TableRow>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_1dp"
+            android:background="@color/white_smoke"/>
+        <TableRow
+            android:padding="5dp"
+            >
+
+            <TextView
+
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:padding="@dimen/common_10dp"
+                android:text="船舶名称"
+                android:layout_marginLeft="@dimen/common_10dp"
+
+                android:textSize="@dimen/common_16sp"/>
+            <TextView
+                android:id="@+id/tv_shipname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:padding="@dimen/common_10dp"
+                android:textSize="@dimen/common_16sp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_maxamount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/common_10dp"
+                    android:paddingTop="@dimen/common_10dp"
+                    android:text="" android:textColor="@color/black"
+                    android:textSize="@dimen/common_16sp"/>
+
+
+
+            </LinearLayout>
+
+        </TableRow>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_1dp"
+            android:background="@color/white_smoke"/>
+        <TableRow
+            android:padding="5dp"
+            >
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="@dimen/common_10dp"
+
+                android:layout_height="wrap_content"
+                android:padding="@dimen/common_10dp"
+                android:text="船舶编号"
+
+                android:textSize="@dimen/common_16sp"/>
+            <TextView
+                android:id="@+id/tv_order_rate1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:padding="@dimen/common_10dp"
+                android:textSize="@dimen/common_16sp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_startamount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/common_10dp"
+                    android:paddingTop="@dimen/common_10dp"
+                    android:text="" android:textColor="@color/black"
+                    android:textSize="@dimen/common_16sp"/>
+
+
+
+            </LinearLayout>
+
+        </TableRow>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_1dp"
+            android:background="@color/white_smoke"/>
+
+        <TableRow  android:padding="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/common_10dp"
+                android:text="有效期开始时间"
+                android:layout_marginLeft="@dimen/common_10dp"
+
+                android:textSize="@dimen/common_16sp"/>
+            <TextView
+                android:id="@+id/tv_order_rat2e"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:padding="@dimen/common_10dp"
+                android:textSize="@dimen/common_16sp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_remainamount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/common_10dp"
+                    android:paddingTop="@dimen/common_10dp"
+                    android:text="" android:textColor="@color/black"
+                    android:textSize="@dimen/common_16sp"/>
+
+
+
+            </LinearLayout>
+        </TableRow>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_1dp"
+            android:background="@color/white_smoke"/>
+
+        <TableRow android:padding="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:padding="@dimen/common_10dp"
+                android:text="有效期结束时间"
+                android:layout_marginLeft="@dimen/common_10dp"
+
+                android:textSize="@dimen/common_16sp"/>
+
+            <TextView
+                android:id="@+id/tv_endtime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:padding="@dimen/common_10dp"
+                android:textSize="@dimen/common_16sp"/>
+
+        </TableRow>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_1dp"
+            android:background="@color/white_smoke"/>
+
+        <TableRow android:padding="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:padding="@dimen/common_10dp"
+                android:text="入库时间"
+                android:layout_marginLeft="@dimen/common_10dp"
+
+                android:textSize="@dimen/common_16sp"/>
+
+            <TextView
+                android:id="@+id/tv_left_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:padding="@dimen/common_10dp"
+                android:textSize="@dimen/common_16sp"
+                />
+
+        </TableRow>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_1dp"
+            android:background="@color/white_smoke"/>
+
+        <TableRow android:padding="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:padding="@dimen/common_10dp"
+                android:text="单价"
+                android:layout_marginLeft="@dimen/common_10dp"
+
+                android:textSize="@dimen/common_16sp"/>
+
+            <TextView
+                android:id="@+id/tv_left_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:padding="@dimen/common_10dp"
+                android:textSize="@dimen/common_16sp"
+                />
+
+        </TableRow>
+    </TableLayout>
+    <Button
+        android:id="@+id/btn_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/common_40dp"
+        android:layout_marginRight="@dimen/common_40dp"
+        android:layout_marginTop="@dimen/common_20dp"
+        android:background="@color/yukon_gold"
+        android:gravity="center"
+        android:text="@string/confirm"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"/>
+</LinearLayout>

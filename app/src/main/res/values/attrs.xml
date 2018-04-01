@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="windows">
+
+        <!-- 背景颜色 -->
+        <attr name="backgrounds" format="color" localization="suggested"/>
+        <!-- 进度颜色 -->
+        <attr name="progressDrawable" format="color" localization="suggested"/>
+        <!-- 宽度 -->
+        <attr name="layout_width" format="dimension" localization="suggested"/>
+        <!-- 字体颜色 -->
+        <attr name="textColor" format="color" localization="suggested"/>
+        <!-- 字体大小 -->
+        <attr name="textSize" format="dimension" localization="suggested"/>
+        <!-- 最大进度 -->
+        <attr name="max" format="integer" localization="suggested"/>
+        <!-- 进度 -->
+        <attr name="progress" format="integer" localization="suggested"/>
+        <!-- 进度点 -->
+        <attr name="thumb" format="reference" localization="suggested"/>
+        <!-- 进度点宽高 -->
+        <attr name="thumbSize" format="integer" localization="suggested"/>
+    </declare-styleable>
+
+    <!--圆形头像-->
+    <declare-styleable name="CircleImageView">
+        <attr name="border_width" format="dimension" />
+        <attr name="border_color" format="color" />
+    </declare-styleable>
+
+    <!--筛选菜单-->
+    <declare-styleable name="DropDownMenu">
+
+        <attr name="ddunderlineColor" format="color"/>
+        <attr name="dddividerColor" format="color"/>
+        <attr name="ddtextSelectedColor" format="color"/>
+        <attr name="ddtextUnselectedColor" format="color"/>
+        <attr name="ddmenuBackgroundColor" format="color"/>
+        <attr name="ddmaskColor" format="color"/>
+        <attr name="ddmenuTextSize" format="dimension"/>
+        <attr name="ddmenuSelectedIcon" format="reference"/>
+        <attr name="ddmenuUnselectedIcon" format="reference"/>
+    </declare-styleable>
+
+    <!-- Large ProgressBar style. This is a large circular progress bar. -->
+    <attr name="progressBarStyleLarge" format="reference" />
+
+    <declare-styleable name="LockPatternView">
+        <!-- Aspect to use when drawing LockPatternView. Choices are "square"(default), "lock_width"
+             or "lock_height" -->
+        <attr name="aspect" format="string" />
+    </declare-styleable>
+</resources>

@@ -1,0 +1,394 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    android:background="@drawable/layout_background"
+    android:orientation="vertical">
+
+    <include layout="@layout/public_title"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_marginBottom="@dimen/common_10dp"
+            android:layout_height="wrap_content"
+            android:background="@color/gray"
+            android:stretchColumns="1,2">
+
+            <TableRow
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/common_10dp"
+                    android:text="采购类别"
+                    android:layout_marginLeft="@dimen/common_10dp"
+                    android:textSize="@dimen/common_16sp"/>
+
+                <TextView
+                    android:id="@+id/tv_ship"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text="海宁"
+                    android:padding="@dimen/common_10dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/common_14sp"/>
+
+            </TableRow>
+
+            <TableRow
+                android:background="@color/white"
+                android:layout_marginTop="@dimen/common_1dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/common_10dp"
+                    android:text="采购编号"
+                    android:layout_marginLeft="@dimen/common_10dp"
+                    android:textSize="@dimen/common_16sp"/>
+
+                <TextView
+                    android:id="@+id/tv_order_rate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/common_10dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/common_14sp"/>
+
+            </TableRow>
+
+            <TableRow
+                android:background="@color/white"
+                android:layout_marginTop="@dimen/common_1dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/common_10dp"
+                    android:text="采购地点"
+                    android:layout_marginLeft="@dimen/common_10dp"
+                    android:textSize="@dimen/common_16sp"/>
+
+                <TextView
+                    android:id="@+id/tv_submit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/common_10dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/common_14sp"/>
+
+            </TableRow>
+
+            <TableRow
+                android:background="@color/white"
+                android:layout_marginTop="@dimen/common_1dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/common_10dp"
+                    android:text="采购日期"
+                    android:layout_marginLeft="@dimen/common_10dp"
+                    android:textSize="@dimen/common_16sp"/>
+                <TextView
+                    android:id="@+id/tv_order_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:textColor="@color/black"
+                    android:padding="@dimen/common_10dp"
+                    android:textSize="@dimen/common_14sp"/>
+
+            </TableRow>
+
+            <TableRow
+                android:background="@color/white"
+                android:layout_marginTop="@dimen/common_1dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/common_10dp"
+                    android:text="采购数量"
+                    android:layout_marginLeft="@dimen/common_10dp"
+                    android:textSize="@dimen/common_16sp"/>
+                <TextView
+                    android:id="@+id/tv_order_rat2e"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:textColor="@color/black"
+                    android:padding="@dimen/common_10dp"
+                    android:textSize="@dimen/common_14sp"/>
+            </TableRow>
+
+
+            <TableRow
+                android:background="@color/white"
+                android:layout_marginTop="@dimen/common_1dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/common_10dp"
+                    android:text="采购总额（美元）"
+                    android:layout_marginLeft="@dimen/common_10dp"
+                    android:textSize="@dimen/common_16sp"/>
+                <TextView
+                    android:id="@+id/tv_order_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:textColor="@color/black"
+                    android:padding="@dimen/common_10dp"
+                    android:textSize="@dimen/common_14sp"/>
+
+            </TableRow>
+
+            <TableRow
+                android:background="@color/white"
+                android:layout_marginTop="@dimen/common_1dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/common_10dp"
+                    android:text="汇率"
+                    android:layout_marginLeft="@dimen/common_10dp"
+                    android:textSize="@dimen/common_16sp"/>
+
+                <TextView
+                    android:id="@+id/tv_statu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:textColor="@color/black"
+                    android:padding="@dimen/common_10dp"
+                    android:textSize="@dimen/common_14sp"/>
+
+            </TableRow>
+
+            <TableRow
+                android:background="@color/white"
+                android:layout_marginTop="@dimen/common_1dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/common_10dp"
+                    android:text="采购总额(人民币)"
+                    android:layout_marginLeft="@dimen/common_10dp"
+                    android:textSize="@dimen/common_16sp"/>
+
+                <TextView
+                    android:id="@+id/tv_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text="纸质海图"
+                    android:textColor="@color/black"
+                    android:padding="@dimen/common_10dp"
+                    android:textSize="@dimen/common_14sp"/>
+
+            </TableRow>
+
+            <TableRow
+                android:background="@color/white"
+                android:layout_marginTop="@dimen/common_1dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/common_10dp"
+                    android:text="税率%"
+                    android:layout_marginLeft="@dimen/common_10dp"
+                    android:textSize="@dimen/common_16sp"/>
+                <TextView
+                    android:id="@+id/tv_details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:padding="@dimen/common_10dp"
+                    android:text="12"
+                    android:textSize="@dimen/common_14sp"
+                    android:textColor="@color/black"/>
+
+            </TableRow>
+
+            <TableRow
+                android:background="@color/white"
+                android:layout_marginTop="@dimen/common_1dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/common_10dp"
+                    android:text="税费(人民币)"
+                    android:layout_marginLeft="@dimen/common_10dp"
+                    android:textSize="@dimen/common_16sp"/>
+                <TextView
+                    android:id="@+id/tv_cost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:padding="@dimen/common_10dp"
+                    android:text="54"
+                    android:textSize="@dimen/common_14sp"
+                    android:textColor="@color/black"/>
+
+            </TableRow>
+
+            <TableRow
+                android:background="@color/white"
+                android:layout_marginTop="@dimen/common_1dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/common_10dp"
+                    android:text="报关费率%"
+                    android:layout_marginLeft="@dimen/common_10dp"
+                    android:textSize="@dimen/common_16sp"/>
+                <TextView
+                    android:id="@+id/tv_Scrap"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:padding="@dimen/common_10dp"
+                    android:textSize="@dimen/common_14sp"
+                    android:text="2.00"
+                    android:textColor="@color/black"/>
+
+            </TableRow>
+            <TableRow
+                android:background="@color/white"
+                android:layout_marginTop="@dimen/common_1dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/common_10dp"
+                    android:text="合计总额(人民币)"
+                    android:layout_marginLeft="@dimen/common_10dp"
+                    android:textSize="@dimen/common_16sp"/>
+                <TextView
+                    android:id="@+id/tv_total_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:padding="@dimen/common_10dp"
+                    android:textSize="@dimen/common_14sp"
+                    android:text="1000"
+                    android:textColor="@color/black"/>
+
+            </TableRow>
+            <TableRow
+                android:background="@color/white"
+                android:layout_marginTop="@dimen/common_1dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/common_10dp"
+                    android:text="付款状态"
+                    android:layout_marginLeft="@dimen/common_10dp"
+                    android:textSize="@dimen/common_16sp"/>
+                <TextView
+                    android:id="@+id/tv_pay_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:padding="@dimen/common_10dp"
+                    android:textSize="@dimen/common_14sp"
+                    android:text="未支付"
+                    android:textColor="@color/black"/>
+
+            </TableRow>
+            <TableRow
+                android:background="@color/white"
+                android:layout_marginTop="@dimen/common_1dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/common_10dp"
+                    android:text="付款日期"
+                    android:layout_marginLeft="@dimen/common_10dp"
+                    android:textSize="@dimen/common_16sp"/>
+                <TextView
+                    android:id="@+id/tv_pay_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:padding="@dimen/common_10dp"
+                    android:textSize="@dimen/common_14sp"
+                    android:text="2018-02-12"
+                    android:textColor="@color/black"/>
+
+            </TableRow>
+            <TableRow
+                android:background="@color/white"
+                android:layout_marginTop="@dimen/common_1dp"
+                android:layout_marginBottom="@dimen/common_1dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/common_10dp"
+                    android:text="采购详情"
+                    android:layout_marginLeft="@dimen/common_10dp"
+                    android:textSize="@dimen/common_16sp"/>
+
+                <TextView
+                    android:id="@+id/tv_left_route"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:textSize="@dimen/common_14sp"
+                    android:padding="@dimen/common_10dp"
+                    android:text="查看"
+                    android:textColor="@color/black"/>
+
+            </TableRow>
+        </TableLayout>
+
+    </ScrollView>
+
+</LinearLayout>

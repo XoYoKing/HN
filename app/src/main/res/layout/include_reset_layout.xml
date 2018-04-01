@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:layout_marginTop="@dimen/common_10dp"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/bt_reset"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/common_30dp"
+            android:textColor="@color/white"
+            android:background="@drawable/shape_btn_background_blue"
+            android:text="重置"/>
+        <Button
+            android:layout_marginLeft="@dimen/common_10dp"
+            android:id="@+id/bt_query"
+            android:textColor="@color/white"
+            android:background="@drawable/shape_btn_background_blue"
+            android:layout_width="wrap_content"
+            android:layout_marginRight="@dimen/common_20dp"
+            android:layout_height="@dimen/common_30dp"
+            android:text="查询"/>
+    </LinearLayout>
+
+</LinearLayout>

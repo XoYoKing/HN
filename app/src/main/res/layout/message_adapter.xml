@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <ImageView
+        android:id="@+id/iv_message_center_logo"
+        android:layout_width="@dimen/common_18dp"
+        android:layout_height="@dimen/common_18dp"
+        android:layout_margin="@dimen/common_12dp"
+        android:background="@drawable/message_center_logo"
+        android:padding="@dimen/common_10dp"
+
+        />
+
+    <TextView
+        android:id="@+id/tv_message_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/common_10dp"
+        android:layout_marginRight="@dimen/common_10dp"
+        android:layout_marginTop="@dimen/common_10dp"
+        android:layout_toRightOf="@id/iv_message_center_logo"
+        android:text="2017-8-7"
+        android:textColor="@color/black"
+        android:textSize="@dimen/common_18sp" />
+
+    <LinearLayout
+        android:id="@+id/ll_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/tv_message_time"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_message_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/common_10dp"
+            android:layout_marginRight="@dimen/common_10dp"
+            android:layout_marginTop="@dimen/common_10dp"
+            android:text="状态"
+            android:layout_gravity="right"
+            android:textColor="@color/black"
+            android:textSize="@dimen/common_18sp" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/tv_message_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="消息通知"
+        android:layout_below="@id/iv_message_center_logo"
+        android:paddingBottom="@dimen/common_10dp"
+        android:paddingLeft="@dimen/common_10dp"
+        android:textColor="@color/charcoal"
+        android:textSize="@dimen/common_16sp" />
+
+</RelativeLayout>

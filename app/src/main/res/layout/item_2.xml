@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape2"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/layout_showArea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp" >
+
+        <TextView
+            android:id="@+id/textview_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/common_16sp"
+            android:layout_weight="1"
+            android:text="资料号：" />
+
+        <TextView
+            android:id="@+id/textview_time"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/common_16sp"
+            android:layout_weight="1"
+            android:text="版本号：" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_hideArea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp" >
+
+        <TextView
+            android:id="@+id/tv_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tv_time"
+            android:text="海图编号: "
+            android:textColor="#162834"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv_number"
+            android:text="123"
+            android:textSize="13sp" />
+        <!--android:textColor="#F09BED"-->
+
+        <TextView
+            android:id="@+id/tv_chart_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_number"
+            android:layout_marginTop="10dp"
+            android:text="价格: "
+            android:textColor="#162834"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tv_chart_title"
+            android:layout_toRightOf="@id/tv_chart_title"
+            android:gravity="bottom"
+            android:text="888"
+            android:textSize="13sp" />
+
+
+        <TextView
+            android:id="@+id/tv_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_chart_title"
+            android:layout_marginTop="10dp"
+            android:text="周期: "
+            android:textColor="#162834"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/tv_money"
+            android:layout_toRightOf="@id/tv_money"
+            android:gravity="center"
+            android:text="888"
+            android:textSize="13sp" />
+
+
+    </RelativeLayout>
+
+</LinearLayout>

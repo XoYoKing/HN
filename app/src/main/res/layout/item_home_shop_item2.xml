@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="@dimen/common_15dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/common_5dp"
+        android:background="@drawable/layout_background"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/mall_img"
+            android:layout_width="@dimen/common_150dp"
+            android:layout_height="@dimen/common_130dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/goods"/>
+
+        <RelativeLayout
+            android:layout_width="150dp"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/linear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_marginTop="@dimen/common_10dp"
+                    android:id="@+id/shopping_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/common_5dp"
+                    android:lines="2"
+                    android:layout_marginRight="@dimen/common_15dp"
+                    android:text="中国人名解放军海军海道测量局"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/common_12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_below="@+id/linear"
+                android:id="@+id/integral_linear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/common_5dp"
+                android:layout_marginBottom="@dimen/common_10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="商品价格："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/common_12sp" />
+
+                <TextView
+                    android:id="@+id/integral_mall_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/common_15dp"
+                    android:lines="1"
+                    android:text="200"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/common_12sp" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
+
+
+

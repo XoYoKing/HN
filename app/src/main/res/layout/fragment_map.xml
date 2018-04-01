@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_top" />
+
+    <LinearLayout
+        android:id="@+id/ll_bg"
+        android:layout_width="match_parent"
+        android:paddingTop="@dimen/common_10dp"
+        android:paddingBottom="@dimen/common_10dp"
+        android:background="@color/white"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.example.admin.hn.widget.EditTextWithDel
+            android:background="@drawable/shape_map"
+            android:id="@+id/tv_text"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_40dp"
+            android:layout_marginLeft="@dimen/common_20dp"
+            android:paddingLeft="@dimen/common_10dp"
+            android:paddingRight="@dimen/common_10dp"
+            android:layout_marginRight="@dimen/common_10dp"
+            android:hint="请输入船舶名称"
+            android:textSize="@dimen/common_14sp"
+            android:layout_weight="1" />
+        <TextView
+            android:id="@+id/bt"
+            android:layout_marginRight="@dimen/common_20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/common_16sp"
+            android:textColor="@color/colorPrimary"
+            android:text="确认"/>
+    </LinearLayout>
+
+    <WebView
+        android:id="@+id/web"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"></WebView>
+
+
+</LinearLayout>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerHorizontal="true"
+    android:background="@color/athens_gray"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true">
+
+    <include layout="@layout/public_title"></include>
+
+    <LinearLayout
+        android:id="@+id/ll_center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/iv_hanjue"
+            android:layout_width="@dimen/common_100dp"
+            android:layout_height="@dimen/common_100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/ic_launcher" />
+
+        <TextView
+            android:id="@+id/tv_hn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_hanjue"
+            android:layout_margin="@dimen/common_20dp"
+            android:gravity="center"
+            android:text="海宁海图"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/common_22sp" />
+
+        <TextView
+            android:id="@+id/tv_haining"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_hn"
+            android:gravity="center_horizontal"
+            android:text="1.0.0"
+            android:visibility="gone"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/common_22sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_hanjue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/common_10dp"
+        android:layout_marginBottom="@dimen/common_50dp"
+        android:text="Copyright © 2017 - haining.All Rights Reserved"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/common_12sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_above="@id/tv_hanjue"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/common_10dp"
+        android:text="海宁公司 版权所有"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/common_14sp" />
+
+</RelativeLayout>
