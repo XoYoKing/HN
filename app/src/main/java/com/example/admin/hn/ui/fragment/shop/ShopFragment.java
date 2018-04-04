@@ -117,7 +117,7 @@ public class ShopFragment extends BaseFragment {
 				refreshlayout.finishLoadmore(1000);
 			}
 		});
-		adapter = new ShopAdapter(getActivity(), list);
+		adapter = new ShopAdapter(getActivity(), R.layout.item_shop_layout, list);
 		listView.setAdapter(adapter);
 
 		setSpData();

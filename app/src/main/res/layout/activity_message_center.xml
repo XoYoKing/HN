@@ -8,22 +8,6 @@
     android:orientation="vertical">
 
     <include layout="@layout/public_title"></include>
-    <!--<com.cisetech.hjb.widget.index.PullToRefreshView-->
-    <!--android:id="@+id/pdsv_refresh_root_message"-->
-    <!--android:layout_width="fill_parent"-->
-    <!--android:layout_height="0dip"-->
-    <!--android:layout_weight="1"-->
-    <!--android:orientation="vertical"-->
-    <!--android:scrollbars="none">-->
-    <!--<ScrollView-->
-    <!--android:id="@+id/sv_refresh"-->
-    <!--android:layout_width="fill_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:scrollbars="none">-->
-    <!--<FrameLayout-->
-    <!--android:id="@+id/ll_mainView"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent">-->
 
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -100,18 +84,6 @@
                 android:divider="#000000"
                 android:dividerHeight="1dp"></ListView>
 
-            <!--<ListView-->
-            <!--android:id="@+id/lv_message_center"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_marginTop="@dimen/common_10dp"-->
-            <!--android:background="@color/white"-->
-            <!--android:divider="@color/concrete"-->
-            <!--android:dividerHeight="@dimen/common_10dp"-->
-            <!--android:scrollbars="none"></ListView>-->
-            <!--</FrameLayout>-->
-            <!--</ScrollView>-->
-            <!--</com.cisetech.hjb.widget.index.PullToRefreshView>-->
         </RelativeLayout>
 
         <com.scwang.smartrefresh.layout.footer.ClassicsFooter

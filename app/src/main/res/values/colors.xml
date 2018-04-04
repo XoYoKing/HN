@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="transparent">#00000000</color>
+    <color name="transparent">#00000000</color>//透明
+    <color name="translucent">#9000</color>//半透明
     <color name="colorPrimary">#3084EC</color>
     <color name="colorPrimaryDark">#5065da</color>
     <color name="colorAccent">#FF4081</color>
@@ -22,12 +23,13 @@
     <color name="texas_rose">#FBB057</color>
     <color name="carnation">#F96066</color>
     <color name="banana_yellow">#F8D934</color>
-    <color name="black">#000000</color>
+    <color name="black">#3d3d3d</color>
     <color name="nugget">#C3961B</color>
     <color name="sunset_orange">#FA533D</color>
     <color name="lily_white">#EAEAEA</color>
     <color name="concrete">#F2F2F2</color>
     <color name="gray">#797474</color>
+    <color name="gray_background">#efefef</color>
     <color name="grayDark">#595858</color>
     <color name="golden_brown">#916112</color>
     <color name="buttercup">#ECA90C</color>
@@ -42,15 +44,20 @@
     <color name="dove_gray">#747474</color>
     <color name="lust">#E71F19</color>
     <color name="charcoal">#474747</color>
+    <color name="color_808080">#808080</color>
     <color name="scan_bg">#7f000000</color>
-
+    <!--输入框 提示颜色-->
+    <color name="text_color_hint">#9ca4ae</color>
     <!--蓝色按钮  没按下的时候-->
     <color name="blue_nopressed_button">#27A2FE</color>
     <!--蓝色按钮  按下时候-->
     <color name="blue_pressed_button">#0a7bda</color>
     <!--蓝色按钮  不能按下时候-->
     <color name="blue_not_pressed_button">#9DCEF7</color>
-
+    <!--主色调-->
+    <color name="yellow_color">#FF7F00</color>
+    <!--主色调 按下-->
+    <color name="yellow_press_color">#d76f07</color>
     <!--筛选菜单颜色-->
     <color name="drop_down_selected">#ECA90C</color>
     <color name="drop_down_unselected">#929292</color>
@@ -66,8 +73,8 @@
     <color name="grey_dde1e7">#DDE1E7</color>
     <color name="red_f4333c">#F4333C</color>
     <color name="Seashell">#F1F1F1</color>
-
-
+    <color name="color_violet">#973fd1</color>
+    <color name="color_press_violet">#8e2dce</color>
     <color name="alabaster">#FAFAFA</color>
 
     <color name="grey_b2b2b2">#B2B2B2</color>

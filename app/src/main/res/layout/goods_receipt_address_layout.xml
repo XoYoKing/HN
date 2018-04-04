@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/address_linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/people"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="@dimen/common_15dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/goods_receipt_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="@dimen/common_12dp"
+                android:layout_toLeftOf="@+id/goods_receipt_phone"
+                android:text="收货人：张三"
+                android:textColor="@color/black"
+                android:textSize="@dimen/common_14sp" />
+
+            <TextView
+                android:id="@+id/goods_receipt_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginRight="@dimen/common_35dp"
+                android:text="13000001000"
+                android:textColor="@color/black"
+                android:textSize="@dimen/common_14sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/people"
+            android:layout_marginBottom="@dimen/common_12dp"
+            android:layout_marginTop="@dimen/common_10dp">
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="@dimen/common_12dp"
+                android:text="收货地址："
+                android:textColor="@color/black"
+                android:textSize="@dimen/common_12sp" />
+
+            <TextView
+                android:id="@+id/tv_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/common_30dp"
+                android:layout_toRightOf="@+id/text"
+                android:text="上海市开机时间哈哈哈大客上海市开机时间哈哈哈大客"
+                android:textColor="@color/black"
+                android:textSize="@dimen/common_12sp" />
+
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/common_5dp"
+            android:background="@drawable/shopping_line" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/img_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/common_12dp"
+        android:src="@drawable/shopping_right" />
+</RelativeLayout>

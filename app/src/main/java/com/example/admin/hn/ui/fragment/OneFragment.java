@@ -2,6 +2,7 @@
 package com.example.admin.hn.ui.fragment;
 
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import android.support.v4.app.FragmentActivity;
@@ -10,10 +11,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.admin.hn.R;
@@ -23,9 +28,15 @@ import com.example.admin.hn.mViewPager.ViewFactory;
 import com.example.admin.hn.model.BannerInfo;
 import com.example.admin.hn.model.HomeInfo;
 import com.example.admin.hn.model.HomeItem;
+import com.example.admin.hn.model.ScreenTypeInfo;
 import com.example.admin.hn.ui.account.HtmlActivity;
+import com.example.admin.hn.ui.adapter.ScreenTypeAdapter;
 import com.example.admin.hn.ui.adapter.ShopHomeListAdapter;
+import com.example.admin.hn.ui.shop.OrderManagerActivity;
+import com.example.admin.hn.ui.shop.ShopCartActivity;
 import com.example.admin.hn.utils.GlideImageLoader;
+import com.example.admin.hn.utils.ToolAlert;
+import com.example.admin.hn.utils.ToolAppUtils;
 import com.example.admin.hn.utils.ToolString;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -43,6 +54,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 首页
@@ -50,8 +62,14 @@ import butterknife.ButterKnife;
 public class OneFragment extends BaseFragment  {
     @Bind(R.id.text_title)
     TextView textTitle;
+    @Bind(R.id.text_tile_del)
+    TextView text_tile_del;
     @Bind(R.id.banner)
     Banner bannerGuideContent;
+    @Bind(R.id.iv_shopCart)
+    ImageView iv_shopCart;//购物车
+
+
     private View view;
 
     //首页应用列表
@@ -62,7 +80,6 @@ public class OneFragment extends BaseFragment  {
     private RecyclerView recycleView;
     private ShopHomeListAdapter adapter;
     private NestedScrollView scroll;
-    private int height;
     private RefreshLayout refreshLayout;
 
     @Override
@@ -83,6 +100,8 @@ public class OneFragment extends BaseFragment  {
     @Override
     public void initTitleBar() {
         textTitle.setText("商城");
+        text_tile_del.setVisibility(View.VISIBLE);
+        text_tile_del.setText("订单管理");
     }
 
     /**
@@ -104,8 +123,16 @@ public class OneFragment extends BaseFragment  {
 
     }
 
+    @OnClick({R.id.iv_shopCart,R.id.text_tile_del})
     public void onClick(View v) {
-
+        switch (v.getId()) {
+            case R.id.iv_shopCart:
+                ShopCartActivity.startActivity(activity);
+                break;
+            case R.id.text_tile_del:
+                OrderManagerActivity.startActivity(activity);
+                break;
+        }
     }
 
 
@@ -210,5 +237,6 @@ public class OneFragment extends BaseFragment  {
     public void onPause() {
         super.onPause();
     }
+
 
 }

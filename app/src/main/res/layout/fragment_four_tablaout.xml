@@ -23,6 +23,17 @@
             android:textSize="20sp"
             android:textStyle="bold"/>
 
+        <TextView
+            android:id="@+id/tv_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="搜索"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/common_10dp"
+            android:layout_toLeftOf="@+id/text_tile_right"
+            android:textSize="@dimen/common_18sp"
+            android:textColor="@color/white"/>
+
         <FrameLayout
             android:id="@+id/text_tile_right"
             android:layout_alignParentRight="true"
@@ -30,20 +41,17 @@
             android:layout_height="@dimen/common_30dp"
             android:layout_toLeftOf="@+id/iv_search"
             android:layout_marginRight="@dimen/common_10dp"
-            android:layout_centerVertical="true"
-            >
+            android:layout_centerVertical="true">
             <ImageView
                 android:id="@+id/iv_one"
                 android:src="@drawable/message"
                 android:layout_width="@dimen/common_28dp"
-                android:layout_height="@dimen/common_28dp"
-                />
+                android:layout_height="@dimen/common_28dp" />
             <ImageView
                 android:id="@+id/iv_two"
                 android:src="@drawable/prompt"
                 android:layout_width="@dimen/common_26dp"
-                android:layout_height="@dimen/common_26dp"
-                />
+                android:layout_height="@dimen/common_26dp" />
 
         </FrameLayout>
     </RelativeLayout>

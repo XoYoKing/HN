@@ -52,8 +52,7 @@ public class InventoryAdapter extends BaseAdapter{
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(
-                    R.layout.time3, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.time3, parent, false);
             holder = new ViewHolder();
 
             holder.showArea = (LinearLayout) convertView.findViewById(R.id.layout_showArea);

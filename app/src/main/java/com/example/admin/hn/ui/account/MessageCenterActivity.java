@@ -151,7 +151,7 @@ public class MessageCenterActivity extends BaseActivity implements AdapterView.O
                 startActivity(intent_order);
             }
         });
-        adapter = new MessageAdapter(MessageCenterActivity.this, list);
+        adapter = new MessageAdapter(MessageCenterActivity.this, R.layout.eight_item, list);
         mLvMessageCenter.setAdapter(adapter);
     }
 
@@ -197,7 +197,7 @@ public class MessageCenterActivity extends BaseActivity implements AdapterView.O
             group.add("成功");
             group.add("失败");
             group.add("已删除");
-            groupAdapter = new GroupAdapter(this, group);
+            groupAdapter = new GroupAdapter(this,R.layout.group_item, group);
             listview.setAdapter(groupAdapter);
 
             mPopupWindow = new PopupWindow(contentView, getWindowManager()
@@ -219,16 +219,12 @@ public class MessageCenterActivity extends BaseActivity implements AdapterView.O
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,
                             long id) {
-//        mHomeNameTextView.setText(groups.get(position));
 
         if (mPopupWindow != null) {
             mPopupWindow.dismiss();
         }
-
-//        Toast.makeText(MyBillActivity.this, "点击了" + position + "项", Toast.LENGTH_SHORT).show();
         switch (position) {
             case 0:
-                Toast.makeText(MessageCenterActivity.this, "全部", Toast.LENGTH_SHORT).show();
 //                tradeType = 100;
 //                adapter = new MessageAdapter(MessageCenterActivity.this, groups, tradeType);
                 status = 1;
@@ -239,8 +235,6 @@ public class MessageCenterActivity extends BaseActivity implements AdapterView.O
 
                 break;
             case 1:
-                Toast.makeText(MessageCenterActivity.this, "成功", Toast.LENGTH_SHORT).show();
-
 //                tradeType = 101;
 //                ArrayList<MessageInfo.Messageinfo> group = new ArrayList<>();
 //                for(int i = 0;i<groups.size();i++){
@@ -257,11 +251,9 @@ public class MessageCenterActivity extends BaseActivity implements AdapterView.O
                 break;
 
             case 2:
-                Toast.makeText(MessageCenterActivity.this, "失败", Toast.LENGTH_SHORT).show();
                 status = 3;
                 page=1;
                 data(0);
-
 //                tradeType = 102;
 //                ArrayList<MessageInfo.Messageinfo> g = new ArrayList<>();
 //                for(int i = 0;i<groups.size();i++){
@@ -269,11 +261,10 @@ public class MessageCenterActivity extends BaseActivity implements AdapterView.O
 //                        g.add(groups.get(i));
 //                    }
 //                }
-////                adapter = new MessageAdapter(MessageCenterActivity.this, g, tradeType);
+////              adapter = new MessageAdapter(MessageCenterActivity.this, g, tradeType);
 //                mLvMessageCenter.setAdapter(adapter);
                 break;
             case 3:
-                Toast.makeText(MessageCenterActivity.this, "已删除", Toast.LENGTH_SHORT).show();
 //                tradeType = 103;
 //                ArrayList<MessageInfo.Messageinfo> gg = new ArrayList<>();
 //                for(int i = 0;i<groups.size();i++){
@@ -413,16 +404,12 @@ public class MessageCenterActivity extends BaseActivity implements AdapterView.O
                         @Override
                         public void onFailure(Request request, IOException e) {
                             ToolAlert.showToast(MessageCenterActivity.this, "服务器异常,请稍后再试", false);
-
                         }
 
                         @Override
                         public void onResponse(String json) {
                             Logger.i(TAG, json);
-                            MessageInfo message = GsonUtils
-                                    .jsonToBean(json,
-                                            MessageInfo.class
-                                    );
+                            MessageInfo message = GsonUtils.jsonToBean(json, MessageInfo.class);
                             if (("success").equals(message.getStatus())) {
                                 if (Loadmore == 0) {
                                     list.clear();
@@ -433,9 +420,7 @@ public class MessageCenterActivity extends BaseActivity implements AdapterView.O
                                 adapter.notifyDataSetChanged();
                             } else {
                                 ToolAlert.showToast(MessageCenterActivity.this, message.getMessage(), false);
-
                             }
-
                         }
                     });
         } catch (IOException e) {

@@ -242,7 +242,7 @@ public class ChartUpdateActivity extends BaseActivity implements AdapterView.OnI
 			}
 		});
 
-		adapter = new UpdateAdapter(ChartUpdateActivity.this, list);
+		adapter = new UpdateAdapter(ChartUpdateActivity.this, R.layout.order_adapter, list);
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
@@ -364,7 +364,7 @@ public class ChartUpdateActivity extends BaseActivity implements AdapterView.OnI
 			group.add("全部");
 			group.add("已同步");
 			group.add("未同步");
-			groupAdapter = new GroupAdapter(this, group);
+			groupAdapter = new GroupAdapter(this,R.layout.group_item, group);
 			listview.setAdapter(groupAdapter);
 
 			mPopupWindow = new PopupWindow(contentView, getWindowManager()

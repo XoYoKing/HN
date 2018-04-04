@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:clipToPadding="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/public_title"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_edit_background_rect"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_44dp">
+
+            <EditText
+                android:id="@+id/et_consignee_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/common_12dp"
+                android:background="@null"
+                android:hint="收货人姓名"
+                android:maxLength="10"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="@color/text_color_hint"
+                android:textSize="@dimen/common_12sp" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#cccccc" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_44dp">
+
+            <EditText
+                android:id="@+id/et_consignee_phone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/common_12dp"
+                android:background="@null"
+                android:hint="手机号码"
+                android:inputType="number"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="@color/text_color_hint"
+                android:textSize="@dimen/common_12sp" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#cccccc" />
+
+        <RelativeLayout
+            android:id="@+id/relative_region"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_44dp">
+
+            <TextView
+                android:id="@+id/tv_region"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/common_12dp"
+                android:hint="区域选择"
+                android:textColor="@color/black"
+                android:textColorHint="@color/text_color_hint"
+                android:textSize="@dimen/common_12sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/common_12dp"
+                android:src="@drawable/right" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/common_5dp"
+        android:background="@drawable/shape_edit_background_rect">
+
+        <EditText
+            android:id="@+id/et_detailed_address"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_100dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="@dimen/common_5dp"
+            android:layout_marginLeft="@dimen/common_12dp"
+            android:layout_marginRight="@dimen/common_12dp"
+            android:layout_marginTop="@dimen/common_5dp"
+            android:background="@null"
+            android:gravity="top|left"
+            android:hint="请填写详细的收获地址"
+            android:textColor="@color/black"
+            android:textColorHint="@color/text_color_hint"
+            android:textSize="@dimen/common_12sp" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

@@ -7,6 +7,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:launchMode">singleTask</item>
     </style>
 
     <style name="dot_style">
@@ -33,7 +35,10 @@
         <item name="android:button">@drawable/my_radiobutton</item>
     </style>
 
-
+    <style name="dialogAnimationStyle">
+        <item name="android:windowEnterAnimation">@anim/window_in</item>
+        <item name="android:windowExitAnimation">@anim/window_out</item>
+    </style>
     <!--分割线样式-->
     <style name="lineStyle">
         <item name="android:layout_width">match_parent</item>
@@ -162,4 +167,9 @@
         <item name="android:windowExitAnimation">@anim/pop_hidden_right_anim</item>
     </style>
 
+    <!-- 半透明主题 -->
+    <style name="Theme.translucent" mce_bogus="1" parent="android:style/Theme.Translucent">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/translucent</item>
+    </style>
 </resources>

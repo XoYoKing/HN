@@ -256,13 +256,13 @@ public class LoginActivity extends BaseActivity {
                     new OkHttpUtil.MyCallBack() {
                         @Override
                         public void onFailure(Request request, IOException e) {
-                            loading.dismiss();
+                            LoadingFragment.dismiss(loading);
                             ToolAlert.showToast(LoginActivity.this, "服务器异常,请稍后再试", false);
                         }
 
                         @Override
                         public void onResponse(String json) {
-                            loading.dismiss();
+                            LoadingFragment.dismiss(loading);
                             Logger.i(TAG, json);
                             ServerResponse serverResponse = GsonUtils
                                     .jsonToBean(json,

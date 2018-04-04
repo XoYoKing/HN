@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/date_layout"></include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/common_1dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/layout_background"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/common_15dp"
+            android:textSize="@dimen/common_14sp"
+            android:layout_gravity="center_vertical"
+            android:text="船舶名称：" />
+
+        <com.example.admin.hn.widget.EditTextWithDel
+            android:id="@+id/et_name"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="@dimen/common_40dp"
+            android:textSize="@dimen/common_14sp"
+            android:layout_marginLeft="@dimen/common_10dp"
+            android:layout_marginRight="@dimen/common_20dp"></com.example.admin.hn.widget.EditTextWithDel>
+
+    </LinearLayout>
+</LinearLayout>

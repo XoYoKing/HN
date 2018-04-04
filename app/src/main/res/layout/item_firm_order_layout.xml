@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/relative_item"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_100dp"
+        android:layout_marginTop="@dimen/common_5dp"
+        android:background="@drawable/layout_background"
+        android:paddingBottom="@dimen/common_10dp"
+        android:paddingTop="@dimen/common_10dp">
+
+        <ImageView
+            android:id="@+id/goods_icon"
+            android:layout_width="@dimen/common_80dp"
+            android:layout_height="@dimen/common_80dp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/common_25dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/goods" />
+
+        <TextView
+            android:id="@+id/goods_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="@dimen/common_20dp"
+            android:layout_marginRight="@dimen/common_40dp"
+            android:layout_toRightOf="@+id/goods_icon"
+            android:text="abc高级不沾abc高级不沾大容量汤锅abc高级不沾大容量汤"
+            android:textColor="@color/black"
+            android:textSize="@dimen/common_14sp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/common_20dp"
+            android:layout_marginTop="@dimen/common_15dp"
+            android:layout_toRightOf="@+id/goods_icon"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/goods_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="￥99.99"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/common_14sp" />
+
+                <TextView
+                    android:id="@+id/goods_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/common_30dp"
+                    android:layout_marginRight="@dimen/common_12dp"
+                    android:text="X 1"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/common_14sp" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+</LinearLayout>

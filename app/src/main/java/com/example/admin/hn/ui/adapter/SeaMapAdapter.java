@@ -9,8 +9,11 @@ import android.widget.TextView;
 
 import com.example.admin.hn.R;
 import com.example.admin.hn.model.OrderInfo;
+import com.zhy.adapter.abslistview.CommonAdapter;
+import com.zhy.adapter.abslistview.ViewHolder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by duantao
@@ -18,50 +21,14 @@ import java.util.ArrayList;
  * @date on 2017/7/31 15:35
  * 海圖資料
  */
-public class SeaMapAdapter extends BaseAdapter {
-    private Context mContext;
-    private ArrayList<OrderInfo.Order> groups;
-    private LayoutInflater mLayoutInflater;
-    private String statu;
+public class SeaMapAdapter extends CommonAdapter {
 
-    public SeaMapAdapter(Context mContext, ArrayList<OrderInfo.Order> groups ) {
-        this.mContext = mContext;
-        this.groups = groups;
-        mLayoutInflater = LayoutInflater.from(mContext);
+    public SeaMapAdapter(Context context, int layoutId, List datas) {
+        super(context, layoutId, datas);
     }
 
     @Override
-    public int getCount() {
-        return groups.size();
-    }
+    protected void convert(ViewHolder viewHolder, Object item, int position) {
 
-    @Override
-    public Object getItem(int position) {
-        return groups.get(position);
     }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
-        if (convertView == null) {
-            viewHolder = new ViewHolder();
-            convertView = mLayoutInflater.inflate(R.layout.item_sea_map_layout, null);
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
-        }
-        return convertView;
-    }
-
-    static class ViewHolder {
-        TextView number;
-        TextView time;
-        TextView status;
-    }
-
 }

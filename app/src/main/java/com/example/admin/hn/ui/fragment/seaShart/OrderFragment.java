@@ -195,7 +195,7 @@ public class OrderFragment extends BaseFragment {
 				refreshlayout.finishLoadmore(1000);
 			}
 		});
-		adapter = new OrderAdapter(getActivity(), list, statu);
+		adapter = new OrderAdapter(getActivity(), R.layout.order_adapter,list);
 		listView.setAdapter(adapter);
 		//完成与未完成button监听
 //        mTBtn.setOnLeftClickListener(new TitleButton.OnLeftClickListener() {
@@ -493,7 +493,7 @@ public class OrderFragment extends BaseFragment {
 			group.add("通过");
 			group.add("待审核");
 //            group.add("被退回");
-			groupAdapter = new GroupAdapter(getActivity(), group);
+			groupAdapter = new GroupAdapter(getActivity(),R.layout.group_item, group);
 			listview.setAdapter(groupAdapter);
 
 			mPopupWindow = new PopupWindow(contentView, getActivity().getWindowManager()

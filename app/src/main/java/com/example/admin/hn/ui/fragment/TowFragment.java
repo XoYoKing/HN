@@ -33,13 +33,14 @@ public class TowFragment extends BaseFragment {
 
 	@Bind(R.id.text_title)
 	TextView textTitle;
-	private View view;
+	@Bind(R.id.text_tile_del)
+	TextView text_tile_del;
+
 	@Bind(R.id.viewPager)
 	ViewPager viewPager;
 	@Bind(R.id.tabLayout)
 	TabLayout tabLayout;
-	@Bind(R.id.text_tile_del)
-	TextView text_tile_del;
+	private View view;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

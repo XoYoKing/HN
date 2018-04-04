@@ -15,12 +15,12 @@ import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.base.BaseFragment;
 import com.example.admin.hn.ui.account.MessageCenterActivity;
+import com.example.admin.hn.ui.account.PopActivity;
 import com.example.admin.hn.ui.adapter.AllChildTabAdapter;
-import com.example.admin.hn.ui.fragment.seaShart.InventoryFragment;
-import com.example.admin.hn.ui.fragment.seaShart.Order2Fragment;
-import com.example.admin.hn.ui.fragment.seaShart.OrderListFragment;
-import com.example.admin.hn.ui.fragment.seaShart.OrderUseFragment;
-import com.example.admin.hn.ui.fragment.seaShart.PurchaseFragment;
+import com.example.admin.hn.ui.fragment.seaShart.OrderInventoryManagerFragment;
+import com.example.admin.hn.ui.fragment.seaShart.OrderManagerFragment;
+import com.example.admin.hn.ui.fragment.seaShart.OrderPurchaseManagerFragment;
+import com.example.admin.hn.ui.fragment.seaShart.OrderUseManagerFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -44,6 +44,7 @@ public class FourFragment extends BaseFragment {
 	ViewPager viewPager;
 	@Bind(R.id.tabLayout)
 	TabLayout tabLayout;
+
 	private View view;
 
 	@Override
@@ -69,10 +70,10 @@ public class FourFragment extends BaseFragment {
 	private void addChildFragment() {
 
 		AllChildTabAdapter adapter = new AllChildTabAdapter(getChildFragmentManager(), activity, viewPager);
-		adapter.addTab("订单管理", OrderListFragment.class);
-		adapter.addTab("采购管理", PurchaseFragment.class);
-		adapter.addTab("订单领用", OrderUseFragment.class);
-		adapter.addTab("库存管理", InventoryFragment.class);
+		adapter.addTab("订单管理", OrderManagerFragment.class);
+		adapter.addTab("采购管理", OrderPurchaseManagerFragment.class);
+		adapter.addTab("订单领用", OrderUseManagerFragment.class);
+		adapter.addTab("库存管理", OrderInventoryManagerFragment.class);
 		viewPager.setOffscreenPageLimit(3);
 		tabLayout.setupWithViewPager(viewPager);
 		viewPager.setCurrentItem(0);
@@ -96,13 +97,25 @@ public class FourFragment extends BaseFragment {
 		}
 	}
 
-	@OnClick({R.id.text_tile_right})
+	@OnClick({R.id.text_tile_right, R.id.tv_search})
 	public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.text_tile_right:
 				iv_two.setVisibility(View.GONE);
 				Intent intent = new Intent(getActivity(), MessageCenterActivity.class);
 				startActivity(intent);
+				break;
+			case R.id.tv_search:
+				int currentItem = viewPager.getCurrentItem();
+				if (currentItem == 0) {
+					PopActivity.startActivity(activity, R.layout.popup_order_manager_layout, 400);
+				} else if (currentItem == 1) {
+					PopActivity.startActivity(activity,R.layout.popup_order_purchase_layout, 500);
+				} else if (currentItem == 2) {
+					PopActivity.startActivity(activity,R.layout.popup_order_use_layout, 600);
+				} else if (currentItem == 3) {
+					PopActivity.startActivity(activity,R.layout.popup_order_inventory_layout, 700);
+				}
 				break;
 		}
 	}

@@ -17,16 +17,16 @@ import butterknife.ButterKnife;
 /**
  * @author duantao
  * @date on 2017/7/26 16:04
- * @describe 订单列表
+ * @describe 订单采购管理
  */
-public class OrderListFragment extends BaseFragment {
+public class OrderPurchaseManagerFragment extends BaseFragment {
 	private View view;
 	private TabLayout tabLayout;
 	private ViewPager viewPager;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		view = inflater.inflate(R.layout.fragment_inventory, container, false);
+		view = inflater.inflate(R.layout.fragment_tab_layout, container, false);
 		ButterKnife.bind(this, view);
 		initTitleBar();
 		initView();
@@ -48,10 +48,9 @@ public class OrderListFragment extends BaseFragment {
 
 	private void addChildFragment() {
 		AllChildTabAdapter adapter = new AllChildTabAdapter(getChildFragmentManager(), activity, viewPager);
-		adapter.addTab("全部","1", Order2Fragment.class);
-		adapter.addTab("退回","2", Order2Fragment.class);
-		adapter.addTab("通过","3", Order2Fragment.class);
-		adapter.addTab("待审核","4", Order2Fragment.class);
+		adapter.addTab("全部","1", PurchaseFragment.class);
+		adapter.addTab("未付款","2", PurchaseFragment.class);
+		adapter.addTab("已付款","3", PurchaseFragment.class);
 		tabLayout.setupWithViewPager(viewPager);
 	}
 

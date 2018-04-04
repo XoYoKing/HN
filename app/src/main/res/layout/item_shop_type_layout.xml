@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/relative_goods"
+            android:layout_width="@dimen/common_100dp"
+            android:layout_height="@dimen/common_100dp">
+
+            <ImageView
+                android:id="@+id/type_icon"
+                android:layout_width="@dimen/common_80dp"
+                android:layout_height="@dimen/common_80dp"
+                android:layout_centerInParent="true"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"
+                android:src="@drawable/tu" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/type_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/common_10dp"
+            android:layout_marginRight="@dimen/common_10dp"
+            android:maxLines="2"
+            android:text="裤子"
+            android:textSize="@dimen/common_12sp" />
+    </LinearLayout>
+
+</RelativeLayout>

@@ -92,7 +92,22 @@
         <activity android:name=".ui.account.AboutActivity" />
         <activity android:name=".ui.account.NotsubmittedOrderActivity" />
         <activity android:name=".ui.account.OverdueInventoryActivity" />
+        <activity android:name=".ui.account.PopActivity"
+            android:theme="@style/Theme.translucent"/>
+
+        //商城  ===============
         <activity android:name=".ui.shop.ShopTypeListActivity" />
+        <activity android:name=".ui.shop.ShopCartActivity" />
+        <activity android:name=".ui.shop.FirmOrderActivity" />
+        <activity android:name=".ui.shop.PayActivity" />
+        <activity android:name=".ui.shop.SelectAddressActivity" />
+        <activity android:name=".ui.shop.ManagerAddressActivity" />
+        <activity android:name=".ui.shop.CreateAddressActivity" />
+        <activity android:name=".ui.shop.OrderManagerActivity" />
+        <activity android:name=".ui.shop.GoodsListActivity" />
+        <activity android:name=".ui.shop.GoodsDetailActivity" />
+        <activity android:name=".ui.shop.StepActivity" />
+        //商城  ===============
         <activity
             android:name=".ui.account.MessageCenterActivity"
             android:launchMode="singleTask" />

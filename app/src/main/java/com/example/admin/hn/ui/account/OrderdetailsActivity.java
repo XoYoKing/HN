@@ -142,7 +142,7 @@ public class OrderdetailsActivity extends BaseActivity {
                                     item.put("version", orderInfo.getCharts().get(i).getVersion());
                                     datas.add(item);
                                 }
-                                OneExpandAdapter adapter = new OneExpandAdapter(OrderdetailsActivity.this, datas);
+                                OneExpandAdapter adapter = new OneExpandAdapter(OrderdetailsActivity.this,R.layout.item_2, datas);
                                 lvProduct.setAdapter(adapter);
                             } else {
                                 ToolAlert.showToast(OrderdetailsActivity.this, orderInfo.getMessage(), false);

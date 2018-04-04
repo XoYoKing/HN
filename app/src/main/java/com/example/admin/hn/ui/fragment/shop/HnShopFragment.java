@@ -15,7 +15,7 @@ import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseFragment;
 import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.OrderInfo;
-import com.example.admin.hn.ui.adapter.HnGoodsAdapter2;
+import com.example.admin.hn.ui.adapter.HnGoodsAdapter;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolRefreshView;
@@ -45,8 +45,8 @@ import butterknife.OnClick;
 public class HnShopFragment extends BaseFragment {
 
 	private static final String TAG = "ShopFragment";
-	@Bind(R.id.listView)
-	RecyclerView listView;
+	@Bind(R.id.recycleView)
+	RecyclerView recycleView;
 	@Bind(R.id.network_disabled)
 	RelativeLayout network;
 	@Bind(R.id.network_img)
@@ -56,7 +56,7 @@ public class HnShopFragment extends BaseFragment {
 	private String str = "";
 
 	private ArrayList<OrderInfo.Order> list = new ArrayList<>();
-	private HnGoodsAdapter2 adapter;
+	private HnGoodsAdapter adapter;
 	private View view;
 	private int status = 1;
 	private int page = 1;
@@ -104,9 +104,9 @@ public class HnShopFragment extends BaseFragment {
 			}
 		});
 
-		listView.setLayoutManager(new GridLayoutManager(activity, 2));
-		adapter = new HnGoodsAdapter2(getActivity(), list);
-		listView.setAdapter(adapter);
+		recycleView.setLayoutManager(new GridLayoutManager(activity, 2));
+		adapter = new HnGoodsAdapter(getActivity(),R.layout.item_hnshop_layout, list);
+		recycleView.setAdapter(adapter);
 	}
 
 

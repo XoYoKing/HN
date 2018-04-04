@@ -1,55 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:gravity="center_horizontal"
     android:layout_height="wrap_content">
 
-    <android.support.v7.widget.CardView
-        android:layout_width="120dp"
+    <LinearLayout
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="@dimen/common_15dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/common_15dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="@dimen/common_10dp"
         android:layout_marginTop="@dimen/common_5dp"
         android:background="@drawable/layout_background"
-        app:cardCornerRadius="@dimen/common_10dp"
-        app:cardElevation="@dimen/common_5dp"
-        app:cardPreventCornerOverlap="false">
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+        <ImageView
+            android:id="@+id/mall_img"
+            android:layout_width="@dimen/common_150dp"
+            android:layout_height="@dimen/common_130dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/goods"/>
 
-            <ImageView
-                android:id="@+id/iv_img"
-                android:layout_width="120dp"
-                android:layout_height="75dp"
-                android:scaleType="fitXY" />
+        <RelativeLayout
+            android:layout_width="150dp"
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/tv_name"
+            <LinearLayout
+                android:id="@+id/linear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_marginTop="@dimen/common_10dp"
+                    android:id="@+id/shopping_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/common_5dp"
+                    android:lines="2"
+                    android:layout_marginRight="@dimen/common_15dp"
+                    android:text="中国人名解放军海军海道测量局"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/common_12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_below="@+id/linear"
+                android:id="@+id/integral_linear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:lines="1"
-                android:text="标标题标题标题标题标题题"
-                android:textColor="@color/black"
-                android:textSize="@dimen/common_14sp" />
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/common_5dp"
+                android:layout_marginBottom="@dimen/common_10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tv_des"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="4dp"
-                android:lines="1"
-                android:text="标标题标题标题标题标题题"
-                android:textColor="@color/black"
-                android:textSize="@dimen/common_14sp" />
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="商品价格："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/common_12sp" />
+
+                <TextView
+                    android:id="@+id/integral_mall_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/common_15dp"
+                    android:lines="1"
+                    android:text="200"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/common_12sp" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
 
 
-</LinearLayout>
+

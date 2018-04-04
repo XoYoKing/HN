@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:clipToPadding="true"
+    android:orientation="vertical">
+
+   <include
+       layout="@layout/public_title"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_layout">
+
+        <RelativeLayout
+            android:id="@+id/relative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/include2"
+            android:layout_alignParentTop="true">
+
+            <include
+                android:id="@+id/include1"
+                layout="@layout/goods_receipt_address_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></include>
+
+            <ListView
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/include1"
+                android:background="@null"></ListView>
+
+            <LinearLayout
+                android:id="@+id/remarks_linear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/listView"
+                android:layout_marginTop="@dimen/common_10dp"
+                android:background="@drawable/layout_background"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/common_12dp"
+                    android:text="买家留言：" />
+
+                <com.example.admin.hn.widget.EditTextWithDel
+                    android:id="@+id/et_remarks"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/common_44dp"
+                    android:background="@null"
+                    android:hint="选填：请对本次交易备注"
+                    android:maxLength="18"
+                    android:paddingLeft="@dimen/common_10dp"
+                    android:paddingRight="@dimen/common_10dp"
+                    android:singleLine="true"
+                    android:textColorHint="@color/text_color_hint"
+                    android:textSize="@dimen/common_12sp" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+        <include
+            android:id="@+id/include2"
+            layout="@layout/include_firm_order"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"></include>
+    </RelativeLayout>
+
+</RelativeLayout>

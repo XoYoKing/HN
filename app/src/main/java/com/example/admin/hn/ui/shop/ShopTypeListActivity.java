@@ -37,7 +37,7 @@ public class ShopTypeListActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_tablaout);
+        setContentView(R.layout.activity_shop_type);
         ButterKnife.bind(this);
         initTitleBar();
         initData();
@@ -68,6 +68,14 @@ public class ShopTypeListActivity extends BaseActivity {
         AllTabAdapter adapter = new AllTabAdapter(this, viewPager);
         adapter.addTab("海宁海图", HnShopFragment.class);
         adapter.addTab("纸质海图", ShopFragment.class);
+        adapter.addTab("电脑配件", HnShopFragment.class);
+        adapter.addTab("船舶物料", HnShopFragment.class);
+        adapter.addTab("手机数码", HnShopFragment.class);
+        adapter.addTab("个人化妆", HnShopFragment.class);
+        adapter.addTab("大家电", HnShopFragment.class);
+        adapter.addTab("家用产品", HnShopFragment.class);
+        adapter.addTab("扶贫产品", HnShopFragment.class);
+        viewPager.setOffscreenPageLimit(8);
         tabLayout.setupWithViewPager(viewPager);
     }
 }

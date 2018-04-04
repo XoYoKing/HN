@@ -144,7 +144,7 @@ public class ChartActivity extends BaseActivity {
             }
         });
 
-        adapter = new ChartAdapter(this, list);
+        adapter = new ChartAdapter(this, R.layout.chart_adapter, list);
     }
 
 

@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.example.admin.hn.R;
 import com.example.admin.hn.model.HomeInfo;
+import com.example.admin.hn.ui.article.ArticleDetailsActivity;
+import com.example.admin.hn.ui.shop.GoodsDetailActivity;
 import com.example.admin.hn.ui.shop.ShopTypeListActivity;
 
 import java.util.List;
@@ -198,15 +200,30 @@ public class ShopHomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         private void bindType1(HolderType1 holder, int position) {
-
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    GoodsDetailActivity.startActivity(mContext);
+                }
+            });
         }
 
         private void bindType2(HolderType2 holder, final int position) {
-
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    GoodsDetailActivity.startActivity(mContext);
+                }
+            });
         }
 
         private void bindType3(HolderType3 holder, int position) {
-
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ArticleDetailsActivity.startActivity(mContext,0,"文章详情");
+                }
+            });
         }
 
     }

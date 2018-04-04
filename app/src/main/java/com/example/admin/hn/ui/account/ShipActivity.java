@@ -3,6 +3,7 @@ package com.example.admin.hn.ui.account;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -13,12 +14,12 @@ import com.example.admin.hn.base.BaseActivity;
 import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.ShipInfo;
 import com.example.admin.hn.ui.adapter.ShipAdapter;
-import com.example.admin.hn.ui.adapter.ShipAdapter.ViewHolder;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.widget.TitleButton;
 import com.orhanobut.logger.Logger;
 import com.squareup.okhttp.Request;
+import com.zhy.adapter.abslistview.ViewHolder;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -113,7 +114,7 @@ public class ShipActivity extends BaseActivity {
 					map.put("number", MainActivity.list.get(i).getShipnumber());
 					list.add(map);
 				}//初始化数据
-				Adapter = new ShipAdapter(ShipActivity.this, list);
+				Adapter = new ShipAdapter(ShipActivity.this, R.layout.ship_adapter, list);
 				listveiw.setAdapter(Adapter);
 				right.setVisibility(View.GONE);
 				text_tile_del.setVisibility(View.GONE);
@@ -125,12 +126,11 @@ public class ShipActivity extends BaseActivity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				ViewHolder viewCache = (ViewHolder) view.getTag();
-				viewCache.status.toggle();
-				list.get(position).put("boolean", viewCache.status.isChecked());
-
+				CheckBox checkBox = viewCache.getView(R.id.cb_status);
+				checkBox.toggle();
+				list.get(position).put("boolean", checkBox.isChecked());
 				Adapter.notifyDataSetChanged();
-
-				if (viewCache.status.isChecked()) {//被选中状态
+				if (checkBox.isChecked()) {//被选中状态
 					lists.add(list.get(position).get("name").toString());
 					listss.add(list.get(position).get("number").toString());
 				} else//从选中状态转化为未选中
@@ -222,7 +222,7 @@ public class ShipActivity extends BaseActivity {
 									map.put("number", shipInfo.getDocuments().get(i).getShipnumber());
 									list.add(map);
 								}//初始化数据
-								Adapter = new ShipAdapter(ShipActivity.this, list);
+								Adapter = new ShipAdapter(ShipActivity.this, R.layout.ship_adapter, list);
 								listveiw.setAdapter(Adapter);
 
 							}

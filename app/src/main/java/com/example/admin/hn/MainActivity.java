@@ -31,6 +31,7 @@ import com.example.admin.hn.ui.fragment.MoreFragment;
 import com.example.admin.hn.ui.fragment.OneFragment;
 import com.example.admin.hn.ui.fragment.ThreeFragment;
 import com.example.admin.hn.ui.fragment.TowFragment;
+import com.example.admin.hn.ui.fragment.TypeFragment;
 import com.example.admin.hn.utils.ExampleUtil;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.StateBarUtil;
@@ -102,8 +103,7 @@ public class MainActivity extends FragmentActivity {
     public static final int SWITCH_TO_THREE = 3;
     public static final int SWITCH_TO_FOUR = 4;
     public static final int SWITCH_TO_FIVE = 5;
-    //极光推送
-    private MessageReceiver mMessageReceiver;
+
     public static boolean isForeground = false;
     public static final String MESSAGE_RECEIVED_ACTION = "com.example.admin.hn.MESSAGE_RECEIVED_ACTION";
     public static final String KEY_TITLE = "title";
@@ -115,15 +115,14 @@ public class MainActivity extends FragmentActivity {
     public static String username;
     public static String email;
     public static String userid;
-    public static String tuisongid;
     public static List<ShipInfo.ship> list = new ArrayList<ShipInfo.ship>();
     private String url_appid = Api.BASE_URL + Api.APPID;
     public static String ship = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initStateBar();
@@ -144,13 +143,6 @@ public class MainActivity extends FragmentActivity {
         }
         resetImgs();
         setSelect(SWITCH_TO_ONE);
-        //极光推送登陆
-//        JPushInterface.init(getApplicationContext());
-//        String JPush_id = JPushInterface.getRegistrationID(this);
-//        setAlias();
-////        ToolAlert.showToast(MainActivity.this, JPush_id, false);
-//        Log.i(TAG, "推送id=" + JPush_id);
-//        tuisongid=JPush_id;
     }
 
 
@@ -214,12 +206,12 @@ public class MainActivity extends FragmentActivity {
                 break;
             case SWITCH_TO_TOW:
                 if (mTabTow == null) {
-                    mTabTow = new OneFragment();
+                    mTabTow = new TypeFragment();
                     transaction.add(R.id.frame_tobe_repalce, mTabTow);
                 } else {
                     transaction.show(mTabTow);
                 }
-                mIdTabTowImg.setImageResource(R.drawable.tab_icon_2_pressed);
+                mIdTabTowImg.setImageResource(R.drawable.tab_icon_5_pressed);
                 mTvTabTow.setTextColor(getResources().getColor(R.color.yukon_gold));
                 break;
             case SWITCH_TO_THREE:
@@ -239,7 +231,7 @@ public class MainActivity extends FragmentActivity {
                 } else {
                     transaction.show(mTabFour);
                 }
-                mIdTabFourImg.setImageResource(R.drawable.tab_icon_4_pressed);
+                mIdTabFourImg.setImageResource(R.drawable.tab_icon_2_pressed);
                 mTvTabFour.setTextColor(getResources().getColor(R.color.yukon_gold));
                 break;
             case SWITCH_TO_FIVE:
@@ -283,9 +275,9 @@ public class MainActivity extends FragmentActivity {
      */
     private void resetImgs() {
         mIdTabOneImg.setImageResource(R.drawable.tab_icon_1_normal);
-        mIdTabTowImg.setImageResource(R.drawable.tab_icon_2_normal);
+        mIdTabTowImg.setImageResource(R.drawable.tab_icon_5_normal);
         mIdTabThreeImg.setImageResource(R.drawable.tab_icon_3_normal);
-        mIdTabFourImg.setImageResource(R.drawable.tab_icon_4_normal);
+        mIdTabFourImg.setImageResource(R.drawable.tab_icon_2_normal);
         mIdTabFiveImg.setImageResource(R.drawable.tab_icon_4_normal);
 
         //设置文字颜色为暗色
@@ -361,112 +353,35 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onDestroy() {
-        //消除极光推送标记
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
         super.onDestroy();
     }
 
-    //极光推送
-    public class MessageReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            try {
-                if (MESSAGE_RECEIVED_ACTION.equals(intent.getAction())) {
-                    String messge = intent.getStringExtra(KEY_MESSAGE);
-                    String extras = intent.getStringExtra(KEY_EXTRAS);
-                    StringBuilder showMsg = new StringBuilder();
-                    showMsg.append(KEY_MESSAGE + " : " + messge + "\n");
-                    if (!ExampleUtil.isEmpty(extras)) {
-                        showMsg.append(KEY_EXTRAS + " : " + extras + "\n");
-                    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        FragmentManager fragmentManager=getSupportFragmentManager();
+        for(int index=0;index<fragmentManager.getFragments().size();index++){
+            Fragment fragment=fragmentManager.getFragments().get(index); //找到第一层Fragment
+            if(fragment!=null)
+                handleResult(fragment,requestCode,resultCode,data);
+        }
+    }
+    /**
+     * 递归调用，对所有的子Fragment生效
+     * @param fragment
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    private void handleResult(Fragment fragment,int requestCode,int resultCode,Intent data) {
+        fragment.onActivityResult(requestCode, resultCode, data);//调用每个Fragment的onActivityResult
+        List<Fragment> childFragment = fragment.getChildFragmentManager().getFragments(); //找到第二层Fragment
+        if(childFragment!=null)
+            for(Fragment f:childFragment){
+                if(f!=null) {
+                    handleResult(f, requestCode, resultCode, data);
                 }
-            } catch (Exception e) {
             }
-        }
     }
-
-
-    // 这是来自 JPush Example 的设置别名的 Activity 里的代码。一般 App 的设置的调用入口，在任何方便的地方调用都可以。
-    private void setAlias() {
-        // 调用 Handler 来异步设置别名
-        mHandler.sendMessage(mHandler.obtainMessage(MSG_SET_ALIAS, MainActivity.USER_ID));
-    }
-
-    private final TagAliasCallback mAliasCallback = new TagAliasCallback() {
-        @Override
-        public void gotResult(int code, String alias, Set<String> tags) {
-            String logs;
-            switch (code) {
-                case 0:
-                    logs = "Set tag and alias success";
-                    Log.i(TAG, logs);
-                    // 建议这里往 SharePreference 里写一个成功设置的状态。成功设置一次后，以后不必再次设置了。
-                    break;
-                case 6002:
-                    logs = "Failed to set alias and tags due to timeout. Try again after 60s.";
-                    Log.i(TAG, logs);
-                    // 延迟 60 秒来调用 Handler 设置别名
-                    mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_SET_ALIAS, MainActivity.USER_ID), 1000 * 60);
-                    break;
-                default:
-                    logs = "Failed with errorCode = " + code;
-                    Log.e(TAG, logs);
-            }
-//            ExampleUtil.showToast(logs, getApplicationContext());
-        }
-    };
-    private static final int MSG_SET_ALIAS = 1001;
-    private final Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(android.os.Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case MSG_SET_ALIAS:
-                    Log.d(TAG, "Set alias in handler.");
-                    // 调用 JPush 接口来设置别名。
-                    JPushInterface.setAliasAndTags(getApplicationContext(),
-                            (String) msg.obj,
-                            null,
-                            mAliasCallback);
-                    String JPush_id = JPushInterface.getRegistrationID(MainActivity.this);
-                    Map map = new HashMap();
-                    map.put("Appid", JPush_id);
-                    map.put("Userid", MainActivity.USER_ID);
-
-                    String jsonStr = GsonUtils.mapToJson(map);
-                    Logger.i(TAG, jsonStr);
-                    try {
-                        OkHttpUtil.postJsonData2Server(MainActivity.this,
-                                url_appid,
-                                jsonStr,
-                                new OkHttpUtil.MyCallBack() {
-                                    @Override
-                                    public void onFailure(Request request, IOException e) {
-                                        ToolAlert.showToast(MainActivity.this, "服务器异常,请稍后再试", false);
-
-                                    }
-
-                                    @Override
-                                    public void onResponse(String json) {
-                                        Logger.i(TAG, json);
-                                        ServerResponse serverResponse = GsonUtils
-                                                .jsonToBean(json,
-                                                        ServerResponse.class
-                                                );
-                                    }
-                                });
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    break;
-                default:
-                    Log.i(TAG, "Unhandled msg - " + msg.what);
-            }
-        }
-    };
-
-
 }
 
