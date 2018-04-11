@@ -1,7 +1,10 @@
 package com.example.admin.hn.utils;
 
+import com.example.admin.hn.http.Constant;
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
+
+import org.json.JSONObject;
 
 import java.net.URLEncoder;
 import java.util.Iterator;
@@ -89,6 +92,37 @@ public class GsonUtils {
         } catch (Exception localException) {
         }
         return "";
+    }
+
+    /**
+     * 判断网络请求结果
+     *
+     * @return 成功=true  失敗=false
+     */
+    public static boolean isSuccess(String json) {
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            String status = jsonObject.optString("status");
+            return "success".equals(status);
+        } catch (Exception e) {
+        }
+        return false;
+    }
+
+    /**
+     * 获取网络请求的错误信息
+     *
+     * @return
+     */
+    public static String getError(String json) {
+        String message = Constant.DATA_PARSING_EXCEPTION;
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            message = jsonObject.optString("message");
+            return message;
+        } catch (Exception e) {
+        }
+        return message;
     }
 
 

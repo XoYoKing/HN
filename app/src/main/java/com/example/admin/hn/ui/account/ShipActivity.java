@@ -11,6 +11,7 @@ import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseActivity;
+import com.example.admin.hn.base.HNApplication;
 import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.ShipInfo;
 import com.example.admin.hn.ui.adapter.ShipAdapter;
@@ -147,7 +148,7 @@ public class ShipActivity extends BaseActivity {
 				if (listStr.size() == 0) {
 					ToolAlert.showToast(ShipActivity.this, "请选择船舶后再提交", false);
 				} else {
-					ShipInfo shipInfo = new ShipInfo(MainActivity.USER_ID, listStr);
+					ShipInfo shipInfo = new ShipInfo(HNApplication.mApp.getUserId(), listStr);
 					String jsonObject = GsonUtils.beanToJson(shipInfo);
 					shipSelection(jsonObject);
 				}
@@ -179,7 +180,7 @@ public class ShipActivity extends BaseActivity {
 
 	private void data() {
 		Map map = new HashMap();
-		map.put("Userid", MainActivity.USER_ID);
+		map.put("Userid", HNApplication.mApp.getUserId());
 		String jsonStr = GsonUtils.mapToJson(map);
 		Logger.i(TAG, jsonStr);
 		try {

@@ -11,6 +11,7 @@ import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseActivity;
+import com.example.admin.hn.base.HNApplication;
 import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.ServerResponse;
 import com.example.admin.hn.utils.GsonUtils;
@@ -69,7 +70,7 @@ public class ChangeBindPhoneNumberActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
-        mTvBoundTelephone.setText(MainActivity.email);
+        mTvBoundTelephone.setText(HNApplication.mApp.getEmail());
         mTbSendValidateCode.setTextAfter("s")
                 .setTextBefore("发送验证码")
                 .setLenght(60 * 1000)
@@ -135,7 +136,7 @@ public class ChangeBindPhoneNumberActivity extends BaseActivity {
                 map.put("password", mEtPleaseInputPayPassword.getText().toString());
                 map.put("phonenumber", mTvConfirmChangeBindPhone.getText().toString());
                 map.put("email", mEtPleaseInputNewTelephone.getText().toString());
-                map.put("userid", MainActivity.USER_ID);
+                map.put("userid", HNApplication.mApp.getUserId());
                 map.put("emailcode", mEtPleaseInputValidateCode.getText().toString());
                 String jsonStr = GsonUtils.mapToJson(map);
                 Logger.i(TAG, jsonStr);

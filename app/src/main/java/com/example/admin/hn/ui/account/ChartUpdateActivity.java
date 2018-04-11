@@ -21,6 +21,7 @@ import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseActivity;
+import com.example.admin.hn.base.HNApplication;
 import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.UpdateInfo;
 import com.example.admin.hn.ui.adapter.GroupAdapter;
@@ -302,7 +303,7 @@ public class ChartUpdateActivity extends BaseActivity implements AdapterView.OnI
 		map.put("page", page);
 		map.put("time", datess+dates);
 		map.put("shipnumber", scree);
-		map.put("userid", MainActivity.USER_ID);
+		map.put("userid", HNApplication.mApp.getUserId());
 		map.put("shipname", scree);
 		map.put("status", statu);
 		String jsonStr = GsonUtils.mapToJson(map);

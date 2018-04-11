@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.base.BaseFragment;
+import com.example.admin.hn.base.HNApplication;
 import com.example.admin.hn.utils.ToolAlert;
 
 import butterknife.Bind;
@@ -68,7 +69,7 @@ public class MapFragment extends BaseFragment {
         iv_two.setVisibility(View.GONE);
         iv_one.setVisibility(View.GONE);
         iv_search.setVisibility(View.GONE);
-        url = "http://api.shipxy.com/apicall/location?k=a7222a0180264aa99245ff2b53595a31&kw=" + MainActivity.ship + "&tip=1&track=1";
+        url = "http://api.shipxy.com/apicall/location?k=a7222a0180264aa99245ff2b53595a31&kw=" + HNApplication.mApp.getShipName() + "&tip=1&track=1";
         ship();
     }
 

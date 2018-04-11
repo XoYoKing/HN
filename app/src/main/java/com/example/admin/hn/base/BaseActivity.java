@@ -13,8 +13,13 @@ import com.example.admin.hn.base.interf.Initialable;
 import com.example.admin.hn.http.Constant;
 import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.utils.StateBarUtil;
+import com.example.admin.hn.volley.IRequest;
 import com.example.admin.hn.widget.ProgersssDialog;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+import com.zhy.http.okhttp.OkHttpUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 
@@ -27,8 +32,9 @@ import butterknife.ButterKnife;
 public class BaseActivity extends FragmentActivity implements Initialable{
     protected String progressTitle = Constant.LOADING;
     protected Context context;
-    IntentFilter mFilter = new IntentFilter();
     public ProgersssDialog progersssDialog;
+    protected IRequest http;
+    protected Map params;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +42,8 @@ public class BaseActivity extends FragmentActivity implements Initialable{
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         initStateBar();
         this.context = this;
+        http = new IRequest(this);
+        params = new HashMap();
     }
 
     /**
@@ -49,49 +57,13 @@ public class BaseActivity extends FragmentActivity implements Initialable{
         StateBarUtil.initSystemBar(BaseActivity.this);
     }
 
-    /**
-     * 获取物理设备IP地址
-     *
-     * @return
-     */
-//    public String getIpAddress() {
-//        //获取wifi服务
-//        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-//        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-//        int ip = wifiInfo.getIpAddress();
-//        String ipAddress = ToolNetwork.intToIp(ip);
-//        MainActivity.ipAddress = ipAddress;
-//        return ipAddress;
-//    }
-
-//    /**
-//     * 获取手机IMEI号
-//     *
-//     * @return
-//     */
-//    public String getImei() {
-//        String imei = ((TelephonyManager) getSystemService(TELEPHONY_SERVICE)).getDeviceId();
-//        MainActivity.imei = imei;
-//        return imei;
-//
-//    }
-//
-//    private BroadcastReceiver mFinishReceiver = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//
-//            if ("finish".equals(intent.getAction())) {
-//                Log.e("#########", "I am " + getLocalClassName() + ",now finishing myself...");
-//                finish();
-//            }
-//        }
-//    };
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         //关闭请求队列
         OkHttpUtil.mOkHttpClient.cancel(this);
+        OkHttpUtils.getInstance().cancelTag(this);//关闭请求队列
         ButterKnife.unbind(this);
         //关闭网络广播监听
 //        unregisterReceiver(mFinishReceiver);
@@ -171,8 +143,4 @@ public class BaseActivity extends FragmentActivity implements Initialable{
 
     }
 
-//    @Override
-//    public void onBackPressed() {
-////        super.onBackPressed();
-//    }
 }

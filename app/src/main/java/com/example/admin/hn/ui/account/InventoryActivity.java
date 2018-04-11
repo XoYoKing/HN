@@ -10,6 +10,7 @@ import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseActivity;
+import com.example.admin.hn.base.HNApplication;
 import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.InventoryInfo;
 import com.example.admin.hn.utils.GsonUtils;
@@ -96,7 +97,7 @@ public class InventoryActivity extends BaseActivity {
         map.put("starttime", "");
         map.put("endtime", "");
         map.put("shipnumber", "");
-        map.put("userid", MainActivity.USER_ID);
+        map.put("userid", HNApplication.mApp.getUserId());
         map.put("shipname", "");
         map.put("status", "4");
         map.put("page", "1");

@@ -11,6 +11,7 @@ import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseActivity;
+import com.example.admin.hn.base.HNApplication;
 import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.ServerResponse;
 import com.example.admin.hn.ui.login.FindPasswordActivity;
@@ -68,8 +69,8 @@ public class ChangeLoginPasswordActivity extends BaseActivity {
     public void initTitleBar() {
         textTitleBack.setBackgroundResource(R.drawable.btn_back);
         textTitle.setText(R.string.title_change_password);
-        tv_account_code.setText(MainActivity.username);
-        tv_account_phone.setText(MainActivity.phonenumber);
+        tv_account_code.setText(HNApplication.mApp.getUserName());
+        tv_account_phone.setText(HNApplication.mApp.getPhone());
     }
 
     public static void startActivity(Context context){
@@ -96,7 +97,7 @@ public class ChangeLoginPasswordActivity extends BaseActivity {
                 Map map = new HashMap();
                 map.put("password", etpassword.getText().toString());
                 map.put("oldpassword", etpassword1.getText().toString());
-                map.put("userid", MainActivity.USER_ID);
+                map.put("userid", HNApplication.mApp.getUserId());
                 map.put("repeatpassword", etpassword2.getText().toString());
                 String jsonStr = GsonUtils.mapToJson(map);
                 Logger.i(TAG, jsonStr);

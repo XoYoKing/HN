@@ -2,6 +2,15 @@ package com.example.admin.hn.base;
 
 import android.app.Application;
 
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.https.HttpsUtils;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
+
 /**
  * Created by WIN10 on 2018/3/27.
  */
@@ -15,16 +24,33 @@ public class HNApplication extends Application {
         super.onCreate();
         //初始化本地数据存储
         mApp = this;
+        initOkHttp();
         this.session = new SharedPreferencesSession(this);
         this.test_session = new SharedPreferencesSession(this,"configs");
     }
 
+    private void initOkHttp() {
+//        InputStream caInput = new ByteArrayInputStream(InitSSLSocketFactory.load.getBytes());
+//        InputStream[] inputStreams = new InputStream[]{caInput};
+//        HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory(inputStreams, null, null);
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(10000L, TimeUnit.MILLISECONDS)
+                .readTimeout(10000L, TimeUnit.MILLISECONDS)
+//                .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
+                .build();
+        OkHttpUtils.initClient(okHttpClient);
+    }
+
     //退出登录
     public void logout(){
-        //只清除生产环境的数据,保留测试环境数据
+        //只清除生产环境的密碼,保留测试环境密碼
         this.session.putString("switche", "2");
         this.session.putString("password", "");
         this.session.putBoolean("isTest", false);
+
+        setEmail("");
+        setUserId("");
+        setPhone("");
     }
 
     public void setUserName(String userName) {
@@ -43,6 +69,14 @@ public class HNApplication extends Application {
         }
     }
 
+    public void setPhone(String phone) {
+        if (isTestAmbient()) {
+            this.test_session.putString("phone", phone);
+        }else {
+            this.session.putString("phone", phone);
+        }
+    }
+
     public void setSwitche(String switche) {
         if (isTestAmbient()) {
             this.test_session.putString("switche", switche);
@@ -57,6 +91,38 @@ public class HNApplication extends Application {
         }
         return this.session.getString("username","");
     }
+
+
+    public void setEmail(String email) {
+        if (isTestAmbient()) {
+            this.test_session.putString("email", email);
+        }else {
+            this.session.putString("email", email);
+        }
+    }
+
+    public String getEmail() {
+        if (isTestAmbient()) {
+            return this.test_session.getString("email","");
+        }
+        return this.session.getString("email","");
+    }
+
+    public void setUserId(String userId) {
+        if (isTestAmbient()) {
+            this.test_session.putString("userId", userId);
+        }else {
+            this.session.putString("userId", userId);
+        }
+    }
+
+    public String getUserId() {
+        if (isTestAmbient()) {
+            return this.test_session.getString("userId",null);
+        }
+        return this.session.getString("userId",null);
+    }
+
 
     public String getPassWord() {
         if (isTestAmbient()) {
@@ -73,6 +139,13 @@ public class HNApplication extends Application {
         return this.session.getString("switche","");
     }
 
+    public String getPhone() {
+        if (isTestAmbient()) {
+            return this.test_session.getString("phone","");
+        }
+        return this.session.getString("phone","");
+    }
+
     //设置用户选择的环境  true=测试环境 false=生产环境
     public void setTestAmbient(boolean isTest) {
         this.session.putBoolean("isTest", isTest);
@@ -82,5 +155,41 @@ public class HNApplication extends Application {
         return this.session.getBoolean("isTest", false);
     }
 
+    public String getShipName() {
+        if (isTestAmbient()) {
+            return this.test_session.getString("shipName","");
+        }
+        return this.session.getString("shipName","");
+    }
 
+    public void setShipName(String shipName) {
+        if (isTestAmbient()) {
+            this.test_session.putString("shipName", shipName);
+        }else {
+            this.session.putString("shipName", shipName);
+        }
+    }
+
+    /**
+     * 获取消息数量
+     * @return
+     */
+    public int getMsgNumber() {
+        if (isTestAmbient()) {
+            return this.test_session.getInt("msgNumber",0);
+        }
+        return this.session.getInt("msgNumber",0);
+    }
+
+    /**
+     * 设置消息shul
+     * @param msgNumber
+     */
+    public void setMsgNumber(int msgNumber) {
+        if (isTestAmbient()) {
+            this.test_session.putInt("msgNumber", msgNumber);
+        }else {
+            this.session.putInt("msgNumber", msgNumber);
+        }
+    }
 }

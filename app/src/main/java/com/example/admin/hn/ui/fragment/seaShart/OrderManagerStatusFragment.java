@@ -18,6 +18,7 @@ import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseFragment;
+import com.example.admin.hn.base.HNApplication;
 import com.example.admin.hn.http.Constant;
 import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.OrderInfo;
@@ -26,6 +27,7 @@ import com.example.admin.hn.ui.adapter.OrderAdapter;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolRefreshView;
+import com.example.admin.hn.volley.RequestListener;
 import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -142,64 +144,56 @@ public class OrderManagerStatusFragment extends BaseFragment implements OnRefres
         }
     }
 
-
     public void data(final int status, String down, final int Loadmore) {
-        Map map = new HashMap();
-        map.put("ordernumber", down);
-        map.put("starttime", startDate);
-        map.put("endtime", endDate);
-        map.put("shipnumber", down);
-        map.put("userid", MainActivity.USER_ID);
-        map.put("shipname", down);
-        map.put("status", status);
+        params.put("ordernumber", down);
+        params.put("starttime", startDate);
+        params.put("endtime", endDate);
+        params.put("shipnumber", down);
+        params.put("userid", HNApplication.mApp.getUserId());
+        params.put("shipname", down);
+        params.put("status", status);
         if (Loadmore == 0) {
-            map.put("page", "1");
+            params.put("page", "1");
         } else {
-            map.put("page", page);
+            params.put("page", page);
         }
-        map.put("screen", screen);
-        String jsonStr = GsonUtils.mapToJson(map);
-        Logger.i("jsonStr", jsonStr);
-        try {
-            OkHttpUtil.postJsonData2Server(getActivity(), url_order, jsonStr, progressTitle,new OkHttpUtil.MyCallBack() {
-                @Override
-                public void onFailure(Request request, IOException e) {
-                    ToolAlert.showToast(getActivity(), "服务器异常,请稍后再试", false);
-                    ToolRefreshView.hintView(adapter, true, network, noData_img, network_img);
-                }
-                @Override
-                public void onResponse(String json) {
-                    Logger.i("json", json);
+        params.put("screen", screen);
+        http.postJson(url_order, params, progressTitle, new RequestListener() {
+            @Override
+            public void requestSuccess(String json) {
+                Logger.i("json", json);
+                progressTitle = null;
+                if (GsonUtils.isSuccess(json)) {
                     OrderInfo orderInfo = GsonUtils.jsonToBean(json, OrderInfo.class
                     );
-                    if (orderInfo.getStatus().equals("error")) {
-//                        ToolAlert.showToast(getActivity(), orderInfo.getMessage(), false);
-                        if (page == 1) {
-                            list.clear();
-                            adapter.notifyDataSetChanged();
-                        } else {
-                            ToolAlert.showToast(getActivity(), "已全部加载完成", false);
-                        }
-                    } else {
-                        if (Loadmore == 0) {
-                            list.clear();
-                        }
-                        if (orderInfo.getDocuments().size() == 0) {
-                            list.clear();
-                        } else {
-                            for (int i = 0; i < orderInfo.getDocuments().size(); i++) {
-                                list.add(new OrderInfo.Order(orderInfo.getDocuments().get(i).getOrdernumber(), orderInfo.getDocuments().get(i).getOrdertime(), orderInfo.getDocuments().get(i).getStatus(), orderInfo.getDocuments().get(i).getShipname()));
-                            }
-                            MainActivity.ship = list.get(0).getShipname();
-                        }
-                        adapter.notifyDataSetChanged();
+                    if (Loadmore == 0) {
+                        list.clear();
                     }
-                    ToolRefreshView.hintView(adapter, false, network, noData_img, network_img);
+                    if (orderInfo.getDocuments().size() == 0) {
+                        list.clear();
+                    } else {
+                        for (int i = 0; i < orderInfo.getDocuments().size(); i++) {
+                            list.add(new OrderInfo.Order(orderInfo.getDocuments().get(i).getOrdernumber(), orderInfo.getDocuments().get(i).getOrdertime(), orderInfo.getDocuments().get(i).getStatus(), orderInfo.getDocuments().get(i).getShipname()));
+                        }
+                        HNApplication.mApp.setShipName(list.get(0).getShipname());
+                    }
+                    adapter.notifyDataSetChanged();
+                }else {
+                    if (page == 1) {
+                        list.clear();
+                    } else {
+                        ToolAlert.showToast(getActivity(), "已全部加载完成", false);
+                    }
                 }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                ToolRefreshView.hintView(adapter, false, network, noData_img, network_img);
+            }
+
+            @Override
+            public void requestError(String message) {
+                ToolAlert.showToast(activity, message, false);
+                ToolRefreshView.hintView(adapter, true, network, noData_img, network_img);
+            }
+        });
     }
 
     @Override
@@ -210,6 +204,7 @@ public class OrderManagerStatusFragment extends BaseFragment implements OnRefres
             startDate = data.getStringExtra("start");
             endDate = data.getStringExtra("end");
             Logger.i("request", name +"--"+startDate+"--" + endDate);
+            progressTitle = "正在加载...";
             if (name != null) {
                 str = name;
                 data(2, str, 0);

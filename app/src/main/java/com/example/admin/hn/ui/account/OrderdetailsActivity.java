@@ -10,6 +10,7 @@ import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseActivity;
+import com.example.admin.hn.base.HNApplication;
 import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.OrderdeatilsInfo;
 import com.example.admin.hn.ui.adapter.OneExpandAdapter;
@@ -110,7 +111,7 @@ public class OrderdetailsActivity extends BaseActivity {
         ordernumber = intent.getStringExtra("ordernumber");
         Map map = new HashMap();
         map.put("ordernumber", ordernumber);
-        map.put("Userid", MainActivity.USER_ID);
+        map.put("Userid", HNApplication.mApp.getUserId());
         String jsonStr = GsonUtils.mapToJson(map);
         Logger.i(TAG, jsonStr);
         try {

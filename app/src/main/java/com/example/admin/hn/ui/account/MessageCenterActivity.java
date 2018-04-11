@@ -19,6 +19,7 @@ import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseActivity;
+import com.example.admin.hn.base.HNApplication;
 import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.EightEntity;
 import com.example.admin.hn.model.MessageInfo;
@@ -114,7 +115,7 @@ public class MessageCenterActivity extends BaseActivity implements AdapterView.O
         super.initView();
         //消除角标
         ShortcutBadger.removeCount(this);
-        MainActivity.number = 0;
+        HNApplication.mApp.setMsgNumber(0);
         //下拉刷新
         final RefreshLayout refreshLayout = (RefreshLayout) findViewById(R.id.refreshLayout);
         refreshLayout.setDisableContentWhenLoading(true);
@@ -339,7 +340,7 @@ public class MessageCenterActivity extends BaseActivity implements AdapterView.O
                 listdel.add(new Messagedel.Message(entity.getMessageid()));
             }
         }
-        Messagedel messagedel = new Messagedel(listdel, MainActivity.USER_ID);
+        Messagedel messagedel = new Messagedel(listdel, HNApplication.mApp.getUserId());
         String jsonObject = GsonUtils.beanToJson(messagedel);
         delData(jsonObject);
         list.removeAll(deleteList);
@@ -386,7 +387,7 @@ public class MessageCenterActivity extends BaseActivity implements AdapterView.O
 
     public void data(final int Loadmore) {
         Map map = new HashMap();
-        map.put("userid", MainActivity.USER_ID);
+        map.put("userid", HNApplication.mApp.getUserId());
         map.put("screen", status);
         if (Loadmore==0){
             map.put("page", "1");

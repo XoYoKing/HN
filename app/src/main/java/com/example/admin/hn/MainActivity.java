@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.admin.hn.api.Api;
+import com.example.admin.hn.base.HNApplication;
 import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.ServerResponse;
 import com.example.admin.hn.model.ShipInfo;
@@ -117,15 +118,7 @@ public class MainActivity extends FragmentActivity {
     public static final String KEY_TITLE = "title";
     public static final String KEY_MESSAGE = "message";
     public static final String KEY_EXTRAS = "extras";
-    public static int number;
-    public static String USER_ID;
-    public static String phonenumber;
-    public static String username;
-    public static String email;
-    public static String userid;
     public static List<ShipInfo.ship> list = new ArrayList<>();
-    private String url_appid = Api.BASE_URL + Api.APPID;
-    public static String ship = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,21 +132,14 @@ public class MainActivity extends FragmentActivity {
 
     private void init() {
         Intent intent = getIntent();
-        phonenumber = intent.getStringExtra("phonenumber");
-        username = intent.getStringExtra("username");
-        email = intent.getStringExtra("email");
-        USER_ID = intent.getStringExtra("userid");
         list = (ArrayList<ShipInfo.ship>) intent.getSerializableExtra("list");
         if (list.size() == 0) {
-//            Intent intent1 = new Intent(MainActivity.this, ShipActivity.class);
-//            startActivity(intent1);
             ToolAlert.showToast(MainActivity.this, "请选择船舶", false);
             ShipSelectActivity.startActivity(this);
         }
         resetImgs();
         setSelect(SWITCH_TO_ONE);
     }
-
 
     private void initStateBar() {
         SystemBarTintManager tintManager = new SystemBarTintManager(MainActivity.this);
@@ -362,7 +348,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onResume() {
         isForeground = true;
-        if (number == 0) {
+        if (HNApplication.mApp.getMsgNumber() == 0) {
             prompt.setVisibility(View.GONE);
         } else {
             prompt.setVisibility(View.VISIBLE);

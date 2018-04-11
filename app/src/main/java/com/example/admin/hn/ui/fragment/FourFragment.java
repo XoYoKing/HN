@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.base.BaseFragment;
+import com.example.admin.hn.base.HNApplication;
 import com.example.admin.hn.http.Constant;
 import com.example.admin.hn.ui.account.MessageCenterActivity;
 import com.example.admin.hn.ui.account.PopActivity;
@@ -112,7 +113,7 @@ public class FourFragment extends BaseFragment {
 	public void onHiddenChanged(boolean hidden) {
 		super.onHiddenChanged(hidden);
 		if (!hidden) {
-			if (MainActivity.number == 0) {
+			if (HNApplication.mApp.getMsgNumber() == 0) {
 				iv_two.setVisibility(View.GONE);
 			} else {
 				iv_two.setVisibility(View.VISIBLE);

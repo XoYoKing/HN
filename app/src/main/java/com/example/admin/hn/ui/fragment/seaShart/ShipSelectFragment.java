@@ -19,6 +19,7 @@ import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseFragment;
+import com.example.admin.hn.base.HNApplication;
 import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.OrderInfo;
 import com.example.admin.hn.model.ShipInfo;
@@ -29,6 +30,7 @@ import com.example.admin.hn.ui.adapter.ShipApplyingAdapter;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolRefreshView;
+import com.example.admin.hn.volley.RequestListener;
 import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -72,10 +74,6 @@ public class ShipSelectFragment extends BaseFragment implements OnRefreshListene
     private List<String> listss = new ArrayList<>();
     private ShipAdapter adapter;
     private View view;
-    //是否审核1已审核2未审核
-    private String statu = "1";
-    //搜索条件1(查询该用户全部订单) 2(根据船舶名称)3(船舶编号)4(订单号)
-    private int status = 1;
     private int page = 1;
     private String url_ship = Api.BASE_URL + Api.SHIPINQUIRY;
     private String url_shipselection = Api.BASE_URL + Api.SHIPSELECTION;
@@ -171,78 +169,55 @@ public class ShipSelectFragment extends BaseFragment implements OnRefreshListene
     }
 
     private void data() {
-        Map map = new HashMap();
-        map.put("Userid", MainActivity.USER_ID);
-        String jsonStr = GsonUtils.mapToJson(map);
-        Logger.i(TAG, jsonStr);
-        try {
-            OkHttpUtil.postJsonData2Server(activity,
-                    url_ship,
-                    jsonStr,
-                    progressTitle,
-                    new OkHttpUtil.MyCallBack() {
-                        @Override
-                        public void onFailure(Request request, IOException e) {
-                            ToolAlert.showToast(activity, "服务器异常,请稍后再试", false);
-                        }
-
-                        @Override
-                        public void onResponse(String json) {
-                            Logger.i(TAG, json);
-                            ShipInfo shipInfo = GsonUtils.jsonToBean(
-                                    json, ShipInfo.class
-                            );
-                            if (shipInfo.getStatus().equals("error")) {
-                                ToolAlert.showToast(activity, shipInfo.getMessage(), false);
-                            } else {
-                                for (int i = 0; i < shipInfo.getDocuments().size(); i++) {
-                                    HashMap<String, Object> map = new HashMap<String, Object>();
-                                    map.put("name", shipInfo.getDocuments().get(i).getShipname());
-                                    map.put("boolean", false);//初始化为未选
-                                    map.put("number", shipInfo.getDocuments().get(i).getShipnumber());
-                                    list.add(map);
-                                }//初始化数据
-                                adapter.notifyDataSetChanged();
-                            }
-                        }
+        http.postJson(url_ship, params, progressTitle, new RequestListener() {
+            @Override
+            public void requestSuccess(String json) {
+                Logger.i(TAG, json);
+                if (GsonUtils.isSuccess(json)) {
+                    ShipInfo shipInfo = GsonUtils.jsonToBean(
+                            json, ShipInfo.class
+                    );
+                    for (int i = 0; i < shipInfo.getDocuments().size(); i++) {
+                        HashMap<String, Object> map = new HashMap<String, Object>();
+                        map.put("name", shipInfo.getDocuments().get(i).getShipname());
+                        map.put("boolean", false);//初始化为未选
+                        map.put("number", shipInfo.getDocuments().get(i).getShipnumber());
+                        list.add(map);
                     }
-
-            );
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                }else {
+                    ToolAlert.showToast(activity, GsonUtils.getError(json), false);
+                }
+                ToolRefreshView.hintView(adapter, false, network, noData_img, network_img);
+            }
+            @Override
+            public void requestError(String message) {
+                ToolAlert.showToast(activity,message, false);
+                ToolRefreshView.hintView(adapter, true, network, noData_img, network_img);
+            }
+        });
 
     }
 
-    private void shipSelection(String str) {
-        Logger.i(TAG, str);
-        try {
-            OkHttpUtil.postJsonData2Server(activity, url_shipselection, str, "正在提交...",
-                    new OkHttpUtil.MyCallBack() {
-                        @Override
-                        public void onFailure(Request request, IOException e) {
-                            ToolAlert.showToast(activity, "服务器异常,请稍后再试", false);
-                        }
+    private void shipSelection(ShipInfo shipInfo) {
+        http.postJson(url_shipselection, shipInfo, progressTitle, new RequestListener() {
+            @Override
+            public void requestSuccess(String json) {
+                Logger.i(TAG, json);
+                if (GsonUtils.isSuccess(json)) {
+                    ToolAlert.showToast(activity, "提交成功", false);
+                    MainActivity.list = new ArrayList<>(listStr);
+                    activity.finish();
+                }else {
+                    ToolAlert.showToast(activity,GsonUtils.getError(json), false);
+                }
+            }
 
-                        @Override
-                        public void onResponse(String json) {
-                            Logger.i(TAG, json);
-                            ShipInfo shipInfo = GsonUtils.jsonToBean(
-                                    json, ShipInfo.class
-                            );
-                            if (shipInfo.getStatus().equals("error")) {
-                                ToolAlert.showToast(activity, shipInfo.getMessage(), false);
-                            } else {
-                                ToolAlert.showToast(activity, "提交成功", false);
-                                MainActivity.list = new ArrayList<>(listStr);
-                                activity.finish();
-                            }
-                        }
-                    }
-            );
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            @Override
+            public void requestError(String message) {
+                ToolAlert.showToast(activity, message, false);
+            }
+        });
+
     }
 
     @Override
@@ -308,9 +283,8 @@ public class ShipSelectFragment extends BaseFragment implements OnRefreshListene
         if (listStr.size() == 0) {
             ToolAlert.showToast(activity, "请选择船舶后再提交", false);
         } else {
-            ShipInfo shipInfo = new ShipInfo(MainActivity.USER_ID, listStr);
-            String jsonObject = GsonUtils.beanToJson(shipInfo);
-            shipSelection(jsonObject);
+            ShipInfo shipInfo = new ShipInfo(HNApplication.mApp.getUserId(), listStr);
+            shipSelection(shipInfo);
         }
     }
 

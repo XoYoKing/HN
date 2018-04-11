@@ -54,7 +54,10 @@ public class Constant {
      */
     public static final String UNTREATED_EXCEPTION = "未处理的异常";
 
-
+    /**
+     * 数据解析异常.
+     */
+    public static final String DATA_PARSING_EXCEPTION = "数据解析异常";
     /**
      * 已加载全部
      */

@@ -12,6 +12,7 @@ import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseActivity;
+import com.example.admin.hn.base.HNApplication;
 import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.ChartInfo;
 import com.example.admin.hn.ui.adapter.ChartAdapter;
@@ -212,7 +213,7 @@ public class ChartActivity extends BaseActivity {
         Map map = new HashMap();
 //        map.put("ordernumber", etSearch.getText().toString());
 //        map.put("ordername", etSearch.getText().toString());
-        map.put("userid", MainActivity.USER_ID);
+        map.put("userid", HNApplication.mApp.getUserId());
         map.put("status", string);
         map.put("page", page);
         String jsonStr = GsonUtils.mapToJson(map);

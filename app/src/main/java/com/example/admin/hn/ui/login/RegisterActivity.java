@@ -261,8 +261,7 @@ public class RegisterActivity extends BaseActivity {
 						@Override
 						public void onResponse(String json) {
 							Logger.i(TAG, json);
-							CompanyInfo companyInfo = GsonUtils.jsonToBean(
-									json, CompanyInfo.class
+							CompanyInfo companyInfo = GsonUtils.jsonToBean(json, CompanyInfo.class
 							);
 							for (int i=0;i<companyInfo.getDocuments().size();i++){
 								data_list.add(companyInfo.getDocuments().get(i).getCompanyname());

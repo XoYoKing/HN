@@ -15,7 +15,10 @@ import com.example.admin.hn.R;
 import com.example.admin.hn.base.interf.Initialable;
 import com.example.admin.hn.http.Constant;
 import com.example.admin.hn.utils.StateBarUtil;
+import com.example.admin.hn.volley.IRequest;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+
+import java.util.HashMap;
 
 import butterknife.ButterKnife;
 
@@ -26,11 +29,24 @@ import butterknife.ButterKnife;
 */
 public class BaseFragment extends Fragment implements Initialable {
 
-
     protected FragmentActivity activity;
-
     protected String progressTitle = Constant.LOADING;
     protected boolean isFirstHttp = true;//第一次请求
+    protected IRequest http;
+    protected HashMap params;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getActivity().setRequestedOrientation(
+                ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        );
+        activity = getActivity();
+        http = new IRequest(activity);
+        params = new HashMap();
+        initStateBar();
+    }
+
     /**
      * 设置ListView的高度
      */
@@ -60,16 +76,6 @@ public class BaseFragment extends Fragment implements Initialable {
     public void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getActivity().setRequestedOrientation(
-                ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        );
-        activity = getActivity();
-        initStateBar();
     }
 
     private void initStateBar() {

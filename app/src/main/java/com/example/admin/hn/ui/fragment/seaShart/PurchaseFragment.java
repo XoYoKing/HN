@@ -19,6 +19,7 @@ import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseFragment;
+import com.example.admin.hn.base.HNApplication;
 import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.OrderInfo;
 import com.example.admin.hn.ui.account.PurchaseDetailActivity;
@@ -261,7 +262,7 @@ public class PurchaseFragment extends BaseFragment {
         Map map = new HashMap();
         map.put("ordernumber", down);
         map.put("shipnumber", down);
-        map.put("userid", MainActivity.USER_ID);
+        map.put("userid", HNApplication.mApp.getUserId());
         map.put("shipname", down);
         map.put("status", status);
         if (Loadmore == 0) {
@@ -310,7 +311,7 @@ public class PurchaseFragment extends BaseFragment {
                                     for (int i = 0; i < orderInfo.getDocuments().size(); i++) {
                                         list.add(new OrderInfo.Order(orderInfo.getDocuments().get(i).getOrdernumber(), orderInfo.getDocuments().get(i).getOrdertime(), orderInfo.getDocuments().get(i).getStatus(), orderInfo.getDocuments().get(i).getShipname()));
                                     }
-                                    MainActivity.ship = list.get(0).getShipname();
+                                    HNApplication.mApp.setShipName(list.get(0).getShipname());
                                 }
                                 adapter.notifyDataSetChanged();
                             }

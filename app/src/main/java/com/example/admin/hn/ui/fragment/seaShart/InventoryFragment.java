@@ -19,6 +19,7 @@ import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseFragment;
+import com.example.admin.hn.base.HNApplication;
 import com.example.admin.hn.http.Constant;
 import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.InventoryInfo;
@@ -160,7 +161,7 @@ public class InventoryFragment extends BaseFragment implements OnRefreshListener
     public void data(String status, String content, final int Loadmore) {
         //status 1(查询该用户海图) 2(船舶名称) 3(海图名称)
         Map map = new HashMap();
-        map.put("userid", MainActivity.USER_ID);
+        map.put("userid", HNApplication.mApp.getUserId());
         map.put("status", status);
         if (Loadmore == 0) {
             map.put("page", "1");

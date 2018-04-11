@@ -33,6 +33,7 @@ import com.example.admin.hn.ui.account.AboutActivity;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolString;
+import com.example.admin.hn.volley.RequestListener;
 import com.example.admin.hn.widget.LoadingFragment;
 import com.example.admin.hn.widget.ProgersssDialog;
 import com.orhanobut.logger.Logger;
@@ -77,7 +78,6 @@ public class LoginActivity extends BaseActivity {
     Spinner environment;
 
     boolean eyeOpen = false;
-    private String url_login = Api.BASE_URL + Api.LOGIN;
     private List<String> data_list;
     private ArrayAdapter<String> arr_adapter;
 //    private int status = 1;
@@ -113,7 +113,7 @@ public class LoginActivity extends BaseActivity {
                 mCbAgreeProtocol.setChecked(true);
                 etPassword.setText(password);
                 etName.setText(username);
-                login(username, password, "1");
+                login(username, password);
             } else if (switches.equals("2")) {
                 etName.setText(username);
             }
@@ -122,7 +122,7 @@ public class LoginActivity extends BaseActivity {
                 mCbAgreeProtocol.setChecked(true);
                 etPassword.setText(password);
                 etName.setText(username);
-                login(username, password, "1");
+                login(username, password);
             } else if (switches.equals("2")) {
                 etName.setText(username);
             }
@@ -157,7 +157,7 @@ public class LoginActivity extends BaseActivity {
                         mCbAgreeProtocol.setChecked(true);
                         etPassword.setText(password);
                         etName.setText(username);
-                        login(username, password, "1");
+                        login(username, password);
                     } else if (switches.equals("2")) {
                         etName.setText(username);
                     }
@@ -166,7 +166,7 @@ public class LoginActivity extends BaseActivity {
                         mCbAgreeProtocol.setChecked(true);
                         etPassword.setText(password);
                         etName.setText(username);
-                        login(username, password, "1");
+                        login(username, password);
                     } else if (switches.equals("2")) {
                         etName.setText(username);
                     }
@@ -183,8 +183,6 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void initTitleBar() {
         textTitle.setText(R.string.btn_login);
-//        textTitleBack.setBackgroundResource(R.drawable.btn_back);
-//        tv.setBackgroundResource(R.drawable.btn_environment);
         mTextright.setText(R.string.title_register);
         iv_password.setOnClickListener(new View.OnClickListener() {
 
@@ -233,7 +231,7 @@ public class LoginActivity extends BaseActivity {
                     ToolAlert.showToast(LoginActivity.this, "请输入密码", true);
                     return;
                 }
-                login(etName.getText().toString(), etPassword.getText().toString(), "2");
+                login(etName.getText().toString(), etPassword.getText().toString());
                 break;
         }
     }
@@ -248,66 +246,52 @@ public class LoginActivity extends BaseActivity {
             return super.onKeyDown(keyCode, event);
     }
 
-    public void login(String username, String password, final String str) {
-        Map map = new HashMap();
-        map.put("username", username);
-        map.put("phonenumber", password);
-        String jsonStr = GsonUtils.mapToJson(map);
-        Logger.i(TAG, jsonStr);
-        try {
-            OkHttpUtil.postJsonData2Server(LoginActivity.this,
-                    Api.BASE_URL + Api.LOGIN,
-                    jsonStr,
-                    "正在登录",
-                    new OkHttpUtil.MyCallBack() {
-                        @Override
-                        public void onFailure(Request request, IOException e) {
-                            ToolAlert.showToast(LoginActivity.this, "服务器异常,请稍后再试", false);
-                        }
+    public void login(String username, String password) {
+        params.put("username", username);
+        params.put("phonenumber", password);
+        http.postJson(Api.BASE_URL + Api.LOGIN, params,"正在登录...", new RequestListener() {
+            @Override
+            public void requestSuccess(String json) {
+                Logger.i(TAG, json);
+                if (GsonUtils.isSuccess(json)) {
+                    ServerResponse serverResponse = GsonUtils.jsonToBean(json, ServerResponse.class);
+                    ShipInfo shipInfo = GsonUtils.jsonToBean(json, ShipInfo.class);
+                    //保存登录信息
+                    saveLoginInfo(serverResponse,mCbAgreeProtocol.isChecked());
+                    ArrayList<ShipInfo.ship> list = new ArrayList<>();
+                    for (int i = 0; i < shipInfo.getDocuments().size(); i++) {
+                        list.add(new ShipInfo.ship(shipInfo.getDocuments().get(i).getShipnumber(), shipInfo.getDocuments().get(i).getShipname()));
+                    }
+                    Intent intent_homepage = new Intent(LoginActivity.this, MainActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("list", list);
+                    intent_homepage.putExtras(bundle);
+                    startActivity(intent_homepage);
+                    finish();
+                }else {
+                    ToolAlert.showToast(LoginActivity.this, GsonUtils.getError(json), false);
+                }
+            }
 
-                        @Override
-                        public void onResponse(String json) {
-                            Logger.i(TAG, json);
-                            ServerResponse serverResponse = GsonUtils.jsonToBean(json, ServerResponse.class);
-                            ShipInfo shipInfo = GsonUtils.jsonToBean(json, ShipInfo.class);
-                            if (serverResponse.getStatus().equals("success")) {
-                                if (str.equals("2")) {
-                                    if (mCbAgreeProtocol.isChecked()) {
-                                        saveLoginInfo(etName.getText().toString(), etPassword.getText().toString(), "1");
-                                    } else {
-                                        saveLoginInfo(etName.getText().toString(), etPassword.getText().toString(), "2");
-                                    }
-                                }
-                                ArrayList<ShipInfo.ship> list = new ArrayList<ShipInfo.ship>();
-                                for (int i = 0; i < shipInfo.getDocuments().size(); i++) {
-                                    list.add(new ShipInfo.ship(shipInfo.getDocuments().get(i).getShipnumber(), shipInfo.getDocuments().get(i).getShipname()));
-                                }
-                                Intent intent_homepage = new Intent(LoginActivity.this, MainActivity.class);
-                                intent_homepage.putExtra("phonenumber", serverResponse.getPhonenumber());
-                                intent_homepage.putExtra("username", serverResponse.getUsername());
-                                intent_homepage.putExtra("email", serverResponse.getEmail());
-                                intent_homepage.putExtra("userid", serverResponse.getUserid());
-                                Bundle bundle = new Bundle();
-                                bundle.putSerializable("list", list);
-                                intent_homepage.putExtras(bundle);
-                                startActivity(intent_homepage);
-                                finish();
-                            } else {
-                                ToolAlert.showToast(LoginActivity.this, serverResponse.getMessage(), false);
-                            }
+            @Override
+            public void requestError(String message) {
+                ToolAlert.showToast(LoginActivity.this, message, false);
+            }
+        });
 
-                        }
-                    });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
-
-    public static void saveLoginInfo(String username, String password, String switches) {
-        HNApplication.mApp.setUserName(username);
-        HNApplication.mApp.setSwitche(switches);
-        HNApplication.mApp.setPassWord(password);
+    public void saveLoginInfo(ServerResponse serverResponse,boolean isCheck) {
+        if (isCheck) {
+            HNApplication.mApp.setSwitche("1");//记住密码
+        }else {
+            HNApplication.mApp.setSwitche("2");//不记住密码
+        }
+        HNApplication.mApp.setPassWord(etPassword.getText().toString());
+        HNApplication.mApp.setUserName(serverResponse.getUsername());
+        HNApplication.mApp.setPhone(serverResponse.getPhonenumber());
+        HNApplication.mApp.setUserId(serverResponse.getUserid());
+        HNApplication.mApp.setEmail(serverResponse.getEmail());
     }
 
     @Override
