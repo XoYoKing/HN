@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+    android:padding="@dimen/common_15dp">
+
+    <LinearLayout
+        android:id="@+id/linear1"
+        android:layout_width="match_parent"
+        android:layout_toLeftOf="@+id/image_right"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="船舶名称："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/common_15sp" />
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="S45027201803231001"
+                    android:textSize="@dimen/common_15sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/common_15sp"
+                android:textColor="@color/colorPrimary"
+                android:text="订单状态" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="申请编号："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/common_15sp" />
+
+                <TextView
+                    android:id="@+id/tv_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DIS180403001-3"
+                    android:textSize="@dimen/common_15sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="数量："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/common_15sp" />
+
+                <TextView
+                    android:id="@+id/tv_number1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="6"
+                    android:textSize="@dimen/common_15sp" />
+
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/linear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="申请日期："
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/common_15sp" />
+
+                <TextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2018-03-23"
+                    android:textSize="@dimen/common_15sp" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/bt_submit"
+                android:layout_alignParentRight="true"
+                android:layout_width="@dimen/common_80dp"
+                android:layout_below="@+id/linear"
+                android:layout_height="@dimen/common_30dp"
+                android:textSize="@dimen/common_15sp"
+                android:background="@drawable/shape_rect_blue_radius"
+                android:textColor="@color/white"
+                android:text="通过"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/image_right"
+        android:layout_marginLeft="@dimen/common_10dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/right"/>
+
+</RelativeLayout>

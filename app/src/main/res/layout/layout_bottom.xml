@@ -116,6 +116,29 @@
             android:text="@string/tab4_text"
             android:textColor="#929292" />
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/id_tab_four2"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/id_tab_four_img2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:clickable="false"
+            android:src="@drawable/tab_icon_3_normal" />
+
+        <TextView
+            android:id="@+id/tv_tab_four2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab4_text2"
+            android:textColor="#929292" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/id_tab_five"

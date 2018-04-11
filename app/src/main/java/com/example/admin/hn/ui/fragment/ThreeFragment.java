@@ -78,16 +78,16 @@ public class ThreeFragment extends BaseFragment {
 
 	private void addChildFragment() {
 		AllChildTabAdapter adapter = new AllChildTabAdapter(getChildFragmentManager(), activity, viewPager);
-		adapter.addTab("电子海图资料", ReadChartFragment.class);
-		adapter.addTab("图纸管理", ReadDrawFragment.class);
-		adapter.addTab("航海知识库", ReadMagazineFragment.class);
+		adapter.addTab("航海通告", ReadChartFragment.class);
+		adapter.addTab("杂志", ReadDrawFragment.class);
+		adapter.addTab("出版物", ReadMagazineFragment.class);
 		viewPager.setOffscreenPageLimit(2);
 		tabLayout.setupWithViewPager(viewPager);
 	}
 
 	@Override
 	public void initTitleBar() {
-		textTitle.setText("文库");
+		textTitle.setText("航海知识库");
 		text_tile_del.setVisibility(View.VISIBLE);
 		text_tile_del.setText("搜索");
 

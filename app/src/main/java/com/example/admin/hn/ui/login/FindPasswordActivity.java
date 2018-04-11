@@ -1,5 +1,8 @@
 package com.example.admin.hn.ui.login;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -71,6 +74,10 @@ public class FindPasswordActivity extends BaseActivity {
         mTextTitleBack.setBackgroundResource(R.drawable.btn_back);
     }
 
+    public static void startActivity(Context context){
+        Intent intent = new Intent(context, FindPasswordActivity.class);
+        context.startActivity(intent);
+    }
 
     @OnClick({R.id.text_title_back, R.id.tv_confirm_change_pay_password, R.id.tb_send_validate_code})
     public void onClick(View v) {

@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import com.example.admin.hn.R;
 import com.example.admin.hn.base.interf.Initialable;
+import com.example.admin.hn.http.Constant;
 import com.example.admin.hn.utils.StateBarUtil;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
@@ -28,6 +29,8 @@ public class BaseFragment extends Fragment implements Initialable {
 
     protected FragmentActivity activity;
 
+    protected String progressTitle = Constant.LOADING;
+    protected boolean isFirstHttp = true;//第一次请求
     /**
      * 设置ListView的高度
      */

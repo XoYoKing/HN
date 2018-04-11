@@ -25,7 +25,9 @@ import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.ServerResponse;
 import com.example.admin.hn.model.ShipInfo;
 import com.example.admin.hn.ui.account.ShipActivity;
+import com.example.admin.hn.ui.account.ShipSelectActivity;
 import com.example.admin.hn.ui.fragment.FourFragment;
+import com.example.admin.hn.ui.fragment.FourFragment2;
 import com.example.admin.hn.ui.fragment.MapFragment;
 import com.example.admin.hn.ui.fragment.MoreFragment;
 import com.example.admin.hn.ui.fragment.OneFragment;
@@ -74,6 +76,8 @@ public class MainActivity extends FragmentActivity {
     ImageButton mIdTabThreeImg;
     @Bind(R.id.id_tab_four_img)
     ImageButton mIdTabFourImg;
+    @Bind(R.id.id_tab_four_img2)
+    ImageButton mIdTabFourImg2;
     @Bind(R.id.id_tab_five_img)
     ImageButton mIdTabFiveImg;
 
@@ -86,6 +90,8 @@ public class MainActivity extends FragmentActivity {
     TextView mTvTabThree;
     @Bind(R.id.tv_tab_four)
     TextView mTvTabFour;
+    @Bind(R.id.tv_tab_four2)
+    TextView mTvTabFour2;
     @Bind(R.id.tv_tab_five)
     TextView mTvTabFive;
     @Bind(R.id.tv_prompt)
@@ -96,12 +102,14 @@ public class MainActivity extends FragmentActivity {
     private Fragment mTabTow;
     private Fragment mTabThree;
     private Fragment mTabFour;
+    private Fragment mTabFour2;
     private Fragment mTabFive;
     //
     public static final int SWITCH_TO_ONE = 1;
     public static final int SWITCH_TO_TOW = 2;
     public static final int SWITCH_TO_THREE = 3;
     public static final int SWITCH_TO_FOUR = 4;
+    public static final int SWITCH_TO_FOUR2 = 42;
     public static final int SWITCH_TO_FIVE = 5;
 
     public static boolean isForeground = false;
@@ -115,7 +123,7 @@ public class MainActivity extends FragmentActivity {
     public static String username;
     public static String email;
     public static String userid;
-    public static List<ShipInfo.ship> list = new ArrayList<ShipInfo.ship>();
+    public static List<ShipInfo.ship> list = new ArrayList<>();
     private String url_appid = Api.BASE_URL + Api.APPID;
     public static String ship = "";
 
@@ -135,11 +143,12 @@ public class MainActivity extends FragmentActivity {
         username = intent.getStringExtra("username");
         email = intent.getStringExtra("email");
         USER_ID = intent.getStringExtra("userid");
-        list = (ArrayList<ShipInfo.ship>) getIntent().getSerializableExtra("list");
+        list = (ArrayList<ShipInfo.ship>) intent.getSerializableExtra("list");
         if (list.size() == 0) {
-            Intent intent1 = new Intent(MainActivity.this, ShipActivity.class);
+//            Intent intent1 = new Intent(MainActivity.this, ShipActivity.class);
+//            startActivity(intent1);
             ToolAlert.showToast(MainActivity.this, "请选择船舶", false);
-            startActivity(intent1);
+            ShipSelectActivity.startActivity(this);
         }
         resetImgs();
         setSelect(SWITCH_TO_ONE);
@@ -162,7 +171,7 @@ public class MainActivity extends FragmentActivity {
     }
 
 
-    @OnClick({R.id.id_tab_one,R.id.id_tab_tow, R.id.id_tab_three, R.id.id_tab_four, R.id.id_tab_five})
+    @OnClick({R.id.id_tab_one,R.id.id_tab_tow, R.id.id_tab_three, R.id.id_tab_four, R.id.id_tab_four2, R.id.id_tab_five})
     public void onClick(View v) {
         resetImgs();
         switch (v.getId()) {
@@ -177,6 +186,9 @@ public class MainActivity extends FragmentActivity {
                 break;
             case R.id.id_tab_four:
                 setSelect(SWITCH_TO_FOUR);
+                break;
+            case R.id.id_tab_four2:
+                setSelect(SWITCH_TO_FOUR2);
                 break;
             case R.id.id_tab_five:
                 setSelect(SWITCH_TO_FIVE);
@@ -234,6 +246,16 @@ public class MainActivity extends FragmentActivity {
                 mIdTabFourImg.setImageResource(R.drawable.tab_icon_2_pressed);
                 mTvTabFour.setTextColor(getResources().getColor(R.color.yukon_gold));
                 break;
+            case SWITCH_TO_FOUR2:
+                if (mTabFour2 == null) {
+                    mTabFour2 = new FourFragment2();
+                    transaction.add(R.id.frame_tobe_repalce, mTabFour2);
+                } else {
+                    transaction.show(mTabFour2);
+                }
+                mIdTabFourImg2.setImageResource(R.drawable.tab_icon_2_pressed);
+                mTvTabFour2.setTextColor(getResources().getColor(R.color.yukon_gold));
+                break;
             case SWITCH_TO_FIVE:
                 if (mTabFive == null) {
                     mTabFive = new MoreFragment();
@@ -263,6 +285,9 @@ public class MainActivity extends FragmentActivity {
         if (mTabFour != null) {
             transaction.hide(mTabFour);
         }
+        if (mTabFour2 != null) {
+            transaction.hide(mTabFour2);
+        }
         if (mTabFive != null) {
             transaction.hide(mTabFive);
         }
@@ -278,6 +303,7 @@ public class MainActivity extends FragmentActivity {
         mIdTabTowImg.setImageResource(R.drawable.tab_icon_5_normal);
         mIdTabThreeImg.setImageResource(R.drawable.tab_icon_3_normal);
         mIdTabFourImg.setImageResource(R.drawable.tab_icon_2_normal);
+        mIdTabFourImg2.setImageResource(R.drawable.tab_icon_2_normal);
         mIdTabFiveImg.setImageResource(R.drawable.tab_icon_4_normal);
 
         //设置文字颜色为暗色
@@ -285,9 +311,9 @@ public class MainActivity extends FragmentActivity {
         mTvTabTow.setTextColor(getResources().getColor(R.color.mountain_mist));
         mTvTabThree.setTextColor(getResources().getColor(R.color.mountain_mist));
         mTvTabFour.setTextColor(getResources().getColor(R.color.mountain_mist));
+        mTvTabFour2.setTextColor(getResources().getColor(R.color.mountain_mist));
         mTvTabFive.setTextColor(getResources().getColor(R.color.mountain_mist));
     }
-
 
     /**
      * 单击不退出,双击退出

@@ -108,7 +108,7 @@ public class PurchaseFragment extends BaseFragment {
         //设置 Header 为 Material风格
         refreshLayout.setRefreshHeader(new MaterialHeader(getActivity()).setShowBezierWave(true));
         //设置 Footer 为 球脉冲
-        refreshLayout.setRefreshFooter(new BallPulseFooter(getActivity()).setSpinnerStyle(SpinnerStyle.Scale));
+//        refreshLayout.setRefreshFooter(new BallPulseFooter(getActivity()).setSpinnerStyle(SpinnerStyle.Scale));
         //监听
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -325,7 +325,8 @@ public class PurchaseFragment extends BaseFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == 500)
-            ToolAlert.showToast(activity, TAG + resultCode + "", false);
+        if (resultCode == 500){
+
+        }
     }
 }

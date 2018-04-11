@@ -18,7 +18,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="海图名称："
+                android:text="产品名称："
                 android:textColor="@color/black"
                 android:textSize="@dimen/common_15sp" />
 
@@ -26,7 +26,7 @@
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rio de la Plata Exterior"
+                android:text="氧气人工呼吸器"
                 android:textSize="@dimen/common_15sp" />
 
         </LinearLayout>
@@ -39,28 +39,7 @@
             android:text="查看详情>"/>
     </RelativeLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="海图类型："
-            android:textColor="@color/black"
-            android:textSize="@dimen/common_15sp" />
-
-        <TextView
-            android:id="@+id/tv_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="AVCS Units General"
-            android:textSize="@dimen/common_15sp" />
-
-    </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -74,7 +53,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="海图编号："
+                android:text="资料号："
                 android:textColor="@color/black"
                 android:textSize="@dimen/common_15sp" />
 
@@ -82,7 +61,7 @@
                 android:id="@+id/tv_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="AR201130"
+                android:text="S0307"
                 android:textSize="@dimen/common_15sp" />
 
         </LinearLayout>
@@ -91,14 +70,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="10dp"
             android:visibility="gone"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="指导价格(美元)："
+                android:text="价格："
                 android:textColor="@color/black"
                 android:textSize="@dimen/common_15sp" />
 
@@ -112,6 +91,7 @@
         </LinearLayout>
 
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -125,15 +105,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="SAP IPN："
+                android:text="出版社："
                 android:textColor="@color/black"
                 android:textSize="@dimen/common_15sp" />
 
             <TextView
-                android:id="@+id/tv_real_price"
+                android:id="@+id/tv_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="210000"
+                android:text="海宁公司"
                 android:textSize="@dimen/common_15sp" />
 
         </LinearLayout>
@@ -148,7 +128,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="周期（月）："
+                android:text="出版日期："
                 android:textColor="@color/black"
                 android:textSize="@dimen/common_15sp" />
 
@@ -156,7 +136,7 @@
                 android:id="@+id/tv_offer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="3"
+                android:text="2017-10-01"
                 android:textSize="@dimen/common_15sp" />
 
         </LinearLayout>

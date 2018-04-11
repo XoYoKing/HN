@@ -5,18 +5,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bigkoo.pickerview.TimePickerView;
 import com.example.admin.hn.R;
 import com.example.admin.hn.base.BaseActivity;
+import com.example.admin.hn.http.Constant;
 import com.example.admin.hn.model.ScreenTypeInfo;
 import com.example.admin.hn.ui.adapter.ScreenTypeAdapter;
 import com.example.admin.hn.utils.ToolAlert;
+import com.example.admin.hn.utils.ToolString;
+import com.orhanobut.logger.Logger;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -37,6 +45,9 @@ public class PopActivity extends BaseActivity {
     private int requestCode;
     private int layoutId;
     private View view;
+    private TextView startDate1;
+    private TextView endDate1;
+    private EditText et_name1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +64,17 @@ public class PopActivity extends BaseActivity {
      */
     public static void startActivity(Activity activity, int layoutId, int requestCode) {
         Intent intent = new Intent(activity, PopActivity.class);
+        intent.putExtra("layoutId", layoutId);
+        intent.putExtra("requestCode", requestCode);
+        activity.startActivityForResult(intent, requestCode);
+    }
+
+    /**
+     * @param activity
+     */
+    public static void startActivity(Activity activity,int childItem, int layoutId, int requestCode) {
+        Intent intent = new Intent(activity, PopActivity.class);
+        intent.putExtra("childItem", childItem);
         intent.putExtra("layoutId", layoutId);
         intent.putExtra("requestCode", requestCode);
         activity.startActivityForResult(intent, requestCode);
@@ -77,8 +99,10 @@ public class PopActivity extends BaseActivity {
 
         } else if (requestCode == 300) {
 
-        } else if (requestCode == 400) {
-
+        } else if (requestCode == Constant.POP_ORDER_MANAGER) {
+            initOrderManagerView(view);
+        }else if (requestCode == Constant.POP_SHIP_AUDITING) {
+            initOrderManagerView(view);
         } else if (requestCode == 500) {
 
         } else if (requestCode == 600) {
@@ -86,6 +110,55 @@ public class PopActivity extends BaseActivity {
         } else if (requestCode == 700) {
 
         }
+
+    }
+
+    /**
+     * 初始化电子海图订单管理搜索控件
+     * @param view
+     */
+    private void initOrderManagerView(View view) {
+        startDate1 = (TextView) view.findViewById(R.id.startdate);
+        endDate1 = (TextView) view.findViewById(R.id.enddate);
+        et_name1 = (EditText) view.findViewById(R.id.et_name);
+
+        //初始化选择器的时间
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String date = sdf.format(new Date());
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.MONTH, -1);
+        startDate1.setText(sdf.format(c.getTime()));
+        endDate1.setText(date);
+
+        startDate1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //时间选择器
+                TimePickerView pvTime = new TimePickerView.Builder(context, new TimePickerView.OnTimeSelectListener() {
+                    @Override
+                    public void onTimeSelect(Date date, View v) {//选中事件回调
+                        startDate1.setText(new SimpleDateFormat("yyyy-MM-dd").format(date));
+                    }
+                }).isCyclic(true).setBackgroundId(0x00FFFFFF).setContentSize(21).setType(new boolean[]{true, true, true, false, false, false}).build();
+                pvTime.setDate(Calendar.getInstance());//注：根据需求来决定是否使用该方法（一般是精确到秒的情况），此项可以在弹出选择器的时候重新设置当前时间，避免在初始化之后由于时间已经设定，导致选中时间与当前时间不匹配的问题。
+                pvTime.show();
+            }
+        });
+
+        endDate1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //时间选择器
+                TimePickerView pTime = new TimePickerView.Builder(context, new TimePickerView.OnTimeSelectListener() {
+                    @Override
+                    public void onTimeSelect(Date date, View v) {//选中事件回调
+                        endDate1.setText(new SimpleDateFormat("yyyy-MM-dd").format(date));
+                    }
+                }).isCyclic(true).setBackgroundId(0x00FFFFFF).setContentSize(21).setType(new boolean[]{true, true, true, false, false, false}).build();
+                pTime.setDate(Calendar.getInstance());//注：根据需求来决定是否使用该方法（一般是精确到秒的情况），此项可以在弹出选择器的时候重新设置当前时间，避免在初始化之后由于时间已经设定，导致选中时间与当前时间不匹配的问题。
+                pTime.show();
+            }
+        });
 
     }
 
@@ -100,60 +173,38 @@ public class PopActivity extends BaseActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bt_reset:
-                finish();
+                if (requestCode ==  Constant.POP_ORDER_MANAGER) {
+                    //订单管理
+                    et_name1.setText("");
+                } else if (requestCode ==  Constant.POP_SHIP_AUDITING) {
+                    et_name1.setText("");
+                }
                 break;
             case R.id.bt_sure:
-                setResult(requestCode);
+                Intent intent = new Intent();
+                if (requestCode == Constant.POP_ORDER_MANAGER) {
+                    String start = startDate1.getText().toString();
+                    String end = endDate1.getText().toString();
+                    String name = et_name1.getText().toString();
+                    intent.putExtra("start", start);
+                    intent.putExtra("end", end);
+                    if (ToolString.isNoBlankAndNoNull(name)) {
+                        intent.putExtra("name", name);
+                    }
+                }else if (requestCode == Constant.POP_SHIP_AUDITING) {
+                    String start = startDate1.getText().toString();
+                    String end = endDate1.getText().toString();
+                    String name = et_name1.getText().toString();
+                    intent.putExtra("start", start);
+                    intent.putExtra("end", end);
+                    if (ToolString.isNoBlankAndNoNull(name)) {
+                        intent.putExtra("name", name);
+                    }
+                }
+                setResult(requestCode,intent);
                 finish();
                 break;
         }
-    }
-
-
-    private void initPopView(View view) {
-        ExpandableListView screen_type_lv = (ExpandableListView) view.findViewById(R.id.screen_type_lv);
-        List<ScreenTypeInfo> data = new ArrayList();
-
-        List<String> str1 = new ArrayList();
-        str1.add("蓝色");
-        str1.add("黄色");
-        str1.add("紫色");
-        str1.add("黑色");
-        List<String> str2 = new ArrayList();
-        str2.add("第一");
-        str2.add("第二");
-        str2.add("第三");
-        str2.add("第四");
-        List<String> str3 = new ArrayList();
-        str3.add("法国");
-        str3.add("加拿大");
-        str3.add("中国");
-        str3.add("德国");
-        List<String> str4 = new ArrayList();
-        str4.add("80x100");
-        str4.add("100x120");
-        str4.add("120x140");
-        str4.add("150x180");
-
-        ScreenTypeInfo info1 = new ScreenTypeInfo("颜色", str1);
-        ScreenTypeInfo info2 = new ScreenTypeInfo("类型", str2);
-        ScreenTypeInfo info3 = new ScreenTypeInfo("国家", str3);
-        ScreenTypeInfo info4 = new ScreenTypeInfo("尺寸", str4);
-        data.add(info1);
-        data.add(info2);
-        data.add(info3);
-        data.add(info4);
-        final ScreenTypeAdapter mAdapter = new ScreenTypeAdapter(context, data);
-
-        screen_type_lv.setAdapter(mAdapter);
-
-        screen_type_lv.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                mAdapter.update(groupPosition);
-                return false;
-            }
-        });
     }
 
 }

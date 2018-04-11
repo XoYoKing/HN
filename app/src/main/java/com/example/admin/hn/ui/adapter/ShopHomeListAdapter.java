@@ -67,7 +67,7 @@ public class ShopHomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             holder.mTvLabel.setText("热点新闻");
             holder.item_recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         }
-        ItemRecycleAdapter itemRecycleAdapter = new ItemRecycleAdapter(itemViewType, info.catalogData);
+        ItemRecycleAdapter itemRecycleAdapter = new ItemRecycleAdapter(itemViewType, info.data);
         holder.item_recyclerView.setAdapter(itemRecycleAdapter);
         holder.tv_item_more.setOnClickListener(new View.OnClickListener() {
             @Override

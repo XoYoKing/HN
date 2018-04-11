@@ -1,9 +1,15 @@
 package com.example.admin.hn.utils;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+
+import com.scwang.smartrefresh.header.MaterialHeader;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 /**
  * Created by WIN10 on 2018/3/30.
@@ -11,6 +17,38 @@ import android.widget.ImageView;
  */
 
 public class ToolRefreshView {
+
+    public static void setRefreshLayout(Context context, RefreshLayout refreshLayout, OnRefreshListener onRefreshListener) {
+        refreshLayout.setDisableContentWhenLoading(true);
+        refreshLayout.setDisableContentWhenRefresh(true);
+        refreshLayout.setEnableScrollContentWhenLoaded(true);
+        //设置 Header 为 Material风格
+        refreshLayout.setRefreshHeader(new MaterialHeader(context).setShowBezierWave(true));
+        //设置 Footer 为 球脉冲
+//		refreshLayout.setRefreshFooter(new BallPulseFooter(context).setSpinnerStyle(SpinnerStyle.Scale));
+        refreshLayout.setOnRefreshListener(onRefreshListener);
+    }
+    public static void setRefreshLayout(Context context, RefreshLayout refreshLayout, OnRefreshListener onRefreshListener,OnLoadmoreListener onLoadmoreListener) {
+        refreshLayout.setDisableContentWhenLoading(true);
+        refreshLayout.setDisableContentWhenRefresh(true);
+        refreshLayout.setEnableScrollContentWhenLoaded(true);
+        //设置 Header 为 Material风格
+        refreshLayout.setRefreshHeader(new MaterialHeader(context).setShowBezierWave(true));
+        //设置 Footer 为 球脉冲
+//		refreshLayout.setRefreshFooter(new BallPulseFooter(context).setSpinnerStyle(SpinnerStyle.Scale));
+        refreshLayout.setOnRefreshListener(onRefreshListener);
+        refreshLayout.setOnLoadmoreListener(onLoadmoreListener);
+    }
+
+    public static void setRefreshLayout(Context context,RefreshLayout refreshLayout) {
+        refreshLayout.setDisableContentWhenLoading(true);
+        refreshLayout.setDisableContentWhenRefresh(true);
+        refreshLayout.setEnableScrollContentWhenLoaded(true);
+        //设置 Header 为 Material风格
+        refreshLayout.setRefreshHeader(new MaterialHeader(context).setShowBezierWave(true));
+        //设置 Footer 为 球脉冲
+//		refreshLayout.setRefreshFooter(new BallPulseFooter(context).setSpinnerStyle(SpinnerStyle.Scale));
+    }
 
     /**
      * 以列表形式展示数据时回调的

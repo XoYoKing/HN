@@ -216,10 +216,10 @@ public class OneFragment extends BaseFragment  {
     private void initHomeData(){
         for (int i = 1; i < 4; i++) {
             HomeInfo info = new HomeInfo();
-            info.catalogData= new ArrayList<>();
+            info.data= new ArrayList<>();
 
             for (int j = 0; j < 5; j++) {
-                info.catalogData.add(new HomeItem());
+                info.data.add(new HomeItem());
             }
             info.type = i;
             homeInfos.add(info);

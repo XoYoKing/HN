@@ -134,12 +134,7 @@ public class TypeFragment extends BaseFragment {
         if (list != null) {
             toolsList.addAll(list);
         } else {
-            for (int i = 0; i < 10; i++) {
-                HomeTypeInfo homeTypeInfo = new HomeTypeInfo();
-                homeTypeInfo.setId(i);
-                homeTypeInfo.setName("电脑配件"+i);
-                toolsList.add(homeTypeInfo);
-            }
+            initHomeData();
         }
         shopAdapter.notifyDataSetChanged();
         LinearLayout toolsLayout = (LinearLayout) view.findViewById(R.id.tools);
@@ -163,6 +158,27 @@ public class TypeFragment extends BaseFragment {
             toolsImgViews[i] = line_right;
         }
         changeTextColor(0);
+    }
+
+    private void initHomeData() {
+        for (int i = 0; i < 6; i++) {
+            HomeTypeInfo homeTypeInfo = new HomeTypeInfo();
+            if (i == 0) {
+                homeTypeInfo.setName("首页");
+            } else if (i == 1) {
+                homeTypeInfo.setName("今日推荐");
+            } else if (i == 2) {
+                homeTypeInfo.setName("纸版图书");
+            } else if (i == 3) {
+                homeTypeInfo.setName("电子版图书");
+            } else if (i == 4) {
+                homeTypeInfo.setName("丽佳通讯");
+            } else if (i == 5) {
+                homeTypeInfo.setName("新书速递");
+            }
+            homeTypeInfo.setId(i);
+            toolsList.add(homeTypeInfo);
+        }
     }
 
     private View.OnClickListener toolsItemListener = new View.OnClickListener() {

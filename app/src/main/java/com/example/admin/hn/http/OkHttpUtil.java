@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.support.v4.app.FragmentActivity;
 
 import com.example.admin.hn.utils.ToolAlert;
+import com.example.admin.hn.utils.ToolString;
 import com.example.admin.hn.utils.UpdateManager;
+import com.example.admin.hn.widget.LoadingFragment;
 import com.example.admin.hn.widget.ProgersssDialog;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
@@ -88,8 +91,7 @@ public class OkHttpUtil {
      * 在请求的时候带上cookie  在Request构建的时候加上头部就行
      * .addHeader("cookie", sessionId)
      */
-    public static void postData2Server(final Activity activity, Request request,
-                                       final MyCallBack myCallBack) {
+    public static void postData2Server(final Activity activity, Request request, final MyCallBack myCallBack) {
 
         final String url = request.urlString();
         try {
@@ -380,7 +382,6 @@ public class OkHttpUtil {
         try {
             RequestBody body = RequestBody.create(JSON, json);
             Request request = new Request.Builder().url(url).post(body).build();
-
             mOkHttpClient.newCall(request).enqueue(
                     new Callback() {
                         @Override
@@ -424,19 +425,109 @@ public class OkHttpUtil {
     /**
      * post方法json請求
      * ByJSON
+     * 可以加载loading
+     * @param url
+     * @param json
+     * @return
+     * @throws IOException
+     */
+    public static void postJsonData2Server(final Activity activity, final String url, final String json,String progressTitle, final MyCallBack myCallBack)throws IOException {
+        try {
+            final ResponseListener responseListener;
+            if (progressTitle != null) {
+                LoadingFragment dialog = LoadingFragment.showLoading(activity, progressTitle);
+                responseListener = responseListener(myCallBack, dialog);
+            } else {
+                responseListener = responseListener(myCallBack, null);
+            }
+            RequestBody body = RequestBody.create(JSON, json);
+            Request request = new Request.Builder().url(url).post(body).build();
+            mOkHttpClient.newCall(request).enqueue(new Callback() {
+                        @Override
+                        public void onFailure(final Request request, final IOException e) {
+                            if (activity == null) {
+                                return;
+                            }
+                            activity.runOnUiThread(
+                                    new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            responseListener.onErrorResponse(request,e);
+                                        }
+                                    }
+                            );
+                        }
+
+                        @Override
+                        public void onResponse(final Response response) throws IOException {
+                            final String map = response.body().string();
+                            if (activity == null) {
+                                return;
+                            }
+                            activity.runOnUiThread(
+                                    new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            responseListener.onResponse(map);
+                                        }
+                                    }
+                            );
+                        }
+                    }
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+            String message = ErrorHelper.getMessage(e);
+            ToolAlert.showToast(activity, message, false);
+        }
+    }
+
+
+
+    public interface ResponseListener<T> {
+        void onResponse(T var1);
+
+        void onErrorResponse(Request request,IOException var1);
+    }
+
+    /**
+     * 网络请求响应监听
+     *
+     * @param l
+     * @param dialog
+     * @return
+     */
+    protected static ResponseListener responseListener(final MyCallBack l,  final LoadingFragment dialog) {
+
+        return new ResponseListener<String>() {
+            @Override
+            public void onResponse(String data) {
+                l.onResponse(data);
+                LoadingFragment.dismiss(dialog);
+            }
+
+            @Override
+            public void onErrorResponse(Request request,final IOException e) {
+                String message = ErrorHelper.getMessage(e);
+                l.onFailure(request, e);
+                LoadingFragment.dismiss(dialog);
+            }
+        };
+    }
+
+    /**
+     * post方法json請求
+     * ByJSON
      *
      * @param url
      * @param json
      * @return
      * @throws IOException
      */
-    public static void postJsonData2ServerByForm(final Activity activity, final String url,
-                                                 final String json,
-                                                 final MyCallBack myCallBack) throws IOException {
+    public static void postJsonData2ServerByForm(final Activity activity, final String url, final String json, final MyCallBack myCallBack) throws IOException {
         try {
             RequestBody body = RequestBody.create(FROM, json);
             Request request = new Request.Builder().url(url).post(body).build();
-
             mOkHttpClient.newCall(request).enqueue(
                     new Callback() {
                         @Override

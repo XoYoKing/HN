@@ -10,6 +10,7 @@ import android.view.Window;
 
 import com.example.admin.hn.R;
 import com.example.admin.hn.base.interf.Initialable;
+import com.example.admin.hn.http.Constant;
 import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.utils.StateBarUtil;
 import com.example.admin.hn.widget.ProgersssDialog;
@@ -24,12 +25,11 @@ import butterknife.ButterKnife;
 *  @describe 
 */
 public class BaseActivity extends FragmentActivity implements Initialable{
-
-
-    IntentFilter mFilter = new IntentFilter();
-
-    public ProgersssDialog progersssDialog;
+    protected String progressTitle = Constant.LOADING;
     protected Context context;
+    IntentFilter mFilter = new IntentFilter();
+    public ProgersssDialog progersssDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1,6 +1,7 @@
 package com.example.admin.hn.ui.account;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -39,7 +40,10 @@ public class AboutActivity extends BaseActivity {
         initTitleBar();
     }
 
-
+    public static void startActivity(Context context){
+        Intent intent = new Intent(context, AboutActivity.class);
+        context.startActivity(intent);
+    }
     @Override
     public void initTitleBar() {
         textTitleBack.setBackgroundResource(R.drawable.btn_back);

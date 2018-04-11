@@ -6,4 +6,5 @@ package com.example.admin.hn.model;
 
 public class HomeItem {
 
+    public String goodsName;
 }

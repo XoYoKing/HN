@@ -18,6 +18,7 @@ import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseFragment;
+import com.example.admin.hn.http.Constant;
 import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.OrderInfo;
 import com.example.admin.hn.ui.account.OrderActivity;
@@ -51,43 +52,36 @@ import butterknife.OnClick;
  * @date on 2017/7/26 16:04
  * @describe 订单狀态管理
  */
-public class OrderManagerStatusFragment extends BaseFragment {
+public class OrderManagerStatusFragment extends BaseFragment implements OnRefreshListener,OnLoadmoreListener {
 
     private static final String TAG = "OrderManagerStatusFragment";
 
     @Bind(R.id.listView)
     ListView listView;
-    @Bind(R.id.startdate)
-    TextView startdate;
-    @Bind(R.id.enddate)
-    TextView enddate;
-    @Bind(R.id.et_name)
-    EditText et_name;
-    @Bind(R.id.ll_hide)
-    LinearLayout hide;
     @Bind(R.id.network_disabled)
     RelativeLayout network;
     @Bind(R.id.network_img)
     ImageView network_img;
     @Bind(R.id.noData_img)
     ImageView noData_img;
-    private String str = "";
 
     private ArrayList<OrderInfo.Order> list = new ArrayList<>();
     private OrderAdapter adapter;
     private View view;
-    //是否审核1已审核2未审核
-    private String statu = "1";
+    private String str = "";//搜索条件
     //搜索条件1(查询该用户全部订单) 2(根据船舶名称)3(船舶编号)4(订单号)
     private int status = 1;
-    private int page = 1;
-    private int screen = 1;
+    private int page = 1;//当前页面
+    private int screen = 1;//订单状态
+    //screen 1 ：审核   2:已完成  3：失败
     private String url_order = Api.BASE_URL + Api.ORDER;
     private RefreshLayout refreshLayout;
+    private String endDate;
+    private String startDate;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_order_list, container, false);
+        view = inflater.inflate(R.layout.fragment_list_layout, container, false);
         ButterKnife.bind(this, view);
         initTitleBar();
         initView();
@@ -99,39 +93,15 @@ public class OrderManagerStatusFragment extends BaseFragment {
     @Override
     public void initView() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String date = sdf.format(new Date());
+        endDate = sdf.format(new Date());
         Calendar c = Calendar.getInstance();
         c.add(Calendar.MONTH, -1);
-        startdate.setText(sdf.format(c.getTime()));
+        startDate = sdf.format(c.getTime());
 
-        enddate.setText(date);
         //下拉刷新
         refreshLayout = (RefreshLayout) view.findViewById(R.id.refreshLayout);
-        refreshLayout.setDisableContentWhenLoading(true);
-        refreshLayout.setDisableContentWhenRefresh(true);
-        refreshLayout.setEnableScrollContentWhenLoaded(true);
-        //设置 Header 为 Material风格
-        refreshLayout.setRefreshHeader(new MaterialHeader(getActivity()).setShowBezierWave(true));
-        //设置 Footer 为 球脉冲
-        refreshLayout.setRefreshFooter(new BallPulseFooter(getActivity()).setSpinnerStyle(SpinnerStyle.Scale));
-        //监听
-        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
-                page = 1;
-                data(1, str, 0);
-                refreshlayout.finishRefresh(1000);
-            }
-        });
-        refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
-            @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
-                page = page + 1;
-                data(status, str, 1);
-                adapter.notifyDataSetChanged();
-                refreshlayout.finishLoadmore(1000);
-            }
-        });
+        ToolRefreshView.setRefreshLayout(activity,refreshLayout,this,this);
+
         adapter = new OrderAdapter(getActivity(), R.layout.order_adapter, list);
         listView.setAdapter(adapter);
     }
@@ -139,10 +109,7 @@ public class OrderManagerStatusFragment extends BaseFragment {
 
     @Override
     public void initData() {
-
-        //默认隐藏搜索条件
-        hide.setVisibility(View.GONE);
-        data(1, "", 0);
+        data(1, str, 0);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -164,52 +131,9 @@ public class OrderManagerStatusFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.bt_reset, R.id.bt_query, R.id.startdate, R.id.enddate, R.id.fl_search, R.id.network_img})
+    @OnClick({R.id.network_img})
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.startdate:
-                //时间选择器
-                TimePickerView pvTime = new TimePickerView.Builder(getActivity(), new TimePickerView.OnTimeSelectListener() {
-                    @Override
-                    public void onTimeSelect(Date date, View v) {//选中事件回调
-                        startdate.setText(new SimpleDateFormat("yyyy-MM-dd").format(date));
-                        status = 2;
-                        data(status, "", 0);
-                        Logger.i(TAG, date + "时间");
-                    }
-                }).isCyclic(true).setBackgroundId(0x00FFFFFF).setContentSize(21).setType(new boolean[]{true, true, true, false, false, false}).build();
-                pvTime.setDate(Calendar.getInstance());//注：根据需求来决定是否使用该方法（一般是精确到秒的情况），此项可以在弹出选择器的时候重新设置当前时间，避免在初始化之后由于时间已经设定，导致选中时间与当前时间不匹配的问题。
-                pvTime.show();
-                break;
-            case R.id.enddate:
-                //时间选择器
-                TimePickerView pTime = new TimePickerView.Builder(getActivity(), new TimePickerView.OnTimeSelectListener() {
-                    @Override
-                    public void onTimeSelect(Date date, View v) {//选中事件回调
-                        enddate.setText(new SimpleDateFormat("yyyy-MM-dd").format(date));
-                        status = 2;
-                        data(status, "", 0);
-                        Logger.i(TAG, date + "时间");
-                    }
-                }).isCyclic(true).setBackgroundId(0x00FFFFFF).setContentSize(21).setType(new boolean[]{true, true, true, false, false, false}).build();
-                pTime.setDate(Calendar.getInstance());//注：根据需求来决定是否使用该方法（一般是精确到秒的情况），此项可以在弹出选择器的时候重新设置当前时间，避免在初始化之后由于时间已经设定，导致选中时间与当前时间不匹配的问题。
-                pTime.show();
-                break;
-            case R.id.bt_reset:
-                ToolAlert.showToast(getContext(), "重置", false);
-                break;
-            case R.id.bt_query:
-                ToolAlert.showToast(getContext(), "搜索", false);
-                status = 2;
-                data(status, et_name.getText().toString() + "", 0);
-                break;
-            case R.id.fl_search:
-                if (hide.getVisibility() == View.GONE) {
-                    hide.setVisibility(View.VISIBLE);
-                } else {
-                    hide.setVisibility(View.GONE);
-                }
-                break;
             case R.id.network_img:
                 network_img.setVisibility(View.GONE);
                 data(1, str, 0);
@@ -219,23 +143,11 @@ public class OrderManagerStatusFragment extends BaseFragment {
     }
 
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden) {
-            page = 1;
-            data(1, str, 0);
-        }
-    }
-
-
     public void data(final int status, String down, final int Loadmore) {
-        //status1(查询该用户全部订单) 2(根据船舶名称)3(订单号) 4(船舶编号)
-        //screen1 ：审核   2:已完成  3：失败
         Map map = new HashMap();
         map.put("ordernumber", down);
-        map.put("starttime", startdate.getText().toString());
-        map.put("endtime", enddate.getText().toString());
+        map.put("starttime", startDate);
+        map.put("endtime", endDate);
         map.put("shipnumber", down);
         map.put("userid", MainActivity.USER_ID);
         map.put("shipname", down);
@@ -247,51 +159,44 @@ public class OrderManagerStatusFragment extends BaseFragment {
         }
         map.put("screen", screen);
         String jsonStr = GsonUtils.mapToJson(map);
-        Logger.i(TAG, jsonStr);
+        Logger.i("jsonStr", jsonStr);
         try {
-            OkHttpUtil.postJsonData2Server(getActivity(),
-                    url_order,
-                    jsonStr,
-                    new OkHttpUtil.MyCallBack() {
-                        @Override
-                        public void onFailure(Request request, IOException e) {
-                            ToolAlert.showToast(getActivity(), "服务器异常,请稍后再试", false);
-                            ToolRefreshView.hintView(adapter, true, network, noData_img, network_img);
+            OkHttpUtil.postJsonData2Server(getActivity(), url_order, jsonStr, progressTitle,new OkHttpUtil.MyCallBack() {
+                @Override
+                public void onFailure(Request request, IOException e) {
+                    ToolAlert.showToast(getActivity(), "服务器异常,请稍后再试", false);
+                    ToolRefreshView.hintView(adapter, true, network, noData_img, network_img);
+                }
+                @Override
+                public void onResponse(String json) {
+                    Logger.i("json", json);
+                    OrderInfo orderInfo = GsonUtils.jsonToBean(json, OrderInfo.class
+                    );
+                    if (orderInfo.getStatus().equals("error")) {
+//                        ToolAlert.showToast(getActivity(), orderInfo.getMessage(), false);
+                        if (page == 1) {
+                            list.clear();
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            ToolAlert.showToast(getActivity(), "已全部加载完成", false);
                         }
-
-                        @Override
-                        public void onResponse(String json) {
-                            Logger.i(TAG, json);
-                            OrderInfo orderInfo = GsonUtils.jsonToBean(
-                                    json, OrderInfo.class
-                            );
-                            if (orderInfo.getStatus().equals("error")) {
-                                ToolAlert.showToast(getActivity(), orderInfo.getMessage(), false);
-                                if (page == 1) {
-                                    ToolAlert.showToast(getActivity(), orderInfo.getMessage(), false);
-                                    list.clear();
-                                    adapter.notifyDataSetChanged();
-                                } else {
-                                    ToolAlert.showToast(getActivity(), "已全部加载完成", false);
-
-                                }
-                            } else {
-                                if (Loadmore == 0) {
-                                    list.clear();
-                                }
-                                if (orderInfo.getDocuments().size() == 0) {
-                                    list.clear();
-                                } else {
-                                    for (int i = 0; i < orderInfo.getDocuments().size(); i++) {
-                                        list.add(new OrderInfo.Order(orderInfo.getDocuments().get(i).getOrdernumber(), orderInfo.getDocuments().get(i).getOrdertime(), orderInfo.getDocuments().get(i).getStatus(), orderInfo.getDocuments().get(i).getShipname()));
-                                    }
-                                    MainActivity.ship = list.get(0).getShipname();
-                                }
-                                adapter.notifyDataSetChanged();
+                    } else {
+                        if (Loadmore == 0) {
+                            list.clear();
+                        }
+                        if (orderInfo.getDocuments().size() == 0) {
+                            list.clear();
+                        } else {
+                            for (int i = 0; i < orderInfo.getDocuments().size(); i++) {
+                                list.add(new OrderInfo.Order(orderInfo.getDocuments().get(i).getOrdernumber(), orderInfo.getDocuments().get(i).getOrdertime(), orderInfo.getDocuments().get(i).getStatus(), orderInfo.getDocuments().get(i).getShipname()));
                             }
-                            ToolRefreshView.hintView(adapter, false, network, noData_img, network_img);
+                            MainActivity.ship = list.get(0).getShipname();
                         }
-                    });
+                        adapter.notifyDataSetChanged();
+                    }
+                    ToolRefreshView.hintView(adapter, false, network, noData_img, network_img);
+                }
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -300,7 +205,32 @@ public class OrderManagerStatusFragment extends BaseFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == 400)
-            ToolAlert.showToast(activity, TAG + resultCode + "", false);
+        if (resultCode == Constant.POP_ORDER_MANAGER && data!=null) {
+            String name = data.getStringExtra("name");
+            startDate = data.getStringExtra("start");
+            endDate = data.getStringExtra("end");
+            Logger.i("request", name +"--"+startDate+"--" + endDate);
+            if (name != null) {
+                str = name;
+                data(2, str, 0);
+            }else {
+                data(1, "", 0);
+            }
+        }
+    }
+
+    @Override
+    public void onLoadmore(RefreshLayout refreshlayout) {
+        page = page + 1;
+        data(status, str, 1);
+        adapter.notifyDataSetChanged();
+        refreshlayout.finishLoadmore(1000);
+    }
+
+    @Override
+    public void onRefresh(RefreshLayout refreshlayout) {
+        page = 1;
+        data(1, str, 0);
+        refreshlayout.finishRefresh(1000);
     }
 }

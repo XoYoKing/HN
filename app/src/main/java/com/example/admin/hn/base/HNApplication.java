@@ -19,77 +19,67 @@ public class HNApplication extends Application {
         this.test_session = new SharedPreferencesSession(this,"configs");
     }
 
-//    public void setUserName(String userName) {
-//        this.session.putString("username", userName);
-//    }
-//
-//    public void setPassWord(String password) {
-//        this.session.putString("password", password);
-//    }
-//
-//    public void setSwitche(String switche) {
-//        this.session.putString("switche", switche);
-//
-//    }
-//
-//    public String getUserName() {
-//        return this.session.getString("username","");
-//
-//    }
-//
-//    public String getPassWord() {
-//        return this.session.getString("password","");
-//
-//    }
-//
-//    public String getSwitche() {
-//        return this.session.getString("switche","1");
-//    }
-//
-    public void setUserName(String userName,boolean isTest) {
-        if (isTest) {
+    //退出登录
+    public void logout(){
+        //只清除生产环境的数据,保留测试环境数据
+        this.session.putString("switche", "2");
+        this.session.putString("password", "");
+        this.session.putBoolean("isTest", false);
+    }
+
+    public void setUserName(String userName) {
+        if (isTestAmbient()) {
             this.test_session.putString("username", userName);
         }else {
             this.session.putString("username", userName);
         }
     }
 
-    public void setPassWord(String password,boolean isTest) {
-        if (isTest) {
+    public void setPassWord(String password) {
+        if (isTestAmbient()) {
             this.test_session.putString("password", password);
         }else {
             this.session.putString("password", password);
         }
     }
 
-    public void setSwitche(String switche,boolean isTest) {
-        if (isTest) {
+    public void setSwitche(String switche) {
+        if (isTestAmbient()) {
             this.test_session.putString("switche", switche);
         }else {
             this.session.putString("switche", switche);
         }
     }
 
-    public String getUserName(boolean isTest) {
-        if (isTest) {
+    public String getUserName() {
+        if (isTestAmbient()) {
             return this.test_session.getString("username","");
         }
         return this.session.getString("username","");
     }
 
-    public String getPassWord(boolean isTest) {
-        if (isTest) {
+    public String getPassWord() {
+        if (isTestAmbient()) {
             return this.test_session.getString("password","");
         }
         return this.session.getString("password","");
 
     }
 
-    public String getSwitche(boolean isTest) {
-        if (isTest) {
+    public String getSwitche() {
+        if (isTestAmbient()) {
             return this.test_session.getString("switche","");
         }
         return this.session.getString("switche","");
+    }
+
+    //设置用户选择的环境  true=测试环境 false=生产环境
+    public void setTestAmbient(boolean isTest) {
+        this.session.putBoolean("isTest", isTest);
+    }
+
+    public boolean isTestAmbient() {
+        return this.session.getBoolean("isTest", false);
     }
 
 

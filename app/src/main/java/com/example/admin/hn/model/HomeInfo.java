@@ -7,7 +7,7 @@ import java.util.List;
  */
 public class HomeInfo {
     public int type;
-    public String catalogName;//特别推荐
+    public String name;//特别推荐
     public String typeCode;//
-    public List<HomeItem> catalogData;//数据集合
+    public List<HomeItem> data;//数据集合
 }

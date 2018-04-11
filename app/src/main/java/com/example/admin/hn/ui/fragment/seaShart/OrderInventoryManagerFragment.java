@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.example.admin.hn.R;
 import com.example.admin.hn.base.BaseFragment;
 import com.example.admin.hn.ui.adapter.AllChildTabAdapter;
+import com.orhanobut.logger.Logger;
 
 import butterknife.ButterKnife;
 
@@ -42,25 +43,28 @@ public class OrderInventoryManagerFragment extends BaseFragment {
 
 	@Override
 	public void initData() {
-		addChildFragment();
+
 	}
 
 	private void addChildFragment() {
 		AllChildTabAdapter adapter = new AllChildTabAdapter(getChildFragmentManager(), activity, viewPager);
-		adapter.addTab("未过期", InventoryFragment.class);
-		adapter.addTab("已过期", InventoryFragment.class);
+		adapter.addTab("未过期", "2",InventoryFragment.class);
+		adapter.addTab("已过期","3", InventoryFragment.class);
 		tabLayout.setupWithViewPager(viewPager);
+	}
+
+	@Override
+	public void setUserVisibleHint(boolean isVisibleToUser) {
+		super.setUserVisibleHint(isVisibleToUser);
+		Logger.i("isVisibleToUser", isVisibleToUser + "");
+		if (isVisibleToUser && isFirstHttp) {
+			isFirstHttp = false;
+			addChildFragment();
+		}
 	}
 
 	@Override
 	public void initTitleBar() {
 
 	}
-
-	@Override
-	public void onHiddenChanged(boolean hidden) {
-		super.onHiddenChanged(hidden);
-	}
-
-
 }

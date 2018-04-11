@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+    android:padding="@dimen/common_15dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="资料类别："
+                android:textColor="@color/black"
+                android:textSize="@dimen/common_15sp" />
+
+            <TextView
+                android:id="@+id/tv_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="电子版海图"
+                android:textSize="@dimen/common_15sp" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_alignParentRight="true"
+            android:layout_width="@dimen/common_60dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="@dimen/common_15sp"
+            android:background="@drawable/shape_rect_gray_radius"
+            android:textColor="@color/white"
+            android:text="删除"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="船舶名称："
+                android:textColor="@color/black"
+                android:textSize="@dimen/common_15sp" />
+
+            <TextView
+                android:id="@+id/tv_ship_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="bai lu zuo"
+                android:textSize="@dimen/common_15sp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="资料名称："
+            android:textColor="@color/black"
+            android:textSize="@dimen/common_15sp" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="S45027201803231001"
+            android:textSize="@dimen/common_15sp" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="资料编号："
+                android:textColor="@color/black"
+                android:textSize="@dimen/common_15sp" />
+
+            <TextView
+                android:id="@+id/tv_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DIS180403001-3"
+                android:textSize="@dimen/common_15sp" />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/linear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="出版日期："
+                android:textColor="@color/black"
+                android:textSize="@dimen/common_15sp" />
+
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2018-03-23"
+                android:textSize="@dimen/common_15sp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="申请数量："
+                android:textColor="@color/black"
+                android:textSize="@dimen/common_15sp" />
+
+            <TextView
+                android:id="@+id/tv_number1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="6"
+                android:textSize="@dimen/common_15sp" />
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

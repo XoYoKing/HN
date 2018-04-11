@@ -1,5 +1,6 @@
 package com.example.admin.hn.ui.login;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -84,6 +85,11 @@ public class RegisterActivity extends BaseActivity {
 		initView();
 	}
 
+
+	public static void startActivity(Context context){
+		Intent intent = new Intent(context, RegisterActivity.class);
+		context.startActivity(intent);
+	}
 	@Override
 	public void initTitleBar() {
 		super.initTitleBar();
@@ -112,47 +118,7 @@ public class RegisterActivity extends BaseActivity {
 					} else if (company.equals("请选择")&&!cb.isChecked()){
 						ToolAlert.showToast(RegisterActivity.this, "请选择所属公司", false);
 					}else {
-						Map map = new HashMap();
-						map.put("username", mEditUsername.getText().toString());
-						map.put("phonenumber", mEditTelephone.getText().toString());
-						map.put("emailcode", mEditCode.getText().toString());
-						map.put("password", mEditPassword.getText().toString());
-						map.put("repeatpassword", mEditRepeatpassword.getText().toString());
-						map.put("email", mEditemail.getText().toString());
-						if (cb.isChecked()) {
-							map.put("companyname", et_company.getText().toString());
-						}else{
-							map.put("companyname", company);
-						}
-						String jsonStr = GsonUtils.mapToJson(map);
-						Logger.i(TAG, jsonStr);
-						try {
-							OkHttpUtil.postJsonData2Server(RegisterActivity.this,
-									url_register,
-									jsonStr,
-									new OkHttpUtil.MyCallBack() {
-										@Override
-										public void onFailure(Request request, IOException e) {
-											ToolAlert.showToast(RegisterActivity.this, "服务器异常,请稍后再试", false);
-										}
-
-										@Override
-										public void onResponse(String json) {
-											Logger.i(TAG, json);
-											ServerResponse serverResponse = GsonUtils
-													.jsonToBean(json,
-															ServerResponse.class
-													);
-											ToolAlert.showToast(RegisterActivity.this, serverResponse.getMessage(), false);
-											if (!serverResponse.getStatus().equals("error")) {
-												finish();
-											}
-
-										}
-									});
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
+						register();
 					}
 				} else {
 					ToolAlert.showToast(RegisterActivity.this, "请确认注册协议", false);
@@ -163,51 +129,95 @@ public class RegisterActivity extends BaseActivity {
 				if (mEditTelephone.getText().toString().length() == 0 || mEditemail.getText().toString().length() == 0) {
 					ToolAlert.showToast(RegisterActivity.this, "邮箱及手机号为必填项", false);
 				} else {
-					Map map = new HashMap();
-					map.put("phonenumber", mEditTelephone.getText().toString());
-					map.put("email", mEditemail.getText().toString());
-					String jsonStr = GsonUtils.mapToJson(map);
-					Logger.i(TAG, jsonStr);
-					try {
-						OkHttpUtil.postJsonData2Server(RegisterActivity.this,
-								url_email,
-								jsonStr,
-								new OkHttpUtil.MyCallBack() {
-									@Override
-									public void onFailure(Request request, IOException e) {
-										ToolAlert.showToast(RegisterActivity.this, "服务器异常,请稍后再试", false);
-									}
+					sendSmsCode();
+				}
+				break;
+			case R.id.tv_register_agreement:
+				AgreementActivity.startActivity(this);
+				break;
+			case R.id.cb:
+				if (cb.isChecked()){
+					et_company.setVisibility(View.VISIBLE);
+				}else {
+					et_company.setVisibility(View.GONE);
+				}
+				break;
+		}
+	}
 
-									@Override
-									public void onResponse(String json) {
+	private void sendSmsCode() {
+		Map map = new HashMap();
+		map.put("phonenumber", mEditTelephone.getText().toString());
+		map.put("email", mEditemail.getText().toString());
+		String jsonStr = GsonUtils.mapToJson(map);
+		Logger.i(TAG, jsonStr);
+		try {
+            OkHttpUtil.postJsonData2Server(RegisterActivity.this,
+                    url_email,
+                    jsonStr,
+                    new OkHttpUtil.MyCallBack() {
+                        @Override
+                        public void onFailure(Request request, IOException e) {
+                            ToolAlert.showToast(RegisterActivity.this, "服务器异常,请稍后再试", false);
+                        }
+
+                        @Override
+                        public void onResponse(String json) {
 //                                    Logger.i(TAG, json);
 //                                    ServerResponse serverResponse = GsonUtils
 //                                            .jsonToBean(json,
 //                                                    ServerResponse.class
 //                                            );
 //                                    ToolAlert.showToast(RegisterActivity.this, serverResponse.getMessage(), false);
-									}
-								});
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-				break;
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+	}
 
-			case R.id.tv_register_agreement:
-				Intent intent = new Intent(RegisterActivity.this, AgreementActivity.class);
-				startActivity(intent);
-				break;
+	private void register() {
+		Map map = new HashMap();
+		map.put("username", mEditUsername.getText().toString());
+		map.put("phonenumber", mEditTelephone.getText().toString());
+		map.put("emailcode", mEditCode.getText().toString());
+		map.put("password", mEditPassword.getText().toString());
+		map.put("repeatpassword", mEditRepeatpassword.getText().toString());
+		map.put("email", mEditemail.getText().toString());
+		if (cb.isChecked()) {
+            map.put("companyname", et_company.getText().toString());
+        }else{
+            map.put("companyname", company);
+        }
+		String jsonStr = GsonUtils.mapToJson(map);
+		Logger.i(TAG, jsonStr);
+		try {
+            OkHttpUtil.postJsonData2Server(RegisterActivity.this,
+                    url_register,
+                    jsonStr,
+                    new OkHttpUtil.MyCallBack() {
+                        @Override
+                        public void onFailure(Request request, IOException e) {
+                            ToolAlert.showToast(RegisterActivity.this, "服务器异常,请稍后再试", false);
+                        }
 
-			case R.id.cb:
-				if (cb.isChecked()){
-					et_company.setVisibility(View.VISIBLE);
-				}else {
-					et_company.setVisibility(View.GONE);
+                        @Override
+                        public void onResponse(String json) {
+                            Logger.i(TAG, json);
+                            ServerResponse serverResponse = GsonUtils
+                                    .jsonToBean(json,
+                                            ServerResponse.class
+                                    );
+                            ToolAlert.showToast(RegisterActivity.this, serverResponse.getMessage(), false);
+                            if (!serverResponse.getStatus().equals("error")) {
+                                finish();
+                            }
 
-				}
-				break;
-		}
+                        }
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 	}
 
 

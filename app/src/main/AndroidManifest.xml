@@ -85,6 +85,7 @@
         <activity android:name=".ui.account.ChartActivity" />
         <activity android:name=".ui.article.ArticleDetailsActivity" />
         <activity android:name=".ui.account.PurchaseDetailActivity" />
+        <activity android:name=".ui.account.ReturnDetailActivity" />
         <activity android:name=".ui.account.OrderUseDetailActivity" />
         <activity android:name=".ui.account.ReadDrawDetailActivity" />
         <activity android:name=".ui.account.ChartDetailsActivity" />
@@ -94,7 +95,10 @@
         <activity android:name=".ui.account.OverdueInventoryActivity" />
         <activity android:name=".ui.account.PopActivity"
             android:theme="@style/Theme.translucent"/>
-
+        <activity android:name=".ui.account.ShipApplyingActivity" />
+        <activity android:name=".ui.account.ShipApplyedActivity" />
+        <activity android:name=".ui.account.ShipSelectActivity" />
+        <activity android:name=".ui.account.AuditingApplyingActivity" />
         //商城  ===============
         <activity android:name=".ui.shop.ShopTypeListActivity" />
         <activity android:name=".ui.shop.ShopCartActivity" />

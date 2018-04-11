@@ -37,6 +37,16 @@ public class ToolString {
     public static boolean isNoBlankAndNoNull(String strParm) {
         return !((strParm == null) || (strParm.equals("")));
     }
+    /**
+     * 判断字符串是否非空非null
+     *
+     * @param strParm 需要判断的字符串
+     * @return 真假
+     */
+    public static boolean isEmpty(String strParm) {
+        return !((strParm == null) || (strParm.equals("")));
+    }
+
 
 
     /**
@@ -96,4 +106,17 @@ public class ToolString {
     \t 水平制表符(\u0009)
     \s 空格(\u0008)
     \r 换行(\u000d)*/
+
+    /**
+     * @param number
+     * @return
+     * @Title : filterNumber
+     * @Type : FilterStr
+     * @Description : 过滤出数字
+     */
+    public static String filterNumber(String number) {
+        if (number != null)
+            number = number.replaceAll("[^(0-9)]", "");
+        return number;
+    }
 }

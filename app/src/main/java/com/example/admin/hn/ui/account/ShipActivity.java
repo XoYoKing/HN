@@ -42,20 +42,20 @@ public class ShipActivity extends BaseActivity {
 	TextView mTextTitleBack;
 	@Bind(R.id.text_title)
 	TextView mTextTitle;
-	@Bind(R.id.text_tile_right)
-	TextView right;
 	@Bind(R.id.listveiw)
 	ListView listveiw;
 	@Bind(R.id.btn)
 	TitleButton mTBtn;
+	@Bind(R.id.text_tile_right)
+	TextView right;
 	@Bind(R.id.text_tile_del)
 	TextView text_tile_del;
 
 	private boolean isdel=false;
-	private ShipAdapter Adapter;
-	private List<ShipInfo.ship> listship = new ArrayList<ShipInfo.ship>();
-	private List<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
-	private List<ShipInfo.ship> listStr = new ArrayList<ShipInfo.ship>();
+	private ShipAdapter adapter;
+	private List<ShipInfo.ship> listship = new ArrayList<>();
+	private List<HashMap<String, Object>> list = new ArrayList<>();
+	private List<ShipInfo.ship> listStr = new ArrayList<>();
 	private List<String> lists = new ArrayList<>();
 	private List<String> listss = new ArrayList<>();
 	private String url_ship = Api.BASE_URL + Api.SHIPINQUIRY;
@@ -85,16 +85,9 @@ public class ShipActivity extends BaseActivity {
 	@Override
 	public void initData() {
 		super.initData();
-//        for(int i=0;i<10;i++){
-//            HashMap<String, Object> map = new HashMap<String, Object>();
-//            map.put("name", "船舶名称"+i);
-//            map.put("boolean", false);//初始化为未选
-//            list.add(map);
-//        }//初始化数据
 		mTBtn.setOnLeftClickListener(new TitleButton.OnLeftClickListener() {
 			@Override
 			public void onLeftClickListener() {
-//                ToolAlert.showToast(getActivity(), "未过期", false);
 				list.clear();
 				data();
 				right.setVisibility(View.VISIBLE);
@@ -106,7 +99,6 @@ public class ShipActivity extends BaseActivity {
 			@Override
 			public void onRightClickListener() {
 				list.clear();
-//                ToolAlert.showToast(getActivity(), "已过期", false);
 				for (int i = 0; i < MainActivity.list.size(); i++) {
 					HashMap<String, Object> map = new HashMap<String, Object>();
 					map.put("name", MainActivity.list.get(i).getShipname());
@@ -114,22 +106,20 @@ public class ShipActivity extends BaseActivity {
 					map.put("number", MainActivity.list.get(i).getShipnumber());
 					list.add(map);
 				}//初始化数据
-				Adapter = new ShipAdapter(ShipActivity.this, R.layout.ship_adapter, list);
-				listveiw.setAdapter(Adapter);
 				right.setVisibility(View.GONE);
 				text_tile_del.setVisibility(View.GONE);
+				adapter.notifyDataSetChanged();
 			}
 		});
 
 		listveiw.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				ViewHolder viewCache = (ViewHolder) view.getTag();
 				CheckBox checkBox = viewCache.getView(R.id.cb_status);
 				checkBox.toggle();
 				list.get(position).put("boolean", checkBox.isChecked());
-				Adapter.notifyDataSetChanged();
+				adapter.notifyDataSetChanged();
 				if (checkBox.isChecked()) {//被选中状态
 					lists.add(list.get(position).get("name").toString());
 					listss.add(list.get(position).get("number").toString());
@@ -138,11 +128,11 @@ public class ShipActivity extends BaseActivity {
 					listss.remove(list.get(position).get("number").toString());
 					lists.remove(list.get(position).get("name").toString());
 				}
-//                ToolAlert.showToast(ShipActivity.this, "已选择了:" + listStr.size() + "项", false);
 			}
 		});
+		adapter = new ShipAdapter(ShipActivity.this, R.layout.ship_adapter, list);
+		listveiw.setAdapter(adapter);
 	}
-
 
 	@OnClick({R.id.text_title_back, R.id.text_tile_right, R.id.text_tile_del})
 	public void onClick(View v) {
@@ -159,7 +149,7 @@ public class ShipActivity extends BaseActivity {
 				} else {
 					ShipInfo shipInfo = new ShipInfo(MainActivity.USER_ID, listStr);
 					String jsonObject = GsonUtils.beanToJson(shipInfo);
-					shipselection(jsonObject);
+					shipSelection(jsonObject);
 				}
 				break;
 			case R.id.text_tile_del:
@@ -167,7 +157,7 @@ public class ShipActivity extends BaseActivity {
 					text_tile_del.setText("取消");
 					for (int i = 0; i < list.size(); i++) {
 						list.get(i).put("boolean", true);
-						Adapter.notifyDataSetChanged();
+						adapter.notifyDataSetChanged();
 						lists.add(list.get(i).get("name").toString());
 						listss.add(list.get(i).get("number").toString());
 					}//初始化数据
@@ -176,7 +166,7 @@ public class ShipActivity extends BaseActivity {
 					text_tile_del.setText("全选");
 					for (int i = 0; i < list.size(); i++) {
 						list.get(i).put("boolean", false);
-						Adapter.notifyDataSetChanged();
+						adapter.notifyDataSetChanged();
 						listss.remove(list.get(i).get("number").toString());
 						lists.remove(list.get(i).get("name").toString());
 					}//初始化数据
@@ -189,8 +179,6 @@ public class ShipActivity extends BaseActivity {
 
 	private void data() {
 		Map map = new HashMap();
-//        map.put("ordernumber", etSearch.getText().toString());
-//        map.put("ordername", etSearch.getText().toString());
 		map.put("Userid", MainActivity.USER_ID);
 		String jsonStr = GsonUtils.mapToJson(map);
 		Logger.i(TAG, jsonStr);
@@ -198,11 +186,11 @@ public class ShipActivity extends BaseActivity {
 			OkHttpUtil.postJsonData2Server(ShipActivity.this,
 					url_ship,
 					jsonStr,
+					progressTitle,
 					new OkHttpUtil.MyCallBack() {
 						@Override
 						public void onFailure(Request request, IOException e) {
 							ToolAlert.showToast(ShipActivity.this, "服务器异常,请稍后再试", false);
-
 						}
 
 						@Override
@@ -213,7 +201,6 @@ public class ShipActivity extends BaseActivity {
 							);
 							if (shipInfo.getStatus().equals("error")) {
 								ToolAlert.showToast(ShipActivity.this, shipInfo.getMessage(), false);
-
 							} else {
 								for (int i = 0; i < shipInfo.getDocuments().size(); i++) {
 									HashMap<String, Object> map = new HashMap<String, Object>();
@@ -222,9 +209,7 @@ public class ShipActivity extends BaseActivity {
 									map.put("number", shipInfo.getDocuments().get(i).getShipnumber());
 									list.add(map);
 								}//初始化数据
-								Adapter = new ShipAdapter(ShipActivity.this, R.layout.ship_adapter, list);
-								listveiw.setAdapter(Adapter);
-
+								adapter.notifyDataSetChanged();
 							}
 						}
 					}
@@ -236,20 +221,14 @@ public class ShipActivity extends BaseActivity {
 
 	}
 
-	private void shipselection(String str) {
-		Map map = new HashMap();
-//        map.put("ordernumber", etSearch.getText().toString());
-//        map.put("ordername", etSearch.getText().toString());
+	private void shipSelection(String str) {
 		Logger.i(TAG, str);
 		try {
-			OkHttpUtil.postJsonData2Server(ShipActivity.this,
-					url_shipselection,
-					str,
+			OkHttpUtil.postJsonData2Server(ShipActivity.this, url_shipselection, str,"正在提交...",
 					new OkHttpUtil.MyCallBack() {
 						@Override
 						public void onFailure(Request request, IOException e) {
 							ToolAlert.showToast(ShipActivity.this, "服务器异常,请稍后再试", false);
-
 						}
 
 						@Override
@@ -262,22 +241,11 @@ public class ShipActivity extends BaseActivity {
 								ToolAlert.showToast(ShipActivity.this, shipInfo.getMessage(), false);
 							} else {
 								ToolAlert.showToast(ShipActivity.this, "提交成功", false);
-								MainActivity.list = new ArrayList<ShipInfo.ship>(listStr);
-								;
+								MainActivity.list = new ArrayList<>(listStr);
 								finish();
-//                                for (int i = 0; i < shipInfo.getDocuments().size(); i++) {
-//                                    HashMap<String, Object> map = new HashMap<String, Object>();
-//                                    map.put("name", shipInfo.getDocuments().get(i).getShipname());
-//                                    map.put("boolean", false);//初始化为未选
-//                                    map.put("number", shipInfo.getDocuments().get(i).getShipnumber());
-//                                    list.add(map);
-//                                }//初始化数据
-//                                Adapter = new ShipAdapter(ShipActivity.this, list);
-//                                listveiw.setAdapter(Adapter);
 							}
 						}
 					}
-
 			);
 		} catch (IOException e) {
 			e.printStackTrace();

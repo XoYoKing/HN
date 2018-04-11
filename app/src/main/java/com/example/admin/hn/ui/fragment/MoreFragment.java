@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseFragment;
+import com.example.admin.hn.base.HNApplication;
 import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.AppUpdateInfo;
 import com.example.admin.hn.ui.account.AboutActivity;
@@ -30,6 +31,7 @@ import com.example.admin.hn.ui.account.ChangeBindPhoneNumberActivity;
 import com.example.admin.hn.ui.account.ChangeLoginPasswordActivity;
 import com.example.admin.hn.ui.account.ChartUpdateActivity;
 import com.example.admin.hn.ui.account.ShipActivity;
+import com.example.admin.hn.ui.account.ShipSelectActivity;
 import com.example.admin.hn.ui.login.LoginActivity;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
@@ -145,77 +147,65 @@ public class MoreFragment extends BaseFragment {
 
     @OnItemClick(R.id.lv_more_function)
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent;
         if (position == 0) {
-            intent = new Intent(getActivity(), ChartUpdateActivity.class);
-            startActivity(intent);
+            ChartUpdateActivity.startActivity(activity);
         } else if (position == 1) {
-            intent = new Intent(getActivity(), ShipActivity.class);
-            startActivity(intent);
+            ShipSelectActivity.startActivity(activity);
         } else if (position == 2) {
-            intent = new Intent(getActivity(), ChangeLoginPasswordActivity.class);
-            startActivity(intent);
+            ChangeLoginPasswordActivity.startActivity(activity);
         } else if (position == 3) {
-            intent = new Intent(getActivity(), ChangeBindPhoneNumberActivity.class);
-            startActivity(intent);
+            ChangeBindPhoneNumberActivity.startActivity(activity);
         } else if (position == 4) {
-            Map map = new HashMap();
-            map.put("type", "1");
-            String jsonStr = GsonUtils.mapToJson(map);
-            Logger.i(TAG, jsonStr);
-            try {
-                OkHttpUtil.postJsonData2Server(getActivity(),
-                        url_update,
-                        jsonStr,
-                        new OkHttpUtil.MyCallBack() {
-                            @Override
-                            public void onFailure(Request request, IOException e) {
-                                ToolAlert.showToast(getActivity(), "连接服务器失败,请稍后再试", false);
-                            }
-
-                            @Override
-                            public void onResponse(String json) {
-                                Logger.i(TAG, json);
-                                AppUpdateInfo appUpdateInfo = GsonUtils.jsonToBean(
-                                        json, AppUpdateInfo.class
-                                );
-                                if ((appUpdateInfo.getStatus()).equals("success")) {
-                                    if (Double.valueOf(getAppVersionName(getActivity())) < Double.valueOf(appUpdateInfo.getDocuments().get(appUpdateInfo.getDocuments().size()-1).getVersionnumber())) {
-                                        showNoticeDialog(getActivity(), appUpdateInfo.getDocuments().get(0).getDownloadurl());
-                                    } else {
-                                        ToolAlert.showToast(getActivity(), "当前已是最新版本", false);
-                                    }
-                                } else {
-                                    ToolAlert.showToast(getActivity(), appUpdateInfo.getMessage(), false);
-                                }
-                            }
-                        }
-                );
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else if (position == 5)
-
-        {
-            intent = new Intent(getActivity(), AboutActivity.class);
-            startActivity(intent);
+            checkVersion();
+        } else if (position == 5){
+            AboutActivity.startActivity(activity);
         }
 
     }
 
+    private void checkVersion() {
+        Map map = new HashMap();
+        map.put("type", "1");
+        String jsonStr = GsonUtils.mapToJson(map);
+        Logger.i(TAG, jsonStr);
+        try {
+            OkHttpUtil.postJsonData2Server(getActivity(),
+                    url_update,
+                    jsonStr,
+                    new OkHttpUtil.MyCallBack() {
+                        @Override
+                        public void onFailure(Request request, IOException e) {
+                            ToolAlert.showToast(getActivity(), "连接服务器失败,请稍后再试", false);
+                        }
+
+                        @Override
+                        public void onResponse(String json) {
+                            Logger.i(TAG, json);
+                            AppUpdateInfo appUpdateInfo = GsonUtils.jsonToBean(
+                                    json, AppUpdateInfo.class
+                            );
+                            if ((appUpdateInfo.getStatus()).equals("success")) {
+                                if (Double.valueOf(getAppVersionName(getActivity())) < Double.valueOf(appUpdateInfo.getDocuments().get(appUpdateInfo.getDocuments().size()-1).getVersionnumber())) {
+                                    showNoticeDialog(getActivity(), appUpdateInfo.getDocuments().get(0).getDownloadurl());
+                                } else {
+                                    ToolAlert.showToast(getActivity(), "当前已是最新版本", false);
+                                }
+                            } else {
+                                ToolAlert.showToast(getActivity(), appUpdateInfo.getMessage(), false);
+                            }
+                        }
+                    }
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @OnClick(R.id.btn_Sign_out)
     public void onClick(View v) {
-        SharedPreferences sharedPre = getActivity().getSharedPreferences("config", getActivity().MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPre.edit();
-        //设置参数
-        editor.putString("password", "");
-        editor.putString("switche", "2");
-        //提交
-        editor.commit();
-        Intent intent = new Intent(getActivity(), LoginActivity.class);
-        startActivity(intent);
-        getActivity().finish();
-
+        //清除 当前环境的数据
+        HNApplication.mApp.logout();
+        LoginActivity.startActivity(activity);
     }
 
     static ProgersssDialog progersssDialog;

@@ -1,5 +1,7 @@
 package com.example.admin.hn.ui.account;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -79,6 +81,11 @@ public class ChangeBindPhoneNumberActivity extends BaseActivity {
     public void initTitleBar() {
         textTitleBack.setBackgroundResource(R.drawable.btn_back);
         textTitle.setText(R.string.title_change_bind_email);
+    }
+
+    public static void startActivity(Context context){
+        Intent intent = new Intent(context, ChangeBindPhoneNumberActivity.class);
+        context.startActivity(intent);
     }
 
     @Override

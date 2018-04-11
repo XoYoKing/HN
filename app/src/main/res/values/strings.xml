@@ -15,8 +15,9 @@
 
     <string name="tab1_text">船位</string>
     <string name="tab2_text">商城</string>
-    <string name="tab3_text">文库</string>
-    <string name="tab4_text">海图</string>
+    <string name="tab3_text">航海知识库</string>
+    <string name="tab4_text">电子海图</string>
+    <string name="tab4_text2">船舶资料管理</string>
     <string name="tab5_text">更多</string>
 
     <!-- 登录页面相关-->

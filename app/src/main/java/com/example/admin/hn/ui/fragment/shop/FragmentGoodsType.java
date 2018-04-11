@@ -66,7 +66,7 @@ public class FragmentGoodsType extends BaseFragment {
     public void initView() {
         Bundle bundle = getArguments();
         homeTypeInfo = (HomeTypeInfo) bundle.getSerializable("homeTypeInfo");
-
+        top_type.setVisibility(View.GONE);
         top_type.setText(homeTypeInfo.getName());
         recycleView.setNestedScrollingEnabled(false);
         recycleView.setFocusable(false);
@@ -97,13 +97,301 @@ public class FragmentGoodsType extends BaseFragment {
         if (homeInfos.size() > 0) {
             homeInfos.clear();
         }
-        for (int i = 1; i < 3; i++) {
-            HomeInfo info = new HomeInfo();
-            info.catalogData= new ArrayList<>();
-            for (int j = 0; j < 5; j++) {
-                info.catalogData.add(new HomeItem());
+        if (homeTypeInfo.getId() == 0) {
+            for (int i = 0; i < 11; i++) {
+                HomeInfo info = new HomeInfo();
+                info.data= new ArrayList<>();
+                if (i == 0) {
+                    info.name = "今日推荐";
+                    info.type = 1;
+                } else if (i == 1) {
+                    info.name = "中版海图";
+                    info.type = 1;
+                    for (int j = 0; j < 3; j++) {
+                        HomeItem homeItem = new HomeItem();
+                        if (j == 0) {
+                            homeItem.goodsName = "航海部海图";
+                        }else if (j == 1) {
+                            homeItem.goodsName = "海事局海图";
+                        }else if (j == 2) {
+                            homeItem.goodsName = "专用海图";
+                        }
+                        info.data.add(homeItem);
+                    }
+                }else if (i == 2) {
+                    info.name = "英版海图";
+                    info.type = 1;
+                    for (int j = 0; j < 1; j++) {
+                        HomeItem homeItem = new HomeItem();
+                        if (j == 0) {
+                            homeItem.goodsName = "外版海图";
+                        }
+                        info.data.add(homeItem);
+                    }
+                }else if (i == 3) {
+                    info.name = "中版书籍";
+                    info.type = 1;
+                    for (int j = 0; j < 2; j++) {
+                        HomeItem homeItem = new HomeItem();
+                        if (j == 0) {
+                            homeItem.goodsName = "中版图书";
+                        }else if (j == 1) {
+                            homeItem.goodsName = "航海杂志";
+                        }
+                        info.data.add(homeItem);
+                    }
+                }else if (i == 4) {
+                    info.name = "英版书籍";
+                    info.type = 1;
+                    for (int j = 0; j < 1; j++) {
+                        HomeItem homeItem = new HomeItem();
+                        if (j == 0) {
+                            homeItem.goodsName = "外版图书";
+                        }
+                        info.data.add(homeItem);
+                    }
+                }else if (i == 5) {
+                    info.name = "安全标志";
+                    info.type = 1;
+                    for (int j = 0; j < 3; j++) {
+                        HomeItem homeItem = new HomeItem();
+                        if (j == 0) {
+                            homeItem.goodsName = "救生标志";
+                        }else if (j == 1) {
+                            homeItem.goodsName = "消防标志";
+                        }else if (j == 2) {
+                            homeItem.goodsName = "安全张贴";
+                        }
+                        info.data.add(homeItem);
+                    }
+                }else if (i == 6) {
+                    info.name = "其他";
+                    info.type = 1;
+                    for (int j = 0; j < 6; j++) {
+                        HomeItem homeItem = new HomeItem();
+                        if (j == 0) {
+                            homeItem.goodsName = "服务包";
+                        }else if (j == 1) {
+                            homeItem.goodsName = "中华表册";
+                        }else if (j == 2) {
+                            homeItem.goodsName = "油运表册";
+                        }else if (j == 3) {
+                            homeItem.goodsName = "国际表册";
+                        }else if (j == 4) {
+                            homeItem.goodsName = "航海通告";
+                        }else if (j == 5) {
+                            homeItem.goodsName = "其他材料";
+                        }
+                        info.data.add(homeItem);
+                    }
+                }else if (i == 7) {
+                    info.name = "电子版海图";
+                    info.type = 1;
+                    for (int j = 0; j < 2; j++) {
+                        HomeItem homeItem = new HomeItem();
+                        if (j == 0) {
+                            homeItem.goodsName = "电子版海图";
+                        }else if (j == 1) {
+                            homeItem.goodsName = "电子版海图";
+                        }
+                        info.data.add(homeItem);
+                    }
+                } else if (i == 8) {
+                    info.name = "电子版书籍";
+                    info.type = 1;
+                    for (int j = 0; j < 2; j++) {
+                        HomeItem homeItem = new HomeItem();
+                        if (j == 0) {
+                            homeItem.goodsName = "电子版书籍";
+                        }else if (j == 1) {
+                            homeItem.goodsName = "电子版书籍";
+                        }
+                        info.data.add(homeItem);
+                    }
+                }else if (i == 9) {
+                    info.name = "丽佳通讯";
+                    info.type = 1;
+                    for (int j = 0; j < 1; j++) {
+                        HomeItem homeItem = new HomeItem();
+                        if (j == 0) {
+                            homeItem.goodsName = "丽佳通讯";
+                        }
+                        info.data.add(homeItem);
+                    }
+                }else if (i == 10) {
+                    info.name = "新书速递";
+                    info.type = 1;
+                    for (int j = 0; j < 5; j++) {
+                        HomeItem homeItem = new HomeItem();
+                        if (j == 0) {
+                            homeItem.goodsName = "船舶使用低硫燃油指南2013";
+                        }else if (j == 1) {
+                            homeItem.goodsName = "IMO第92届海上安全委员会通过的决议(中英文光盘）";
+                        }else if (j == 2) {
+                            homeItem.goodsName = "IMO第65届海上环境保护委员会通过的决议（中英文光盘）";
+                        }else if (j == 3) {
+                            homeItem.goodsName = "国内航行海船缺陷处理操作指南";
+                        }else if (j == 4) {
+                            homeItem.goodsName = "船舶引航管理规定";
+                        }
+                        info.data.add(homeItem);
+                    }
+                }
+                homeInfos.add(info);
             }
-            info.type = i;
+        } else if (homeTypeInfo.getId() == 1) {
+            
+        }else if (homeTypeInfo.getId() == 2) {
+            for (int i = 1; i < 7; i++) {
+                HomeInfo info = new HomeInfo();
+                info.data= new ArrayList<>();
+                if (i == 1) {
+                    info.name = "中版海图";
+                    info.type = 1;
+                    for (int j = 0; j < 3; j++) {
+                        HomeItem homeItem = new HomeItem();
+                        if (j == 0) {
+                            homeItem.goodsName = "航海部海图";
+                        }else if (j == 1) {
+                            homeItem.goodsName = "海事局海图";
+                        }else if (j == 2) {
+                            homeItem.goodsName = "专用海图";
+                        }
+                        info.data.add(homeItem);
+                    }
+                }else if (i == 2) {
+                    info.name = "英版海图";
+                    info.type = 1;
+                    for (int j = 0; j < 1; j++) {
+                        HomeItem homeItem = new HomeItem();
+                        if (j == 0) {
+                            homeItem.goodsName = "外版海图";
+                        }
+                        info.data.add(homeItem);
+                    }
+                }else if (i == 3) {
+                    info.name = "中版书籍";
+                    info.type = 1;
+                    for (int j = 0; j < 2; j++) {
+                        HomeItem homeItem = new HomeItem();
+                        if (j == 0) {
+                            homeItem.goodsName = "中版图书";
+                        }else if (j == 1) {
+                            homeItem.goodsName = "航海杂志";
+                        }
+                        info.data.add(homeItem);
+                    }
+                }else if (i == 4) {
+                    info.name = "英版书籍";
+                    info.type = 1;
+                    for (int j = 0; j < 1; j++) {
+                        HomeItem homeItem = new HomeItem();
+                        if (j == 0) {
+                            homeItem.goodsName = "外版图书";
+                        }
+                        info.data.add(homeItem);
+                    }
+                }else if (i == 5) {
+                    info.name = "安全标志";
+                    info.type = 1;
+                    for (int j = 0; j < 3; j++) {
+                        HomeItem homeItem = new HomeItem();
+                        if (j == 0) {
+                            homeItem.goodsName = "救生标志";
+                        }else if (j == 1) {
+                            homeItem.goodsName = "消防标志";
+                        }else if (j == 2) {
+                            homeItem.goodsName = "安全张贴";
+                        }
+                        info.data.add(homeItem);
+                    }
+                }else if (i == 6) {
+                    info.name = "其他";
+                    info.type = 1;
+                    for (int j = 0; j < 6; j++) {
+                        HomeItem homeItem = new HomeItem();
+                        if (j == 0) {
+                            homeItem.goodsName = "服务包";
+                        }else if (j == 1) {
+                            homeItem.goodsName = "中华表册";
+                        }else if (j == 2) {
+                            homeItem.goodsName = "油运表册";
+                        }else if (j == 1) {
+                            homeItem.goodsName = "国际表册";
+                        }else if (j == 2) {
+                            homeItem.goodsName = "航海通告";
+                        }else if (j == 1) {
+                            homeItem.goodsName = "其他材料";
+                        }
+                        info.data.add(homeItem);
+                    }
+                }
+                homeInfos.add(info);
+            }
+        }else if (homeTypeInfo.getId() == 3) {
+            for (int i = 0; i < 2; i++) {
+                HomeInfo info = new HomeInfo();
+                info.data= new ArrayList<>();
+                if (i == 0) {
+                    info.name = "电子版海图";
+                    info.type = 1;
+                    for (int j = 0; j < 2; j++) {
+                        HomeItem homeItem = new HomeItem();
+                        if (j == 0) {
+                            homeItem.goodsName = "电子版海图";
+                        }else if (j == 1) {
+                            homeItem.goodsName = "电子版海图";
+                        }
+                        info.data.add(homeItem);
+                    }
+                } else if (i == 1) {
+                    info.name = "电子版书籍";
+                    info.type = 1;
+                    for (int j = 0; j < 2; j++) {
+                        HomeItem homeItem = new HomeItem();
+                        if (j == 0) {
+                            homeItem.goodsName = "电子版书籍";
+                        }else if (j == 1) {
+                            homeItem.goodsName = "电子版书籍";
+                        }
+                        info.data.add(homeItem);
+                    }
+                }
+                homeInfos.add(info);
+            }
+        }else if (homeTypeInfo.getId() == 4) {
+            HomeInfo info = new HomeInfo();
+            info.data= new ArrayList<>();
+            info.name = "丽佳通讯";
+            info.type = 1;
+            for (int j = 0; j < 1; j++) {
+                HomeItem homeItem = new HomeItem();
+                if (j == 0) {
+                    homeItem.goodsName = "丽佳通讯";
+                }
+                info.data.add(homeItem);
+            }
+            homeInfos.add(info);
+        }else if (homeTypeInfo.getId() == 5) {
+                HomeInfo info = new HomeInfo();
+                info.data= new ArrayList<>();
+                info.name = "新书速递";
+                info.type = 1;
+                for (int j = 0; j < 5; j++) {
+                    HomeItem homeItem = new HomeItem();
+                    if (j == 0) {
+                        homeItem.goodsName = "船舶使用低硫燃油指南2013";
+                    }else if (j == 1) {
+                        homeItem.goodsName = "IMO第92届海上安全委员会通过的决议(中英文光盘）";
+                    }else if (j == 2) {
+                        homeItem.goodsName = "IMO第65届海上环境保护委员会通过的决议（中英文光盘）";
+                    }else if (j == 3) {
+                        homeItem.goodsName = "国内航行海船缺陷处理操作指南";
+                    }else if (j == 4) {
+                        homeItem.goodsName = "船舶引航管理规定";
+                    }
+                    info.data.add(homeItem);
+                }
             homeInfos.add(info);
         }
         adapter.notifyDataSetChanged();

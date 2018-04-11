@@ -52,6 +52,7 @@ public class OrderManagerFragment extends BaseFragment {
 		adapter.addTab("退回","2", OrderManagerStatusFragment.class);
 		adapter.addTab("通过","3", OrderManagerStatusFragment.class);
 		adapter.addTab("待审核","4", OrderManagerStatusFragment.class);
+		viewPager.setOffscreenPageLimit(4);
 		tabLayout.setupWithViewPager(viewPager);
 	}
 

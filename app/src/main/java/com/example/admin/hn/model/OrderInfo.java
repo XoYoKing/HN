@@ -119,6 +119,7 @@ public class OrderInfo {
             this.status = status;
             this.shipname = shipname;
         }
+        public Order(){}
 
         private String money;
         private String linename;

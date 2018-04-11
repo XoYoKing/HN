@@ -1,5 +1,6 @@
 package com.example.admin.hn.ui.account;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -106,6 +107,11 @@ public class ChartUpdateActivity extends BaseActivity implements AdapterView.OnI
 		mTextTitle.setText(R.string.title_chart_update);
 		mTextright.setBackgroundResource(R.drawable.sort);
 		hide.setVisibility(View.GONE);
+	}
+
+	public static void startActivity(Context context){
+		Intent intent = new Intent(context, ChartUpdateActivity.class);
+		context.startActivity(intent);
 	}
 
 

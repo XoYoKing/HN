@@ -1,5 +1,7 @@
 package com.example.admin.hn.ui.account;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -11,6 +13,7 @@ import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseActivity;
 import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.ServerResponse;
+import com.example.admin.hn.ui.login.FindPasswordActivity;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
 import com.orhanobut.logger.Logger;
@@ -69,6 +72,10 @@ public class ChangeLoginPasswordActivity extends BaseActivity {
         tv_account_phone.setText(MainActivity.phonenumber);
     }
 
+    public static void startActivity(Context context){
+        Intent intent = new Intent(context, ChangeLoginPasswordActivity.class);
+        context.startActivity(intent);
+    }
 
     @Override
     public void initView() {

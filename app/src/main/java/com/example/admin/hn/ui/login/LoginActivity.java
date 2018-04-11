@@ -1,6 +1,8 @@
 package com.example.admin.hn.ui.login;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -27,6 +29,7 @@ import com.example.admin.hn.base.MyApplication;
 import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.ServerResponse;
 import com.example.admin.hn.model.ShipInfo;
+import com.example.admin.hn.ui.account.AboutActivity;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolString;
@@ -77,8 +80,8 @@ public class LoginActivity extends BaseActivity {
     private String url_login = Api.BASE_URL + Api.LOGIN;
     private List<String> data_list;
     private ArrayAdapter<String> arr_adapter;
-    private int status = 1;
-    private LoadingFragment loading;
+//    private int status = 1;
+    private boolean isTest;//是否是测试环境  默认为生产环境
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,10 +105,10 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void initData() {
         super.initData();
-        String username = HNApplication.mApp.getUserName(status == 1 ? false : true);
-        String password = HNApplication.mApp.getPassWord(status == 1 ? false : true);
-        String switches = HNApplication.mApp.getSwitche(status == 1 ? false : true);
-        if (status == 1) {
+        String username = HNApplication.mApp.getUserName();
+        String password = HNApplication.mApp.getPassWord();
+        String switches = HNApplication.mApp.getSwitche();
+        if (isTest) {
             if (switches.equals("1")) {
                 mCbAgreeProtocol.setChecked(true);
                 etPassword.setText(password);
@@ -126,12 +129,11 @@ public class LoginActivity extends BaseActivity {
         }
 
         //数据
-        data_list = new ArrayList<String>();
+        data_list = new ArrayList<>();
         data_list.add("生产环境");
         data_list.add("测试环境");
-
         //适配器
-        arr_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, data_list);
+        arr_adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, data_list);
         //设置样式
         arr_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //加载适配器
@@ -139,17 +141,18 @@ public class LoginActivity extends BaseActivity {
         environment.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
+                if (position == 0) {//生产环境
                     Api.BASE_URL = "http://222.66.158.231:9000/";
-                    status = 1;
-                } else if (position == 1) {
+                    isTest = false;
+                } else if (position == 1) {//测试环境
                     Api.BASE_URL = "http://10.18.4.31:9000/";
-                    status = 2;
+                    isTest = true;
                 }
-                String username = HNApplication.mApp.getUserName(status == 1 ? false : true);
-                String password =  HNApplication.mApp.getPassWord(status == 1 ? false : true);
-                String switches =  HNApplication.mApp.getSwitche(status == 1 ? false : true);
-                if (status == 1) {
+                HNApplication.mApp.setTestAmbient(isTest);
+                String username = HNApplication.mApp.getUserName();
+                String password =  HNApplication.mApp.getPassWord();
+                String switches =  HNApplication.mApp.getSwitche();
+                if (isTest) {
                     if (switches.equals("1")) {
                         mCbAgreeProtocol.setChecked(true);
                         etPassword.setText(password);
@@ -206,17 +209,20 @@ public class LoginActivity extends BaseActivity {
         });
     }
 
+    public static void startActivity(Activity activity){
+        Intent intent = new Intent(activity, LoginActivity.class);
+        activity.startActivity(intent);
+        activity.finish();
+    }
 
     @OnClick({R.id.tv_forget_password, R.id.text_title_back, R.id.btn_login_enter, R.id.text_tile_right})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_forget_password:
-                Intent intent_Password = new Intent(LoginActivity.this, FindPasswordActivity.class);
-                startActivity(intent_Password);
+                FindPasswordActivity.startActivity(this);
                 break;
             case R.id.text_tile_right:
-                Intent intent_register = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(intent_register);
+                RegisterActivity.startActivity(this);
                 break;
             case R.id.btn_login_enter:
                 if (!ToolString.isNoBlankAndNoNull(etName.getText().toString())) {
@@ -249,42 +255,33 @@ public class LoginActivity extends BaseActivity {
         String jsonStr = GsonUtils.mapToJson(map);
         Logger.i(TAG, jsonStr);
         try {
-            loading = LoadingFragment.showLoading(context, "正在登陆...");
             OkHttpUtil.postJsonData2Server(LoginActivity.this,
                     Api.BASE_URL + Api.LOGIN,
                     jsonStr,
+                    "正在登录",
                     new OkHttpUtil.MyCallBack() {
                         @Override
                         public void onFailure(Request request, IOException e) {
-                            LoadingFragment.dismiss(loading);
                             ToolAlert.showToast(LoginActivity.this, "服务器异常,请稍后再试", false);
                         }
 
                         @Override
                         public void onResponse(String json) {
-                            LoadingFragment.dismiss(loading);
                             Logger.i(TAG, json);
-                            ServerResponse serverResponse = GsonUtils
-                                    .jsonToBean(json,
-                                            ServerResponse.class
-                                    );
-                            ShipInfo shipInfo = GsonUtils
-                                    .jsonToBean(json,
-                                            ShipInfo.class
-                                    );
+                            ServerResponse serverResponse = GsonUtils.jsonToBean(json, ServerResponse.class);
+                            ShipInfo shipInfo = GsonUtils.jsonToBean(json, ShipInfo.class);
                             if (serverResponse.getStatus().equals("success")) {
                                 if (str.equals("2")) {
                                     if (mCbAgreeProtocol.isChecked()) {
-                                        saveLoginInfo(etName.getText().toString(), etPassword.getText().toString(), "1", status);
+                                        saveLoginInfo(etName.getText().toString(), etPassword.getText().toString(), "1");
                                     } else {
-                                        saveLoginInfo(etName.getText().toString(), etPassword.getText().toString(), "2", status);
+                                        saveLoginInfo(etName.getText().toString(), etPassword.getText().toString(), "2");
                                     }
                                 }
                                 ArrayList<ShipInfo.ship> list = new ArrayList<ShipInfo.ship>();
                                 for (int i = 0; i < shipInfo.getDocuments().size(); i++) {
                                     list.add(new ShipInfo.ship(shipInfo.getDocuments().get(i).getShipnumber(), shipInfo.getDocuments().get(i).getShipname()));
                                 }
-//                                ToolAlert.showToast(LoginActivity.this, serverResponse.getMessage(), false);
                                 Intent intent_homepage = new Intent(LoginActivity.this, MainActivity.class);
                                 intent_homepage.putExtra("phonenumber", serverResponse.getPhonenumber());
                                 intent_homepage.putExtra("username", serverResponse.getUsername());
@@ -307,15 +304,14 @@ public class LoginActivity extends BaseActivity {
     }
 
 
-    public static void saveLoginInfo(String username, String password, String switches, int i) {
-        HNApplication.mApp.setUserName(username, i == 1 ? false : true);
-        HNApplication.mApp.setSwitche(switches,i == 1 ? false : true);
-        HNApplication.mApp.setPassWord(password,i == 1 ? false : true);
+    public static void saveLoginInfo(String username, String password, String switches) {
+        HNApplication.mApp.setUserName(username);
+        HNApplication.mApp.setSwitche(switches);
+        HNApplication.mApp.setPassWord(password);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        LoadingFragment.dismiss(loading);
     }
 }

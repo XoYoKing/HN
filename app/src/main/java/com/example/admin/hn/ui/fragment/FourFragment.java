@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.base.BaseFragment;
+import com.example.admin.hn.http.Constant;
 import com.example.admin.hn.ui.account.MessageCenterActivity;
 import com.example.admin.hn.ui.account.PopActivity;
 import com.example.admin.hn.ui.adapter.AllChildTabAdapter;
@@ -30,12 +31,15 @@ import butterknife.OnClick;
 /**
  * @author duantao
  * @date on 2017/7/26 16:04
- * @describe 海图管理
+ * @describe 电子海图
  */
 public class FourFragment extends BaseFragment {
 
 	@Bind(R.id.tv_top_title)
 	TextView textTitle;
+	@Bind(R.id.tv_search)
+	TextView tv_search;
+
 	@Bind(R.id.text_tile_right)
 	FrameLayout right;
 	@Bind(R.id.iv_two)
@@ -71,17 +75,36 @@ public class FourFragment extends BaseFragment {
 
 		AllChildTabAdapter adapter = new AllChildTabAdapter(getChildFragmentManager(), activity, viewPager);
 		adapter.addTab("订单管理", OrderManagerFragment.class);
-		adapter.addTab("采购管理", OrderPurchaseManagerFragment.class);
-		adapter.addTab("订单领用", OrderUseManagerFragment.class);
+//		adapter.addTab("采购管理", OrderPurchaseManagerFragment.class);
+//		adapter.addTab("订单领用", OrderUseManagerFragment.class);
 		adapter.addTab("库存管理", OrderInventoryManagerFragment.class);
-		viewPager.setOffscreenPageLimit(3);
+//		viewPager.setOffscreenPageLimit(3);
 		tabLayout.setupWithViewPager(viewPager);
-		viewPager.setCurrentItem(0);
+		viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+			@Override
+			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+			}
+
+			@Override
+			public void onPageSelected(int position) {
+				if (position == 0) {
+					tv_search.setVisibility(View.VISIBLE);
+				}else {
+					tv_search.setVisibility(View.INVISIBLE);
+				}
+			}
+
+			@Override
+			public void onPageScrollStateChanged(int state) {
+
+			}
+		});
 	}
 
 	@Override
 	public void initTitleBar() {
-		textTitle.setText("海图");
+		textTitle.setText("电子海图");
 	}
 
 
@@ -108,13 +131,9 @@ public class FourFragment extends BaseFragment {
 			case R.id.tv_search:
 				int currentItem = viewPager.getCurrentItem();
 				if (currentItem == 0) {
-					PopActivity.startActivity(activity, R.layout.popup_order_manager_layout, 400);
+					PopActivity.startActivity(activity, R.layout.popup_order_manager_layout, Constant.POP_ORDER_MANAGER);
 				} else if (currentItem == 1) {
-					PopActivity.startActivity(activity,R.layout.popup_order_purchase_layout, 500);
-				} else if (currentItem == 2) {
-					PopActivity.startActivity(activity,R.layout.popup_order_use_layout, 600);
-				} else if (currentItem == 3) {
-					PopActivity.startActivity(activity,R.layout.popup_order_inventory_layout, 700);
+					PopActivity.startActivity(activity,R.layout.popup_order_inventory_layout, Constant.POP_ORDER_INVENTORY);
 				}
 				break;
 		}
