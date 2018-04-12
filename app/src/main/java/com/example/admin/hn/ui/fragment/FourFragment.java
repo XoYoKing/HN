@@ -1,8 +1,12 @@
 package com.example.admin.hn.ui.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,6 +55,9 @@ public class FourFragment extends BaseFragment {
 	TabLayout tabLayout;
 
 	private View view;
+	private LocalBroadcastManager localBroadcastManager;
+	private BroadcastReceiver br;
+	private int childCurrentItem;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -70,6 +77,7 @@ public class FourFragment extends BaseFragment {
 	@Override
 	public void initData() {
 		addChildFragment();
+		initBroadcastReceiver();
 	}
 
 	private void addChildFragment() {
@@ -79,7 +87,6 @@ public class FourFragment extends BaseFragment {
 //		adapter.addTab("采购管理", OrderPurchaseManagerFragment.class);
 //		adapter.addTab("订单领用", OrderUseManagerFragment.class);
 		adapter.addTab("库存管理", OrderInventoryManagerFragment.class);
-//		viewPager.setOffscreenPageLimit(3);
 		tabLayout.setupWithViewPager(viewPager);
 		viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 			@Override
@@ -132,7 +139,7 @@ public class FourFragment extends BaseFragment {
 			case R.id.tv_search:
 				int currentItem = viewPager.getCurrentItem();
 				if (currentItem == 0) {
-					PopActivity.startActivity(activity, R.layout.popup_order_manager_layout, Constant.POP_ORDER_MANAGER);
+					PopActivity.startActivity(activity,childCurrentItem,R.layout.popup_order_manager_layout, Constant.POP_ORDER_MANAGER);
 				} else if (currentItem == 1) {
 					PopActivity.startActivity(activity,R.layout.popup_order_inventory_layout, Constant.POP_ORDER_INVENTORY);
 				}
@@ -140,4 +147,24 @@ public class FourFragment extends BaseFragment {
 		}
 	}
 
+	private void initBroadcastReceiver(){
+		localBroadcastManager = LocalBroadcastManager.getInstance(activity);
+		IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction("FourFragment");
+		br = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				if (intent != null) {
+					childCurrentItem = intent.getIntExtra("position", 0);
+				}
+			}
+		};
+		localBroadcastManager.registerReceiver(br, intentFilter);
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		localBroadcastManager.unregisterReceiver(br);
+	}
 }

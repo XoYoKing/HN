@@ -17,6 +17,7 @@
     <color name="cerulean">#1FACEC</color>
     <color name="picton_blue">#48BDF5</color>
     <color name="red">#FF0000</color>
+    <color name="red_normal">#ec2020</color>
     <color name="white_smoke">#F5F5F5</color>
     <color name="yukon_gold">#3084EC</color>
     <color name="pink">#44FF0000</color>R.color.yukon_gold
@@ -46,6 +47,10 @@
     <color name="charcoal">#474747</color>
     <color name="color_808080">#808080</color>
     <color name="scan_bg">#7f000000</color>
+    <!--文字颜色-->
+    <color name="text_color">#3d3d3d</color>
+    <!--输入框 提示颜色-->
+    <color name="text_gray_color">#636971</color>
     <!--输入框 提示颜色-->
     <color name="text_color_hint">#9ca4ae</color>
     <!--蓝色按钮  没按下的时候-->
@@ -64,7 +69,8 @@
     <color name="mask_color">#88888888</color>
     <color name="check_bg">#f2f2f2</color>
     <color name="un_press_color">#ECA90C</color>
-    <color name="line_color">#cccccc</color>
+    <color name="line_color">#d6d6d6</color>
+    <color name="line_color_solid">#d6d2d2</color>
     <color name="edittext_line_color">#000000</color>
     <color name="StarDust">#A1A1A1</color>
     <color name="TreePoppy">#FE961F</color>

@@ -1,5 +1,6 @@
 package com.example.admin.hn.ui.account;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -14,6 +15,8 @@ import com.example.admin.hn.base.BaseActivity;
 import com.example.admin.hn.base.HNApplication;
 import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.OrderInfo;
+import com.example.admin.hn.model.ShoppingCartInfo;
+import com.example.admin.hn.ui.shop.FirmOrderActivity;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
 import com.orhanobut.logger.Logger;
@@ -129,6 +132,18 @@ public class OrderActivity extends BaseActivity {
         mTroute.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         tv_details.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 
+    }
+
+
+    /**
+     *
+     * @param context
+     */
+    public static void startActivity(Context context, String shipname,String ordernumber) {
+        Intent intent = new Intent(context, FirmOrderActivity.class);
+        intent.putExtra("shipname",shipname);
+        intent.putExtra("number", ordernumber);
+        context.startActivity(intent);
     }
 
 

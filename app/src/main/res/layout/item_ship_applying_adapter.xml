@@ -18,7 +18,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="资料类别："
-                android:textColor="@color/black"
+                android:textColor="@color/text_gray_color"
                 android:textSize="@dimen/common_15sp" />
 
             <TextView
@@ -26,6 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="电子版海图"
+                android:textColor="@color/text_color"
                 android:textSize="@dimen/common_15sp" />
 
         </LinearLayout>
@@ -46,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="船舶名称："
-                android:textColor="@color/black"
+                android:textColor="@color/text_gray_color"
                 android:textSize="@dimen/common_15sp" />
 
             <TextView
@@ -54,6 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="bai lu zuo"
+                android:textColor="@color/text_color"
                 android:textSize="@dimen/common_15sp" />
 
         </LinearLayout>
@@ -69,7 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="资料名称："
-            android:textColor="@color/black"
+            android:textColor="@color/text_gray_color"
             android:textSize="@dimen/common_15sp" />
 
         <TextView
@@ -77,6 +79,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="S45027201803231001"
+            android:textColor="@color/text_color"
             android:textSize="@dimen/common_15sp" />
 
     </LinearLayout>
@@ -94,7 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="资料编号："
-                android:textColor="@color/black"
+                android:textColor="@color/text_gray_color"
                 android:textSize="@dimen/common_15sp" />
 
             <TextView
@@ -102,6 +105,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="DIS180403001-3"
+                android:textColor="@color/text_color"
                 android:textSize="@dimen/common_15sp" />
 
         </LinearLayout>
@@ -125,7 +129,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="出版日期："
-                android:textColor="@color/black"
+                android:textColor="@color/text_gray_color"
                 android:textSize="@dimen/common_15sp" />
 
             <TextView
@@ -133,6 +137,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2018-03-23"
+                android:textColor="@color/text_color"
                 android:textSize="@dimen/common_15sp" />
 
         </LinearLayout>
@@ -147,7 +152,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="申请数量："
-                android:textColor="@color/black"
+                android:textColor="@color/text_gray_color"
                 android:textSize="@dimen/common_15sp" />
 
             <TextView
@@ -155,6 +160,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="6"
+                android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/common_15sp" />
         </LinearLayout>
     </RelativeLayout>

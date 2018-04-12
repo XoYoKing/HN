@@ -27,7 +27,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="船舶名称："
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_gray_color"
                     android:textSize="@dimen/common_15sp" />
 
                 <TextView
@@ -35,6 +35,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="S45027201803231001"
+                    android:textColor="@color/text_color"
                     android:textSize="@dimen/common_15sp" />
 
             </LinearLayout>
@@ -62,7 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="申请编号："
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_gray_color"
                     android:textSize="@dimen/common_15sp" />
 
                 <TextView
@@ -70,6 +71,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="DIS180403001-3"
+                    android:textColor="@color/text_color"
                     android:textSize="@dimen/common_15sp" />
 
             </LinearLayout>
@@ -84,8 +86,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="数量："
-                    android:textColor="@color/black"
+                    android:text="申请数量："
+                    android:textColor="@color/text_gray_color"
                     android:textSize="@dimen/common_15sp" />
 
                 <TextView
@@ -93,6 +95,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="6"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/common_15sp" />
 
             </LinearLayout>
@@ -113,13 +116,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="申请日期："
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_gray_color"
                     android:textSize="@dimen/common_15sp" />
 
                 <TextView
                     android:id="@+id/tv_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/text_color"
                     android:text="2018-03-23"
                     android:textSize="@dimen/common_15sp" />
 
@@ -128,7 +132,7 @@
             <Button
                 android:id="@+id/bt_submit"
                 android:layout_alignParentRight="true"
-                android:layout_width="@dimen/common_80dp"
+                android:layout_width="@dimen/common_60dp"
                 android:layout_below="@+id/linear"
                 android:layout_height="@dimen/common_30dp"
                 android:textSize="@dimen/common_15sp"

@@ -1,44 +1,27 @@
 package com.example.admin.hn.ui.fragment.seaShart;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import com.bigkoo.pickerview.TimePickerView;
-import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseFragment;
-import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.OrderInfo;
-import com.example.admin.hn.ui.adapter.MaterialNotSelectAdapter;
 import com.example.admin.hn.ui.adapter.MaterialSelectAdapter;
-import com.example.admin.hn.utils.GsonUtils;
-import com.example.admin.hn.utils.ToolAlert;
+import com.example.admin.hn.utils.SpaceItemDecoration;
 import com.example.admin.hn.utils.ToolRefreshView;
-import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.squareup.okhttp.Request;
-import com.zhy.adapter.abslistview.CommonAdapter;
+import com.zhy.adapter.recyclerview.CommonAdapter;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -53,8 +36,8 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
 
     private static final String TAG = "已选择";
 
-    @Bind(R.id.listView)
-    ListView listView;
+    @Bind(R.id.recycleView)
+    RecyclerView recycleView;
     @Bind(R.id.network_disabled)
     RelativeLayout network;
     @Bind(R.id.network_img)
@@ -76,7 +59,7 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_list_layout, container, false);
+        view = inflater.inflate(R.layout.fragment_recycle_layout, container, false);
         ButterKnife.bind(this, view);
         initTitleBar();
         initView();
@@ -91,20 +74,15 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
         refreshLayout = (RefreshLayout) view.findViewById(R.id.refreshLayout);
         ToolRefreshView.setRefreshLayout(activity, refreshLayout, this, this);
         adapter = new MaterialSelectAdapter(activity, R.layout.item_material_layout, list);
-        listView.setAdapter(adapter);
+        recycleView.setLayoutManager(new LinearLayoutManager(activity));
+        recycleView.addItemDecoration(new SpaceItemDecoration(10,10,0,0));
+        recycleView.setAdapter(adapter);
     }
 
 
     @Override
     public void initData() {
         data(1, "", 0);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-        });
-        listView.setTextFilterEnabled(true);
     }
 
 

@@ -1,7 +1,9 @@
 package com.example.admin.hn.ui.fragment.seaShart;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +21,7 @@ import butterknife.ButterKnife;
  * @date on 2017/7/26 16:04
  * @describe 订单管理
  */
-public class OrderManagerFragment extends BaseFragment {
+public class OrderManagerFragment extends BaseFragment implements ViewPager.OnPageChangeListener {
 	private View view;
 	private TabLayout tabLayout;
 	private ViewPager viewPager;
@@ -38,6 +40,8 @@ public class OrderManagerFragment extends BaseFragment {
 	public void initView() {
 		tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
 		viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+		viewPager.addOnPageChangeListener(this);
+
 	}
 
 
@@ -66,4 +70,21 @@ public class OrderManagerFragment extends BaseFragment {
 		super.onHiddenChanged(hidden);
 	}
 
+	@Override
+	public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+
+	}
+
+	@Override
+	public void onPageSelected(int position) {
+		Intent intent = new Intent("FourFragment");
+		intent.putExtra("position", position);
+		LocalBroadcastManager.getInstance(activity).sendBroadcast(intent);
+	}
+
+	@Override
+	public void onPageScrollStateChanged(int state) {
+
+	}
 }

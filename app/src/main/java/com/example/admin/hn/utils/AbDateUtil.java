@@ -550,7 +550,7 @@ public class AbDateUtil {
             }
 
             String out = getStringByFormat(strDate, outFormat);
-            if (!ToolString.isEmpty(out)) {
+            if (ToolString.isEmpty(out)) {
                 return out;
             }
         } catch (Exception e) {

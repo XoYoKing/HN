@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="资料编号："
-            android:textColor="@color/black"
+            android:textColor="@color/text_gray_color"
             android:textSize="@dimen/common_15sp" />
 
         <TextView
@@ -28,6 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="22226"
+            android:textColor="@color/text_color"
             android:textSize="@dimen/common_15sp" />
 
     </LinearLayout>
@@ -44,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="船舶名称："
-            android:textColor="@color/black"
+            android:textColor="@color/text_gray_color"
             android:textSize="@dimen/common_15sp" />
 
         <TextView
@@ -52,6 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="bai lu zuo "
+            android:textColor="@color/text_color"
             android:textSize="@dimen/common_15sp" />
 
     </LinearLayout>
@@ -70,7 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="中文名称："
-                android:textColor="@color/black"
+                android:textColor="@color/text_gray_color"
                 android:textSize="@dimen/common_15sp" />
 
             <TextView
@@ -78,6 +80,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="bai lu zuo "
+                android:textColor="@color/text_color"
                 android:textSize="@dimen/common_15sp" />
 
         </LinearLayout>
@@ -92,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="领用数量："
-                android:textColor="@color/black"
+                android:textColor="@color/text_gray_color"
                 android:textSize="@dimen/common_15sp" />
 
             <TextView
@@ -100,6 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="125"
+                android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/common_15sp" />
 
         </LinearLayout>
@@ -120,7 +124,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="英文名称："
-                android:textColor="@color/black"
+                android:textColor="@color/text_gray_color"
                 android:textSize="@dimen/common_15sp" />
 
             <TextView
@@ -128,6 +132,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="22226"
+                android:textColor="@color/text_color"
                 android:textSize="@dimen/common_15sp" />
 
         </LinearLayout>
@@ -142,7 +147,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="退货数量："
-                android:textColor="@color/black"
+                android:textColor="@color/text_gray_color"
                 android:textSize="@dimen/common_15sp" />
 
             <TextView
@@ -150,6 +155,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="125"
+                android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/common_15sp" />
 
         </LinearLayout>
@@ -169,13 +175,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="出版日期："
-                android:textColor="@color/black"
+                android:textColor="@color/text_gray_color"
                 android:textSize="@dimen/common_15sp" />
 
             <TextView
                 android:id="@+id/tv_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/text_color"
                 android:text="2016-2-12"
                 android:textSize="@dimen/common_15sp" />
 
@@ -191,7 +198,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="单价："
-                android:textColor="@color/black"
+                android:textColor="@color/text_gray_color"
                 android:textSize="@dimen/common_15sp" />
 
             <TextView
@@ -199,6 +206,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="125"
+                android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/common_15sp" />
 
         </LinearLayout>

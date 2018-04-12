@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:background="@color/translucent"
     android:fitsSystemWindows="true"
@@ -9,18 +10,46 @@
     <RelativeLayout
         android:layout_width="400dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:background="@drawable/layout_background"
         android:layout_alignParentEnd="true">
-        <View
-            android:id="@+id/view"
-            android:layout_alignParentTop="true"
+
+        <LinearLayout
+            android:id="@+id/top_linear"
             android:layout_width="match_parent"
+            android:layout_height="@dimen/common_50dp"
             android:background="@drawable/layout_background"
-            android:layout_height="@dimen/common_50dp"/>
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/common_15dp"
+                android:textSize="@dimen/common_14sp"
+                android:textColor="@color/yellow_color"
+                android:layout_gravity="center_vertical"
+                android:text="当前搜索：" />
+            <TextView
+                android:id="@+id/tv_type_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/common_15dp"
+                android:textSize="@dimen/common_18sp"
+                android:textColor="@color/text_color"
+                android:layout_gravity="center_vertical"
+                android:text="订单领用-待选" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/include_view"
+            android:layout_below="@+id/top_linear"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_line"
+            android:layout_marginBottom="@dimen/common_10dp"
+            android:background="@color/line_color"/>
+
         <FrameLayout
-            android:layout_below="@+id/view"
-            android:layout_alignParentRight="true"
+            android:layout_below="@+id/include_view"
             android:id="@+id/linear_top"
             android:layout_above="@+id/linear_bottom"
             android:layout_width="match_parent"
@@ -30,7 +59,6 @@
         </FrameLayout>
 
         <LinearLayout
-            android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:id="@+id/linear_bottom"
             android:layout_width="match_parent"

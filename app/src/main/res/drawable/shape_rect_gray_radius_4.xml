@@ -3,22 +3,28 @@
     <item android:state_enabled="true" android:state_pressed="true">
         <shape xmlns:android="http://schemas.android.com/apk/res/android">
             <!-- 填充的颜色 -->
-            <solid android:color="@color/colorPrimaryDark" />
-            <corners android:radius="@dimen/common_5dp"/>
+            <solid android:color="@color/line_color_solid" />
+            <corners android:radius="@dimen/common_3dp"/>
+            <stroke android:color="@color/line_color"
+                android:width="@dimen/common_line"/>
         </shape>
     </item>
     <item android:state_enabled="true" android:state_pressed="false">
         <shape xmlns:android="http://schemas.android.com/apk/res/android">
             <!-- 填充的颜色 -->
-            <solid android:color="@color/colorPrimary" />
-            <corners android:radius="@dimen/common_5dp"/>
+            <solid android:color="@color/line_color_solid" />
+            <corners android:radius="@dimen/common_3dp"/>
+            <stroke android:color="@color/line_color"
+                android:width="@dimen/common_line"/>
         </shape>
     </item>
     <item android:state_enabled="false" android:state_pressed="false">
         <shape xmlns:android="http://schemas.android.com/apk/res/android">
             <!-- 填充的颜色 -->
-            <solid android:color="@color/colorPrimary" />
-            <corners android:radius="@dimen/common_5dp"/>
+            <solid android:color="@color/line_color_solid" />
+            <corners android:radius="@dimen/common_3dp"/>
+            <stroke android:color="@color/line_color"
+                android:width="@dimen/common_line"/>
         </shape>
     </item>
 

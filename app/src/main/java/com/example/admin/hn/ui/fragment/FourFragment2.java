@@ -2,6 +2,7 @@ package com.example.admin.hn.ui.fragment;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.base.BaseFragment;
+import com.example.admin.hn.base.HNApplication;
 import com.example.admin.hn.http.Constant;
 import com.example.admin.hn.ui.account.MessageCenterActivity;
 import com.example.admin.hn.ui.account.PopActivity;
@@ -125,25 +127,28 @@ public class FourFragment2 extends BaseFragment implements ViewPager.OnPageChang
 				if (currentItem == 0) {
 					PopActivity.startActivity(activity, R.layout.popup_not_material__layout, Constant.POP_NOT_MATERIAL);
 				} else if (currentItem == 1) {
-					PopActivity.startActivity(activity,R.layout.popup_order_manager_layout, Constant.POP_SHIP_AUDITING);
+					PopActivity.startActivity(activity,childCurrentItem,R.layout.popup_order_manager_layout, Constant.POP_SHIP_AUDITING);
 				}
 				break;
 			case R.id.text_tile_right:
 				if (childCurrentItem == 0) {
-					final AlertDialog dialog = new AlertDialog(activity);
-					dialog.setBtCancel("取消");
-					dialog.setBtConfirm("确定");
-					dialog.showDialog("资料提交","是否确定提交资料到"+MainActivity.list.get(0).getShipname()+"", new AlertDialog.DialogOnClickListener() {
-						@Override
-						public void onPositiveClick() {
-							dialog.dismiss();
-						}
+					ToolAlert.dialog(activity,
+							"资料提交",
+							"是否确定提交资料到" + HNApplication.mApp.getShipName() + "",
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									Intent intent = new Intent("MaterialNotManagerFragment");
+									LocalBroadcastManager.getInstance(activity).sendBroadcast(intent);
+									dialog.dismiss();
+								}
+							}, new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									dialog.dismiss();
+								}
+							});
 
-						@Override
-						public void onNegativeClick() {
-							dialog.dismiss();
-						}
-					});
 				}else if (childCurrentItem == 1){
 					final AlertDialog dialog = new AlertDialog(activity);
 					dialog.setBtCancel("取消");

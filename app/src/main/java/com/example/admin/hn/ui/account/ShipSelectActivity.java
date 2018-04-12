@@ -26,8 +26,7 @@ import butterknife.OnClick;
 
 
 /**
- * 商品分类列表
- *
+ * 选择船舶
  * @author Administrator
  */
 public class ShipSelectActivity extends BaseActivity implements ViewPager.OnPageChangeListener{

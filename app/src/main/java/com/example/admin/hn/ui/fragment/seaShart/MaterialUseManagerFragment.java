@@ -80,7 +80,7 @@ public class MaterialUseManagerFragment extends BaseFragment implements ViewPage
 	public void onPageSelected(int position) {
 		Intent intent = new Intent("FourFragment2");
 		intent.putExtra("position", position);
-		LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
+		LocalBroadcastManager.getInstance(activity).sendBroadcast(intent);
 	}
 
 	@Override

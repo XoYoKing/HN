@@ -1,22 +1,18 @@
 package com.example.admin.hn.ui.adapter;
 
 import android.content.Context;
-import android.view.LayoutInflater;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.TextView;
 
 import com.example.admin.hn.R;
 import com.example.admin.hn.model.OrderInfo;
-import com.zhy.adapter.abslistview.CommonAdapter;
-import com.zhy.adapter.abslistview.ViewHolder;
+import com.example.admin.hn.ui.account.OrderActivity;
+import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by duantao
  *
  * @date on 2017/7/31 15:35
  */
@@ -27,10 +23,15 @@ public class OrderAdapter extends CommonAdapter<OrderInfo.Order> {
     }
 
     @Override
-    protected void convert(ViewHolder viewHolder, OrderInfo.Order item, int position) {
-        viewHolder.setText(R.id.tv_number,"船舶名称: " + item.getShipname());
-        viewHolder.setText(R.id.tv_time,"提交日期: " + item.getOrdertime());
-        viewHolder.setText(R.id.tv_status, "订单状态: " + item.getStatus());
+    protected void convert(ViewHolder holder,final OrderInfo.Order order, int position) {
+        holder.setText(R.id.tv_number,"船舶名称: " + order.getShipname());
+        holder.setText(R.id.tv_time,"提交日期: " + order.getOrdertime());
+        holder.setText(R.id.tv_status, "订单状态: " + order.getStatus());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OrderActivity.startActivity(mContext, order.getShipname(),order.getOrdernumber());
+            }
+        });
     }
-
 }

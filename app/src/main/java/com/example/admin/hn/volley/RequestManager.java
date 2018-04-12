@@ -393,7 +393,7 @@ public class RequestManager {
             @Override
             public void onResponse(String data) {
                 l.requestSuccess(data);
-                if (!ToolString.isEmpty(data)) {
+                if (ToolString.isEmpty(data)) {
                     isSuccess(data);
                 }
                 if (flag) {

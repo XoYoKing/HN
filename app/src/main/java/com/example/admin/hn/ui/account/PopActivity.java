@@ -42,12 +42,17 @@ public class PopActivity extends BaseActivity {
     FrameLayout linear_top;
     @Bind(R.id.linear_bottom)
     LinearLayout linear_bottom;
+    @Bind(R.id.tv_type_name)
+    TextView tv_type_name;
+
     private int requestCode;
     private int layoutId;
     private View view;
     private TextView startDate1;
     private TextView endDate1;
     private EditText et_name1;
+    private int childItem;//当前fragment的子fragment页面所在位置
+    private TextView tv_date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,17 +96,19 @@ public class PopActivity extends BaseActivity {
         Intent intent = getIntent();
         layoutId = intent.getIntExtra("layoutId", 0);
         requestCode = intent.getIntExtra("requestCode", 0);
+        childItem = intent.getIntExtra("childItem", 0);
         view = View.inflate(this, layoutId, null);
         linear_top.addView(view);
-        if (requestCode == 100) {
-
-        } else if (requestCode == 200) {
-
-        } else if (requestCode == 300) {
-
-        } else if (requestCode == Constant.POP_ORDER_MANAGER) {
+        if (requestCode == Constant.POP_NOT_MATERIAL) {//船舶资料管理
+            tv_type_name.setText("订单领用-待选");
+        } else if (requestCode == Constant.POP_ORDER_MANAGER) {//电子海图 订单管理
+            if (childItem == 0) {
+                tv_type_name.setText("订单管理-全部");
+            } else if (childItem == 1) {
+                tv_type_name.setText("订单管理-全部");
+            }
             initOrderManagerView(view);
-        }else if (requestCode == Constant.POP_SHIP_AUDITING) {
+        }else if (requestCode == Constant.POP_SHIP_AUDITING) {//船舶资料管理 审核管理
             initOrderManagerView(view);
         } else if (requestCode == 500) {
 
@@ -121,7 +128,16 @@ public class PopActivity extends BaseActivity {
         startDate1 = (TextView) view.findViewById(R.id.startdate);
         endDate1 = (TextView) view.findViewById(R.id.enddate);
         et_name1 = (EditText) view.findViewById(R.id.et_name);
-
+        tv_date = (TextView) view.findViewById(R.id.tv_date);
+        if (requestCode == Constant.POP_ORDER_MANAGER) {
+            tv_date.setText("提交日期");
+        }else if (requestCode == Constant.POP_SHIP_AUDITING){
+            if (childItem == 0) {
+                tv_date.setText("申请日期");
+            }else {
+                tv_date.setText("领用日期");
+            }
+        }
         //初始化选择器的时间
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String date = sdf.format(new Date());
@@ -188,6 +204,7 @@ public class PopActivity extends BaseActivity {
                     String name = et_name1.getText().toString();
                     intent.putExtra("start", start);
                     intent.putExtra("end", end);
+                    intent.putExtra("childItem", childItem);
                     if (ToolString.isNoBlankAndNoNull(name)) {
                         intent.putExtra("name", name);
                     }

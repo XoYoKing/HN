@@ -105,6 +105,8 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void initData() {
         super.initData();
+        //进入APP的时候默认为生产环境
+        HNApplication.mApp.setTestAmbient(isTest);
         String username = HNApplication.mApp.getUserName();
         String password = HNApplication.mApp.getPassWord();
         String switches = HNApplication.mApp.getSwitche();
