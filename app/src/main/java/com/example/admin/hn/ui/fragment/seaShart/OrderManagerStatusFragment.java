@@ -2,6 +2,7 @@ package com.example.admin.hn.ui.fragment.seaShart;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -111,7 +112,7 @@ public class OrderManagerStatusFragment extends BaseFragment implements OnRefres
 
     @Override
     public void initData() {
-        data(1, str, 0);
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -141,6 +142,24 @@ public class OrderManagerStatusFragment extends BaseFragment implements OnRefres
                 data(1, str, 0);
                 refreshLayout.finishRefresh(1000);
                 break;
+        }
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (getUserVisibleHint() && isFirstHttp && http != null) {
+            isFirstHttp = false;
+            data(1, str, 0);
+        }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && isFirstHttp && http != null) {
+            isFirstHttp = false;
+            data(1, str, 0);
         }
     }
 

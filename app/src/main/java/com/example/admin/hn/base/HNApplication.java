@@ -3,10 +3,6 @@ package com.example.admin.hn.base;
 import android.app.Application;
 
 import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.https.HttpsUtils;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -30,9 +26,6 @@ public class HNApplication extends Application {
     }
 
     private void initOkHttp() {
-//        InputStream caInput = new ByteArrayInputStream(InitSSLSocketFactory.load.getBytes());
-//        InputStream[] inputStreams = new InputStream[]{caInput};
-//        HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory(inputStreams, null, null);
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(10000L, TimeUnit.MILLISECONDS)
                 .readTimeout(10000L, TimeUnit.MILLISECONDS)

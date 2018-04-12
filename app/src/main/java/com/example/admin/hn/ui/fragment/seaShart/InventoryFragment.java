@@ -28,6 +28,7 @@ import com.example.admin.hn.ui.adapter.InventoryAdapter;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolRefreshView;
+import com.example.admin.hn.volley.RequestListener;
 import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -70,7 +71,6 @@ public class InventoryFragment extends BaseFragment implements OnRefreshListener
     private ArrayList<InventoryInfo.Inventory> list = new ArrayList<>();
     private InventoryAdapter adapter;
     private View view;
-    private int status = 2;
     private int page = 1;
     private String url_inventory = Api.BASE_URL + Api.INVENTORY;
     private String url_chart = Api.BASE_URL + Api.CHART;
@@ -80,6 +80,10 @@ public class InventoryFragment extends BaseFragment implements OnRefreshListener
     private String startDate;
     private int screen=2;
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -107,6 +111,14 @@ public class InventoryFragment extends BaseFragment implements OnRefreshListener
         ToolRefreshView.setRefreshLayout(activity,refreshLayout,this,this);
     }
 
+
+
+    @Override
+    public void initTitleBar() {
+        Bundle bundle = getArguments();
+        screen = Integer.parseInt(bundle.getString("type"));
+    }
+
     @Override
     public void initData() {
         //list点击事件
@@ -120,31 +132,9 @@ public class InventoryFragment extends BaseFragment implements OnRefreshListener
                 startActivity(intent_order);
             }
         });
-
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (getUserVisibleHint() && isFirstHttp) {
-            isFirstHttp = false;
-            data("1", "", 0);
-        }
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser && isFirstHttp) {
-            isFirstHttp = false;
-            data("1", "", 0);
-        }
-    }
-
-    @Override
-    public void initTitleBar() {
-        Bundle bundle = getArguments();
-        screen = Integer.parseInt(bundle.getString("type"));
+//        if (screen == 2) {
+//            data("1", "", 0);
+//        }
     }
 
     @OnClick({R.id.network_img})
@@ -158,79 +148,88 @@ public class InventoryFragment extends BaseFragment implements OnRefreshListener
         }
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (getUserVisibleHint() && isFirstHttp && http != null) {
+            isFirstHttp = false;
+            data("1", "", 0);
+        }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && isFirstHttp && http != null) {
+            isFirstHttp = false;
+            data("1", "", 0);
+        }
+    }
+
     public void data(String status, String content, final int Loadmore) {
         //status 1(查询该用户海图) 2(船舶名称) 3(海图名称)
-        Map map = new HashMap();
-        map.put("userid", HNApplication.mApp.getUserId());
-        map.put("status", status);
+        params.put("status", status);
         if (Loadmore == 0) {
-            map.put("page", "1");
+            params.put("page", "1");
         } else {
-            map.put("page", page);
+            params.put("page", page);
         }
         //1 全部数据2 海图状态为未过期3 海图状态为已过期
-        map.put("screen", screen);
-        map.put("endtime", endDate);
-        map.put("starttime", startDate);
-        map.put("shipname", content);
-        map.put("haituname", content);
-        String jsonStr = GsonUtils.mapToJson(map);
-        Logger.i(TAG, jsonStr);
-        try {
-            OkHttpUtil.postJsonData2Server(getActivity(), url_inventory, jsonStr,progressTitle,
-                    new OkHttpUtil.MyCallBack() {
-                        @Override
-                        public void onFailure(Request request, IOException e) {
-                            ToolAlert.showToast(getActivity(), "服务器异常,请稍后再试", false);
-                            ToolRefreshView.hintView(adapter, true, network, noData_img, network_img);
+        params.put("screen", screen);
+        params.put("endtime", endDate);
+        params.put("starttime", startDate);
+        params.put("shipname", content);
+        params.put("haituname", content);
+        http.postJson(url_inventory, params, progressTitle, new RequestListener() {
+            @Override
+            public void requestSuccess(String json) {
+                progressTitle = null;
+                Logger.i(TAG, json);
+                if (GsonUtils.isSuccess(json)) {
+                    InventoryInfo inventoryInfo = GsonUtils.jsonToBean(json, InventoryInfo.class
+                    );
+                    list.clear();
+                    if (inventoryInfo.getDocuments().size() == 0) {
+                        datas.clear();
+                    } else {
+                        for (int i = 0; i < inventoryInfo.getDocuments().size(); i++) {
+                            list.add(new InventoryInfo.Inventory(inventoryInfo.getDocuments().get(i).getPeriod(), inventoryInfo.getDocuments().get(i).getWholesaleprices(), inventoryInfo.getDocuments().get(i).getCname(), inventoryInfo.getDocuments().get(i).getProductType(), inventoryInfo.getDocuments().get(i).getProductNumber(), inventoryInfo.getDocuments().get(i).getScale(), inventoryInfo.getDocuments().get(i).getOrdertime(), inventoryInfo.getDocuments().get(i).getVersion(), inventoryInfo.getDocuments().get(i).getProductTitle(), inventoryInfo.getDocuments().get(i).getOrdernumber(), inventoryInfo.getDocuments().get(i).getGuideprice(), inventoryInfo.getDocuments().get(i).getShipnumber(), inventoryInfo.getDocuments().get(i).getRoutename(), inventoryInfo.getDocuments().get(i).getShipname(), inventoryInfo.getDocuments().get(i).getVersionunit()));
                         }
+                        if (Loadmore == 0) {
+                            datas.clear();
+                        }
+                        for (int i = 0; i < list.size(); i++) {
+                            HashMap<String, String> item = new HashMap<String, String>();
+                            item.put("cname", list.get(i).getCname());
+                            item.put("shipname", list.get(i).getShipname());
+                            item.put("ordertime", list.get(i).getOrdertime());
+                            item.put("productTitle", list.get(i).getProductTitle());
+                            item.put("ProductType", list.get(i).getProductType());
+                            item.put("productNumber", list.get(i).getProductNumber());
+                            item.put("version", list.get(i).getVersion());
+                            item.put("shipnumber", list.get(i).getShipnumber());
+                            item.put("period", list.get(i).getPeriod());
+                            datas.add(item);
+                        }
+                    }
+                }else {
+                    if (page == 1) {
+                        ToolAlert.showToast(getActivity(),GsonUtils.getError(json), false);
+                        datas.clear();
+                    } else {
+                        ToolAlert.showToast(getActivity(), "已全部加载完成", false);
+                    }
+                }
+                ToolRefreshView.hintView(adapter, false, network, noData_img, network_img);
+            }
 
-                        @Override
-                        public void onResponse(String json) {
-                            progressTitle = null;
-                            Logger.i(TAG, json);
-                            InventoryInfo inventoryInfo = GsonUtils.jsonToBean(json, InventoryInfo.class
-                            );
-                            if (inventoryInfo.getStatus().equals("error")) {
-                                if (page == 1) {
-                                    ToolAlert.showToast(getActivity(), inventoryInfo.getMessage(), false);
-                                    datas.clear();
-                                    adapter.notifyDataSetChanged();
-                                } else {
-                                    ToolAlert.showToast(getActivity(), "已全部加载完成", false);
-                                }
-                            } else {
-                                list.clear();
-                                if (inventoryInfo.getDocuments().size() == 0) {
-                                    datas.clear();
-                                } else {
-                                    for (int i = 0; i < inventoryInfo.getDocuments().size(); i++) {
-                                        list.add(new InventoryInfo.Inventory(inventoryInfo.getDocuments().get(i).getPeriod(), inventoryInfo.getDocuments().get(i).getWholesaleprices(), inventoryInfo.getDocuments().get(i).getCname(), inventoryInfo.getDocuments().get(i).getProductType(), inventoryInfo.getDocuments().get(i).getProductNumber(), inventoryInfo.getDocuments().get(i).getScale(), inventoryInfo.getDocuments().get(i).getOrdertime(), inventoryInfo.getDocuments().get(i).getVersion(), inventoryInfo.getDocuments().get(i).getProductTitle(), inventoryInfo.getDocuments().get(i).getOrdernumber(), inventoryInfo.getDocuments().get(i).getGuideprice(), inventoryInfo.getDocuments().get(i).getShipnumber(), inventoryInfo.getDocuments().get(i).getRoutename(), inventoryInfo.getDocuments().get(i).getShipname(), inventoryInfo.getDocuments().get(i).getVersionunit()));
-                                    }
-                                    if (Loadmore == 0) {
-                                        datas.clear();
-                                    }
-                                    for (int i = 0; i < list.size(); i++) {
-                                        HashMap<String, String> item = new HashMap<String, String>();
-                                        item.put("cname", list.get(i).getCname());
-                                        item.put("shipname", list.get(i).getShipname());
-                                        item.put("ordertime", list.get(i).getOrdertime());
-                                        item.put("productTitle", list.get(i).getProductTitle());
-                                        item.put("ProductType", list.get(i).getProductType());
-                                        item.put("productNumber", list.get(i).getProductNumber());
-                                        item.put("version", list.get(i).getVersion());
-                                        item.put("shipnumber", list.get(i).getShipnumber());
-                                        item.put("period", list.get(i).getPeriod());
-                                        datas.add(item);
-                                    }
-                                }
-                            }
-                            ToolRefreshView.hintView(adapter, false, network, noData_img, network_img);
-                        }
-                    });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            @Override
+            public void requestError(String message) {
+                ToolAlert.showToast(activity, message, false);
+                ToolRefreshView.hintView(adapter, true, network, noData_img, network_img);
+            }
+        });
+
     }
 
     @Override

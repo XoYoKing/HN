@@ -38,8 +38,7 @@ public class BaseFragment extends Fragment implements Initialable {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActivity().setRequestedOrientation(
-                ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         );
         activity = getActivity();
         http = new IRequest(activity);
