@@ -13,7 +13,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/common_5dp"
         android:clickable="true"
-        android:textSize="@dimen/common_15sp" />
+        android:textSize="@dimen/common_16sp" />
 
     <TextView
         android:id="@+id/text_title"
@@ -32,7 +32,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/common_15dp"
         android:clickable="true"
-        android:textSize="@dimen/common_18sp"
+        android:textSize="@dimen/common_16sp"
         android:textColor="@android:color/white" />
 
     <TextView
@@ -43,7 +43,7 @@
         android:layout_toLeftOf="@+id/text_tile_right"
         android:layout_marginRight="@dimen/common_15dp"
         android:clickable="true"
-        android:textSize="@dimen/common_18sp"
+        android:textSize="@dimen/common_16sp"
         android:visibility="gone"
         android:textColor="@android:color/white"
         />

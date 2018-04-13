@@ -5,11 +5,8 @@
     android:orientation="vertical"
     android:background="@color/white_smoke"
     android:clipToPadding="true"
-    android:fitsSystemWindows="true"
-
-    >
+    android:fitsSystemWindows="true">
     <include layout="@layout/public_title"></include>
-
 
     <TableLayout
         android:layout_width="match_parent"
@@ -19,8 +16,7 @@
         android:stretchColumns="0,1">
 
         <TableRow
-            android:padding="5dp"
-            >
+            android:padding="5dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -46,17 +42,14 @@
             android:layout_height="@dimen/common_1dp"
             android:background="@color/white_smoke"/>
         <TableRow
-            android:padding="5dp"
-            >
+            android:padding="5dp">
 
             <TextView
-
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/common_10dp"
                 android:text="船舶编号"
                 android:layout_marginLeft="@dimen/common_10dp"
-
                 android:textSize="@dimen/common_16sp"/>
             <TextView
                 android:id="@+id/tv_ship_number"
@@ -81,8 +74,6 @@
                     android:text="" android:textColor="@color/black"
                     android:textSize="@dimen/common_16sp"/>
 
-
-
             </LinearLayout>
 
         </TableRow>
@@ -92,11 +83,9 @@
             android:layout_height="@dimen/common_1dp"
             android:background="@color/white_smoke"/>
         <TableRow
-            android:padding="5dp"
-            >
+            android:padding="5dp">
 
             <TextView
-
                 android:layout_width="wrap_content"
                 android:layout_marginLeft="@dimen/common_10dp"
                 android:layout_height="wrap_content"
@@ -126,8 +115,6 @@
                     android:text="" android:textColor="@color/black"
                     android:textSize="@dimen/common_16sp"/>
 
-
-
             </LinearLayout>
 
         </TableRow>
@@ -138,11 +125,9 @@
             android:layout_height="@dimen/common_1dp"
             android:background="@color/white_smoke"/>
         <TableRow
-            android:padding="5dp"
-            >
+            android:padding="5dp">
 
             <TextView
-
                 android:layout_width="wrap_content"
                 android:layout_marginLeft="@dimen/common_10dp"
                 android:layout_height="wrap_content"
@@ -170,9 +155,6 @@
                     android:paddingTop="@dimen/common_10dp"
                     android:text="" android:textColor="@color/black"
                     android:textSize="@dimen/common_16sp"/>
-
-
-
             </LinearLayout>
 
         </TableRow>
@@ -182,8 +164,7 @@
             android:layout_height="@dimen/common_1dp"
             android:background="@color/white_smoke"/>
         <TableRow
-            android:padding="5dp"
-            >
+            android:padding="5dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -209,8 +190,7 @@
             android:layout_height="@dimen/common_1dp"
             android:background="@color/white_smoke"/>
         <TableRow
-            android:padding="5dp"
-            >
+            android:padding="5dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -236,8 +216,7 @@
             android:layout_height="@dimen/common_1dp"
             android:background="@color/white_smoke"/>
         <TableRow
-            android:padding="5dp"
-            >
+            android:padding="5dp">
 
             <TextView
                 android:layout_width="wrap_content"

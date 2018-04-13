@@ -3,8 +3,6 @@ package com.example.admin.hn.ui.fragment;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -30,12 +28,11 @@ import com.example.admin.hn.ui.account.AboutActivity;
 import com.example.admin.hn.ui.account.ChangeBindPhoneNumberActivity;
 import com.example.admin.hn.ui.account.ChangeLoginPasswordActivity;
 import com.example.admin.hn.ui.account.ChartUpdateActivity;
-import com.example.admin.hn.ui.account.ShipActivity;
 import com.example.admin.hn.ui.account.ShipSelectActivity;
 import com.example.admin.hn.ui.login.LoginActivity;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
-import com.example.admin.hn.widget.ProgersssDialog;
+import com.example.admin.hn.widget.ProgressDialog;
 import com.orhanobut.logger.Logger;
 import com.squareup.okhttp.Request;
 
@@ -68,7 +65,7 @@ public class MoreFragment extends BaseFragment {
 
 
     private MyBaseAdapter myAdapter;
-    private int[] imageIds = {R.drawable.btn_open_details, R.drawable.btn_open_details, R.drawable.btn_open_details, R.drawable.btn_open_details, R.drawable.btn_open_details, R.drawable.btn_open_details};
+    private int[] imageIds = {R.drawable.right, R.drawable.right, R.drawable.right, R.drawable.right, R.drawable.right, R.drawable.right};
     private String[] functionDesc;
     private String url_update = Api.BASE_URL + Api.UPDATE;
 
@@ -204,11 +201,23 @@ public class MoreFragment extends BaseFragment {
     @OnClick(R.id.btn_Sign_out)
     public void onClick(View v) {
         //清除 当前环境的数据
-        HNApplication.mApp.logout();
-        LoginActivity.startActivity(activity);
+        ToolAlert.dialog(activity, "退出登陆", "是否确定退出登陆", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                HNApplication.mApp.logout();
+                LoginActivity.startActivity(activity);
+                dialog.dismiss();
+            }
+        }, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
     }
 
-    static ProgersssDialog progersssDialog;
+    static ProgressDialog progersssDialog;
 
     /**
      * 显示软件更新对话框
@@ -227,7 +236,7 @@ public class MoreFragment extends BaseFragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 //确定按钮的响应事件
                                 ToolAlert.showToast(context, "下载中", false);
-                                progersssDialog = new ProgersssDialog(context);
+                                progersssDialog = new ProgressDialog(context);
 //                                // TODO Auto-generated method stub
                                 OkHttpUtil.dowloadProgress(context, Api.BASE_URL + url, progersssDialog);
 

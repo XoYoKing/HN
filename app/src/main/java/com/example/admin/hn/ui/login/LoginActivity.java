@@ -2,7 +2,6 @@ package com.example.admin.hn.ui.login;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -25,25 +24,16 @@ import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseActivity;
 import com.example.admin.hn.base.HNApplication;
-import com.example.admin.hn.base.MyApplication;
-import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.ServerResponse;
 import com.example.admin.hn.model.ShipInfo;
-import com.example.admin.hn.ui.account.AboutActivity;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolString;
 import com.example.admin.hn.volley.RequestListener;
-import com.example.admin.hn.widget.LoadingFragment;
-import com.example.admin.hn.widget.ProgersssDialog;
 import com.orhanobut.logger.Logger;
-import com.squareup.okhttp.Request;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

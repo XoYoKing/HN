@@ -95,7 +95,7 @@ public class MaterialNotManagerFragment extends BaseFragment implements OnRefres
         ToolRefreshView.setRefreshLayout(activity, refreshLayout, this, this);
         adapter = new MaterialNotSelectAdapter(activity, R.layout.item_not_material_layout, list);
         recycleView.setLayoutManager(new LinearLayoutManager(activity));
-        recycleView.addItemDecoration(new SpaceItemDecoration(10,10,0,0));
+        recycleView.addItemDecoration(new SpaceItemDecoration(10,20,0,0));
         recycleView.setAdapter(adapter);
     }
 
@@ -177,7 +177,7 @@ public class MaterialNotManagerFragment extends BaseFragment implements OnRefres
     private void initBroadcastReceiver(){
         localBroadcastManager = LocalBroadcastManager.getInstance(activity);
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("MaterialNotManagerFragment");
+        intentFilter.addAction(Constant.ACTION_MATERIAL_NOT_MANAGER_FRAGMENT);
         br = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {

@@ -138,7 +138,7 @@ public class FourFragment2 extends BaseFragment implements ViewPager.OnPageChang
 							new DialogInterface.OnClickListener() {
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
-									Intent intent = new Intent("MaterialNotManagerFragment");
+									Intent intent = new Intent(Constant.ACTION_MATERIAL_NOT_MANAGER_FRAGMENT);
 									LocalBroadcastManager.getInstance(activity).sendBroadcast(intent);
 									dialog.dismiss();
 								}
@@ -150,20 +150,22 @@ public class FourFragment2 extends BaseFragment implements ViewPager.OnPageChang
 							});
 
 				}else if (childCurrentItem == 1){
-					final AlertDialog dialog = new AlertDialog(activity);
-					dialog.setBtCancel("取消");
-					dialog.setBtConfirm("确定");
-					dialog.showDialog("资料提交","是否确定提交资料到"+MainActivity.list.get(0)+"", new AlertDialog.DialogOnClickListener() {
-						@Override
-						public void onPositiveClick() {
-							dialog.dismiss();
-						}
-
-						@Override
-						public void onNegativeClick() {
-							dialog.dismiss();
-						}
-					});
+					ToolAlert.dialog(activity,
+							"资料提交",
+							"是否确定提交资料到" + HNApplication.mApp.getShipName() + "",
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									Intent intent = new Intent(Constant.ACTION_MATERIAL_MANAGER_FRAGMENT);
+									LocalBroadcastManager.getInstance(activity).sendBroadcast(intent);
+									dialog.dismiss();
+								}
+							}, new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									dialog.dismiss();
+								}
+							});
 				}
 				break;
 		}
@@ -172,7 +174,7 @@ public class FourFragment2 extends BaseFragment implements ViewPager.OnPageChang
 	private void initBroadcastReceiver(){
 		localBroadcastManager = LocalBroadcastManager.getInstance(activity);
 		IntentFilter intentFilter = new IntentFilter();
-		intentFilter.addAction("FourFragment2");
+		intentFilter.addAction(Constant.ACTION_FOUR_FRAGMENT2);
 		br = new BroadcastReceiver() {
 			@Override
 			public void onReceive(Context context, Intent intent) {

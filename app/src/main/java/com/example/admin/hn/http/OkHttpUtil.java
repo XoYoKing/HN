@@ -4,13 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.support.v4.app.FragmentActivity;
 
 import com.example.admin.hn.utils.ToolAlert;
-import com.example.admin.hn.utils.ToolString;
 import com.example.admin.hn.utils.UpdateManager;
 import com.example.admin.hn.widget.LoadingFragment;
-import com.example.admin.hn.widget.ProgersssDialog;
+import com.example.admin.hn.widget.ProgressDialog;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.MediaType;
@@ -149,7 +147,7 @@ public class OkHttpUtil {
      *
      * @param url
      */
-    public static void dowloadProgress(Context context, final String url,ProgersssDialog progersssDialog) {
+    public static void dowloadProgress(Context context, final String url,ProgressDialog progersssDialog) {
         Request request = new Request.Builder().url(url).build();
         new AsyncDownloader(context,progersssDialog).execute(request);
     }
@@ -158,8 +156,8 @@ public class OkHttpUtil {
 
         private static final String TAG = "AsyncDownloader";
         private Context context;
-        private ProgersssDialog progersssDialog;
-        public AsyncDownloader(Context context,ProgersssDialog progersssDialog) {
+        private ProgressDialog progersssDialog;
+        public AsyncDownloader(Context context,ProgressDialog progersssDialog) {
             this.context = context;
             this.progersssDialog=progersssDialog;
         }
@@ -240,7 +238,7 @@ public class OkHttpUtil {
      *
      * @param url
      */
-    public static void dowloadchart(Context context, final String url,ProgersssDialog progersssDialog,String chartname) {
+    public static void dowloadchart(Context context, final String url, ProgressDialog progersssDialog, String chartname) {
         Request request = new Request.Builder().url(url).build();
         new AsyncDownload(context,progersssDialog,chartname).execute(request);
     }
@@ -249,10 +247,10 @@ public class OkHttpUtil {
 
         private static final String TAG = "AsyncDownloader";
         private Context context;
-        private ProgersssDialog progersssDialog;
+        private ProgressDialog progersssDialog;
         private String chartname;
 
-        public AsyncDownload(Context context,ProgersssDialog progersssDialog,String name) {
+        public AsyncDownload(Context context, ProgressDialog progersssDialog, String name) {
             this.context = context;
             this.progersssDialog=progersssDialog;
             this.chartname=name;

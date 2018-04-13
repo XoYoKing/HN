@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.TimePickerView;
@@ -18,6 +20,7 @@ import com.example.admin.hn.http.Constant;
 import com.example.admin.hn.model.ScreenTypeInfo;
 import com.example.admin.hn.ui.adapter.ScreenTypeAdapter;
 import com.example.admin.hn.utils.ToolAlert;
+import com.example.admin.hn.utils.ToolAppUtils;
 import com.example.admin.hn.utils.ToolString;
 import com.orhanobut.logger.Logger;
 
@@ -44,7 +47,8 @@ public class PopActivity extends BaseActivity {
     LinearLayout linear_bottom;
     @Bind(R.id.tv_type_name)
     TextView tv_type_name;
-
+    @Bind(R.id.pop_relative)
+    RelativeLayout pop_relative;
     private int requestCode;
     private int layoutId;
     private View view;
@@ -97,18 +101,29 @@ public class PopActivity extends BaseActivity {
         layoutId = intent.getIntExtra("layoutId", 0);
         requestCode = intent.getIntExtra("requestCode", 0);
         childItem = intent.getIntExtra("childItem", 0);
+
+        int windowWith = ToolAppUtils.getWindowWith(this);
+        ViewGroup.LayoutParams layoutParams = pop_relative.getLayoutParams();
+        layoutParams.width = windowWith / 2;
+        pop_relative.setLayoutParams(layoutParams);
         view = View.inflate(this, layoutId, null);
         linear_top.addView(view);
         if (requestCode == Constant.POP_NOT_MATERIAL) {//船舶资料管理
             tv_type_name.setText("订单领用-待选");
         } else if (requestCode == Constant.POP_ORDER_MANAGER) {//电子海图 订单管理
+            tv_type_name.setText("订单管理");
             if (childItem == 0) {
-                tv_type_name.setText("订单管理-全部");
+
             } else if (childItem == 1) {
-                tv_type_name.setText("订单管理-全部");
+
             }
             initOrderManagerView(view);
         }else if (requestCode == Constant.POP_SHIP_AUDITING) {//船舶资料管理 审核管理
+            if (childItem == 0) {
+                tv_type_name.setText("审核管理-申请单");
+            } else if (childItem == 1) {
+                tv_type_name.setText("审核管理-领用单");
+            }
             initOrderManagerView(view);
         } else if (requestCode == 500) {
 

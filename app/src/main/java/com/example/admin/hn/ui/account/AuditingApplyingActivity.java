@@ -3,6 +3,8 @@ package com.example.admin.hn.ui.account;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -12,6 +14,8 @@ import com.example.admin.hn.base.BaseActivity;
 import com.example.admin.hn.model.OrderInfo;
 import com.example.admin.hn.ui.adapter.AuditingApplyingAdapter;
 import com.example.admin.hn.ui.adapter.ShipApplyingAdapter;
+import com.example.admin.hn.utils.SpaceItemDecoration;
+import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolRefreshView;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -34,8 +38,10 @@ public class AuditingApplyingActivity extends BaseActivity implements OnRefreshL
     TextView textTitleBack;
     @Bind(R.id.text_title)
     TextView textTitle;
-    @Bind(R.id.listView)
-    ListView listView;
+    @Bind(R.id.text_tile_right)
+    TextView text_tile_right;
+    @Bind(R.id.recycleView)
+    RecyclerView recycleView;
     private int id;
     private String title;
     private RefreshLayout refreshLayout;
@@ -44,7 +50,7 @@ public class AuditingApplyingActivity extends BaseActivity implements OnRefreshL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_layout);
+        setContentView(R.layout.activity_recycle_layout);
         ButterKnife.bind(this);
         initTitleBar();
         initView();
@@ -58,6 +64,7 @@ public class AuditingApplyingActivity extends BaseActivity implements OnRefreshL
         title = intent.getStringExtra("title");
         textTitle.setText("申请详情");
         textTitleBack.setBackgroundResource(R.drawable.btn_back);
+        text_tile_right.setText("通过");
     }
     private ArrayList<OrderInfo.Order> list = new ArrayList<>();
     @Override
@@ -66,7 +73,9 @@ public class AuditingApplyingActivity extends BaseActivity implements OnRefreshL
         refreshLayout = (RefreshLayout) findViewById(R.id.refreshLayout);
         ToolRefreshView.setRefreshLayout(this, refreshLayout, this, this);
         adapter = new AuditingApplyingAdapter(this, R.layout.item_auditing_applying_adapter, list);
-        listView.setAdapter(adapter);
+        recycleView.setLayoutManager(new LinearLayoutManager(this));
+        recycleView.addItemDecoration(new SpaceItemDecoration(10,10,0,0));
+        recycleView.setAdapter(adapter);
     }
 
     /**
@@ -79,11 +88,21 @@ public class AuditingApplyingActivity extends BaseActivity implements OnRefreshL
         context.startActivity(intent);
     }
 
-    @OnClick(R.id.text_title_back)
+    @OnClick({R.id.text_title_back,R.id.text_tile_right})
     public void onClick(View v) {
-        if (v.getId() == R.id.text_title_back) {
-            finish();
+        switch (v.getId()) {
+            case R.id.text_title_back:
+                finish();
+            break;
+            case R.id.text_tile_right:
+                submit();
+                break;
+
         }
+    }
+
+    private void submit() {
+        ToolAlert.showToast(this, "提交", false);
     }
 
     @Override
@@ -101,14 +120,14 @@ public class AuditingApplyingActivity extends BaseActivity implements OnRefreshL
     }
     @Override
     public void onLoadmore(RefreshLayout refreshlayout) {
-        data();
+//        data();
         adapter.notifyDataSetChanged();
         refreshlayout.finishLoadmore(1000);
     }
 
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
-        data();
+//        data();
         refreshlayout.finishRefresh(1000);
     }
 }

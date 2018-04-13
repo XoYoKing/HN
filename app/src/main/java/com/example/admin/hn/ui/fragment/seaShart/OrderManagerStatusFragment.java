@@ -112,7 +112,7 @@ public class OrderManagerStatusFragment extends BaseFragment implements OnRefres
 
         adapter = new OrderAdapter(getActivity(), R.layout.order_adapter, list);
         recycleView.setLayoutManager(new LinearLayoutManager(activity));
-        recycleView.addItemDecoration(new SpaceItemDecoration(10,10,0,0));
+        recycleView.addItemDecoration(new SpaceItemDecoration(10,20,0,0));
         recycleView.setAdapter(adapter);
     }
 

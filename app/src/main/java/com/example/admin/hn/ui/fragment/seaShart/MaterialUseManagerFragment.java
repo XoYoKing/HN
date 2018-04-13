@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.example.admin.hn.R;
 import com.example.admin.hn.base.BaseFragment;
+import com.example.admin.hn.http.Constant;
 import com.example.admin.hn.ui.adapter.AllChildTabAdapter;
 import com.example.admin.hn.ui.fragment.FourFragment2;
 import com.example.admin.hn.utils.ToolAlert;
@@ -78,7 +79,7 @@ public class MaterialUseManagerFragment extends BaseFragment implements ViewPage
 
 	@Override
 	public void onPageSelected(int position) {
-		Intent intent = new Intent("FourFragment2");
+		Intent intent = new Intent(Constant.ACTION_FOUR_FRAGMENT2);
 		intent.putExtra("position", position);
 		LocalBroadcastManager.getInstance(activity).sendBroadcast(intent);
 	}

@@ -2,7 +2,6 @@ package com.example.admin.hn.base;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -14,7 +13,7 @@ import com.example.admin.hn.http.Constant;
 import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.utils.StateBarUtil;
 import com.example.admin.hn.volley.IRequest;
-import com.example.admin.hn.widget.ProgersssDialog;
+import com.example.admin.hn.widget.ProgressDialog;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.zhy.http.okhttp.OkHttpUtils;
 
@@ -32,7 +31,7 @@ import butterknife.ButterKnife;
 public class BaseActivity extends FragmentActivity implements Initialable{
     protected String progressTitle = Constant.LOADING;
     protected Context context;
-    public ProgersssDialog progersssDialog;
+    public ProgressDialog progersssDialog;
     protected IRequest http;
     protected Map params;
 

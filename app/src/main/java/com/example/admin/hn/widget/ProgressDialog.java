@@ -16,14 +16,14 @@ import com.example.admin.hn.R;
 *  @author duantao
 *  @describe Dialog
 */
-public class ProgersssDialog extends Dialog {
+public class ProgressDialog extends Dialog {
     private Context context;
     private ImageView img;
 //    private TextView txt;
     private TextView tip;
 
 
-    public  ProgersssDialog(Context context) {
+    public ProgressDialog(Context context) {
         super(context, R.style.progress_dialog);
         this.context=context;
         //加载布局文件

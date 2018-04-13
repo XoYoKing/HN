@@ -13,6 +13,7 @@ import com.example.admin.hn.R;
 import com.example.admin.hn.model.OrderUseInfo;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolString;
+import com.example.admin.hn.utils.ToolViewUtils;
 import com.orhanobut.logger.Logger;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -46,7 +47,9 @@ public class MaterialNotSelectAdapter extends CommonAdapter<OrderUseInfo.OrderUs
         viewHolder.setText(R.id.tv_date, item.date + "");
         viewHolder.setText(R.id.tv_data_number, item.dateNumber + "");
         img_select.setSelected(item.isSelect);
-        img_select.setOnClickListener(new View.OnClickListener() {
+        tv_buy_number.setText(item.buyNumber+"");
+        ToolViewUtils.setSelection(tv_buy_number);
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (item.isSelect) {
@@ -78,6 +81,9 @@ public class MaterialNotSelectAdapter extends CommonAdapter<OrderUseInfo.OrderUs
                     if (number > item.inventory) {
                         ToolAlert.showToast(mContext, "库存不足！", false);
                         tv_buy_number.setText(item.inventory + "");
+                        item.buyNumber = item.inventory;
+                    }else {
+                        item.buyNumber = number;
                     }
                 }
             }

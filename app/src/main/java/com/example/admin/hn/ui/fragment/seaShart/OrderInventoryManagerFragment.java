@@ -48,7 +48,7 @@ public class OrderInventoryManagerFragment extends BaseFragment {
 
 	private void addChildFragment() {
 		AllChildTabAdapter adapter = new AllChildTabAdapter(getChildFragmentManager(), activity, viewPager);
-		adapter.addTab("未过期", "2",InventoryFragment.class);
+		adapter.addTab("未过期","2",InventoryFragment.class);
 		adapter.addTab("已过期","3", InventoryFragment.class);
 		tabLayout.setupWithViewPager(viewPager);
 	}

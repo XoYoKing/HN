@@ -14,9 +14,7 @@
         android:text="@string/haining_title"
         android:drawablePadding="@dimen/common_10dp"
         android:textColor="#ffffff"
-        android:textSize="20sp"
-        android:textStyle="bold"/>
-
+        android:textSize="20sp" />
 
     <ImageView
         android:id="@+id/iv_search"
@@ -28,8 +26,7 @@
         android:clickable="true"
         android:textSize="@dimen/common_18sp"
         android:layout_marginTop="@dimen/common_4dp"
-        android:src="@drawable/sort"
-        />
+        android:src="@drawable/sort" />
 
     <FrameLayout
         android:id="@+id/text_tile_right"
@@ -37,20 +34,16 @@
         android:layout_height="@dimen/common_30dp"
         android:layout_toLeftOf="@+id/iv_search"
         android:layout_marginRight="@dimen/common_10dp"
-        android:layout_centerVertical="true"
-        >
+        android:layout_centerVertical="true">
         <ImageView
             android:id="@+id/iv_one"
             android:src="@drawable/message"
             android:layout_width="@dimen/common_28dp"
-            android:layout_height="@dimen/common_28dp"
-            />
+            android:layout_height="@dimen/common_28dp" />
         <ImageView
             android:id="@+id/iv_two"
             android:src="@drawable/prompt"
             android:layout_width="@dimen/common_26dp"
-            android:layout_height="@dimen/common_26dp"
-            />
-
+            android:layout_height="@dimen/common_26dp" />
     </FrameLayout>
 </RelativeLayout>

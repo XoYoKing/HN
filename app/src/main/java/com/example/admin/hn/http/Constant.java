@@ -76,4 +76,18 @@ public class Constant {
     //电子海图库存管理 搜索
     public static final int POP_ORDER_INVENTORY = 500;
 
+
+    /**
+     * 广播 action
+     */
+    //船舶资料管理 已选择
+    public static final String ACTION_MATERIAL_MANAGER_FRAGMENT = "MaterialManagerFragment";
+    //船舶资料管理 未选择
+    public static final String ACTION_MATERIAL_NOT_MANAGER_FRAGMENT = "MaterialNotManagerFragment";
+    //电子海图  主页
+    public static final String ACTION_FOUR_FRAGMENT = "FourFragment";
+    //船舶资料管理 主页
+    public static final String ACTION_FOUR_FRAGMENT2 = "FourFragment2";
+
+
 }

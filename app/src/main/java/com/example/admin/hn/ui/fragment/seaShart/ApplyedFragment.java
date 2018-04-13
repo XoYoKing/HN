@@ -1,6 +1,8 @@
 package com.example.admin.hn.ui.fragment.seaShart;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import com.example.admin.hn.model.OrderInfo;
 import com.example.admin.hn.ui.account.ShipApplyedActivity;
 import com.example.admin.hn.ui.adapter.ApplyedAdapter;
 
+import com.example.admin.hn.utils.SpaceItemDecoration;
 import com.example.admin.hn.utils.ToolRefreshView;
 
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -42,33 +45,28 @@ import butterknife.OnClick;
  */
 public class ApplyedFragment extends BaseFragment implements OnRefreshListener,OnLoadmoreListener{
 
-    private static final String TAG = "OrderManagerStatusFragment";
+    private static final String TAG = "ApplyedFragment";
 
-    @Bind(R.id.listView)
-    ListView listView;
+    @Bind(R.id.recycleView)
+    RecyclerView recycleView;
     @Bind(R.id.network_disabled)
     RelativeLayout network;
     @Bind(R.id.network_img)
     ImageView network_img;
     @Bind(R.id.noData_img)
     ImageView noData_img;
-    private String str = "";
 
     private ArrayList<OrderInfo.Order> list = new ArrayList<>();
-    private CommonAdapter adapter;
+    private ApplyedAdapter adapter;
     private View view;
-    //是否审核1已审核2未审核
-    private String statu = "1";
-    //搜索条件1(查询该用户全部订单) 2(根据船舶名称)3(船舶编号)4(订单号)
-    private int status = 1;
     private int page = 1;
-    private int screen = 1;
+    private int type = 1;
     private String url_order = Api.BASE_URL + Api.ORDER;
     private RefreshLayout refreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_list_layout, container, false);
+        view = inflater.inflate(R.layout.fragment_recycle_layout, container, false);
         ButterKnife.bind(this, view);
         initTitleBar();
         initView();
@@ -83,20 +81,14 @@ public class ApplyedFragment extends BaseFragment implements OnRefreshListener,O
         refreshLayout = (RefreshLayout) view.findViewById(R.id.refreshLayout);
         ToolRefreshView.setRefreshLayout(activity, refreshLayout, this, this);
         adapter = new ApplyedAdapter(activity, R.layout.item_applyed_layout, list);
-        listView.setAdapter(adapter);
+        recycleView.setLayoutManager(new LinearLayoutManager(activity));
+        recycleView.addItemDecoration(new SpaceItemDecoration(10,20,0,0));
+        recycleView.setAdapter(adapter);
     }
 
 
     @Override
     public void initData() {
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ShipApplyedActivity.startActivity(activity, 1, "");
-            }
-        });
-        listView.setTextFilterEnabled(true);
-
         data(1, "", 0);
     }
 
@@ -104,7 +96,7 @@ public class ApplyedFragment extends BaseFragment implements OnRefreshListener,O
     @Override
     public void initTitleBar() {
         Bundle bundle = getArguments();
-        screen = Integer.parseInt(bundle.getString("type"));
+        type = Integer.parseInt(bundle.getString("type"));
     }
 
 

@@ -150,7 +150,7 @@ public class FourFragment extends BaseFragment {
 	private void initBroadcastReceiver(){
 		localBroadcastManager = LocalBroadcastManager.getInstance(activity);
 		IntentFilter intentFilter = new IntentFilter();
-		intentFilter.addAction("FourFragment");
+		intentFilter.addAction(Constant.ACTION_FOUR_FRAGMENT);
 		br = new BroadcastReceiver() {
 			@Override
 			public void onReceive(Context context, Intent intent) {

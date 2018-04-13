@@ -10,7 +10,7 @@ import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseActivity;
 import com.example.admin.hn.http.OkHttpUtil;
-import com.example.admin.hn.widget.ProgersssDialog;
+import com.example.admin.hn.widget.ProgressDialog;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -79,7 +79,7 @@ public class ChartUpdatedetailsActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_download:
-                progersssDialog = new ProgersssDialog(this);
+                progersssDialog = new ProgressDialog(this);
                 OkHttpUtil.dowloadchart(this, Api.BASE_URL + download, progersssDialog,size);
                 break;
         }

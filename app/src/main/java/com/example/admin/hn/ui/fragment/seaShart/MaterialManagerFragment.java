@@ -1,6 +1,11 @@
 package com.example.admin.hn.ui.fragment.seaShart;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,10 +16,13 @@ import android.widget.RelativeLayout;
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseFragment;
+import com.example.admin.hn.http.Constant;
 import com.example.admin.hn.model.OrderInfo;
 import com.example.admin.hn.ui.adapter.MaterialSelectAdapter;
 import com.example.admin.hn.utils.SpaceItemDecoration;
+import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolRefreshView;
+import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -48,14 +56,12 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
     private ArrayList<OrderInfo.Order> list = new ArrayList<>();
     private CommonAdapter adapter;
     private View view;
-    //是否审核1已审核2未审核
-    private String statu = "1";
-    //搜索条件1(查询该用户全部订单) 2(根据船舶名称)3(船舶编号)4(订单号)
-    private int status = 1;
     private int page = 1;
     private int screen = 1;
     private String url_order = Api.BASE_URL + Api.ORDER;
     private RefreshLayout refreshLayout;
+    private LocalBroadcastManager localBroadcastManager;
+    private BroadcastReceiver br;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -75,7 +81,7 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
         ToolRefreshView.setRefreshLayout(activity, refreshLayout, this, this);
         adapter = new MaterialSelectAdapter(activity, R.layout.item_material_layout, list);
         recycleView.setLayoutManager(new LinearLayoutManager(activity));
-        recycleView.addItemDecoration(new SpaceItemDecoration(10,10,0,0));
+        recycleView.addItemDecoration(new SpaceItemDecoration(10,20,0,0));
         recycleView.setAdapter(adapter);
     }
 
@@ -83,6 +89,7 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
     @Override
     public void initData() {
         data(1, "", 0);
+        initBroadcastReceiver();
     }
 
 
@@ -131,5 +138,31 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
     public void onRefresh(RefreshLayout refreshlayout) {
         page = 1;
         refreshlayout.finishRefresh(1000);
+    }
+
+    private void initBroadcastReceiver(){
+        localBroadcastManager = LocalBroadcastManager.getInstance(activity);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Constant.ACTION_MATERIAL_MANAGER_FRAGMENT);
+        br = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent != null) {
+                    submit();
+                }
+            }
+        };
+        localBroadcastManager.registerReceiver(br, intentFilter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        localBroadcastManager.unregisterReceiver(br);
+    }
+
+    private void submit() {
+        ToolAlert.showToast(activity, "已选-提交", false);
+        Logger.e("size", adapter.getDatas().size()+ "");
     }
 }

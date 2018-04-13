@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.example.admin.hn.R;
 import com.example.admin.hn.base.BaseFragment;
+import com.example.admin.hn.http.Constant;
 import com.example.admin.hn.ui.adapter.AllChildTabAdapter;
 
 import butterknife.ButterKnife;
@@ -78,7 +79,7 @@ public class OrderManagerFragment extends BaseFragment implements ViewPager.OnPa
 
 	@Override
 	public void onPageSelected(int position) {
-		Intent intent = new Intent("FourFragment");
+		Intent intent = new Intent(Constant.ACTION_FOUR_FRAGMENT);
 		intent.putExtra("position", position);
 		LocalBroadcastManager.getInstance(activity).sendBroadcast(intent);
 	}
