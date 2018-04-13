@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.base.BaseActivity;
+import com.example.admin.hn.http.Constant;
 import com.example.admin.hn.model.ShipInfo;
 import com.example.admin.hn.ui.adapter.AllTabAdapter;
 import com.example.admin.hn.ui.fragment.seaShart.ShipSelectFragment;
@@ -71,7 +72,7 @@ public class ShipSelectActivity extends BaseActivity implements ViewPager.OnPage
 
     @OnClick({R.id.text_title_back,R.id.text_tile_right, R.id.text_tile_del})
     public void onClick(View v) {
-        Intent intent = new Intent("ShipSelectFragment");
+        Intent intent = new Intent(Constant.ACTION_SHIP_SELECT_FRAGMENT);
         switch (v.getId()) {
             case R.id.text_title_back:
                 finish();

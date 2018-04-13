@@ -15,8 +15,11 @@ import com.example.admin.hn.base.HNApplication;
 import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.ServerResponse;
 import com.example.admin.hn.ui.login.FindPasswordActivity;
+import com.example.admin.hn.ui.login.LoginActivity;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
+import com.example.admin.hn.utils.ToolString;
+import com.example.admin.hn.volley.RequestListener;
 import com.orhanobut.logger.Logger;
 import com.squareup.okhttp.Request;
 
@@ -40,19 +43,20 @@ public class ChangeLoginPasswordActivity extends BaseActivity {
     TextView textTitleBack;
     @Bind(R.id.text_title)
     TextView textTitle;
-    @Bind(R.id.et_please_input_change_original_login_password)
-    EditText etpassword;
-    @Bind(R.id.et_please_input_new_login_password)
-    EditText etpassword1;
-    @Bind(R.id.et_confirm_new_login_password)
-    EditText etpassword2;
+    @Bind(R.id.et_old_password)
+    EditText et_old_password;
+    @Bind(R.id.et_new_password)
+    EditText et_new_password;
+    @Bind(R.id.et_repeat_password)
+    EditText et_repeat_password;
     @Bind(R.id.tv_account_code)
     TextView tv_account_code;
     @Bind(R.id.tv_account_phone)
     TextView tv_account_phone;
-
     private String url_changepassword = Api.BASE_URL + Api.CHANGEPASSWORD;
-
+    private String oldPassword;
+    private String newPassword;
+    private String repeatPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +65,6 @@ public class ChangeLoginPasswordActivity extends BaseActivity {
         ButterKnife.bind(this);
         initTitleBar();
         initView();
-
     }
 
 
@@ -84,50 +87,67 @@ public class ChangeLoginPasswordActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.text_title_back, R.id.btn_confirm_change_login_password})
+    @OnClick({R.id.text_title_back, R.id.bt_confirm})
     public void onClick(View v) {
-
         switch (v.getId()) {
             case R.id.text_title_back:
                 finish();
                 break;
-
-
-            case R.id.btn_confirm_change_login_password:
-                Map map = new HashMap();
-                map.put("password", etpassword.getText().toString());
-                map.put("oldpassword", etpassword1.getText().toString());
-                map.put("userid", HNApplication.mApp.getUserId());
-                map.put("repeatpassword", etpassword2.getText().toString());
-                String jsonStr = GsonUtils.mapToJson(map);
-                Logger.i(TAG, jsonStr);
-                try {
-                    OkHttpUtil.postJsonData2Server(ChangeLoginPasswordActivity.this,
-                            url_changepassword,
-                            jsonStr,
-                            new OkHttpUtil.MyCallBack() {
-                                @Override
-                                public void onFailure(Request request, IOException e) {
-                                    ToolAlert.showToast(ChangeLoginPasswordActivity.this,"服务器异常,请稍后再试",false);
-
-                                }
-
-                                @Override
-                                public void onResponse(String json) {
-                                    Logger.i(TAG, json);
-                                    ServerResponse serverResponse = GsonUtils
-                                            .jsonToBean(json,
-                                                    ServerResponse.class
-                                            );
-                                    ToolAlert.showToast(ChangeLoginPasswordActivity.this, serverResponse.getMessage(), false);
-                                    finish();
-                                }
-                            });
-                } catch (IOException e) {
-                    e.printStackTrace();
+            case R.id.bt_confirm:
+                if (checkTextValue()) {
+                    sureUpdate();
                 }
                 break;
         }
+    }
+
+    private boolean checkTextValue(){
+        oldPassword = et_old_password.getText().toString();
+        newPassword = et_new_password.getText().toString();
+        repeatPassword = et_repeat_password.getText().toString();
+        if (!ToolString.isEmpty(oldPassword)) {
+            ToolAlert.showToast(context, "请输入原登录密码", false);
+            return false;
+        }
+        if (!ToolString.isEmpty(newPassword)) {
+            ToolAlert.showToast(context, "请输入新登录密码", false);
+            return false;
+        }
+        if (!ToolString.isEmpty(repeatPassword)) {
+            ToolAlert.showToast(context, "请输入确认密码", false);
+            return false;
+        }
+        if (oldPassword.equals(newPassword)) {
+            ToolAlert.showToast(context, "原密码与新密码一致", false);
+            return false;
+        }
+        if (!newPassword.equals(repeatPassword)) {
+            ToolAlert.showToast(context, "新密码与重复密码不一致", false);
+            return false;
+        }
+        return true;
+    }
+
+    private void sureUpdate() {
+        params.put("oldpassword", oldPassword);
+        params.put("password", newPassword);
+        params.put("repeatpassword", repeatPassword);
+        http.postJson(url_changepassword, params, "修改中...", new RequestListener() {
+            @Override
+            public void requestSuccess(String json) {
+                if (GsonUtils.isSuccess(json)) {
+                    //密码修改成功需要重新登录
+                    HNApplication.mApp.logout();
+                    LoginActivity.startActivity(ChangeLoginPasswordActivity.this);
+                }
+                ToolAlert.showToast(context,GsonUtils.getError(json),false);
+            }
+
+            @Override
+            public void requestError(String message) {
+                ToolAlert.showToast(context,message,false);
+            }
+        });
     }
 
 }

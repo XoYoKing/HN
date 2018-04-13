@@ -32,6 +32,7 @@ import com.example.admin.hn.ui.account.ShipSelectActivity;
 import com.example.admin.hn.ui.login.LoginActivity;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
+import com.example.admin.hn.volley.RequestListener;
 import com.example.admin.hn.widget.ProgressDialog;
 import com.orhanobut.logger.Logger;
 import com.squareup.okhttp.Request;
@@ -112,7 +113,6 @@ public class MoreFragment extends BaseFragment {
             return functionDesc.length;
         }
 
-
         @Override
         public Object getItem(int position) {
             return position;
@@ -161,41 +161,29 @@ public class MoreFragment extends BaseFragment {
     }
 
     private void checkVersion() {
-        Map map = new HashMap();
-        map.put("type", "1");
-        String jsonStr = GsonUtils.mapToJson(map);
-        Logger.i(TAG, jsonStr);
-        try {
-            OkHttpUtil.postJsonData2Server(getActivity(),
-                    url_update,
-                    jsonStr,
-                    new OkHttpUtil.MyCallBack() {
-                        @Override
-                        public void onFailure(Request request, IOException e) {
-                            ToolAlert.showToast(getActivity(), "连接服务器失败,请稍后再试", false);
-                        }
-
-                        @Override
-                        public void onResponse(String json) {
-                            Logger.i(TAG, json);
-                            AppUpdateInfo appUpdateInfo = GsonUtils.jsonToBean(
-                                    json, AppUpdateInfo.class
-                            );
-                            if ((appUpdateInfo.getStatus()).equals("success")) {
-                                if (Double.valueOf(getAppVersionName(getActivity())) < Double.valueOf(appUpdateInfo.getDocuments().get(appUpdateInfo.getDocuments().size()-1).getVersionnumber())) {
-                                    showNoticeDialog(getActivity(), appUpdateInfo.getDocuments().get(0).getDownloadurl());
-                                } else {
-                                    ToolAlert.showToast(getActivity(), "当前已是最新版本", false);
-                                }
-                            } else {
-                                ToolAlert.showToast(getActivity(), appUpdateInfo.getMessage(), false);
-                            }
-                        }
+        params.put("type", "1");
+        http.postJson(url_update, params, progressTitle, new RequestListener() {
+            @Override
+            public void requestSuccess(String json) {
+                Logger.i(TAG, json);
+                if (GsonUtils.isSuccess(json)) {
+                    AppUpdateInfo appUpdateInfo = GsonUtils.jsonToBean(json, AppUpdateInfo.class
+                    );
+                    if (Double.valueOf(getAppVersionName(getActivity())) < Double.valueOf(appUpdateInfo.getDocuments().get(appUpdateInfo.getDocuments().size()-1).getVersionnumber())) {
+                        showNoticeDialog(getActivity(), appUpdateInfo.getDocuments().get(0).getDownloadurl());
+                    } else {
+                        ToolAlert.showToast(getActivity(), "当前已是最新版本", false);
                     }
-            );
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                }else {
+                    ToolAlert.showToast(getActivity(), GsonUtils.getError(json), false);
+                }
+            }
+
+            @Override
+            public void requestError(String message) {
+                ToolAlert.showToast(getActivity(), message, false);
+            }
+        });
     }
 
     @OnClick(R.id.btn_Sign_out)

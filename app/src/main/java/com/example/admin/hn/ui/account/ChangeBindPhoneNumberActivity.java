@@ -16,6 +16,8 @@ import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.ServerResponse;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
+import com.example.admin.hn.utils.ToolString;
+import com.example.admin.hn.volley.RequestListener;
 import com.example.admin.hn.widget.TimeButton;
 import com.orhanobut.logger.Logger;
 import com.squareup.okhttp.Request;
@@ -55,6 +57,10 @@ public class ChangeBindPhoneNumberActivity extends BaseActivity {
     TextView mTvConfirmChangeBindPhone;
     private String url_changephone = Api.BASE_URL + Api.CHANGEPHONE;
     private String url_email = Api.BASE_URL + Api.EMAIL;
+    private String phoneNumber;
+    private String email;
+    private String password;
+    private String emailCode;
 
 
     @Override
@@ -102,70 +108,107 @@ public class ChangeBindPhoneNumberActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tb_send_validate_code:
-                Map maps = new HashMap();
-                maps.put("phonenumber", mTvConfirmChangeBindPhone.getText().toString());
-                maps.put("email", mEtPleaseInputNewTelephone.getText().toString());
-                String json = GsonUtils.mapToJson(maps);
-                Logger.i(TAG, json);
-                try {
-                    OkHttpUtil.postJsonData2Server(ChangeBindPhoneNumberActivity.this,
-                            url_email,
-                            json,
-                            new OkHttpUtil.MyCallBack() {
-                                @Override
-                                public void onFailure(Request request, IOException e) {
-                                    ToolAlert.showToast(ChangeBindPhoneNumberActivity.this, "服务器异常,请稍后再试", false);
-                                }
-
-                                @Override
-                                public void onResponse(String json) {
-//                                    Logger.i(TAG, json);
-//                                    ServerResponse serverResponse = GsonUtils
-//                                            .jsonToBean(json,
-//                                                    ServerResponse.class
-//                                            );
-//                                    ToolAlert.showToast(ChangeBindPhoneNumberActivity.this, serverResponse.getMessage(), false);
-                                }
-                            });
-                } catch (IOException e) {
-                    e.printStackTrace();
+                getTextValue(false);
+                if (!ToolString.isEmpty(phoneNumber)) {
+                    ToolAlert.showToast(context, "请输入手机号码", false);
+                    return;
                 }
+                if (!ToolString.isEmpty(email)) {
+                    ToolAlert.showToast(context, "请输入邮箱地址", false);
+                    return;
+                }
+                sendCode();
                 break;
             case R.id.tv_confirm_change_bind_phone:
-                Map map = new HashMap();
-                map.put("password", mEtPleaseInputPayPassword.getText().toString());
-                map.put("phonenumber", mTvConfirmChangeBindPhone.getText().toString());
-                map.put("email", mEtPleaseInputNewTelephone.getText().toString());
-                map.put("userid", HNApplication.mApp.getUserId());
-                map.put("emailcode", mEtPleaseInputValidateCode.getText().toString());
-                String jsonStr = GsonUtils.mapToJson(map);
-                Logger.i(TAG, jsonStr);
-                try {
-                    OkHttpUtil.postJsonData2Server(ChangeBindPhoneNumberActivity.this,
-                            url_changephone,
-                            jsonStr,
-                            new OkHttpUtil.MyCallBack() {
-                                @Override
-                                public void onFailure(Request request, IOException e) {
-                                }
-
-                                @Override
-                                public void onResponse(String json) {
-                                    Logger.i(TAG, json);
-                                    ServerResponse serverResponse = GsonUtils
-                                            .jsonToBean(json,
-                                                    ServerResponse.class
-                                            );
-                                    ToolAlert.showToast(ChangeBindPhoneNumberActivity.this, serverResponse.getMessage(), false);
-                                    finish();
-                                }
-
-                            });
-                } catch (IOException e) {
-                    e.printStackTrace();
+                getTextValue(true);
+                if (checkValue()) {
+                    sureUpdate();
                 }
                 break;
         }
+    }
+
+    /**
+     * 获取输入框的参数
+     * @param is  是否需要获取登录密码和邮箱验证码
+     */
+    private void getTextValue(boolean is) {
+        if (is) {
+            password = mEtPleaseInputPayPassword.getText().toString();
+            emailCode = mEtPleaseInputValidateCode.getText().toString();
+        }
+        phoneNumber = mTvConfirmChangeBindPhone.getText().toString();
+        email = mEtPleaseInputNewTelephone.getText().toString();
+    }
+
+    //校验参数是否为空
+    private boolean checkValue(){
+        if (!ToolString.isEmpty(password)) {
+            ToolAlert.showToast(context, "请输入登录密码", false);
+            return false;
+        }
+        if (!ToolString.isEmpty(phoneNumber)) {
+            ToolAlert.showToast(context, "请输入手机号码", false);
+            return false;
+        }
+        if (!ToolString.isEmpty(email)) {
+            ToolAlert.showToast(context, "请输入邮箱地址", false);
+            return false;
+        }
+        if (!ToolString.isEmpty(emailCode)) {
+            ToolAlert.showToast(context, "请输入邮箱验证码", false);
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 发送短信验证码
+     */
+    private void sendCode() {
+        Map maps = new HashMap();
+        maps.put("phonenumber",phoneNumber);
+        maps.put("email",email );
+        http.postJson(url_email, maps, "发送中...", new RequestListener() {
+            @Override
+            public void requestSuccess(String json) {
+                if (GsonUtils.isSuccess(json)) {
+                    ToolAlert.showToast(context, "验证码已发送至"+email+"邮箱,请注意查收。", false);
+                }else {
+                    ToolAlert.showToast(context, GsonUtils.getError(json), false);
+                }
+            }
+            @Override
+            public void requestError(String message) {
+                ToolAlert.showToast(context, message, false);
+            }
+        });
+    }
+
+    /**
+     * 确认修改
+     */
+    private void sureUpdate() {
+        Map map = new HashMap();
+        map.put("password",password);
+        map.put("phonenumber", phoneNumber);
+        map.put("email", email);
+        map.put("emailcode",emailCode);
+        http.postJson(url_changephone, map, "提交中...", new RequestListener() {
+            @Override
+            public void requestSuccess(String json) {
+                Logger.i(TAG, json);
+                if (GsonUtils.isSuccess(json)) {
+                    finish();
+                }
+                ToolAlert.showToast(context, GsonUtils.getError(json), false);
+            }
+
+            @Override
+            public void requestError(String message) {
+                ToolAlert.showToast(context, message, false);
+            }
+        });
     }
 
 

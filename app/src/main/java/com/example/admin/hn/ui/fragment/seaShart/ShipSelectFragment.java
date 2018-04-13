@@ -20,6 +20,7 @@ import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseFragment;
 import com.example.admin.hn.base.HNApplication;
+import com.example.admin.hn.http.Constant;
 import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.OrderInfo;
 import com.example.admin.hn.model.ShipInfo;
@@ -236,7 +237,7 @@ public class ShipSelectFragment extends BaseFragment implements OnRefreshListene
     private void initBroadcastReceiver() {
         localBroadcastManager = LocalBroadcastManager.getInstance(activity);
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("ShipSelectFragment");
+        intentFilter.addAction(Constant.ACTION_SHIP_SELECT_FRAGMENT);
         br = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {

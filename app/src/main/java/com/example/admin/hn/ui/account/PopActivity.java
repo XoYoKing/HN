@@ -104,7 +104,7 @@ public class PopActivity extends BaseActivity {
 
         int windowWith = ToolAppUtils.getWindowWith(this);
         ViewGroup.LayoutParams layoutParams = pop_relative.getLayoutParams();
-        layoutParams.width = windowWith / 2;
+        layoutParams.width = (int) (windowWith *0.8);
         pop_relative.setLayoutParams(layoutParams);
         view = View.inflate(this, layoutId, null);
         linear_top.addView(view);
