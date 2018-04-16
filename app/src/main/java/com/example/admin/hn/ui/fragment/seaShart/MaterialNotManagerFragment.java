@@ -11,29 +11,30 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseFragment;
+import com.example.admin.hn.base.HNApplication;
 import com.example.admin.hn.http.Constant;
-import com.example.admin.hn.http.OkHttpUtil;
-import com.example.admin.hn.model.OrderInfo;
-import com.example.admin.hn.model.OrderUseInfo;
+import com.example.admin.hn.model.OrderNotUseInfo;
+import com.example.admin.hn.model.OrderNotUseSubmit;
+import com.example.admin.hn.model.SubmitListInfo;
 import com.example.admin.hn.ui.adapter.MaterialNotSelectAdapter;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.SpaceItemDecoration;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolRefreshView;
+import com.example.admin.hn.utils.ToolString;
+import com.example.admin.hn.volley.RequestListener;
+import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.zhy.adapter.abslistview.CommonAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,16 +63,15 @@ public class MaterialNotManagerFragment extends BaseFragment implements OnRefres
     @Bind(R.id.noData_img)
     ImageView noData_img;
 
-    private ArrayList<OrderUseInfo.OrderUser> list = new ArrayList<>();
+    private ArrayList<OrderNotUseInfo> list = new ArrayList<>();
     private MaterialNotSelectAdapter adapter;
     private View view;
-    //是否审核1已审核2未审核
-    private String statu = "1";
-    //搜索条件1(查询该用户全部订单) 2(根据船舶名称)3(船舶编号)4(订单号)
-    private int status = 1;
+    private String code;//资料编号
+    private String cname;//中文名称
     private int page = 1;
     private int screen = 1;
-    private String url_order = Api.BASE_URL + Api.ORDER;
+    private String url = Api.BASE_URL + Api.GET_DOCUMENTS;
+    private String submit_url = Api.BASE_URL + Api.SUBMIT_DOCUMENTS;
     private RefreshLayout refreshLayout;
     private boolean isRefresh = true;//是否下拉刷新
     private LocalBroadcastManager localBroadcastManager;
@@ -103,26 +103,56 @@ public class MaterialNotManagerFragment extends BaseFragment implements OnRefres
     @Override
     public void initData() {
         //默认隐藏搜索条件
-
         initBroadcastReceiver();
-        postData();
+        sendHttp();
     }
 
-    private void postData() {
-        Map map = new HashMap();
-        map.put("dataNumber", "37111");
-        map.put("chineseName", "石臼港及附近");
-        if (isRefresh) {
-            map.put("page", "1");
-        } else {
-            map.put("page", page);
+    private void sendHttp() {
+        Map params = new HashMap();
+        if (ToolString.isEmpty(code)) {
+            params.put("code", code);
         }
-        String jsonStr = GsonUtils.mapToJson(map);
-        Logger.i(TAG, jsonStr);
-        for (int i = 0; i < 10; i++) {
-            list.add(new OrderUseInfo.OrderUser(false, 1, 100 + i, "2016-12-5", 1002515 * (i + 1) + ""));
+        if (ToolString.isEmpty(cname)) {
+            params.put("cname", cname);
         }
-        adapter.notifyDataSetChanged();
+        params.put("page", page);
+        http.postJson(url, params, progressTitle, new RequestListener() {
+            @Override
+            public void requestSuccess(String json) {
+                progressTitle = null;
+                Logger.i("待选列表", json);
+//                if (GsonUtils.isSuccess(json)) {
+//                    TypeToken typeToken = new TypeToken<List<OrderNotUseInfo>>() {
+//                    };
+//                    List<OrderNotUseInfo> data = (List<OrderNotUseInfo>) GsonUtils.jsonToList(json, typeToken);
+//                    if (ToolString.isEmptyList(data)) {
+//                        if (isRefresh) {
+//                            list.clear();
+//                        }
+//                        list.addAll(data);
+//                        adapter.notifyDataSetChanged();
+//                    }
+//                }else {
+//                    ToolAlert.showToast(activity,GsonUtils.getError(json));
+//                }
+                TypeToken typeToken = new TypeToken<List<OrderNotUseInfo>>() {
+                };
+                List<OrderNotUseInfo> data = (List<OrderNotUseInfo>) GsonUtils.jsonToList(json, typeToken);
+                if (ToolString.isEmptyList(data)) {
+                    if (isRefresh) {
+                        list.clear();
+                    }
+                    list.addAll(data);
+                    adapter.notifyDataSetChanged();
+                }
+                ToolRefreshView.hintView(adapter,false,network,noData_img,network_img);
+            }
+            @Override
+            public void requestError(String message) {
+                ToolAlert.showToast(activity,message,false);
+                ToolRefreshView.hintView(adapter,true,network,noData_img,network_img);
+            }
+        });
     }
 
 
@@ -143,33 +173,32 @@ public class MaterialNotManagerFragment extends BaseFragment implements OnRefres
         }
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden) {
-            page = 1;
-        }
-    }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Constant.POP_NOT_MATERIAL) {
-            ToolAlert.showToast(activity, TAG + resultCode + "", false);
+        if (resultCode == Constant.POP_NOT_MATERIAL && data != null) {
+            code = data.getStringExtra("dataNumber");
+            cname = data.getStringExtra("chineseName");
+            //发送请求
+            sendHttp();
         }
     }
 
     @Override
     public void onLoadmore(RefreshLayout refreshlayout) {
+        isRefresh = false;
         page = page + 1;
+        sendHttp();
         adapter.notifyDataSetChanged();
         refreshlayout.finishLoadmore(1000);
     }
 
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
+        isRefresh = true;
         page = 1;
+        sendHttp();
         refreshlayout.finishRefresh(1000);
     }
 
@@ -188,10 +217,37 @@ public class MaterialNotManagerFragment extends BaseFragment implements OnRefres
         };
         localBroadcastManager.registerReceiver(br, intentFilter);
     }
+
+    private List<OrderNotUseSubmit> submits = new ArrayList<>();
     //提交数据
     private void submit() {
-        List<OrderUseInfo.OrderUser> selectList = adapter.getSelectList();
+        List<OrderNotUseInfo> selectList = adapter.getSelectList();
         Logger.i("selectList", selectList.toString() + "");
+        for (int i = 0; i < selectList.size(); i++) {
+            OrderNotUseInfo notUseInfo = selectList.get(i);
+            OrderNotUseSubmit useSubmit = new OrderNotUseSubmit(notUseInfo.quantity,notUseInfo.id, notUseInfo.code, notUseInfo.publis_at, MainActivity.list.get(0).getShipnumber());
+            submits.add(useSubmit);
+        }
+        if (!ToolString.isEmptyList(selectList)) {
+            ToolAlert.showToast(activity, "请选择需要提交的资料", false);
+            return;
+        }
+        SubmitListInfo submitListInfo = new SubmitListInfo(HNApplication.mApp.getUserId(), submits);
+        http.postJson(submit_url, submitListInfo, "提交中...", new RequestListener() {
+            @Override
+            public void requestSuccess(String json) {
+                Logger.e("待选提交结果",json);
+                if (GsonUtils.isSuccess(json)) {
+
+                }
+                ToolAlert.showToast(activity, GsonUtils.getError(json));
+            }
+
+            @Override
+            public void requestError(String message) {
+                ToolAlert.showToast(activity, message);
+            }
+        });
     }
 
     @Override

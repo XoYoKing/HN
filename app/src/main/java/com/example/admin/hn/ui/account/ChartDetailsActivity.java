@@ -80,38 +80,6 @@ public class ChartDetailsActivity extends BaseActivity {
         tv_order_rate1.setText(updatetime);
         tv_order_time.setText(productnumber);
         tv_order_number.setText(ordernumber);
-//        Map map = new HashMap();
-//        map.put("ordernumber", ordernumber);
-//        map.put("ordername", "");
-//        map.put("userid", "empid:a1d3a8df-76d6-43a5-8236-ca697bdf9e97");
-//        map.put("status", "3");
-//        map.put("page", "1");
-//        String jsonStr = GsonUtils.mapToJson(map);
-//        Logger.i(TAG, jsonStr);
-//        try {
-//            OkHttpUtil.postJsonData2Server(ChartDetailsActivity.this,
-//                    url_chart,
-//                    jsonStr,
-//                    new OkHttpUtil.MyCallBack() {
-//                        @Override
-//                        public void onFailure(Request request, IOException e) {
-//                        }
-//
-//                        @Override
-//                        public void onResponse(String json) {
-//                            Logger.i(TAG, json);
-//                            ChartInfo chartInfo = GsonUtils.jsonToBean(
-//                                    json, ChartInfo.class
-//                            );
-//                            tv_order_rate.setText(chartInfo.getDocuments().get(0).getShipname());
-//                            tv_order_rate1.setText(chartInfo.getDocuments().get(0).getUpdatetime());
-//                            tv_order_time.setText(chartInfo.getDocuments().get(0).getProductNumber());
-//                            tv_order_number.setText(chartInfo.getDocuments().get(0).getOrdernumber());
-//                        }
-//                    });
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
     }
 
 

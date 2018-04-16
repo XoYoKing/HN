@@ -23,6 +23,11 @@ public class ToolAlert {
         mContext = null;
     }
 
+    public static void showToast(Context mContext, String msg) {
+        if (msg == null) return;
+        showToast(mContext, msg, false);
+    }
+
 
     public static void showToast(Context context, int info, boolean longOrShort) {
         Toast.makeText(context, info,

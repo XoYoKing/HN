@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.admin.hn.R;
 
+import com.example.admin.hn.model.OrderNotUseInfo;
 import com.example.admin.hn.model.OrderUseInfo;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolString;
@@ -26,12 +27,12 @@ import java.util.List;
  *
  * @date on 2017/7/31 15:35
  */
-public class MaterialNotSelectAdapter extends CommonAdapter<OrderUseInfo.OrderUser> {
+public class MaterialNotSelectAdapter extends CommonAdapter<OrderNotUseInfo> {
 
-    private List< OrderUseInfo.OrderUser> selectList = new ArrayList<>();
+    private List<OrderNotUseInfo> selectList = new ArrayList<>();
 
     //获取选中的数据对象
-    public List<OrderUseInfo.OrderUser> getSelectList() {
+    public List<OrderNotUseInfo> getSelectList() {
         return selectList;
     }
 
@@ -40,14 +41,18 @@ public class MaterialNotSelectAdapter extends CommonAdapter<OrderUseInfo.OrderUs
     }
 
     @Override
-    protected void convert(ViewHolder viewHolder, final OrderUseInfo.OrderUser item, int position) {
+    protected void convert(ViewHolder viewHolder, final OrderNotUseInfo item, int position) {
         final ImageView img_select = viewHolder.getView(R.id.img_select);
         final EditText tv_buy_number = viewHolder.getView(R.id.tv_buy_number);
-        viewHolder.setText(R.id.tv_inventory, item.inventory + "");
-        viewHolder.setText(R.id.tv_date, item.date + "");
-        viewHolder.setText(R.id.tv_data_number, item.dateNumber + "");
+        viewHolder.setText(R.id.tv_inventory, item.storage_amount + "");
+        viewHolder.setText(R.id.tv_date, item.publis_at + "");
+        viewHolder.setText(R.id.tv_data_number, item.code + "");
         img_select.setSelected(item.isSelect);
-        tv_buy_number.setText(item.buyNumber+"");
+        if (item.storage_amount == 0) {
+            tv_buy_number.setText("0");
+        }else {
+            tv_buy_number.setText(item.quantity+"");
+        }
         ToolViewUtils.setSelection(tv_buy_number);
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,19 +83,19 @@ public class MaterialNotSelectAdapter extends CommonAdapter<OrderUseInfo.OrderUs
             public void afterTextChanged(Editable s) {
                 if (ToolString.isEmpty(s.toString())) {
                     int number = Integer.parseInt(s.toString());
-                    if (number > item.inventory) {
+                    if (number > item.storage_amount) {
                         ToolAlert.showToast(mContext, "库存不足！", false);
-                        tv_buy_number.setText(item.inventory + "");
-                        item.buyNumber = item.inventory;
+                        tv_buy_number.setText(item.storage_amount + "");
+                        item.quantity = item.storage_amount;
                     }else {
-                        item.buyNumber = number;
+                        item.quantity = number;
                     }
                 }
             }
         });
     }
 
-    private void add(OrderUseInfo.OrderUser item,TextView tv_buy_number) {
+    private void add(OrderNotUseInfo item,TextView tv_buy_number) {
         int number = 0;//goum购买数量默认为1
         try {
             String tv_number = tv_buy_number.getText().toString();
@@ -100,8 +105,8 @@ public class MaterialNotSelectAdapter extends CommonAdapter<OrderUseInfo.OrderUs
             e.printStackTrace();
             number = 1;
         }
-        item.buyNumber = number;
-        Logger.i("  item.buyNumber", item.buyNumber + "");
+        item.quantity = number;
+        Logger.i("item.quantity", item.quantity + "");
         selectList.add(item);
     }
 

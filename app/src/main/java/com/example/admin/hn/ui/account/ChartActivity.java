@@ -18,6 +18,7 @@ import com.example.admin.hn.model.ChartInfo;
 import com.example.admin.hn.ui.adapter.ChartAdapter;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
+import com.example.admin.hn.volley.RequestListener;
 import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -144,8 +145,8 @@ public class ChartActivity extends BaseActivity {
                 refreshlayout.finishLoadmore(1000);
             }
         });
-
         adapter = new ChartAdapter(this, R.layout.chart_adapter, list);
+        listView.setAdapter(adapter);
     }
 
 
@@ -216,40 +217,28 @@ public class ChartActivity extends BaseActivity {
         map.put("userid", HNApplication.mApp.getUserId());
         map.put("status", string);
         map.put("page", page);
-        String jsonStr = GsonUtils.mapToJson(map);
-        Logger.i(TAG, jsonStr);
-        try {
-            OkHttpUtil.postJsonData2Server(ChartActivity.this,
-                    url_chart,
-                    jsonStr,
-                    new OkHttpUtil.MyCallBack() {
-                        @Override
-                        public void onFailure(Request request, IOException e) {
-                            ToolAlert.showToast(ChartActivity.this,"服务器异常,请稍后再试",false);
+        http.postJson(url_chart, map, progressTitle, new RequestListener() {
+            @Override
+            public void requestSuccess(String json) {
+                Logger.i(TAG, json);
+                if (GsonUtils.isSuccess(json)) {
+                    ChartInfo chartInfo = GsonUtils.jsonToBean(
+                            json, ChartInfo.class
+                    );
+                    list.clear();
+                    for (int i = 0; i < chartInfo.getDocuments().size(); i++) {
+                        list.add(new ChartInfo.Chart(chartInfo.getDocuments().get(i).getOrdernumber(), chartInfo.getDocuments().get(i).getShipname(), chartInfo.getDocuments().get(i).getUpdatetime(), chartInfo.getDocuments().get(i).getProductNumber()));
+                    }
+                    adapter.notifyDataSetChanged();
+                }else {
+                    ToolAlert.showToast(ChartActivity.this,GsonUtils.getError(json));
+                }
+            }
 
-                        }
-
-                        @Override
-                        public void onResponse(String json) {
-                            Logger.i(TAG, json);
-                            ChartInfo chartInfo = GsonUtils.jsonToBean(
-                                    json, ChartInfo.class
-                            );
-//                            if (string.equals("3")){
-//                                Intent intent_order = new Intent(ChartActivity.this, ChartDetailsActivity.class);
-//                                intent_order.putExtra("ordernumber", chartInfo.getDocuments().get(0).getOrdernumber());
-//                                startActivity(intent_order);
-//                            }else {
-                                list.clear();
-                                for (int i = 0; i < chartInfo.getDocuments().size(); i++) {
-                                    list.add(new ChartInfo.Chart(chartInfo.getDocuments().get(i).getOrdernumber(), chartInfo.getDocuments().get(i).getShipname(), chartInfo.getDocuments().get(i).getUpdatetime(), chartInfo.getDocuments().get(i).getProductNumber()));
-                                }
-                                listView.setAdapter(adapter);
-//                            }
-                        }
-                    });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            @Override
+            public void requestError(String message) {
+                ToolAlert.showToast(ChartActivity.this,message);
+            }
+        });
     }
 }

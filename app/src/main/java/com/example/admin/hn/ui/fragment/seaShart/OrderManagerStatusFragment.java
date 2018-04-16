@@ -164,7 +164,6 @@ public class OrderManagerStatusFragment extends BaseFragment implements OnRefres
         params.put("starttime", startDate);
         params.put("endtime", endDate);
         params.put("shipnumber", shipName);
-        params.put("userid", HNApplication.mApp.getUserId());
         params.put("shipname", shipName);
         params.put("status", status);
         if (Loadmore == 0) {

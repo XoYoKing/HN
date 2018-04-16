@@ -18,10 +18,13 @@ import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseFragment;
 import com.example.admin.hn.http.Constant;
 import com.example.admin.hn.model.OrderInfo;
+import com.example.admin.hn.model.OrderUseInfo;
 import com.example.admin.hn.ui.adapter.MaterialSelectAdapter;
+import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.SpaceItemDecoration;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolRefreshView;
+import com.example.admin.hn.volley.RequestListener;
 import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -58,7 +61,8 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
     private View view;
     private int page = 1;
     private int screen = 1;
-    private String url_order = Api.BASE_URL + Api.ORDER;
+    private boolean isRefresh = true;
+    private String url = Api.BASE_URL + Api.GET_SUBMITTED_DOCUMENTS;
     private RefreshLayout refreshLayout;
     private LocalBroadcastManager localBroadcastManager;
     private BroadcastReceiver br;
@@ -88,7 +92,7 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
 
     @Override
     public void initData() {
-        data(1, "", 0);
+        sendHttp();
         initBroadcastReceiver();
     }
 
@@ -111,25 +115,34 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
     }
 
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden) {
-            page = 1;
-        }
-    }
+    public void sendHttp() {
+        params.put("page", page);
+        http.postJson(url, params, progressTitle, new RequestListener() {
+            @Override
+            public void requestSuccess(String json) {
+                progressTitle = null;
+                Logger.e("已选列表", json);
+                if (GsonUtils.isSuccess(json)) {
+//                    GsonUtils.jsonToBean(json, OrderUseInfo.class);
+                } else {
+//                    ToolAlert.showToast(activity,GsonUtils.getError(json));
+                }
+                ToolRefreshView.hintView(adapter,false,network,noData_img,network_img);
+            }
 
-
-    public void data(final int status, String down, final int Loadmore) {
-        for (int i = 0; i < 10; i++) {
-            list.add(new OrderInfo.Order());
-        }
-        adapter.notifyDataSetChanged();
+            @Override
+            public void requestError(String message) {
+                ToolAlert.showToast(activity, message);
+                ToolRefreshView.hintView(adapter,true,network,noData_img,network_img);
+            }
+        });
     }
 
     @Override
     public void onLoadmore(RefreshLayout refreshlayout) {
         page = page + 1;
+        isRefresh = false;
+        sendHttp();
         adapter.notifyDataSetChanged();
         refreshlayout.finishLoadmore(1000);
     }
@@ -137,6 +150,8 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
         page = 1;
+        isRefresh = true;
+        sendHttp();
         refreshlayout.finishRefresh(1000);
     }
 

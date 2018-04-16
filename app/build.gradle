@@ -84,8 +84,8 @@ dependencies {
     compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3-alpha-5'
     compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.3-alpha-5'//没有使用特殊Header，可以不加这行
     //极光推送
-    compile 'cn.jiguang.sdk:jpush:3.0.3'  // 此处以JPush 3.0.3 版本为例。
-    compile 'cn.jiguang.sdk:jcore:1.1.1'  // 此处以JCore 1.1.1 版本为例。
+//    compile 'cn.jiguang.sdk:jpush:3.0.3'  // 此处以JPush 3.0.3 版本为例。
+//    compile 'cn.jiguang.sdk:jcore:1.1.1'  // 此处以JCore 1.1.1 版本为例。
     //角标
     compile 'me.leolin:ShortcutBadger:1.1.4@aar'
 //    //搜索框

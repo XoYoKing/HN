@@ -67,5 +67,12 @@ public class Api {
 
     //极光id
     public static final String APPID = "menusystem/mobile/updateAppid.action";
+    //船舶资料管理 待选 获取数据
+    public static final String GET_DOCUMENTS = "menusystem/computer/getDocuments.action";
+    //船舶资料管理 待选 提交数据
+    public static final String SUBMIT_DOCUMENTS = "menusystem/computer/submitDocuments.action";
+    //船舶资料管理 已选 获取数据
+    public static final String GET_SUBMITTED_DOCUMENTS = "menusystem/computer/getSubmittedDocuments.action";
+
 
 }

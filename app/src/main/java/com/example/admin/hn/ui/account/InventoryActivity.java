@@ -15,6 +15,7 @@ import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.InventoryInfo;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
+import com.example.admin.hn.volley.RequestListener;
 import com.orhanobut.logger.Logger;
 import com.squareup.okhttp.Request;
 
@@ -92,6 +93,10 @@ public class InventoryActivity extends BaseActivity {
         Intent intent= getIntent();
         number = intent.getStringExtra("number");
         shipname= intent.getStringExtra("shipname");
+        sendHttp();
+    }
+
+    private void sendHttp() {
         Map map = new HashMap();
         map.put("ordernumber", number);
         map.put("starttime", "");
@@ -101,42 +106,32 @@ public class InventoryActivity extends BaseActivity {
         map.put("shipname", "");
         map.put("status", "4");
         map.put("page", "1");
-        String jsonStr = GsonUtils.mapToJson(map);
-        Logger.i(TAG, jsonStr);
-        try {
-            OkHttpUtil.postJsonData2Server(InventoryActivity.this,
-                    url_inventory,
-                    jsonStr,
-                    new OkHttpUtil.MyCallBack() {
-                        @Override
-                        public void onFailure(Request request, IOException e) {
-                            ToolAlert.showToast(InventoryActivity.this, "服务器异常,请稍后再试", false);
+        http.postJson(url_inventory, map, progressTitle, new RequestListener() {
+            @Override
+            public void requestSuccess(String json) {
+                progressTitle = null;
+                if (GsonUtils.isSuccess(json)) {
+                    Logger.i(TAG, json);
+                    InventoryInfo inventoryInfo = GsonUtils.jsonToBean(
+                            json, InventoryInfo.class
+                    );
+                    tv_order_rate.setText(number);
+                    tv_shipname.setText(shipname);
+                    tv_order_rate1.setText(inventoryInfo.getDocuments().get(0).getProductNumber());
+//                  tv_order_rat2e.setText(inventoryInfo.getDocuments().get(0).getEffstartTime());
+//                  tv_endtime.setText(inventoryInfo.getDocuments().get(0).getEffEndTime());
+//                  tv_left_time.setText(inventoryInfo.getDocuments().get(0).getInLibraryTime());
+//                  tv_left_price.setText(inventoryInfo.getDocuments().get(0).getMoney());
+                }else {
+                    ToolAlert.showToast(InventoryActivity.this, GsonUtils.getError(json));
+                }
+            }
 
-                        }
-
-                        @Override
-                        public void onResponse(String json) {
-                            Logger.i(TAG, json);
-                            InventoryInfo inventoryInfo = GsonUtils.jsonToBean(
-                                    json, InventoryInfo.class
-                            );
-
-                            tv_order_rate.setText(number);
-                            tv_shipname.setText(shipname);
-                            tv_order_rate1.setText(inventoryInfo.getDocuments().get(0).getProductNumber());
-//                            tv_order_rat2e.setText(inventoryInfo.getDocuments().get(0).getEffstartTime());
-//                            tv_endtime.setText(inventoryInfo.getDocuments().get(0).getEffEndTime());
-//                            tv_left_time.setText(inventoryInfo.getDocuments().get(0).getInLibraryTime());
-//                            tv_left_price.setText(inventoryInfo.getDocuments().get(0).getMoney());
-
-
-                        }
-                    });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
+            @Override
+            public void requestError(String message) {
+                ToolAlert.showToast(InventoryActivity.this, message);
+            }
+        });
     }
 
 

@@ -10,6 +10,7 @@ import com.example.admin.hn.http.ErrorHelper;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolString;
 import com.example.admin.hn.widget.LoadingFragment;
+import com.orhanobut.logger.Logger;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -176,6 +177,7 @@ public class RequestManager {
             responseListener = responseListener(listener, false, null);
         }
         String json = GsonUtils.beanToJson(params);
+        Logger.i("请求参数", json);
         OkHttpUtils
                 .postString()
                 .url(url)

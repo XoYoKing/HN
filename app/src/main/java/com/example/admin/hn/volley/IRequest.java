@@ -50,8 +50,8 @@ public class IRequest {
      * @param params
      */
     private static void setParams(Map params) {
-        params.put("timestamp", AbDateUtil.getCurrentDate(AbDateUtil.dateFormatYMDHMS));
-        params.put("userid", HNApplication.mApp.getUserId());
+//        params.put("timestamp", AbDateUtil.getCurrentDate(AbDateUtil.dateFormatYMDHMS));
+        params.put("userid", HNApplication.mApp.getUserId());//用户ID 默认传递
         Logger.i("请求参数", params.toString());
     }
 

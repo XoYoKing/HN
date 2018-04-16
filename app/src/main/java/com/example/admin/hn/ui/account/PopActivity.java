@@ -57,6 +57,8 @@ public class PopActivity extends BaseActivity {
     private EditText et_name1;
     private int childItem;//当前fragment的子fragment页面所在位置
     private TextView tv_date;
+    private EditText et_dataNumber;
+    private EditText et_chineseName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +112,7 @@ public class PopActivity extends BaseActivity {
         linear_top.addView(view);
         if (requestCode == Constant.POP_NOT_MATERIAL) {//船舶资料管理
             tv_type_name.setText("订单领用-待选");
+            initNotMaterialView();
         } else if (requestCode == Constant.POP_ORDER_MANAGER) {//电子海图 订单管理
             tv_type_name.setText("订单管理");
             if (childItem == 0) {
@@ -133,6 +136,14 @@ public class PopActivity extends BaseActivity {
 
         }
 
+    }
+
+    /**
+     * 初始化船舶资料管理待选搜索控件
+     */
+    private void initNotMaterialView() {
+        et_dataNumber = (EditText) view.findViewById(R.id.et_dataNumber);
+        et_chineseName = (EditText) view.findViewById(R.id.et_chineseName);
     }
 
     /**
@@ -213,7 +224,7 @@ public class PopActivity extends BaseActivity {
                 break;
             case R.id.bt_sure:
                 Intent intent = new Intent();
-                if (requestCode == Constant.POP_ORDER_MANAGER) {
+                if (requestCode == Constant.POP_ORDER_MANAGER) {//订单管理
                     String start = startDate1.getText().toString();
                     String end = endDate1.getText().toString();
                     String name = et_name1.getText().toString();
@@ -223,7 +234,7 @@ public class PopActivity extends BaseActivity {
                     if (ToolString.isNoBlankAndNoNull(name)) {
                         intent.putExtra("name", name);
                     }
-                }else if (requestCode == Constant.POP_SHIP_AUDITING) {
+                }else if (requestCode == Constant.POP_SHIP_AUDITING) {//审核申领搜索
                     String start = startDate1.getText().toString();
                     String end = endDate1.getText().toString();
                     String name = et_name1.getText().toString();
@@ -232,6 +243,11 @@ public class PopActivity extends BaseActivity {
                     if (ToolString.isNoBlankAndNoNull(name)) {
                         intent.putExtra("name", name);
                     }
+                } else if (requestCode == Constant.POP_NOT_MATERIAL) {//待选搜索
+                    String dataNumber = et_dataNumber.getText().toString();
+                    String chineseName = et_chineseName.getText().toString();
+                    intent.putExtra("dataNumber", dataNumber);
+                    intent.putExtra("chineseName", chineseName);
                 }
                 setResult(requestCode,intent);
                 finish();

@@ -28,6 +28,7 @@ import com.example.admin.hn.ui.adapter.GroupAdapter;
 import com.example.admin.hn.ui.adapter.MessageAdapter;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
+import com.example.admin.hn.volley.RequestListener;
 import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -341,91 +342,71 @@ public class MessageCenterActivity extends BaseActivity implements AdapterView.O
             }
         }
         Messagedel messagedel = new Messagedel(listdel, HNApplication.mApp.getUserId());
-        String jsonObject = GsonUtils.beanToJson(messagedel);
-        delData(jsonObject);
+        delData(messagedel);
         list.removeAll(deleteList);
         adapter.setList(list);
         adapter.notifyDataSetChanged();
     }
 
-    public void delData(String jsonStr) {
-        Logger.i(TAG, jsonStr);
-        try {
-            OkHttpUtil.postJsonData2Server(MessageCenterActivity.this,
-                    url_del,
-                    jsonStr,
-                    new OkHttpUtil.MyCallBack() {
-                        @Override
-                        public void onFailure(Request request, IOException e) {
-                            ToolAlert.showToast(MessageCenterActivity.this, "服务器异常,请稍后再试", false);
-                        }
+    public void delData(Messagedel messagedel) {
+        http.postJson(url_del, messagedel, "正在删除...", new RequestListener() {
+            @Override
+            public void requestSuccess(String json) {
+                Logger.i(TAG, json);
+                if (GsonUtils.isSuccess(json)) {
+                    MessageInfo message = GsonUtils.jsonToBean(json, MessageInfo.class);
+                    if (("success").equals(message.getStatus())) {
+//                          list.clear();
+//                          for (int i=0;i<message.getDocuments().size();i++){
+//                                 list.add(new EightEntity(false,message.getDocuments().get(i).getLinename(),message.getDocuments().get(i).getOrderdetails(),message.getDocuments().get(i).getNoticetime(),message.getDocuments().get(i).getShipname(),message.getDocuments().get(i).getMessageid(),message.getDocuments().get(i).getOrdernumber(), message.getDocuments().get(i).getMessagestate(), message.getDocuments().get(i).getNoticecontent()));
+//                             }
+//                          adapter = new MessageAdapter(MessageCenterActivity.this, list);
+//                          mLvMessageCenter.setAdapter(adapter);
+                    }
+                }else {
+                    ToolAlert.showToast(context, GsonUtils.getError(json));
+                }
+            }
 
-                        @Override
-                        public void onResponse(String json) {
-                            Logger.i(TAG, json);
-                            MessageInfo message = GsonUtils
-                                    .jsonToBean(json,
-                                            MessageInfo.class
-                                    );
-                            if (("success").equals(message.getStatus())) {
-//                                    list.clear();
-//                                    for (int i=0;i<message.getDocuments().size();i++){
-//                                        list.add(new EightEntity(false,message.getDocuments().get(i).getLinename(),message.getDocuments().get(i).getOrderdetails(),message.getDocuments().get(i).getNoticetime(),message.getDocuments().get(i).getShipname(),message.getDocuments().get(i).getMessageid(),message.getDocuments().get(i).getOrdernumber(), message.getDocuments().get(i).getMessagestate(), message.getDocuments().get(i).getNoticecontent()));
-//                                    }
-//                                    adapter = new MessageAdapter(MessageCenterActivity.this, list);
-//                                    mLvMessageCenter.setAdapter(adapter);
-                            } else {
-                                ToolAlert.showToast(MessageCenterActivity.this, message.getMessage(), false);
-                            }
-                        }
-                    });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            @Override
+            public void requestError(String message) {
+                ToolAlert.showToast(context,message);
+            }
+        });
     }
 
 
     public void data(final int Loadmore) {
         Map map = new HashMap();
-        map.put("userid", HNApplication.mApp.getUserId());
         map.put("screen", status);
         if (Loadmore==0){
             map.put("page", "1");
         }else {
             map.put("page", page);
         }
+        http.postJson(url_message, map, progressTitle, new RequestListener() {
+            @Override
+            public void requestSuccess(String json) {
+                Logger.i(TAG, json);
+                if (GsonUtils.isSuccess(json)) {
+                    MessageInfo message = GsonUtils.jsonToBean(json, MessageInfo.class);
+                    if (Loadmore == 0) {
+                        list.clear();
+                    }
+                    for (int i = 0; i < message.getDocuments().size(); i++) {
+                        list.add(new EightEntity(false, message.getDocuments().get(i).getLinename(), message.getDocuments().get(i).getOrderdetails(), message.getDocuments().get(i).getNoticetime(), message.getDocuments().get(i).getShipname(), message.getDocuments().get(i).getMessageid(), message.getDocuments().get(i).getOrdernumber(), message.getDocuments().get(i).getMessagestate(), message.getDocuments().get(i).getNoticecontent()));
+                    }
+                    adapter.notifyDataSetChanged();
+                }else {
+                    ToolAlert.showToast(context,GsonUtils.getError(json));
+                }
+            }
 
-        String jsonStr = GsonUtils.mapToJson(map);
-        Logger.i(TAG, jsonStr);
-        try {
-            OkHttpUtil.postJsonData2Server(MessageCenterActivity.this,
-                    url_message,
-                    jsonStr,
-                    new OkHttpUtil.MyCallBack() {
-                        @Override
-                        public void onFailure(Request request, IOException e) {
-                            ToolAlert.showToast(MessageCenterActivity.this, "服务器异常,请稍后再试", false);
-                        }
+            @Override
+            public void requestError(String message) {
+                ToolAlert.showToast(context,message);
+            }
+        });
 
-                        @Override
-                        public void onResponse(String json) {
-                            Logger.i(TAG, json);
-                            MessageInfo message = GsonUtils.jsonToBean(json, MessageInfo.class);
-                            if (("success").equals(message.getStatus())) {
-                                if (Loadmore == 0) {
-                                    list.clear();
-                                }
-                                for (int i = 0; i < message.getDocuments().size(); i++) {
-                                    list.add(new EightEntity(false, message.getDocuments().get(i).getLinename(), message.getDocuments().get(i).getOrderdetails(), message.getDocuments().get(i).getNoticetime(), message.getDocuments().get(i).getShipname(), message.getDocuments().get(i).getMessageid(), message.getDocuments().get(i).getOrdernumber(), message.getDocuments().get(i).getMessagestate(), message.getDocuments().get(i).getNoticecontent()));
-                                }
-                                adapter.notifyDataSetChanged();
-                            } else {
-                                ToolAlert.showToast(MessageCenterActivity.this, message.getMessage(), false);
-                            }
-                        }
-                    });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

@@ -174,7 +174,7 @@ public class InventoryFragment extends BaseFragment implements OnRefreshListener
         } else {
             params.put("page", page);
         }
-        //1 全部数据2 海图状态为未过期3 海图状态为已过期
+        //1 全部数据 2 海图状态为未过期 3 海图状态为已过期
         params.put("screen", screen);
         params.put("endtime", endDate);
         params.put("starttime", startDate);

@@ -10,9 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -28,6 +30,8 @@ import com.example.admin.hn.ui.adapter.GroupAdapter;
 import com.example.admin.hn.ui.adapter.UpdateAdapter;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
+import com.example.admin.hn.utils.ToolRefreshView;
+import com.example.admin.hn.volley.RequestListener;
 import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -51,7 +55,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ChartUpdateActivity extends BaseActivity implements AdapterView.OnItemClickListener {
+public class ChartUpdateActivity extends BaseActivity implements AdapterView.OnItemClickListener ,OnLoadmoreListener,OnRefreshListener {
 	private static final String TAG = "ChartUpdateActivity";
 
 	@Bind(R.id.text_title_back)
@@ -60,15 +64,17 @@ public class ChartUpdateActivity extends BaseActivity implements AdapterView.OnI
 	TextView mTextTitle;
 	@Bind(R.id.text_tile_right)
 	TextView mTextright;
-	//    @Bind(R.id.startdate)
-//    TextView startdate;
-//    @Bind(R.id.enddate)
-//    TextView enddate;
+	@Bind(R.id.network_disabled)
+	RelativeLayout network;
+	@Bind(R.id.network_img)
+	ImageView network_img;
+	@Bind(R.id.noData_img)
+	ImageView noData_img;
 	@Bind(R.id.tv_choice)
 	TextView tv_choice;
 	@Bind(R.id.ll_hide)
 	LinearLayout hide;
-	@Bind(R.id.lv_update)
+	@Bind(R.id.listView)
 	ListView listView;
 	@Bind(R.id.searchView)
 	SearchView mSearchView;
@@ -90,6 +96,8 @@ public class ChartUpdateActivity extends BaseActivity implements AdapterView.OnI
 	private List<String> lists,listss;
 	private ArrayAdapter<String> arr_adapter,adapters;
 	private String dates,datess;
+	private RefreshLayout refreshLayout;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -131,10 +139,10 @@ public class ChartUpdateActivity extends BaseActivity implements AdapterView.OnI
 		datess = listss.get(0);
 		dates = lists.get(0);
 		//适配器
-		arr_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, listss);
+		arr_adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, listss);
 		//设置样式
 		arr_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		adapters= new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, lists);
+		adapters= new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, lists);
 		adapters.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		//加载适配器
 		environment.setAdapter(arr_adapter);
@@ -221,34 +229,9 @@ public class ChartUpdateActivity extends BaseActivity implements AdapterView.OnI
 				status = "3";
 			}
 		});
-
 		//下拉刷新
-		final RefreshLayout refreshLayout = (RefreshLayout) findViewById(R.id.refreshLayout);
-		refreshLayout.setDisableContentWhenLoading(true);
-		refreshLayout.setDisableContentWhenRefresh(true);
-		refreshLayout.setEnableScrollContentWhenLoaded(true);
-		//设置 Header 为 Material风格
-		refreshLayout.setRefreshHeader(new MaterialHeader(ChartUpdateActivity.this).setShowBezierWave(true));
-		//设置 Footer 为 球脉冲
-		refreshLayout.setRefreshFooter(new BallPulseFooter(ChartUpdateActivity.this).setSpinnerStyle(SpinnerStyle.Scale));
-		//监听
-		refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-			@Override
-			public void onRefresh(RefreshLayout refreshlayout) {
-				page = 1;
-				data("", "1", 1);
-				refreshlayout.finishRefresh(1000);
-			}
-		});
-		refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
-			@Override
-			public void onLoadmore(RefreshLayout refreshlayout) {
-				page = page + 1;
-				data("", "1", 2);
-				refreshlayout.finishLoadmore(1000);
-			}
-		});
-
+		refreshLayout = (RefreshLayout) findViewById(R.id.refreshLayout);
+		ToolRefreshView.setRefreshLayout(context,refreshLayout,this,this);
 		adapter = new UpdateAdapter(ChartUpdateActivity.this, R.layout.order_adapter, list);
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -286,7 +269,6 @@ public class ChartUpdateActivity extends BaseActivity implements AdapterView.OnI
 				break;
 			case R.id.tv_choice:
 				mCirclePop.showAtAnchorView(tv_choice, VerticalGravity.BELOW, HorizontalGravity.CENTER, 0, 0);
-
 				break;
 			case R.id.text_tile_right:
 				showPopwindow(v);
@@ -306,52 +288,42 @@ public class ChartUpdateActivity extends BaseActivity implements AdapterView.OnI
 		map.put("userid", HNApplication.mApp.getUserId());
 		map.put("shipname", scree);
 		map.put("status", statu);
-		String jsonStr = GsonUtils.mapToJson(map);
-		Logger.i(TAG, jsonStr);
-		try {
-			OkHttpUtil.postJsonData2Server(ChartUpdateActivity.this,
-					url_chart,
-					jsonStr,
-					new OkHttpUtil.MyCallBack() {
-						@Override
-						public void onFailure(Request request, IOException e) {
-							ToolAlert.showToast(ChartUpdateActivity.this, "服务器异常,请稍后再试", false);
-
+		http.postJson(url_chart, map, progressTitle, new RequestListener() {
+			@Override
+			public void requestSuccess(String json) {
+				Logger.i(TAG, json);
+				if (GsonUtils.isSuccess(json)) {
+					UpdateInfo updateInfo = GsonUtils.jsonToBean(
+							json, UpdateInfo.class
+					);
+					if (Loadmore == 1) {
+						list.clear();
+					}
+					if (updateInfo.getDocuments().size()==0){
+						list.clear();
+					}else {
+						for (int i = 0; i < updateInfo.getDocuments().size(); i++) {
+							list.add(new UpdateInfo.update(updateInfo.getDocuments().get(i).getShipname(), updateInfo.getDocuments().get(i).getShipnumber(), updateInfo.getDocuments().get(i).getOrdertime(), updateInfo.getDocuments().get(i).getUpdatetime(), updateInfo.getDocuments().get(i).getSize(), updateInfo.getDocuments().get(i).getDownload(), updateInfo.getDocuments().get(i).getShipstatus()));
 						}
+					}
+				}else {
+					if (page==1) {
+						ToolAlert.showToast(context, GsonUtils.getError(json));
+						list.clear();
+					}else {
+						ToolAlert.showToast(ChartUpdateActivity.this, "已全部加载完成", false);
+					}
+				}
+				ToolRefreshView.hintView(adapter,false,network,noData_img,network_img);
+			}
 
-						@Override
-						public void onResponse(String json) {
-							Logger.i(TAG, json);
-							UpdateInfo updateInfo = GsonUtils.jsonToBean(
-									json, UpdateInfo.class
-							);
-							if ((updateInfo.getStatus()).equals("success")) {
-								if (Loadmore == 1) {
-									list.clear();
-								}
-								if (updateInfo.getDocuments().size()==0){
-									list.clear();
-								}else {
-									for (int i = 0; i < updateInfo.getDocuments().size(); i++) {
-										list.add(new UpdateInfo.update(updateInfo.getDocuments().get(i).getShipname(), updateInfo.getDocuments().get(i).getShipnumber(), updateInfo.getDocuments().get(i).getOrdertime(), updateInfo.getDocuments().get(i).getUpdatetime(), updateInfo.getDocuments().get(i).getSize(), updateInfo.getDocuments().get(i).getDownload(), updateInfo.getDocuments().get(i).getShipstatus()));
-									}
-								}
-								adapter.notifyDataSetChanged();
-							} else {
-								if (page==1) {
-									ToolAlert.showToast(ChartUpdateActivity.this, updateInfo.getMessage(), false);
-									list.clear();
-									adapter.notifyDataSetChanged();
-								}else {
-									ToolAlert.showToast(ChartUpdateActivity.this, "已全部加载完成", false);
+			@Override
+			public void requestError(String message) {
+				ToolAlert.showToast(context, message);
+				ToolRefreshView.hintView(adapter,true,network,noData_img,network_img);
+			}
+		});
 
-								}
-							}
-						}
-					});
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	private PopupWindow mPopupWindow;
@@ -422,4 +394,17 @@ public class ChartUpdateActivity extends BaseActivity implements AdapterView.OnI
 		}
 	}
 
+	@Override
+	public void onLoadmore(RefreshLayout refreshlayout) {
+		page = page + 1;
+		data("", "1", 2);
+		refreshlayout.finishLoadmore(1000);
+	}
+
+	@Override
+	public void onRefresh(RefreshLayout refreshlayout) {
+		page = 1;
+		data("", "1", 1);
+		refreshlayout.finishRefresh(1000);
+	}
 }

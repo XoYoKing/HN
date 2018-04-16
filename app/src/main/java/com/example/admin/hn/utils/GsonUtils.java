@@ -2,12 +2,18 @@ package com.example.admin.hn.utils;
 
 import com.example.admin.hn.http.Constant;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,6 +38,28 @@ public class GsonUtils {
         T t = gson.fromJson(jsonResult, clz);
         return t;
     }
+
+    /**
+     * json字符串解析为list集合
+     *
+     * @param jsonResult
+     * @param typeToken
+     *
+     * @return
+     */
+    public static List<?> jsonToList(String jsonResult,TypeToken typeToken) {
+        List<?> list = null;
+        try {
+            Gson gson = new Gson();
+//            JSONObject object = new JSONObject();
+//            JSONArray jsonArray = object.getJSONArray("Documents");
+            list = gson.fromJson(jsonResult, typeToken.getType());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
 
     /**
      * map数据组装成json字符串

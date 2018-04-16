@@ -57,14 +57,13 @@
         android:layout_centerHorizontal="true"
         android:layout_margin="@dimen/common_10dp"
         android:layout_marginBottom="@dimen/common_50dp"
-        android:text="Copyright © 2017 - haining.All Rights Reserved"
+        android:text="Copyright © 2018 - haining.All Rights Reserved"
         android:textColor="@color/gray"
         android:textSize="@dimen/common_12sp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:layout_above="@id/tv_hanjue"
         android:layout_centerHorizontal="true"
         android:layout_margin="@dimen/common_10dp"
