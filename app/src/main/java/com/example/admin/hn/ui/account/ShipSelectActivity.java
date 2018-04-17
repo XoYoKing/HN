@@ -9,17 +9,11 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.base.BaseActivity;
 import com.example.admin.hn.http.Constant;
-import com.example.admin.hn.model.ShipInfo;
 import com.example.admin.hn.ui.adapter.AllTabAdapter;
 import com.example.admin.hn.ui.fragment.seaShart.ShipSelectFragment;
-import com.example.admin.hn.ui.fragment.shop.HnShopFragment;
-import com.example.admin.hn.ui.fragment.shop.ShopFragment;
-import com.example.admin.hn.utils.GsonUtils;
-import com.example.admin.hn.utils.ToolAlert;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -95,6 +89,10 @@ public class ShipSelectActivity extends BaseActivity implements ViewPager.OnPage
                 }
                 break;
         }
+    }
+
+    public void setCurrentItem(int current){
+        viewPager.setCurrentItem(current);
     }
 
     @Override

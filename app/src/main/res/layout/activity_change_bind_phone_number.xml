@@ -167,6 +167,7 @@
                 android:layout_centerInParent="true"
                 android:background="@color/iron"
                 android:clickable="true"
+                android:textSize="@dimen/common_14sp"
                 android:padding="@dimen/common_10dp"
                 android:text="发送验证码"
                 android:textColor="@color/white"/>

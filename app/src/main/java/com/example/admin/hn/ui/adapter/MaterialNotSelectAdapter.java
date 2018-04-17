@@ -57,6 +57,10 @@ public class MaterialNotSelectAdapter extends CommonAdapter<OrderNotUseInfo> {
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (item.storage_amount == 0) {
+                    ToolAlert.showToast(mContext,"库存不足");
+                    return;
+                }
                 if (item.isSelect) {
                     item.isSelect = false;
                     selectList.remove(item);
@@ -84,9 +88,12 @@ public class MaterialNotSelectAdapter extends CommonAdapter<OrderNotUseInfo> {
                 if (ToolString.isEmpty(s.toString())) {
                     int number = Integer.parseInt(s.toString());
                     if (number > item.storage_amount) {
-                        ToolAlert.showToast(mContext, "库存不足！", false);
+                        if (item.storage_amount != 0) {
+                            ToolAlert.showToast(mContext, "库存不足！", false);
+                        }
                         tv_buy_number.setText(item.storage_amount + "");
                         item.quantity = item.storage_amount;
+                        ToolViewUtils.setSelection(tv_buy_number);
                     }else {
                         item.quantity = number;
                     }

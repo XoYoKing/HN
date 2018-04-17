@@ -13,14 +13,11 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseActivity;
 import com.example.admin.hn.base.HNApplication;
-import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.EightEntity;
 import com.example.admin.hn.model.MessageInfo;
 import com.example.admin.hn.model.Messagedel;
@@ -36,9 +33,6 @@ import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
 import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.squareup.okhttp.Request;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

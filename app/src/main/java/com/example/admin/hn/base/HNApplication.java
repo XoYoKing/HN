@@ -2,7 +2,10 @@ package com.example.admin.hn.base;
 
 import android.app.Application;
 
+import com.example.admin.hn.R;
 import com.zhy.http.okhttp.OkHttpUtils;
+
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -15,6 +18,7 @@ public class HNApplication extends Application {
     public static HNApplication mApp;
     public Session session;
     public Session test_session;
+    public static HashMap<String, Long> map;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -24,7 +28,9 @@ public class HNApplication extends Application {
         this.session = new SharedPreferencesSession(this);
         this.test_session = new SharedPreferencesSession(this,"configs");
     }
-
+    public static String getAPPName() {
+        return mApp.getApplicationContext().getResources().getString(R.string.app_name);
+    }
     private void initOkHttp() {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(10000L, TimeUnit.MILLISECONDS)
@@ -44,6 +50,7 @@ public class HNApplication extends Application {
         setEmail("");
         setUserId("");
         setPhone("");
+        setCompanyId("");
     }
 
     public void setUserName(String userName) {
@@ -93,6 +100,22 @@ public class HNApplication extends Application {
             this.session.putString("email", email);
         }
     }
+
+    public void setCompanyId(String companyId) {
+        if (isTestAmbient()) {
+            this.test_session.putString("companyId", companyId);
+        }else {
+            this.session.putString("companyId", companyId);
+        }
+    }
+
+    public String getCompanyId() {
+        if (isTestAmbient()) {
+            return this.test_session.getString("companyId",null);
+        }
+        return this.session.getString("companyId",null);
+    }
+
 
     public String getEmail() {
         if (isTestAmbient()) {

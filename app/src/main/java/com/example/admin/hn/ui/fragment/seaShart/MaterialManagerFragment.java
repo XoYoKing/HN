@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
+import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseFragment;
@@ -24,7 +26,9 @@ import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.SpaceItemDecoration;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolRefreshView;
+import com.example.admin.hn.utils.ToolString;
 import com.example.admin.hn.volley.RequestListener;
+import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -32,6 +36,8 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 import butterknife.Bind;
@@ -56,8 +62,8 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
     @Bind(R.id.noData_img)
     ImageView noData_img;
 
-    private ArrayList<OrderInfo.Order> list = new ArrayList<>();
-    private CommonAdapter adapter;
+    private ArrayList<OrderUseInfo> list = new ArrayList<>();
+    private MaterialSelectAdapter adapter;
     private View view;
     private int page = 1;
     private int screen = 1;
@@ -92,10 +98,16 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
 
     @Override
     public void initData() {
-        sendHttp();
         initBroadcastReceiver();
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && screen == 2) {
+            sendHttp();
+        }
+    }
 
     @Override
     public void initTitleBar() {
@@ -109,7 +121,7 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
         switch (v.getId()) {
             case R.id.network_img:
                 network_img.setVisibility(View.GONE);
-                refreshLayout.finishRefresh(1000);
+                sendHttp();
                 break;
         }
     }
@@ -117,23 +129,34 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
 
     public void sendHttp() {
         params.put("page", page);
+        params.put("shipId", MainActivity.list.get(0).getShipid() + "");
         http.postJson(url, params, progressTitle, new RequestListener() {
             @Override
             public void requestSuccess(String json) {
                 progressTitle = null;
                 Logger.e("已选列表", json);
                 if (GsonUtils.isSuccess(json)) {
-//                    GsonUtils.jsonToBean(json, OrderUseInfo.class);
+                    TypeToken typeToken= new TypeToken<List<OrderUseInfo>>() {
+                    };
+                    List<OrderUseInfo> data = (List<OrderUseInfo>) GsonUtils.jsonToList(json, typeToken);
+                    if (ToolString.isEmptyList(data)) {
+                        if (isRefresh) {
+                            list.clear();
+                        }
+                        list.addAll(data);
+                    }
                 } else {
-//                    ToolAlert.showToast(activity,GsonUtils.getError(json));
+                    if (page != 1) {
+                        ToolAlert.showToast(getActivity(),Constant.LOADED);
+                    }
                 }
-                ToolRefreshView.hintView(adapter,false,network,noData_img,network_img);
+                ToolRefreshView.hintView(adapter,refreshLayout,false,network,noData_img,network_img);
             }
 
             @Override
             public void requestError(String message) {
                 ToolAlert.showToast(activity, message);
-                ToolRefreshView.hintView(adapter,true,network,noData_img,network_img);
+                ToolRefreshView.hintView(adapter,refreshLayout,true,network,noData_img,network_img);
             }
         });
     }
@@ -143,8 +166,6 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
         page = page + 1;
         isRefresh = false;
         sendHttp();
-        adapter.notifyDataSetChanged();
-        refreshlayout.finishLoadmore(1000);
     }
 
     @Override
@@ -152,7 +173,6 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
         page = 1;
         isRefresh = true;
         sendHttp();
-        refreshlayout.finishRefresh(1000);
     }
 
     private void initBroadcastReceiver(){

@@ -136,7 +136,6 @@ public class OrderManagerStatusFragment extends BaseFragment implements OnRefres
             case R.id.network_img:
                 network_img.setVisibility(View.GONE);
                 data(status, shipName, 0);
-                refreshLayout.finishRefresh(1000);
                 break;
         }
     }
@@ -191,21 +190,18 @@ public class OrderManagerStatusFragment extends BaseFragment implements OnRefres
                         }
                         HNApplication.mApp.setShipName(list.get(0).getShipname());
                     }
-                    adapter.notifyDataSetChanged();
                 }else {
-                    if (page == 1) {
-                        list.clear();
-                    } else {
-                        ToolAlert.showToast(getActivity(), "已全部加载完成", false);
+                    if (page != 1) {
+                        ToolAlert.showToast(getActivity(),Constant.LOADED);
                     }
                 }
-                ToolRefreshView.hintView(adapter, false, network, noData_img, network_img);
+                ToolRefreshView.hintView(adapter,refreshLayout, false, network, noData_img, network_img);
             }
 
             @Override
             public void requestError(String message) {
                 ToolAlert.showToast(activity, message, false);
-                ToolRefreshView.hintView(adapter, true, network, noData_img, network_img);
+                ToolRefreshView.hintView(adapter,refreshLayout, true, network, noData_img, network_img);
             }
         });
     }
@@ -239,14 +235,11 @@ public class OrderManagerStatusFragment extends BaseFragment implements OnRefres
     public void onLoadmore(RefreshLayout refreshlayout) {
         page = page + 1;
         data(status, shipName, 1);
-        adapter.notifyDataSetChanged();
-        refreshlayout.finishLoadmore(1000);
     }
 
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
         page = 1;
         data(status, shipName, 0);
-        refreshlayout.finishRefresh(1000);
     }
 }

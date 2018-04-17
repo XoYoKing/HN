@@ -31,7 +31,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.admin.hn.base.MyApplication;
+import com.example.admin.hn.base.HNApplication;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
@@ -57,7 +57,7 @@ public class ToolPicture {
     /**
      * 上下文
      **/
-    private static final Context context = MyApplication.getContext();
+    private static final Context context = HNApplication.mApp.getApplicationContext();
     /**
      * 截取应用程序界面（去除状态栏）
      * activity 界面Activity

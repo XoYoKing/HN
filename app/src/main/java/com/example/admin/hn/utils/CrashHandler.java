@@ -9,7 +9,7 @@ import android.os.Environment;
 import android.os.Looper;
 import android.util.Log;
 
-import com.example.admin.hn.base.MyApplication;
+import com.example.admin.hn.base.HNApplication;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -115,8 +115,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
             @Override
             public void run() {
                 Looper.prepare();
-//                Toast.makeText(mContext, "很抱歉，程序出现异常，即将退出。", Toast.LENGTH_LONG).show();
-                ToolAlert.dialog(MyApplication.getContext(), "很抱歉，程序出现异常，即将退出。");
+                ToolAlert.dialog(HNApplication.mApp.getApplicationContext(), "很抱歉，程序出现异常，即将退出。");
                 Looper.loop();
             }
         }.start();

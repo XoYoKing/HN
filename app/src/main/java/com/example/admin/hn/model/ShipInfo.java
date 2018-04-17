@@ -10,7 +10,9 @@ import java.util.List;
  */
 public class ShipInfo {
     private String Userid;
-
+    private List<ship> Documents;
+    private String message;
+    private String status;
     public ShipInfo(String userid, List<ship> documents) {
         Userid = userid;
         Documents = documents;
@@ -24,9 +26,6 @@ public class ShipInfo {
         Userid = userid;
     }
 
-    private String message;
-    private String status;
-    private List<ship> Documents;
 
     public ShipInfo(String message, String status, List<ship> documents) {
         this.message = message;
@@ -61,8 +60,21 @@ public class ShipInfo {
     public static class ship implements Serializable {
         private String shipnumber;
         private String shipname;
+        private String shipid;//船舶ID
 
+        public String getShipid() {
+            return shipid;
+        }
+
+        public void setShipid(String shipid) {
+            this.shipid = shipid;
+        }
         public ship(String shipnumber, String shipname) {
+            this.shipnumber = shipnumber;
+            this.shipname = shipname;
+        }
+        public ship(String shipid,String shipnumber, String shipname) {
+            this.shipid = shipid;
             this.shipnumber = shipnumber;
             this.shipname = shipname;
         }

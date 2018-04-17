@@ -1,5 +1,7 @@
 package com.example.admin.hn.model;
 
+import java.util.List;
+
 /**
  * 服务器返回
  * Created by Jaycee on 16/4/15.
@@ -26,7 +28,22 @@ public class ServerResponse {
     private String phonenumber;
     private String username;
     private String companyid;
+    private List<ShipInfo.ship> Documents;
 
+    public String getCompanyid() {
+        return companyid;
+    }
+    public void setCompanyid(String companyid) {
+        this.companyid = companyid;
+    }
+
+    public List<ShipInfo.ship> getDocuments() {
+        return Documents;
+    }
+
+    public void setDocuments(List<ShipInfo.ship> documents) {
+        Documents = documents;
+    }
 
     public String getUserid() {
         return userid;

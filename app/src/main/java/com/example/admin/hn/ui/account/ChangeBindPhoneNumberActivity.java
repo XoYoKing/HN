@@ -7,22 +7,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseActivity;
 import com.example.admin.hn.base.HNApplication;
-import com.example.admin.hn.http.OkHttpUtil;
-import com.example.admin.hn.model.ServerResponse;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolString;
 import com.example.admin.hn.volley.RequestListener;
 import com.example.admin.hn.widget.TimeButton;
 import com.orhanobut.logger.Logger;
-import com.squareup.okhttp.Request;
-
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -172,11 +166,9 @@ public class ChangeBindPhoneNumberActivity extends BaseActivity {
         http.postJson(url_email, maps, "发送中...", new RequestListener() {
             @Override
             public void requestSuccess(String json) {
-                if (GsonUtils.isSuccess(json)) {
-                    ToolAlert.showToast(context, "验证码已发送至"+email+"邮箱,请注意查收。", false);
-                }else {
-                    ToolAlert.showToast(context, GsonUtils.getError(json), false);
-                }
+                Logger.e("发送邮箱验证码",json);
+                mTbSendValidateCode.startTime();
+                ToolAlert.showToast(context, "验证码已发送至"+email+"邮箱,请注意查收。", false);
             }
             @Override
             public void requestError(String message) {

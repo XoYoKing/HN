@@ -15,7 +15,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.base.BaseFragment;
 import com.example.admin.hn.base.HNApplication;
@@ -25,8 +24,6 @@ import com.example.admin.hn.ui.account.PopActivity;
 import com.example.admin.hn.ui.adapter.AllChildTabAdapter;
 import com.example.admin.hn.ui.fragment.seaShart.OrderInventoryManagerFragment;
 import com.example.admin.hn.ui.fragment.seaShart.OrderManagerFragment;
-import com.example.admin.hn.ui.fragment.seaShart.OrderPurchaseManagerFragment;
-import com.example.admin.hn.ui.fragment.seaShart.OrderUseManagerFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

@@ -9,8 +9,10 @@ import android.widget.EditText;
 
 import com.example.admin.hn.R;
 import com.example.admin.hn.model.OrderInfo;
+import com.example.admin.hn.model.OrderUseInfo;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolString;
+import com.example.admin.hn.utils.ToolViewUtils;
 import com.example.admin.hn.widget.AlertDialog;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -18,11 +20,11 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 import java.util.List;
 
 /**
- * Created by duantao
+ * Created by ty
  *
  * @date on 2017/7/31 15:35
  */
-public class MaterialSelectAdapter extends CommonAdapter<OrderInfo.Order> {
+public class MaterialSelectAdapter extends CommonAdapter<OrderUseInfo> {
 
 
     public MaterialSelectAdapter(Context context, int layoutId, List datas) {
@@ -30,8 +32,20 @@ public class MaterialSelectAdapter extends CommonAdapter<OrderInfo.Order> {
     }
 
     @Override
-    protected void convert(ViewHolder viewHolder, OrderInfo.Order item, final int position) {
+    protected void convert(ViewHolder viewHolder,final OrderUseInfo item, final int position) {
         final EditText tv_buy_number = viewHolder.getView(R.id.tv_buy_number);
+        viewHolder.setText(R.id.tv_type, item.category_name + "");
+        viewHolder.setText(R.id.tv_ship_name, item.ship_name + "");
+        viewHolder.setText(R.id.tv_name, item.chs_name + "");
+        viewHolder.setText(R.id.tv_number, item.code + "");
+        viewHolder.setText(R.id.tv_date, item.publish_at + "");
+        viewHolder.setText(R.id.tv_inventory, item.storage_amount + "");
+        viewHolder.setText(R.id.tv_inventory, item.storage_amount + "");
+        if (item.storage_amount == 0) {
+            tv_buy_number.setText("0");
+        }else {
+            tv_buy_number.setText(item.quantity+"");
+        }
         viewHolder.setOnClickListener(R.id.tv_cancel, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,7 +63,8 @@ public class MaterialSelectAdapter extends CommonAdapter<OrderInfo.Order> {
                 });
             }
         });
-//        tv_buy_number.setText(item.buyNumber+"");
+        ToolViewUtils.setSelection(tv_buy_number);
+
         tv_buy_number.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -65,10 +80,13 @@ public class MaterialSelectAdapter extends CommonAdapter<OrderInfo.Order> {
             public void afterTextChanged(Editable s) {
                 if (ToolString.isEmpty(s.toString())) {
                     int number = Integer.parseInt(s.toString());
-//                    if (number > item.inventory) {
-//                        ToolAlert.showToast(mContext, "库存不足！", false);
-//                        tv_buy_number.setText(item.inventory + "");
-//                    }
+                    if (number > item.storage_amount) {
+                        if (item.storage_amount != 0) {
+                            ToolAlert.showToast(mContext, "库存不足！", false);
+                        }
+                        tv_buy_number.setText(item.storage_amount + "");
+                        ToolViewUtils.setSelection(tv_buy_number);
+                    }
                 }
             }
         });

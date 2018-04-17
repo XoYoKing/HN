@@ -9,11 +9,11 @@ import java.util.List;
  */
 
 public class SubmitListInfo implements Serializable{
-    public String userId;//用户ID
-    public List<?> documents;//数据集合
+    public String Userid;//用户ID
+    public List<?> Documents;//数据集合
 
     public SubmitListInfo(String userId, List<?> list) {
-        this.userId = userId;
-        this.documents = list;
+        this.Userid = userId;
+        this.Documents = list;
     }
 }

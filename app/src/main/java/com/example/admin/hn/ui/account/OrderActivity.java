@@ -8,14 +8,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseActivity;
 import com.example.admin.hn.base.HNApplication;
 import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.OrderInfo;
-import com.example.admin.hn.model.ShoppingCartInfo;
 import com.example.admin.hn.ui.shop.FirmOrderActivity;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;

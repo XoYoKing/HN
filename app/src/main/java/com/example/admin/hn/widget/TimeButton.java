@@ -9,7 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.admin.hn.base.MyApplication;
+import com.example.admin.hn.base.HNApplication;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,14 +34,11 @@ public class TimeButton extends Button implements View.OnClickListener {
     private Timer t;
     private TimerTask tt;
     private long time;
-    Map<String, Long> map = new HashMap<String, Long>();
-
 
     public TimeButton(Context context) {
         super(context);
         setOnClickListener(this);
     }
-
 
     public TimeButton(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -49,7 +46,8 @@ public class TimeButton extends Button implements View.OnClickListener {
     }
 
 
-    @SuppressLint("HandlerLeak") Handler han = new Handler() {
+    @SuppressLint("HandlerLeak")
+    Handler han = new Handler() {
         public void handleMessage(android.os.Message msg) {
             TimeButton.this.setText(time / 1000 + textafter);
             time -= 1000;
@@ -68,7 +66,6 @@ public class TimeButton extends Button implements View.OnClickListener {
         time = lenght;
         t = new Timer();
         tt = new TimerTask() {
-
             @Override public void run() {
                 Log.e("yung", time / 1000 + "");
                 han.sendEmptyMessage(0x01);
@@ -87,7 +84,8 @@ public class TimeButton extends Button implements View.OnClickListener {
     }
 
 
-    @Override public void setOnClickListener(OnClickListener l) {
+    @Override
+    public void setOnClickListener(OnClickListener l) {
         if (l instanceof TimeButton) {
             super.setOnClickListener(l);
         }
@@ -97,8 +95,12 @@ public class TimeButton extends Button implements View.OnClickListener {
     }
 
 
-    @Override public void onClick(View v) {
+    @Override
+    public void onClick(View v) {
         if (mOnclickListener != null) mOnclickListener.onClick(v);
+    }
+
+    public void startTime() {
         initTimer();
         this.setText(time / 1000 + textafter);
         this.setEnabled(false);
@@ -111,11 +113,11 @@ public class TimeButton extends Button implements View.OnClickListener {
      * 和activity的onDestroy()方法同步
      */
     public void onDestroy() {
-        if (MyApplication.map == null) {
-            MyApplication.map = new HashMap<String, Long>();
+        if (HNApplication.map == null) {
+            HNApplication.map = new HashMap<>();
         }
-        MyApplication.map.put(TIME, time);
-        MyApplication.map.put(CTIME, System.currentTimeMillis());
+        HNApplication.map.put(TIME, time);
+        HNApplication.map.put(CTIME, System.currentTimeMillis());
         clearTimer();
         Log.e("yung", "onDestroy");
     }
@@ -125,15 +127,14 @@ public class TimeButton extends Button implements View.OnClickListener {
      * 和activity的onCreate()方法同步
      */
     public void onCreate(Bundle bundle) {
-        Log.e("yung", MyApplication.map + "");
-        if (MyApplication.map == null) return;
-        if (MyApplication.map.size() <= 0)// 这里表示没有上次未完成的计时
+        Log.e("yung", HNApplication.map + "");
+        if (HNApplication.map == null) return;
+        if (HNApplication.map.size() <= 0)// 这里表示没有上次未完成的计时
         {
             return;
         }
-        long time = System.currentTimeMillis() - MyApplication.map.get(CTIME) -
-                MyApplication.map.get(TIME);
-        MyApplication.map.clear();
+        long time = System.currentTimeMillis() - HNApplication.map.get(CTIME) - HNApplication.map.get(TIME);
+        HNApplication.map.clear();
         if (time > 0) {
             return;
         }
@@ -171,8 +172,4 @@ public class TimeButton extends Button implements View.OnClickListener {
         this.lenght = lenght;
         return this;
     }
-    /*
-
-*
-*/
 }

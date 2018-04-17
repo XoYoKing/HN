@@ -51,9 +51,9 @@ public class GsonUtils {
         List<?> list = null;
         try {
             Gson gson = new Gson();
-//            JSONObject object = new JSONObject();
-//            JSONArray jsonArray = object.getJSONArray("Documents");
-            list = gson.fromJson(jsonResult, typeToken.getType());
+            JSONObject object = new JSONObject(jsonResult);
+            JSONArray jsonArray = object.getJSONArray("Documents");
+            list = gson.fromJson(jsonArray.toString(), typeToken.getType());
         } catch (Exception e) {
             e.printStackTrace();
         }

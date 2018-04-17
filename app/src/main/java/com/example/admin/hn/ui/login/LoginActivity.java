@@ -2,10 +2,13 @@ package com.example.admin.hn.ui.login;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.text.InputType;
 import android.view.KeyEvent;
@@ -24,6 +27,7 @@ import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseActivity;
 import com.example.admin.hn.base.HNApplication;
+import com.example.admin.hn.base.PermissionsListener;
 import com.example.admin.hn.model.ServerResponse;
 import com.example.admin.hn.model.ShipInfo;
 import com.example.admin.hn.utils.GsonUtils;
@@ -38,7 +42,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.jpush.android.api.JPushInterface;
+
 
 /**
  * @author duantao
@@ -70,8 +74,58 @@ public class LoginActivity extends BaseActivity {
     boolean eyeOpen = false;
     private List<String> data_list;
     private ArrayAdapter<String> arr_adapter;
-//    private int status = 1;
     private boolean isTest;//是否是测试环境  默认为生产环境
+    private boolean isRequesting;//为了避免在onResume中多次请求权限
+    private String[] permissions = {Manifest.permission.READ_PHONE_STATE,Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION};
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!isRequesting) {
+            requestPermissions(permissions, mListener);
+            isRequesting = true;
+        }
+    }
+    private PermissionsListener mListener = new PermissionsListener() {
+        @Override
+        public void onGranted() {
+            isRequesting = false;
+        }
+
+        @Override
+        public void onDenied(List<String> deniedPermissions, boolean isNeverAsk) {
+            if (!isNeverAsk) {//请求权限没有全被勾选不再提示然后拒绝
+                ToolAlert.dialog(context, "权限申请", "为了能正常使用\"" + HNApplication.mApp.getAPPName() + "\"，请授予所需权限", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        requestPermissions(permissions, mListener);
+                    }
+                });
+            } else {//全被勾选不再提示
+                ToolAlert.dialog(context, "权限申请", "为了能正常使用\"" + HNApplication.mApp.getAPPName() + "\"，请授予所需权限", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        intent.setData(Uri.parse("package:" + getPackageName()));
+                        startActivity(intent);
+                        isRequesting = false;
+                    }
+                });
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,16 +133,6 @@ public class LoginActivity extends BaseActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         initTitleBar();
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
-                    != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED) {
-                //申请WRITE_EXTERNAL_STORAGE权限
-                JPushInterface.requestPermission(this);
-            }
-        }
         initData();
     }
 
@@ -247,12 +291,12 @@ public class LoginActivity extends BaseActivity {
                 Logger.i(TAG, json);
                 if (GsonUtils.isSuccess(json)) {
                     ServerResponse serverResponse = GsonUtils.jsonToBean(json, ServerResponse.class);
-                    ShipInfo shipInfo = GsonUtils.jsonToBean(json, ShipInfo.class);
                     //保存登录信息
                     saveLoginInfo(serverResponse,mCbAgreeProtocol.isChecked());
                     ArrayList<ShipInfo.ship> list = new ArrayList<>();
-                    for (int i = 0; i < shipInfo.getDocuments().size(); i++) {
-                        list.add(new ShipInfo.ship(shipInfo.getDocuments().get(i).getShipnumber(), shipInfo.getDocuments().get(i).getShipname()));
+                    for (int i = 0; i < serverResponse.getDocuments().size(); i++) {
+                        ShipInfo.ship ship = serverResponse.getDocuments().get(i);
+                        list.add(new ShipInfo.ship(ship.getShipid(), ship.getShipnumber(), ship.getShipname()));
                     }
                     Intent intent_homepage = new Intent(LoginActivity.this, MainActivity.class);
                     Bundle bundle = new Bundle();
@@ -284,6 +328,7 @@ public class LoginActivity extends BaseActivity {
         HNApplication.mApp.setPhone(serverResponse.getPhonenumber());
         HNApplication.mApp.setUserId(serverResponse.getUserid());
         HNApplication.mApp.setEmail(serverResponse.getEmail());
+        HNApplication.mApp.setCompanyId(serverResponse.getCompanyid());
     }
 
     @Override

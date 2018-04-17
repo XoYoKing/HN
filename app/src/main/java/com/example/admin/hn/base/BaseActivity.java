@@ -2,9 +2,14 @@ package com.example.admin.hn.base;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.view.Window;
 
 import com.example.admin.hn.R;
@@ -17,7 +22,10 @@ import com.example.admin.hn.widget.ProgressDialog;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.zhy.http.okhttp.OkHttpUtils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.ButterKnife;
@@ -34,7 +42,7 @@ public class BaseActivity extends FragmentActivity implements Initialable{
     public ProgressDialog progersssDialog;
     protected IRequest http;
     protected Map params;
-
+    private PermissionsListener mListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,5 +149,66 @@ public class BaseActivity extends FragmentActivity implements Initialable{
     public void initTitleBar() {
 
     }
+
+    /**
+     * 请求权限封装
+     *
+     * @param permissions
+     * @param listener
+     */
+    public void requestPermissions(String[] permissions, PermissionsListener listener) {
+        this.mListener = listener;
+        List<String> requestPermissions = new ArrayList<>();
+        for (int i = 0; i < permissions.length; i++) {
+            String permission = permissions[i];
+            if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_DENIED) {
+                requestPermissions.add(permission);
+            }
+        }
+        if (!requestPermissions.isEmpty() && Build.VERSION.SDK_INT >= 23) {
+            ActivityCompat.requestPermissions(this, requestPermissions.toArray(new String[requestPermissions.size()]), 1);
+        } else {
+            this.mListener.onGranted();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 1:
+                List<String> deniedPermissions = new ArrayList<>();
+                //当所有拒绝的权限都勾选不再询问，这个值为true,这个时候可以引导用户手动去授权。
+                boolean isNeverAsk = true;
+                for (int i = 0; i < grantResults.length; i++) {
+                    int grantResult = grantResults[i];
+                    String permission = permissions[i];
+                    if (grantResult == PackageManager.PERMISSION_DENIED) {
+                        deniedPermissions.add(permissions[i]);
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) { // 点击拒绝但没有勾选不再询问
+                            isNeverAsk = false;
+                        }
+                    }
+                }
+                if (deniedPermissions.isEmpty()) {
+                    try {
+                        mListener.onGranted();
+                    } catch (RuntimeException e) {
+                        e.printStackTrace();
+                        mListener.onDenied(Arrays.asList(permissions), true);
+                    }
+                } else {
+                    //被拒绝权限
+//                    for (String p:deniedPermissions){
+//                        LogUtils.loge("Permissions  "+p);
+//                    }
+                    mListener.onDenied(deniedPermissions, isNeverAsk);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
 
 }

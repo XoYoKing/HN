@@ -5,13 +5,13 @@ package com.example.admin.hn.model;
  */
 public class OrderNotUseSubmit {
     public int quantity;//配置数量
-    public String id;//资料ID
+    public String docId;//资料ID
     public String code;//资料编号
     public String publishTime;//出版日期
     public String shipId;//船舶
 
     public OrderNotUseSubmit(int quantity,String id, String code, String publishTime, String shipId) {
-        this.id = id;
+        this.docId = id;
         this.quantity = quantity;
         this.code = code;
         this.publishTime = publishTime;

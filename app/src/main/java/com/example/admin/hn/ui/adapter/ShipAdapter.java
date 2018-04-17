@@ -1,12 +1,6 @@
 package com.example.admin.hn.ui.adapter;
 
 import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.CheckBox;
-import android.widget.TextView;
 
 import com.example.admin.hn.R;
 import com.zhy.adapter.abslistview.CommonAdapter;

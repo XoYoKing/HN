@@ -5,7 +5,6 @@ import android.content.Context;
 import android.view.WindowManager;
 
 import com.example.admin.hn.base.HNApplication;
-import com.example.admin.hn.base.MyApplication;
 
 /**
  * Created by WIN10 on 2018/3/30.

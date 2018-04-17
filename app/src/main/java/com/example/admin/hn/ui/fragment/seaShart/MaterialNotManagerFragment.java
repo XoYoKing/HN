@@ -121,36 +121,28 @@ public class MaterialNotManagerFragment extends BaseFragment implements OnRefres
             public void requestSuccess(String json) {
                 progressTitle = null;
                 Logger.i("待选列表", json);
-//                if (GsonUtils.isSuccess(json)) {
-//                    TypeToken typeToken = new TypeToken<List<OrderNotUseInfo>>() {
-//                    };
-//                    List<OrderNotUseInfo> data = (List<OrderNotUseInfo>) GsonUtils.jsonToList(json, typeToken);
-//                    if (ToolString.isEmptyList(data)) {
-//                        if (isRefresh) {
-//                            list.clear();
-//                        }
-//                        list.addAll(data);
-//                        adapter.notifyDataSetChanged();
-//                    }
-//                }else {
-//                    ToolAlert.showToast(activity,GsonUtils.getError(json));
-//                }
-                TypeToken typeToken = new TypeToken<List<OrderNotUseInfo>>() {
-                };
-                List<OrderNotUseInfo> data = (List<OrderNotUseInfo>) GsonUtils.jsonToList(json, typeToken);
-                if (ToolString.isEmptyList(data)) {
-                    if (isRefresh) {
-                        list.clear();
+                if (GsonUtils.isSuccess(json)) {
+                    TypeToken typeToken = new TypeToken<List<OrderNotUseInfo>>() {
+                    };
+                    List<OrderNotUseInfo> data = (List<OrderNotUseInfo>) GsonUtils.jsonToList(json, typeToken);
+                    if (ToolString.isEmptyList(data)) {
+                        if (isRefresh) {
+                            list.clear();
+                        }
+                        list.addAll(data);
+                        adapter.notifyDataSetChanged();
                     }
-                    list.addAll(data);
-                    adapter.notifyDataSetChanged();
+                }else {
+                    if (page != 1) {
+                        ToolAlert.showToast(getActivity(),Constant.LOADED);
+                    }
                 }
-                ToolRefreshView.hintView(adapter,false,network,noData_img,network_img);
+                ToolRefreshView.hintView(adapter,refreshLayout,false,network,noData_img,network_img);
             }
             @Override
             public void requestError(String message) {
                 ToolAlert.showToast(activity,message,false);
-                ToolRefreshView.hintView(adapter,true,network,noData_img,network_img);
+                ToolRefreshView.hintView(adapter,refreshLayout,true,network,noData_img,network_img);
             }
         });
     }
@@ -168,7 +160,7 @@ public class MaterialNotManagerFragment extends BaseFragment implements OnRefres
         switch (v.getId()) {
             case R.id.network_img:
                 network_img.setVisibility(View.GONE);
-                refreshLayout.finishRefresh(1000);
+                sendHttp();
                 break;
         }
     }
@@ -190,8 +182,6 @@ public class MaterialNotManagerFragment extends BaseFragment implements OnRefres
         isRefresh = false;
         page = page + 1;
         sendHttp();
-        adapter.notifyDataSetChanged();
-        refreshlayout.finishLoadmore(1000);
     }
 
     @Override
@@ -199,7 +189,6 @@ public class MaterialNotManagerFragment extends BaseFragment implements OnRefres
         isRefresh = true;
         page = 1;
         sendHttp();
-        refreshlayout.finishRefresh(1000);
     }
 
 
@@ -225,7 +214,7 @@ public class MaterialNotManagerFragment extends BaseFragment implements OnRefres
         Logger.i("selectList", selectList.toString() + "");
         for (int i = 0; i < selectList.size(); i++) {
             OrderNotUseInfo notUseInfo = selectList.get(i);
-            OrderNotUseSubmit useSubmit = new OrderNotUseSubmit(notUseInfo.quantity,notUseInfo.id, notUseInfo.code, notUseInfo.publis_at, MainActivity.list.get(0).getShipnumber());
+            OrderNotUseSubmit useSubmit = new OrderNotUseSubmit(notUseInfo.quantity,notUseInfo.id, notUseInfo.code, notUseInfo.publis_at, MainActivity.list.get(0).getShipid());
             submits.add(useSubmit);
         }
         if (!ToolString.isEmptyList(selectList)) {
@@ -238,7 +227,8 @@ public class MaterialNotManagerFragment extends BaseFragment implements OnRefres
             public void requestSuccess(String json) {
                 Logger.e("待选提交结果",json);
                 if (GsonUtils.isSuccess(json)) {
-
+                    //刷新列表
+                    sendHttp();
                 }
                 ToolAlert.showToast(activity, GsonUtils.getError(json));
             }

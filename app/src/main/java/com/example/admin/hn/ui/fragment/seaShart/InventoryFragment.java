@@ -9,19 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import com.bigkoo.pickerview.TimePickerView;
-import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseFragment;
-import com.example.admin.hn.base.HNApplication;
+
 import com.example.admin.hn.http.Constant;
-import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.InventoryInfo;
 import com.example.admin.hn.ui.account.InventoryActivity;
 import com.example.admin.hn.ui.adapter.InventoryAdapter;
@@ -30,21 +24,15 @@ import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolRefreshView;
 import com.example.admin.hn.volley.RequestListener;
 import com.orhanobut.logger.Logger;
-import com.scwang.smartrefresh.header.MaterialHeader;
+
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
-import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.squareup.okhttp.Request;
-
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -132,9 +120,6 @@ public class InventoryFragment extends BaseFragment implements OnRefreshListener
                 startActivity(intent_order);
             }
         });
-//        if (screen == 2) {
-//            data("1", "", 0);
-//        }
     }
 
     @OnClick({R.id.network_img})
@@ -213,10 +198,7 @@ public class InventoryFragment extends BaseFragment implements OnRefreshListener
                         }
                     }
                 }else {
-                    if (page == 1) {
-                        ToolAlert.showToast(getActivity(),GsonUtils.getError(json), false);
-                        datas.clear();
-                    } else {
+                    if (page != 1) {
                         ToolAlert.showToast(getActivity(), "已全部加载完成", false);
                     }
                 }
