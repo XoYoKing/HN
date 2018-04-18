@@ -9,11 +9,13 @@ import android.widget.EditText;
 
 import com.example.admin.hn.R;
 import com.example.admin.hn.model.OrderInfo;
+import com.example.admin.hn.model.OrderNotUseInfo;
 import com.example.admin.hn.model.OrderUseInfo;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolString;
 import com.example.admin.hn.utils.ToolViewUtils;
 import com.example.admin.hn.widget.AlertDialog;
+import com.example.admin.hn.widget.ExtendedEditText;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -33,7 +35,7 @@ public class MaterialSelectAdapter extends CommonAdapter<OrderUseInfo> {
 
     @Override
     protected void convert(ViewHolder viewHolder,final OrderUseInfo item, final int position) {
-        final EditText tv_buy_number = viewHolder.getView(R.id.tv_buy_number);
+        final ExtendedEditText tv_buy_number = viewHolder.getView(R.id.tv_buy_number);
         viewHolder.setText(R.id.tv_type, item.category_name + "");
         viewHolder.setText(R.id.tv_ship_name, item.ship_name + "");
         viewHolder.setText(R.id.tv_name, item.chs_name + "");
@@ -64,29 +66,13 @@ public class MaterialSelectAdapter extends CommonAdapter<OrderUseInfo> {
             }
         });
         ToolViewUtils.setSelection(tv_buy_number);
-
-        tv_buy_number.addTextChangedListener(new TextWatcher() {
+        tv_buy_number.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (ToolString.isEmpty(s.toString())) {
-                    int number = Integer.parseInt(s.toString());
-                    if (number > item.storage_amount) {
-                        if (item.storage_amount != 0) {
-                            ToolAlert.showToast(mContext, "库存不足！", false);
-                        }
-                        tv_buy_number.setText(item.storage_amount + "");
-                        ToolViewUtils.setSelection(tv_buy_number);
-                    }
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    tv_buy_number.addTextChangedListener(new MyTextWatcher(tv_buy_number, item));
+                }else {
+                    tv_buy_number.clearTextChangedListeners();
                 }
             }
         });
@@ -113,4 +99,50 @@ public class MaterialSelectAdapter extends CommonAdapter<OrderUseInfo> {
             }).start();
         }
     }
+
+    private class MyTextWatcher implements TextWatcher{
+        private OrderUseInfo info;
+        private EditText tv_buy_number;
+
+        public MyTextWatcher(EditText tv_buy_number, OrderUseInfo item) {
+            this.tv_buy_number = tv_buy_number;
+            this.info = item;
+        }
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (ToolString.isEmpty(s.toString())) {
+                int number = Integer.parseInt(s.toString());
+                if (info.storage_amount!=0 && number > info.storage_amount) {//购买数量大于库存
+                    ToolAlert.showToast(mContext, "库存不足！");
+                    tv_buy_number.setText(info.storage_amount + "");
+                    info.quantity = info.storage_amount;
+                    ToolViewUtils.setSelection(tv_buy_number);
+                }else {
+                    if (info.storage_amount == 0) {
+                        info.quantity = 0;
+                    }else {
+                        if (number == 0) {
+                            ToolAlert.showToast(mContext, "购买数量不能为0");
+                            info.quantity = 1;
+                            tv_buy_number.setText(info.quantity + "");
+                            ToolViewUtils.setSelection(tv_buy_number);
+                        }else {
+                            info.quantity = number;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }

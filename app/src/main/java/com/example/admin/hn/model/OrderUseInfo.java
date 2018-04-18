@@ -4,6 +4,7 @@ package com.example.admin.hn.model;
  * 船舶资料管理 订单为已选状态下数据对象
  */
 public class OrderUseInfo {
+    public String id;//资料id
     public String code;//资料编号
     public String chs_name;//中文名
     public String eng_name;//英文名

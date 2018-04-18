@@ -207,6 +207,7 @@ public class ShipSelectFragment extends BaseFragment implements OnRefreshListene
                 if (GsonUtils.isSuccess(json)) {
                     ToolAlert.showToast(activity, "提交成功", false);
                     MainActivity.list = new ArrayList<>(listStr);
+                    HNApplication.mApp.setShipName(listStr.get(0).getShipname());
                     activity.setCurrentItem(1);
                 }else {
                     ToolAlert.showToast(activity,GsonUtils.getError(json), false);

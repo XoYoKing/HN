@@ -18,9 +18,14 @@ import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseFragment;
+import com.example.admin.hn.base.HNApplication;
 import com.example.admin.hn.http.Constant;
 import com.example.admin.hn.model.OrderInfo;
+import com.example.admin.hn.model.OrderNotUseInfo;
+import com.example.admin.hn.model.OrderNotUseSubmit;
 import com.example.admin.hn.model.OrderUseInfo;
+import com.example.admin.hn.model.OrderUseSubmit;
+import com.example.admin.hn.model.SubmitListInfo;
 import com.example.admin.hn.ui.adapter.MaterialSelectAdapter;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.SpaceItemDecoration;
@@ -33,10 +38,8 @@ import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.zhy.adapter.recyclerview.CommonAdapter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -49,7 +52,7 @@ import butterknife.OnClick;
  * @date on 2017/7/26 16:04
  * @describe 已选择
  */
-public class MaterialManagerFragment extends BaseFragment implements OnRefreshListener,OnLoadmoreListener{
+public class MaterialManagerFragment extends BaseFragment implements OnRefreshListener, OnLoadmoreListener {
 
     private static final String TAG = "已选择";
 
@@ -91,7 +94,7 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
         ToolRefreshView.setRefreshLayout(activity, refreshLayout, this, this);
         adapter = new MaterialSelectAdapter(activity, R.layout.item_material_layout, list);
         recycleView.setLayoutManager(new LinearLayoutManager(activity));
-        recycleView.addItemDecoration(new SpaceItemDecoration(10,20,0,0));
+        recycleView.addItemDecoration(new SpaceItemDecoration(10, 20, 0, 0));
         recycleView.setAdapter(adapter);
     }
 
@@ -116,7 +119,7 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
     }
 
 
-    @OnClick({ R.id.network_img})
+    @OnClick({R.id.network_img})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.network_img:
@@ -129,14 +132,15 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
 
     public void sendHttp() {
         params.put("page", page);
-        params.put("shipId", MainActivity.list.get(0).getShipid() + "");
+//        params.put("shipId", MainActivity.list.get(0).getShipid() + "");
+        params.put("shipId", "7340");
         http.postJson(url, params, progressTitle, new RequestListener() {
             @Override
             public void requestSuccess(String json) {
                 progressTitle = null;
                 Logger.e("已选列表", json);
                 if (GsonUtils.isSuccess(json)) {
-                    TypeToken typeToken= new TypeToken<List<OrderUseInfo>>() {
+                    TypeToken typeToken = new TypeToken<List<OrderUseInfo>>() {
                     };
                     List<OrderUseInfo> data = (List<OrderUseInfo>) GsonUtils.jsonToList(json, typeToken);
                     if (ToolString.isEmptyList(data)) {
@@ -147,16 +151,16 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
                     }
                 } else {
                     if (page != 1) {
-                        ToolAlert.showToast(getActivity(),Constant.LOADED);
+                        ToolAlert.showToast(getActivity(), Constant.LOADED);
                     }
                 }
-                ToolRefreshView.hintView(adapter,refreshLayout,false,network,noData_img,network_img);
+                ToolRefreshView.hintView(adapter, refreshLayout, false, network, noData_img, network_img);
             }
 
             @Override
             public void requestError(String message) {
                 ToolAlert.showToast(activity, message);
-                ToolRefreshView.hintView(adapter,refreshLayout,true,network,noData_img,network_img);
+                ToolRefreshView.hintView(adapter, refreshLayout, true, network, noData_img, network_img);
             }
         });
     }
@@ -175,7 +179,7 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
         sendHttp();
     }
 
-    private void initBroadcastReceiver(){
+    private void initBroadcastReceiver() {
         localBroadcastManager = LocalBroadcastManager.getInstance(activity);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Constant.ACTION_MATERIAL_MANAGER_FRAGMENT);
@@ -196,8 +200,43 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
         localBroadcastManager.unregisterReceiver(br);
     }
 
+    private List<OrderUseSubmit> submits=new ArrayList<>();
+    private String submit_url = Api.BASE_URL + Api.SUBMIT_DOCUMENTS;
     private void submit() {
         ToolAlert.showToast(activity, "已选-提交", false);
-        Logger.e("size", adapter.getDatas().size()+ "");
+        List<OrderUseInfo> selectList = adapter.getDatas();
+        if (ToolString.isEmptyList(selectList)) {
+            for (int i = 0; i < selectList.size(); i++) {
+                OrderUseInfo useInfo = selectList.get(i);
+                OrderUseSubmit useSubmit = new OrderUseSubmit(useInfo.quantity,
+                        useInfo.id, useInfo.code,
+                        MainActivity.list.get(0).getShipid(),
+                        useInfo.publish_at,useInfo.distribute_no,useInfo.source);
+                submits.add(useSubmit);
+            }
+            if (!ToolString.isEmptyList(selectList)) {
+                ToolAlert.showToast(activity, "请选择需要提交的资料", false);
+                return;
+            }
+            SubmitListInfo submitListInfo = new SubmitListInfo(HNApplication.mApp.getUserId(), submits);
+            http.postJson(submit_url, submitListInfo, "提交中...", new RequestListener() {
+                @Override
+                public void requestSuccess(String json) {
+                    Logger.e("已选提交结果", json);
+                    if (GsonUtils.isSuccess(json)) {
+                        //刷新列表
+                        sendHttp();
+                    }
+                    ToolAlert.showToast(activity, GsonUtils.getError(json));
+                }
+
+                @Override
+                public void requestError(String message) {
+                    ToolAlert.showToast(activity, message);
+                }
+            });
+        }else {
+            ToolAlert.showToast(activity, "请选择资料！");
+        }
     }
 }

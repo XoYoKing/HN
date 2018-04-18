@@ -8,7 +8,7 @@ public class OrderNotUseSubmit {
     public String docId;//资料ID
     public String code;//资料编号
     public String publishTime;//出版日期
-    public String shipId;//船舶
+    public String shipId;//船舶id
 
     public OrderNotUseSubmit(int quantity,String id, String code, String publishTime, String shipId) {
         this.docId = id;

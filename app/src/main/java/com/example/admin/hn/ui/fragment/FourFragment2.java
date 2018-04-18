@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.base.BaseFragment;
 import com.example.admin.hn.base.HNApplication;
@@ -80,8 +81,12 @@ public class FourFragment2 extends BaseFragment implements ViewPager.OnPageChang
 
 	private void addChildFragment() {
 		AllChildTabAdapter adapter = new AllChildTabAdapter(getChildFragmentManager(), activity, viewPager);
-		adapter.addTab("订单领用", MaterialUseManagerFragment.class);
-		adapter.addTab("审核管理", AuditingManagerFragment.class);
+		if (true) {
+			adapter.addTab("订单领用", MaterialUseManagerFragment.class);
+			adapter.addTab("审核管理", AuditingManagerFragment.class);
+		}else {
+			adapter.addTab("审核管理", AuditingManagerFragment.class);
+		}
 		adapter.addTab("回执", ReceiptFragment.class);
 		viewPager.setOffscreenPageLimit(3);
 		tabLayout.setupWithViewPager(viewPager);
@@ -124,7 +129,9 @@ public class FourFragment2 extends BaseFragment implements ViewPager.OnPageChang
 				if (childCurrentItem == 0) {
 					ToolAlert.dialog(activity,
 							"资料提交",
-							"是否确定提交资料到" + HNApplication.mApp.getShipName() + "",
+							"是否确定提交资料到此船舶"
+									+ "\n船舶名称："+MainActivity.list.get(0).getShipname()
+									+ "\n船舶编号："+MainActivity.list.get(0).getShipid(),
 							new DialogInterface.OnClickListener() {
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
@@ -138,7 +145,6 @@ public class FourFragment2 extends BaseFragment implements ViewPager.OnPageChang
 									dialog.dismiss();
 								}
 							});
-
 				}else if (childCurrentItem == 1){
 					ToolAlert.dialog(activity,
 							"资料提交",

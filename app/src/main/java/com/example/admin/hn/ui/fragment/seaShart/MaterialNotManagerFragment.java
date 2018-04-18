@@ -125,13 +125,13 @@ public class MaterialNotManagerFragment extends BaseFragment implements OnRefres
                     TypeToken typeToken = new TypeToken<List<OrderNotUseInfo>>() {
                     };
                     List<OrderNotUseInfo> data = (List<OrderNotUseInfo>) GsonUtils.jsonToList(json, typeToken);
-                    if (ToolString.isEmptyList(data)) {
-                        if (isRefresh) {
-                            list.clear();
-                        }
-                        list.addAll(data);
-                        adapter.notifyDataSetChanged();
+                    if (isRefresh) {
+                        list.clear();
                     }
+                    if (ToolString.isEmptyList(data)) {
+                        list.addAll(data);
+                    }
+                    Logger.e("list", list.toString()+"");
                 }else {
                     if (page != 1) {
                         ToolAlert.showToast(getActivity(),Constant.LOADED);
@@ -172,6 +172,7 @@ public class MaterialNotManagerFragment extends BaseFragment implements OnRefres
         if (resultCode == Constant.POP_NOT_MATERIAL && data != null) {
             code = data.getStringExtra("dataNumber");
             cname = data.getStringExtra("chineseName");
+            isRefresh = true;
             //发送请求
             sendHttp();
         }
@@ -211,33 +212,36 @@ public class MaterialNotManagerFragment extends BaseFragment implements OnRefres
     //提交数据
     private void submit() {
         List<OrderNotUseInfo> selectList = adapter.getSelectList();
-        Logger.i("selectList", selectList.toString() + "");
-        for (int i = 0; i < selectList.size(); i++) {
-            OrderNotUseInfo notUseInfo = selectList.get(i);
-            OrderNotUseSubmit useSubmit = new OrderNotUseSubmit(notUseInfo.quantity,notUseInfo.id, notUseInfo.code, notUseInfo.publis_at, MainActivity.list.get(0).getShipid());
-            submits.add(useSubmit);
-        }
-        if (!ToolString.isEmptyList(selectList)) {
-            ToolAlert.showToast(activity, "请选择需要提交的资料", false);
-            return;
-        }
-        SubmitListInfo submitListInfo = new SubmitListInfo(HNApplication.mApp.getUserId(), submits);
-        http.postJson(submit_url, submitListInfo, "提交中...", new RequestListener() {
-            @Override
-            public void requestSuccess(String json) {
-                Logger.e("待选提交结果",json);
-                if (GsonUtils.isSuccess(json)) {
-                    //刷新列表
-                    sendHttp();
+        if (ToolString.isEmptyList(selectList)) {
+            for (int i = 0; i < selectList.size(); i++) {
+                OrderNotUseInfo notUseInfo = selectList.get(i);
+                OrderNotUseSubmit useSubmit = new OrderNotUseSubmit(notUseInfo.quantity,notUseInfo.id, notUseInfo.code, notUseInfo.publis_at, MainActivity.list.get(0).getShipid());
+                submits.add(useSubmit);
+            }
+            if (!ToolString.isEmptyList(selectList)) {
+                ToolAlert.showToast(activity, "请选择需要提交的资料", false);
+                return;
+            }
+            SubmitListInfo submitListInfo = new SubmitListInfo(HNApplication.mApp.getUserId(), submits);
+            http.postJson(submit_url, submitListInfo, "提交中...", new RequestListener() {
+                @Override
+                public void requestSuccess(String json) {
+                    Logger.e("待选提交结果",json);
+                    if (GsonUtils.isSuccess(json)) {
+                        //刷新列表
+                        sendHttp();
+                    }
+                    ToolAlert.showToast(activity, GsonUtils.getError(json));
                 }
-                ToolAlert.showToast(activity, GsonUtils.getError(json));
-            }
 
-            @Override
-            public void requestError(String message) {
-                ToolAlert.showToast(activity, message);
-            }
-        });
+                @Override
+                public void requestError(String message) {
+                    ToolAlert.showToast(activity, message);
+                }
+            });
+        }else {
+            ToolAlert.showToast(activity, "请选择资料！");
+        }
     }
 
     @Override

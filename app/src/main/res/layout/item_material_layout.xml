@@ -181,7 +181,7 @@
                 android:textColor="@color/text_gray_color"
                 android:textSize="@dimen/common_15sp" />
 
-            <EditText
+            <com.example.admin.hn.widget.ExtendedEditText
                 android:id="@+id/tv_buy_number"
                 android:layout_width="@dimen/common_120dp"
                 android:layout_height="@dimen/common_35dp"
