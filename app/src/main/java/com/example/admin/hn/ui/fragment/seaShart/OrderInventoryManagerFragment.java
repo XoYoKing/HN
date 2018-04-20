@@ -56,7 +56,6 @@ public class OrderInventoryManagerFragment extends BaseFragment {
 	@Override
 	public void setUserVisibleHint(boolean isVisibleToUser) {
 		super.setUserVisibleHint(isVisibleToUser);
-		Logger.i("isVisibleToUser", isVisibleToUser + "");
 		if (isVisibleToUser && isFirstHttp) {
 			isFirstHttp = false;
 			addChildFragment();

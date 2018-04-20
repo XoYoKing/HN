@@ -219,7 +219,6 @@ public class OrderManagerStatusFragment extends BaseFragment implements OnRefres
             }else {
                 status = 1;
             }
-            Logger.i("request", shipName +"--"+startDate+"--" + endDate+"--childItem="+childItem);
             progressTitle = "正在加载...";
             if (screen == childItem+1) {
                 if (shipName != null) {

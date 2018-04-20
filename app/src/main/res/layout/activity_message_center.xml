@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     android:background="@color/concrete"
     android:clipToPadding="true"
@@ -9,86 +10,90 @@
 
     <include layout="@layout/public_title"></include>
 
-
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/refreshLayout"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/common_5dp"
-        android:layout_marginRight="@dimen/common_5dp"
-        android:layout_marginTop="@dimen/common_10dp"
-        android:background="@color/white_smoke"
-        app:srlAccentColor="@android:color/white"
-        app:srlEnablePreviewInEditMode="true"
-        app:srlPrimaryColor="@color/white_smoke">
-        <!--srlAccentColor srlPrimaryColor 将会改变 Header 和 Footer 的主题颜色-->
-        <!--srlEnablePreviewInEditMode 可以开启和关闭预览功能-->
-        <com.scwang.smartrefresh.layout.header.ClassicsHeader
+        android:layout_height="wrap_content">
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/refreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/common_5dp"
+            android:layout_marginRight="@dimen/common_5dp"
+            android:layout_marginTop="@dimen/common_10dp"
+            android:background="@color/white_smoke"
+            app:srlAccentColor="@android:color/white"
+            app:srlEnablePreviewInEditMode="true"
+            app:srlPrimaryColor="@color/white_smoke">
+            <!--srlAccentColor srlPrimaryColor 将会改变 Header 和 Footer 的主题颜色-->
+            <!--srlEnablePreviewInEditMode 可以开启和关闭预览功能-->
+            <com.scwang.smartrefresh.layout.header.ClassicsHeader
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <RelativeLayout
-                android:id="@+id/rlBottom"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_alignParentBottom="true"
-                android:background="@drawable/cart_bottom_bg"
-                android:visibility="gone">
+                android:layout_height="match_parent">
 
-                <CheckBox
-                    android:id="@+id/allCb"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="8dp"
-                    android:button="@drawable/check_box_bg"
-                    android:checked="true"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/textView1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/allCb"
-                    android:layout_alignBottom="@+id/allCb"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@+id/allCb"
-                    android:text="全选"
-                    android:textColor="#B1B1B1"
-                    android:textSize="16sp" />
-
-                <Button
-                    android:id="@+id/bSubmit"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
+                <RelativeLayout
+                    android:id="@+id/rlBottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
                     android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:background="#ff3933"
-                    android:text="删除"
-                    android:textColor="#fff"
-                    android:textSize="18sp" />
+                    android:background="@drawable/cart_bottom_bg"
+                    android:visibility="gone">
+
+                    <CheckBox
+                        android:id="@+id/allCb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:button="@drawable/check_box_bg"
+                        android:checked="true"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/textView1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/allCb"
+                        android:layout_alignBottom="@+id/allCb"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@+id/allCb"
+                        android:text="全选"
+                        android:textColor="#B1B1B1"
+                        android:textSize="16sp" />
+
+                    <Button
+                        android:id="@+id/bSubmit"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:background="#ff3933"
+                        android:text="删除"
+                        android:textColor="#fff"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+                <ListView
+                    android:id="@+id/lv_message_center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@id/rlBottom"
+                    android:background="#efefef"
+                    android:divider="#000000"
+                    android:dividerHeight="1dp"></ListView>
+
             </RelativeLayout>
 
-            <ListView
-                android:id="@+id/lv_message_center"
+            <com.scwang.smartrefresh.layout.footer.ClassicsFooter
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@id/rlBottom"
-                android:background="#efefef"
-                android:divider="#000000"
-                android:dividerHeight="1dp"></ListView>
-
-        </RelativeLayout>
-
-        <com.scwang.smartrefresh.layout.footer.ClassicsFooter
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+                android:layout_height="wrap_content" />
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+        <include layout="@layout/network_disabled" />
+    </RelativeLayout>
 
 </LinearLayout>

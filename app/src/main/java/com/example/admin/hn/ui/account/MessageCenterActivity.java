@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -18,6 +19,7 @@ import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseActivity;
 import com.example.admin.hn.base.HNApplication;
+import com.example.admin.hn.http.Constant;
 import com.example.admin.hn.model.EightEntity;
 import com.example.admin.hn.model.MessageInfo;
 import com.example.admin.hn.model.Messagedel;
@@ -25,6 +27,8 @@ import com.example.admin.hn.ui.adapter.GroupAdapter;
 import com.example.admin.hn.ui.adapter.MessageAdapter;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
+import com.example.admin.hn.utils.ToolRefreshView;
+import com.example.admin.hn.utils.ToolString;
 import com.example.admin.hn.volley.RequestListener;
 import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.header.MaterialHeader;
@@ -48,7 +52,7 @@ import me.leolin.shortcutbadger.ShortcutBadger;
  * @date on 2017/8/7 15:42
  * @describe 消息通知
  */
-public class MessageCenterActivity extends BaseActivity implements AdapterView.OnItemClickListener {
+public class MessageCenterActivity extends BaseActivity implements AdapterView.OnItemClickListener ,OnRefreshListener,OnLoadmoreListener{
     private static final String TAG = "MessageCenterActivity";
     @Bind(R.id.lv_message_center)
     ListView mLvMessageCenter;
@@ -67,7 +71,14 @@ public class MessageCenterActivity extends BaseActivity implements AdapterView.O
     @Bind(R.id.text_tile_del)
     TextView text_tile_del;
 
-    public ArrayList<EightEntity> list = new ArrayList<EightEntity>();
+    @Bind(R.id.network_disabled)
+    RelativeLayout network;
+    @Bind(R.id.network_img)
+    ImageView network_img;
+    @Bind(R.id.noData_img)
+    ImageView noData_img;
+
+    public ArrayList<EightEntity> list = new ArrayList<>();
     private GroupAdapter groupAdapter;
     private PopupWindow mPopupWindow;
     private View contentView;
@@ -80,7 +91,8 @@ public class MessageCenterActivity extends BaseActivity implements AdapterView.O
     private int tradeType = 100;
     private int page = 1;
     private int status = 1;
-    public List<Messagedel.Message> listdel = new ArrayList<Messagedel.Message>();
+    public List<Messagedel.Message> listdel = new ArrayList<>();
+    private RefreshLayout refreshLayout;
     ;
 
 
@@ -112,33 +124,9 @@ public class MessageCenterActivity extends BaseActivity implements AdapterView.O
         ShortcutBadger.removeCount(this);
         HNApplication.mApp.setMsgNumber(0);
         //下拉刷新
-        final RefreshLayout refreshLayout = (RefreshLayout) findViewById(R.id.refreshLayout);
-        refreshLayout.setDisableContentWhenLoading(true);
-        refreshLayout.setDisableContentWhenRefresh(true);
-        refreshLayout.setEnableScrollContentWhenLoaded(true);
-        //设置 Header 为 Material风格
-        refreshLayout.setRefreshHeader(new MaterialHeader(this).setShowBezierWave(true));
-        //设置 Footer 为 球脉冲
-        refreshLayout.setRefreshFooter(new BallPulseFooter(this).setSpinnerStyle(SpinnerStyle.Scale));
-        //监听
-        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
-                page = 1;
-                data(0);
-                adapter.notifyDataSetChanged();
-                refreshlayout.finishRefresh(1000);
-            }
-        });
-        refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
-            @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
-                page = page+1;
-                data(1);
-                adapter.notifyDataSetChanged();
-                refreshlayout.finishLoadmore(1000);
-            }
-        });
+        refreshLayout = (RefreshLayout) findViewById(R.id.refreshLayout);
+        ToolRefreshView.setRefreshLayout(context,refreshLayout);
+
         mLvMessageCenter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -159,7 +147,6 @@ public class MessageCenterActivity extends BaseActivity implements AdapterView.O
                 finish();
                 break;
             case R.id.text_tile_del:
-//                showPopwindow(v);
                 if (allCb.getVisibility() == View.GONE) {
                     rlBottom.setVisibility(View.VISIBLE);
                     allCb.setVisibility(View.VISIBLE);
@@ -172,7 +159,6 @@ public class MessageCenterActivity extends BaseActivity implements AdapterView.O
                     rlBottom.setVisibility(View.GONE);
                     allCb.setVisibility(View.GONE);
                 }
-
                 adapter.notifyDataSetChanged();
                 break;
             case R.id.text_tile_right:
@@ -195,7 +181,6 @@ public class MessageCenterActivity extends BaseActivity implements AdapterView.O
             group.add("已删除");
             groupAdapter = new GroupAdapter(this,R.layout.group_item, group);
             listview.setAdapter(groupAdapter);
-
             mPopupWindow = new PopupWindow(contentView, getWindowManager()
                     .getDefaultDisplay().getWidth() / 3, getWindowManager()
                     .getDefaultDisplay().getHeight() / 3);
@@ -215,60 +200,26 @@ public class MessageCenterActivity extends BaseActivity implements AdapterView.O
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,
                             long id) {
-
         if (mPopupWindow != null) {
             mPopupWindow.dismiss();
         }
         switch (position) {
             case 0:
-//                tradeType = 100;
-//                adapter = new MessageAdapter(MessageCenterActivity.this, groups, tradeType);
                 status = 1;
                 page=1;
                 data(0);
-
-//                mLvMessageCenter.setAdapter(adapter);
-
                 break;
             case 1:
-//                tradeType = 101;
-//                ArrayList<MessageInfo.Messageinfo> group = new ArrayList<>();
-//                for(int i = 0;i<groups.size();i++){
-//                    if (groups.get(i).getMessagestate().equals("成功")){
-//                        group.add(groups.get(i));
-//                    }
-//                }
-////                adapter = new MessageAdapter(MessageCenterActivity.this, group, tradeType);
-//                mLvMessageCenter.setAdapter(adapter);
                 status = 2;
                 page=1;
                 data(0);
-
                 break;
-
             case 2:
                 status = 3;
                 page=1;
                 data(0);
-//                tradeType = 102;
-//                ArrayList<MessageInfo.Messageinfo> g = new ArrayList<>();
-//                for(int i = 0;i<groups.size();i++){
-//                    if (groups.get(i).getMessagestate().equals("失败")){
-//                        g.add(groups.get(i));
-//                    }
-//                }
-////              adapter = new MessageAdapter(MessageCenterActivity.this, g, tradeType);
-//                mLvMessageCenter.setAdapter(adapter);
                 break;
             case 3:
-//                tradeType = 103;
-//                ArrayList<MessageInfo.Messageinfo> gg = new ArrayList<>();
-//                for(int i = 0;i<groups.size();i++){
-//                    if (groups.get(i).getMessagestate().equals("被退回")){
-//                        gg.add(groups.get(i));
-//                    }
-//                }
-//                adapter = new MessageAdapter(MessageCenterActivity.this, gg, tradeType);
                 status = 4;
                 page=1;
                 data(0);
@@ -278,7 +229,6 @@ public class MessageCenterActivity extends BaseActivity implements AdapterView.O
 
 
     public void initDatas() {
-
         allCb.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -305,17 +255,10 @@ public class MessageCenterActivity extends BaseActivity implements AdapterView.O
             }
         });
 
-
         bSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 boolean flag = false;
-//				for (EightEntity entity : list) {
-//					if (entity.isChecked()) {
-//						deleteMsg();
-//						flag =  true;
-//					}
-//				}
                 deleteMsg();
                 if (!flag) {
                     return;
@@ -327,7 +270,7 @@ public class MessageCenterActivity extends BaseActivity implements AdapterView.O
     }
 
     public void deleteMsg() {
-        List<EightEntity> deleteList = new ArrayList<EightEntity>();
+        List<EightEntity> deleteList = new ArrayList<>();
         for (EightEntity entity : list) {
             // (1-已读 0-未读)
             if (entity.isChecked()) {
@@ -349,17 +292,18 @@ public class MessageCenterActivity extends BaseActivity implements AdapterView.O
                 Logger.i(TAG, json);
                 if (GsonUtils.isSuccess(json)) {
                     MessageInfo message = GsonUtils.jsonToBean(json, MessageInfo.class);
-                    if (("success").equals(message.getStatus())) {
-//                          list.clear();
-//                          for (int i=0;i<message.getDocuments().size();i++){
-//                                 list.add(new EightEntity(false,message.getDocuments().get(i).getLinename(),message.getDocuments().get(i).getOrderdetails(),message.getDocuments().get(i).getNoticetime(),message.getDocuments().get(i).getShipname(),message.getDocuments().get(i).getMessageid(),message.getDocuments().get(i).getOrdernumber(), message.getDocuments().get(i).getMessagestate(), message.getDocuments().get(i).getNoticecontent()));
-//                             }
-//                          adapter = new MessageAdapter(MessageCenterActivity.this, list);
-//                          mLvMessageCenter.setAdapter(adapter);
+                    list.clear();
+                    if (ToolString.isEmptyList(message.getDocuments())) {
+                        for (int i=0;i<message.getDocuments().size();i++){
+                            list.add(new EightEntity(false,message.getDocuments().get(i).getLinename(),message.getDocuments().get(i).getOrderdetails(),message.getDocuments().get(i).getNoticetime(),message.getDocuments().get(i).getShipname(),message.getDocuments().get(i).getMessageid(),message.getDocuments().get(i).getOrdernumber(), message.getDocuments().get(i).getMessagestate(), message.getDocuments().get(i).getNoticecontent()));
+                        }
                     }
                 }else {
-                    ToolAlert.showToast(context, GsonUtils.getError(json));
+                    if (page != 1) {
+                        ToolAlert.showToast(context, Constant.LOADED);
+                    }
                 }
+                ToolRefreshView.hintView(adapter,refreshLayout,false,network,noData_img,network_img);
             }
 
             @Override
@@ -368,7 +312,6 @@ public class MessageCenterActivity extends BaseActivity implements AdapterView.O
             }
         });
     }
-
 
     public void data(final int Loadmore) {
         Map map = new HashMap();
@@ -390,17 +333,30 @@ public class MessageCenterActivity extends BaseActivity implements AdapterView.O
                     for (int i = 0; i < message.getDocuments().size(); i++) {
                         list.add(new EightEntity(false, message.getDocuments().get(i).getLinename(), message.getDocuments().get(i).getOrderdetails(), message.getDocuments().get(i).getNoticetime(), message.getDocuments().get(i).getShipname(), message.getDocuments().get(i).getMessageid(), message.getDocuments().get(i).getOrdernumber(), message.getDocuments().get(i).getMessagestate(), message.getDocuments().get(i).getNoticecontent()));
                     }
-                    adapter.notifyDataSetChanged();
                 }else {
                     ToolAlert.showToast(context,GsonUtils.getError(json));
                 }
+                ToolRefreshView.hintView(adapter,refreshLayout,false,network,noData_img,network_img);
             }
 
             @Override
             public void requestError(String message) {
                 ToolAlert.showToast(context,message);
+                ToolRefreshView.hintView(adapter,refreshLayout,true,network,noData_img,network_img);
             }
         });
 
+    }
+
+    @Override
+    public void onLoadmore(RefreshLayout refreshlayout) {
+        page = page+1;
+        data(1);
+    }
+
+    @Override
+    public void onRefresh(RefreshLayout refreshlayout) {
+        page = 1;
+        data(0);
     }
 }

@@ -17,6 +17,7 @@ import com.example.admin.hn.model.OrderInfo;
 import com.example.admin.hn.ui.shop.FirmOrderActivity;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
+import com.example.admin.hn.volley.RequestListener;
 import com.orhanobut.logger.Logger;
 import com.squareup.okhttp.Request;
 
@@ -96,29 +97,11 @@ public class OrderActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_left_route:
-//                if (coord.length() > 3) {
-//                    List<String> list = extractMessage(coord.substring(1, coord.length() - 1));
-//                    ArrayList<String> x = new ArrayList<>();
-//                    ArrayList<String> y = new ArrayList<>();
-//                    for (int i = 0; i < list.size(); i++) {
-//                        x.add(list.get(i).substring(0, list.get(i).length() - list.get(i).substring(list.get(i).indexOf(",")).length()));
-//                        y.add(list.get(i).substring(list.get(i).indexOf(",") + 1));
-//                    }
-//                    Logger.i(TAG, x.toString() + "经纬度" + y.toString());
-//                    Intent intent = new Intent(OrderActivity.this, MapActivity.class);
-//                    intent.putExtra("longitude", (Serializable) x);
-//                    intent.putExtra("latitude", (Serializable) y);
-//                    startActivity(intent);
-//                }
                 String url = "http://api.shipxy.com/apicall/location?k=a7222a0180264aa99245ff2b53595a31&kw="+shipname+"&tip=1&track=1";
-                Intent intent = new Intent(OrderActivity.this, HtmlActivity.class);
-                intent.putExtra("url", url);
-                startActivity(intent);
+                HtmlActivity.startActivity(OrderActivity.this,url);
                 break;
             case R.id.tv_details:
-                Intent it = new Intent(OrderActivity.this, OrderdetailsActivity.class);
-                it.putExtra("ordernumber", ordernumber);
-                startActivity(it);
+                OrderdetailsActivity.startActivity(context, ordernumber);
                 break;
         }
     }
@@ -138,7 +121,7 @@ public class OrderActivity extends BaseActivity {
      * @param context
      */
     public static void startActivity(Context context, String shipname,String ordernumber) {
-        Intent intent = new Intent(context, FirmOrderActivity.class);
+        Intent intent = new Intent(context, OrderActivity.class);
         intent.putExtra("shipname",shipname);
         intent.putExtra("number", ordernumber);
         context.startActivity(intent);
@@ -158,6 +141,10 @@ public class OrderActivity extends BaseActivity {
         Intent intent = getIntent();
         ordernumber = intent.getStringExtra("number");
         shipname = intent.getStringExtra("shipname");
+        sendHttp();
+    }
+
+    private void sendHttp() {
         Map map = new HashMap();
         map.put("ordernumber", ordernumber);
         map.put("starttime", "");
@@ -168,47 +155,34 @@ public class OrderActivity extends BaseActivity {
         map.put("status", "3");
         map.put("page", "1");
         map.put("screen", "1");
-        String jsonStr = GsonUtils.mapToJson(map);
-        Logger.i(TAG, jsonStr);
-        try {
-            OkHttpUtil.postJsonData2Server(OrderActivity.this,
-                    url_order,
-                    jsonStr,
-                    new OkHttpUtil.MyCallBack() {
-                        @Override
-                        public void onFailure(Request request, IOException e) {
-                            ToolAlert.showToast(OrderActivity.this, "服务器异常,请稍后再试", false);
-                        }
+        http.postJson(url_order, map, progressTitle, new RequestListener() {
+            @Override
+            public void requestSuccess(String json) {
+                Logger.i(TAG, json);
+                if (GsonUtils.isSuccess(json)) {
+                    OrderInfo orderInfo = GsonUtils.jsonToBean(json, OrderInfo.class
+                    );
+                    coord = orderInfo.getDocuments().get(0).getCoord();
+                    tv_order_rate.setText(ordernumber);
+                    tv_ship.setText(shipname);
+                    tv_order_time.setText(orderInfo.getDocuments().get(0).getOrdertime());
+                    tv_order_rat2e.setText(orderInfo.getDocuments().get(0).getMoney());
+                    tv_statu.setText(orderInfo.getDocuments().get(0).getStatus());
+                    tv_submit.setText(orderInfo.getDocuments().get(0).getCname());
+//                  mTroute.setText(orderInfo.getDocuments().get(0).getLinename());
+                    tv_status.setText(orderInfo.getDocuments().get(0).getOrderstatus());
+                    tv_order_money.setText(orderInfo.getDocuments().get(0).getCurrency());
+                }else {
+                    ToolAlert.showToast(context,GsonUtils.getError(json));
+                    finish();
+                }
+            }
 
-                        @Override
-                        public void onResponse(String json) {
-                            Logger.i(TAG, json);
-//                            String jsonStr = json.replaceAll( "\\\\", "");
-//                            Logger.i(TAG, jsonStr);
-                            OrderInfo orderInfo = GsonUtils.jsonToBean(
-                                    json, OrderInfo.class
-                            );
-                            if (("success").equals(orderInfo.getStatus())) {
-                                coord = orderInfo.getDocuments().get(0).getCoord();
-                                tv_order_rate.setText(ordernumber);
-                                tv_ship.setText(shipname);
-                                tv_order_time.setText(orderInfo.getDocuments().get(0).getOrdertime());
-                                tv_order_rat2e.setText(orderInfo.getDocuments().get(0).getMoney());
-                                tv_statu.setText(orderInfo.getDocuments().get(0).getStatus());
-                                tv_submit.setText(orderInfo.getDocuments().get(0).getCname());
-//                                mTroute.setText(orderInfo.getDocuments().get(0).getLinename());
-                                tv_status.setText(orderInfo.getDocuments().get(0).getOrderstatus());
-                                tv_order_money.setText(orderInfo.getDocuments().get(0).getCurrency());
-                            } else {
-                                ToolAlert.showToast(OrderActivity.this, orderInfo.getMessage(), false);
-                                finish();
-                            }
-
-                        }
-                    });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            @Override
+            public void requestError(String message) {
+                ToolAlert.showToast(context,message);
+            }
+        });
     }
 
 
@@ -219,7 +193,6 @@ public class OrderActivity extends BaseActivity {
      * @return
      */
     public static List<String> extractMessage(String msg) {
-
         List<String> list = new ArrayList<String>();
         int start = 0;
         int startFlag = 0;

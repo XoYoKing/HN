@@ -8,6 +8,8 @@ import android.widget.ImageView;
 
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
+import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
@@ -32,6 +34,7 @@ public class ToolRefreshView {
         refreshLayout.setDisableContentWhenLoading(true);
         refreshLayout.setDisableContentWhenRefresh(true);
         refreshLayout.setEnableScrollContentWhenLoaded(true);
+        refreshLayout.setEnableAutoLoadmore(false);
         //设置 Header 为 Material风格
         refreshLayout.setRefreshHeader(new MaterialHeader(context).setShowBezierWave(true));
         //设置 Footer 为 球脉冲
