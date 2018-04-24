@@ -205,35 +205,20 @@ public class RegisterActivity extends BaseActivity {
         } else {
             map.put("companyname", company);
         }
-        String jsonStr = GsonUtils.mapToJson(map);
-        Logger.i(TAG, jsonStr);
-        try {
-            OkHttpUtil.postJsonData2Server(RegisterActivity.this,
-                    url_register,
-                    jsonStr,
-                    new OkHttpUtil.MyCallBack() {
-                        @Override
-                        public void onFailure(Request request, IOException e) {
-                            ToolAlert.showToast(RegisterActivity.this, "服务器异常,请稍后再试", false);
-                        }
+        http.postJson(url_register, map, progressTitle, new RequestListener() {
+            @Override
+            public void requestSuccess(String json) {
+                if (GsonUtils.isSuccess(json)) {
+                    finish();
+                }
+                ToolAlert.showToast(context,GsonUtils.getError(json));
+            }
 
-                        @Override
-                        public void onResponse(String json) {
-                            Logger.i(TAG, json);
-                            ServerResponse serverResponse = GsonUtils
-                                    .jsonToBean(json,
-                                            ServerResponse.class
-                                    );
-                            ToolAlert.showToast(RegisterActivity.this, serverResponse.getMessage(), false);
-                            if (!serverResponse.getStatus().equals("error")) {
-                                finish();
-                            }
-
-                        }
-                    });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            @Override
+            public void requestError(String message) {
+                ToolAlert.showToast(context,message);
+            }
+        });
     }
 
 
@@ -264,32 +249,25 @@ public class RegisterActivity extends BaseActivity {
 
             }
         });
-        try {
-            OkHttpUtil.postJsonData2Server(RegisterActivity.this,
-                    url_companyname,
-                    "",
-                    new OkHttpUtil.MyCallBack() {
-                        @Override
-                        public void onFailure(Request request, IOException e) {
-                            ToolAlert.showToast(RegisterActivity.this, "连接服务器失败,请稍后再试", false);
-                        }
 
-                        @Override
-                        public void onResponse(String json) {
-                            Logger.i(TAG, json);
-                            CompanyInfo companyInfo = GsonUtils.jsonToBean(json, CompanyInfo.class
-                            );
-                            for (int i = 0; i < companyInfo.getDocuments().size(); i++) {
-                                data_list.add(companyInfo.getDocuments().get(i).getCompanyname());
-                            }
-                            arr_adapter.notifyDataSetChanged();
-                        }
+        http.postJson(url_companyname, params, new RequestListener() {
+            @Override
+            public void requestSuccess(String json) {
+                if (GsonUtils.isSuccess(json)) {
+                    CompanyInfo companyInfo = GsonUtils.jsonToBean(json, CompanyInfo.class
+                    );
+                    for (int i = 0; i < companyInfo.getDocuments().size(); i++) {
+                        data_list.add(companyInfo.getDocuments().get(i).getCompanyname());
                     }
-            );
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                    arr_adapter.notifyDataSetChanged();
+                }
+            }
 
+            @Override
+            public void requestError(String message) {
+                ToolAlert.showToast(context,message);
+            }
+        });
     }
 
     @Override

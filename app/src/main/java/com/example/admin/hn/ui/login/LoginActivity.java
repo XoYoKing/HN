@@ -99,21 +99,18 @@ public class LoginActivity extends BaseActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        requestPermissions(permissions, mListener);
                     }
                 }, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        requestPermissions(permissions, mListener);
                     }
                 });
             } else {//全被勾选不再提示
-                ToolAlert.dialog(context, "权限申请", "为了能正常使用\"" + HNApplication.mApp.getAPPName() + "\"，请授予所需权限", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }, new DialogInterface.OnClickListener() {
+                ToolAlert.dialog(context, "权限申请",
+                        "\"" + HNApplication.mApp.getAPPName() + "\"缺少必要权限\n请手动授予\"" +  HNApplication.mApp.getAPPName() + "\"访问您的权限",
+                        new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -122,7 +119,13 @@ public class LoginActivity extends BaseActivity {
                         startActivity(intent);
                         isRequesting = false;
                     }
+                }, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
                 });
+
             }
         }
     };

@@ -1,6 +1,7 @@
 package com.example.admin.hn.base;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.example.admin.hn.R;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -16,15 +17,20 @@ import okhttp3.OkHttpClient;
 
 public class HNApplication extends Application {
     public static HNApplication mApp;
+    public Context context;
     public Session session;
     public Session test_session;
     public static HashMap<String, Long> map;
+
+
     @Override
     public void onCreate() {
         super.onCreate();
         //初始化本地数据存储
         mApp = this;
+        context = getApplicationContext();
         initOkHttp();
+        initGallery();//初始化Gallery
         this.session = new SharedPreferencesSession(this);
         this.test_session = new SharedPreferencesSession(this,"configs");
     }
@@ -38,6 +44,9 @@ public class HNApplication extends Application {
 //                .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
                 .build();
         OkHttpUtils.initClient(okHttpClient);
+    }
+
+    private void initGallery() {
     }
 
     //退出登录

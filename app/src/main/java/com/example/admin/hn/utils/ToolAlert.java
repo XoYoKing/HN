@@ -144,6 +144,36 @@ public class ToolAlert {
         dialogBuilder.create();
         return dialogBuilder.show();
     }
+
+    /**
+     * 弹出对话框
+     * @param context
+     * @param title  标题
+     * @param msg    内容
+     * @param okText 确定文本
+     * @param cancelText  取消文本
+     * @param okBtnListener
+     * @param cancelBtnListener
+     * @return
+     */
+    public static AlertDialog dialog(Context context, String title, String msg,String okText,String cancelText, DialogInterface.OnClickListener okBtnListener, DialogInterface.OnClickListener cancelBtnListener) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+        if (ToolString.isNoBlankAndNoNull(title)) {
+            dialogBuilder.setTitle(title);
+        }
+        dialogBuilder.setMessage(msg);
+        if (null != okBtnListener) {
+            dialogBuilder.setPositiveButton(okText, okBtnListener);
+        }
+        if (null != cancelBtnListener) {
+            dialogBuilder.setNegativeButton(cancelText, cancelBtnListener);
+        }
+        dialogBuilder.create();
+        return dialogBuilder.show();
+    }
+
+
+
     //
     ///**
     // * 弹出一个自定义布局对话框
