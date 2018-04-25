@@ -161,19 +161,17 @@ public class TypeFragment extends BaseFragment {
     }
 
     private void initHomeData() {
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 5; i++) {
             HomeTypeInfo homeTypeInfo = new HomeTypeInfo();
             if (i == 0) {
-                homeTypeInfo.setName("首页");
-            } else if (i == 1) {
                 homeTypeInfo.setName("今日推荐");
-            } else if (i == 2) {
+            } else if (i == 1) {
                 homeTypeInfo.setName("纸版图书");
-            } else if (i == 3) {
+            } else if (i == 2) {
                 homeTypeInfo.setName("电子版图书");
-            } else if (i == 4) {
+            } else if (i == 3) {
                 homeTypeInfo.setName("丽佳通讯");
-            } else if (i == 5) {
+            } else if (i == 4) {
                 homeTypeInfo.setName("新书速递");
             }
             homeTypeInfo.setId(i);
@@ -256,7 +254,7 @@ public class TypeFragment extends BaseFragment {
             }
         }
         if (toolsTextViews.length > 0) {
-            toolsTextViews[id].setTextColor(0xff1a1a1a);
+            toolsTextViews[id].setTextColor(0xffFF4081);
         }
         if (toolsImgViews.length > 0) {
             toolsImgViews[id].setVisibility(View.GONE);

@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +28,11 @@ import com.example.admin.hn.ui.adapter.GoodsListAdapter;
 import com.example.admin.hn.ui.adapter.ScreenTypeAdapter;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolAppUtils;
+import com.example.admin.hn.utils.ToolRefreshView;
+import com.example.admin.hn.utils.ToolString;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,12 +46,8 @@ import butterknife.OnClick;
  * Created by hjy on 2016/11/5.
  * 商品列表
  */
-public class GoodsListActivity extends BaseActivity {
+public class GoodsListActivity extends BaseActivity implements OnLoadmoreListener,OnRefreshListener{
 
-    @Bind(R.id.text_title_back)
-    TextView textTitleBack;
-    @Bind(R.id.text_title)
-    TextView textTitle;
     @Bind(R.id.goods_list_price_img)
     ImageView goods_list_price_img;
     @Bind(R.id.goods_list_most_img)
@@ -70,8 +74,14 @@ public class GoodsListActivity extends BaseActivity {
     ImageView nodata_img;
     @Bind(R.id.progressBar)
     ProgressBar progressBar;
-    @Bind(R.id.listView)
-    ListView listView;
+    @Bind(R.id.recycleView)
+    RecyclerView recycleView;
+    @Bind(R.id.refreshLayout)
+    RefreshLayout refreshLayout;
+    @Bind(R.id.search_tv)
+    TextView search_tv;
+    @Bind(R.id.search_tv_content)
+    TextView search_tv_content;
 
     private List<GoodsInfo> list = new ArrayList<>();
     private GoodsListAdapter adapter;
@@ -98,26 +108,17 @@ public class GoodsListActivity extends BaseActivity {
 
     @Override
     public void initTitleBar() {
-        textTitle.setText("商品列表");
-        textTitleBack.setBackgroundResource(R.drawable.btn_back);
     }
 
     @Override
     public void initView() {
-
         for (int i = 0; i < 10; i++) {
             list.add(new GoodsInfo());
         }
+        ToolRefreshView.setRefreshLayout(context,refreshLayout,this,this);
+        recycleView.setLayoutManager(new LinearLayoutManager(context));
         adapter = new GoodsListAdapter(this, R.layout.item_goods_list, list);
-        listView.setAdapter(adapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                GoodsInfo info = list.get(position);
-                GoodsDetailActivity.startActivity(context);
-            }
-        });
+        recycleView.setAdapter(adapter);
     }
 
 
@@ -154,13 +155,15 @@ public class GoodsListActivity extends BaseActivity {
         });
 
     }
-//,R.id.goods_list_most_linear,R.id.goods_list_most_linear,R.id.goods_list_price_linear,R.id.goods_list_screen_linear
-    @OnClick({R.id.text_title_back,R.id.noData_img,R.id.network_img})
+    @OnClick({R.id.iv_back,R.id.noData_img,R.id.network_img,R.id.search_linear})
     public void onClick(View v) {
         setSelectDefault();
         switch (v.getId()) {
-            case R.id.text_title_back:
+            case R.id.iv_back:
                 finish();
+                break;
+            case R.id.search_linear:
+                SearchActivity.startActivity(this);
                 break;
             case R.id.noData_img:
                 clickHttp();
@@ -288,4 +291,29 @@ public class GoodsListActivity extends BaseActivity {
     }
 
 
+    @Override
+    public void onLoadmore(RefreshLayout refreshlayout) {
+
+    }
+
+    @Override
+    public void onRefresh(RefreshLayout refreshlayout) {
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 100 && data != null) {
+            String search = data.getStringExtra("search");
+            if (ToolString.isEmpty(search)) {
+                search_tv.setVisibility(View.GONE);
+                search_tv_content.setText(search);
+                search_tv_content.setVisibility(View.VISIBLE);
+            } else {
+                search_tv.setVisibility(View.VISIBLE);
+                search_tv_content.setVisibility(View.GONE);
+            }
+        }
+    }
 }

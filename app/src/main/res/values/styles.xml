@@ -182,4 +182,9 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@color/translucent</item>
     </style>
+
+    <style name="my_popshow_anim_style">
+        <item name="android:windowEnterAnimation">@anim/pop_show_anim</item>
+        <item name="android:windowExitAnimation">@anim/pop_hidden_anim</item>
+    </style>
 </resources>

@@ -54,7 +54,8 @@ public class ShopTypeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         int itemViewType = info.type;
         holder.mTvLabel.setText(info.name+"");
         if (itemViewType == TYPE_TYPE1) {
-            holder.item_recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+//            holder.item_recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+            holder.item_recyclerView.setLayoutManager(new GridLayoutManager(mContext, 3));
         } else if (itemViewType == TYPE_TYPE2) {
             holder.item_recyclerView.setLayoutManager(new GridLayoutManager(mContext, 3));
         } else if (itemViewType == TYPE_TYPE3) {
@@ -107,7 +108,7 @@ public class ShopTypeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             switch (type) {
                 case TYPE_TYPE1:
-                    return new HolderType1(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home_shop_item4, parent, false));
+                    return new HolderType1(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_shop_type_layout, parent, false));
                 case TYPE_TYPE2:
                     return new HolderType2(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_shop_type_layout, parent, false));
                   default:
@@ -127,7 +128,7 @@ public class ShopTypeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             HolderType1(View itemView) {
                 super(itemView);
                 this.itemView = itemView;
-                tv_name= (TextView) itemView.findViewById(R.id.tv_name);
+                tv_name= (TextView) itemView.findViewById(R.id.type_name);
             }
         }
 
@@ -189,7 +190,7 @@ public class ShopTypeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         private void bindType1(HolderType1 holder, int position) {
             HomeItem info = (HomeItem) data.get(position);
-            holder.tv_name.setText(info.goodsName);
+//            holder.tv_name.setText(info.goodsName);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -7,6 +7,7 @@
 
     <!-- 通用组件尺寸 开始 -->
     <dimen name="common_line">0.8dp</dimen>
+    <dimen name="line">0.5dp</dimen>
     <dimen name="common_1dp">1dp</dimen>
     <dimen name="common_2dp">2dp</dimen>
     <dimen name="common_3dp">3dp</dimen>

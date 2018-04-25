@@ -112,6 +112,8 @@
         <activity android:name=".ui.shop.GoodsListActivity" />
         <activity android:name=".ui.shop.GoodsDetailActivity" />
         <activity android:name=".ui.shop.StepActivity" />
+        <activity android:name=".ui.shop.SearchActivity" />
+
         //商城  ===============
         <activity
             android:name=".ui.account.MessageCenterActivity"

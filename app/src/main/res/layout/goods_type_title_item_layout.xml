@@ -18,14 +18,13 @@
             android:paddingBottom="15dp"
             android:paddingTop="15dp"
             android:text="电脑配置"
-            android:textColor="@color/black"
+            android:textColor="@drawable/selector_goods_spec_tv_color"
             android:textSize="@dimen/common_12sp" />
-
 
         <ImageView
             android:id="@+id/line_bottom"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/common_1dp"
+            android:layout_height="@dimen/line"
             android:layout_below="@+id/text"
             android:background="@color/line_color"
             android:contentDescription="@null"
@@ -33,7 +32,7 @@
 
         <ImageView
             android:id="@+id/line_right"
-            android:layout_width="@dimen/common_1dp"
+            android:layout_width="@dimen/line"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:background="@color/line_color"

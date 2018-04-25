@@ -3,13 +3,20 @@ package com.example.admin.hn.ui.shop;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.admin.hn.R;
 import com.example.admin.hn.base.BaseActivity;
 import com.example.admin.hn.model.ShoppingCartInfo;
+import com.example.admin.hn.ui.adapter.AllTabAdapter;
+import com.example.admin.hn.ui.fragment.shop.GoodsFragment;
+import com.example.admin.hn.ui.fragment.shop.HnShopFragment;
+import com.example.admin.hn.ui.fragment.shop.ShopFragment;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.widget.AlertDialog;
 
@@ -26,10 +33,10 @@ import butterknife.OnClick;
  */
 public class GoodsDetailActivity extends BaseActivity {
 
-    @Bind(R.id.text_title_back)
-    TextView textTitleBack;
-    @Bind(R.id.text_title)
-    TextView textTitle;
+    @Bind(R.id.viewPager)
+    ViewPager viewPager;
+    @Bind(R.id.tabLayout)
+    TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,13 +60,17 @@ public class GoodsDetailActivity extends BaseActivity {
 
     @Override
     public void initTitleBar() {
-        textTitle.setText("商品详情");
-        textTitleBack.setBackgroundResource(R.drawable.btn_back);
+
     }
 
     @Override
     public void initView() {
-
+        AllTabAdapter adapter = new AllTabAdapter(this, viewPager);
+        adapter.addTab("商品", GoodsFragment.class);
+        adapter.addTab("详情", GoodsFragment.class);
+        adapter.addTab("评价", GoodsFragment.class);
+        viewPager.setOffscreenPageLimit(3);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
 
@@ -68,37 +79,15 @@ public class GoodsDetailActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.text_title_back,R.id.add_shopping_cart,R.id.confirm_bid})
+    @OnClick({R.id.iv_back,})
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.text_title_back:
+            case R.id.iv_back:
                 finish();
                 break;
-            case R.id.add_shopping_cart:
-                addShoppingCar();
-                break;
-            case R.id.confirm_bid:
-                FirmOrderActivity.startActivity(context, new ArrayList<ShoppingCartInfo>());
-                break;
+
         }
     }
 
-
-    private void addShoppingCar() {
-        final AlertDialog dialog = new AlertDialog(this);
-        dialog.setBtCancel("继续购物");
-        dialog.setBtConfirm("去结算");
-        dialog.showDialog("添加购物车成功", "共" + 1 + "件", new AlertDialog.DialogOnClickListener() {
-            @Override
-            public void onPositiveClick() {
-                dialog.dismiss();
-            }
-
-            @Override
-            public void onNegativeClick() {
-                dialog.dismiss();
-            }
-        });
-    }
 
 }

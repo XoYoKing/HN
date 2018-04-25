@@ -5,15 +5,12 @@ package com.example.admin.hn.ui.adapter;
  */
 
 import android.content.Context;
-import android.graphics.Paint;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.view.View;
 
-import com.example.admin.hn.R;
 import com.example.admin.hn.model.GoodsInfo;
-import com.example.admin.hn.utils.ToolViewUtils;
-import com.zhy.adapter.abslistview.CommonAdapter;
-import com.zhy.adapter.abslistview.ViewHolder;
+import com.example.admin.hn.ui.shop.GoodsDetailActivity;
+import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.List;
 
@@ -35,5 +32,12 @@ public class GoodsListAdapter extends CommonAdapter<GoodsInfo> {
 //        market_price.getPaint().setAntiAlias(true);
 //        market_price.setText("￥" + info.getMarket_price());
 //        ToolViewUtils.glideImageList(info.getOriginal_img(), goods_icon,  R.drawable.load_fail);
+
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GoodsDetailActivity.startActivity(mContext);
+            }
+        });
     }
 }

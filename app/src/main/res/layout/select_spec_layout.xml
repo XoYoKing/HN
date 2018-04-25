@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/search_relative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_20dp"
+            android:background="@color/gray_background"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/goods_space_relative"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/goods_space_icon"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/common_15dp"
+                    android:background="@drawable/shape_goods_space_img_bg"
+                    android:gravity="center"
+                    android:visibility="invisible">
+
+                </View>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/common_10dp"
+                    android:layout_marginRight="@dimen/common_20dp"
+                    android:layout_toRightOf="@+id/goods_space_icon"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_goods_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/common_10dp"
+                        android:text="￥99.99"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/common_12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_goods_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/common_10dp"
+                        android:text="库存：666件"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/common_12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_goods_spec"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/common_10dp"
+                        android:text="请选择 颜色 尺码"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/common_12sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/space_close_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="@dimen/common_15dp"
+                    android:layout_marginTop="@dimen/common_10dp"
+                    android:src="@drawable/close_img" />
+            </RelativeLayout>
+
+            <ListView
+                android:id="@+id/type_lv"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_above="@+id/space_linear"
+                android:layout_below="@+id/goods_space_relative"
+                android:background="@null"
+                android:divider="@null"
+                android:listSelector="@android:color/transparent"></ListView>
+
+            <LinearLayout
+                android:id="@+id/space_linear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/type_lv"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/space_add_shopping_cart"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/common_44dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_rect_yellow"
+                    android:text="加入购物车"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/common_15dp" />
+
+                <Button
+                    android:id="@+id/space_confirm_bid"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/common_44dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_rect_blue"
+                    android:text="立即购买"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/common_15sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/goods_space_icon1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/common_15dp"
+            android:background="@drawable/shape_goods_space_img_bg"
+            android:gravity="center"
+            android:visibility="visible">
+
+            <ImageView
+                android:id="@+id/goods_spec_icon"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/tu" />
+        </LinearLayout>
+    </FrameLayout>
+
+
+</RelativeLayout>

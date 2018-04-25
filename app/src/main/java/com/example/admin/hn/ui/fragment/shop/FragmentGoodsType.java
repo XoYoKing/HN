@@ -240,8 +240,6 @@ public class FragmentGoodsType extends BaseFragment {
                 homeInfos.add(info);
             }
         } else if (homeTypeInfo.getId() == 1) {
-            
-        }else if (homeTypeInfo.getId() == 2) {
             for (int i = 1; i < 7; i++) {
                 HomeInfo info = new HomeInfo();
                 info.data= new ArrayList<>();
@@ -328,7 +326,7 @@ public class FragmentGoodsType extends BaseFragment {
                 }
                 homeInfos.add(info);
             }
-        }else if (homeTypeInfo.getId() == 3) {
+        }else if (homeTypeInfo.getId() == 2) {
             for (int i = 0; i < 2; i++) {
                 HomeInfo info = new HomeInfo();
                 info.data= new ArrayList<>();
@@ -359,7 +357,7 @@ public class FragmentGoodsType extends BaseFragment {
                 }
                 homeInfos.add(info);
             }
-        }else if (homeTypeInfo.getId() == 4) {
+        }else if (homeTypeInfo.getId() == 3) {
             HomeInfo info = new HomeInfo();
             info.data= new ArrayList<>();
             info.name = "丽佳通讯";
@@ -372,7 +370,7 @@ public class FragmentGoodsType extends BaseFragment {
                 info.data.add(homeItem);
             }
             homeInfos.add(info);
-        }else if (homeTypeInfo.getId() == 5) {
+        }else if (homeTypeInfo.getId() == 4) {
                 HomeInfo info = new HomeInfo();
                 info.data= new ArrayList<>();
                 info.name = "新书速递";

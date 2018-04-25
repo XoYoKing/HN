@@ -30,9 +30,11 @@
             android:background="@color/line_color"></View>
 
         <RelativeLayout
+            android:id="@+id/rl_pay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white">
+            android:visibility="visible"
+            android:background="@drawable/layout_background">
 
             <LinearLayout
                 android:id="@+id/layout_all_pay"
@@ -58,7 +60,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tv_allprice"
+                android:id="@+id/tv_all_price"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginRight="@dimen/common_16dp"
@@ -76,6 +78,47 @@
                 android:layout_gravity="center"
                 android:background="@drawable/shape_rect_blue"
                 android:text="结算"
+                android:textColor="@color/white"
+                android:textSize="@dimen/common_16sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_del"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/layout_background">
+
+            <LinearLayout
+                android:id="@+id/layout_all_del"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/common_18dp">
+
+                <ImageView
+                    android:id="@+id/img_del_all"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/seletor_shop_cart" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/common_8dp"
+                    android:gravity="center_vertical"
+                    android:text="全选"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/common_14sp" />
+            </LinearLayout>
+            <Button
+                android:id="@+id/btn_delete"
+                android:layout_width="133dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center"
+                android:background="@drawable/shape_rect_red"
+                android:text="删除"
                 android:textColor="@color/white"
                 android:textSize="@dimen/common_16sp" />
 

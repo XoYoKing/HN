@@ -11,7 +11,7 @@
     <item android:state_checked="false">
         <shape xmlns:android="http://schemas.android.com/apk/res/android">
             <!-- 填充的颜色 -->
-            <solid android:color="@color/gray_background" />
+            <solid android:color="@color/charcoal" />
             <!-- 设置按钮的四个角为弧形 -->
             <corners android:radius="5dp"></corners>
         </shape>
