@@ -12,7 +12,7 @@
         android:id="@+id/bt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="选择图片"/>
+        android:text="拍照"/>
 
     <ImageView
         android:id="@+id/img"

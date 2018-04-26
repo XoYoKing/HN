@@ -14,6 +14,7 @@ import com.example.admin.hn.R;
 import com.example.admin.hn.base.BaseActivity;
 import com.example.admin.hn.model.ShoppingCartInfo;
 import com.example.admin.hn.ui.adapter.AllTabAdapter;
+import com.example.admin.hn.ui.fragment.shop.CommentFragment;
 import com.example.admin.hn.ui.fragment.shop.GoodsFragment;
 import com.example.admin.hn.ui.fragment.shop.HnShopFragment;
 import com.example.admin.hn.ui.fragment.shop.ShopFragment;
@@ -68,7 +69,7 @@ public class GoodsDetailActivity extends BaseActivity {
         AllTabAdapter adapter = new AllTabAdapter(this, viewPager);
         adapter.addTab("商品", GoodsFragment.class);
         adapter.addTab("详情", GoodsFragment.class);
-        adapter.addTab("评价", GoodsFragment.class);
+        adapter.addTab("评价", CommentFragment.class);
         viewPager.setOffscreenPageLimit(3);
         tabLayout.setupWithViewPager(viewPager);
     }
@@ -79,15 +80,19 @@ public class GoodsDetailActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.iv_back,})
+    @OnClick({R.id.iv_back,R.id.confirm_bid,R.id.add_shopping_cart})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
+            case R.id.add_shopping_cart:
 
+                break;
+            case R.id.confirm_bid:
+                FirmOrderActivity.startActivity(context, new ArrayList<ShoppingCartInfo>());
+                break;
         }
     }
-
 
 }

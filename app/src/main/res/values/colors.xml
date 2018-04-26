@@ -45,6 +45,7 @@
     <color name="dove_gray">#747474</color>
     <color name="lust">#E71F19</color>
     <color name="charcoal">#474747</color>
+    <color name="search_bg">#6c6969</color>
     <color name="color_808080">#808080</color>
     <color name="scan_bg">#7f000000</color>
     <!--文字颜色-->

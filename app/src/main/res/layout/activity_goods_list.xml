@@ -65,7 +65,6 @@
                 android:textColorHint="@color/white"
                 android:textSize="@dimen/common_12sp"
                 android:visibility="gone" />
-
         </LinearLayout>
     </RelativeLayout>
 
@@ -93,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:text="全部"
                 android:textColor="@drawable/selector_goods_list_screen_tv_color"
-                android:textSize="@dimen/common_12sp" />
+                android:textSize="@dimen/common_14sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -111,14 +110,14 @@
                 android:layout_height="wrap_content"
                 android:text="销量"
                 android:textColor="@drawable/selector_goods_list_screen_tv_color"
-                android:textSize="@dimen/common_12sp" />
+                android:textSize="@dimen/common_14sp" />
 
             <ImageView
                 android:id="@+id/goods_list_most_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/common_5dp"
-                android:background="@drawable/selector_goods_list_screen_icon" />
+                android:background="@drawable/jiage_normal" />
         </LinearLayout>
 
         <LinearLayout
@@ -136,14 +135,14 @@
                 android:layout_height="wrap_content"
                 android:text="价格"
                 android:textColor="@drawable/selector_goods_list_screen_tv_color"
-                android:textSize="@dimen/common_12sp" />
+                android:textSize="@dimen/common_14sp" />
 
             <ImageView
                 android:id="@+id/goods_list_price_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/common_5dp"
-                android:background="@drawable/selector_goods_list_screen_icon" />
+                android:background="@drawable/jiage_normal" />
         </LinearLayout>
 
         <LinearLayout
@@ -167,10 +166,17 @@
 
     </LinearLayout>
 
+    <View
+        android:id="@+id/line"
+        android:layout_below="@+id/screen_linear"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line"
+        android:background="@color/line_color"/>
+
     <include layout="@layout/include_recycle_view_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/screen_linear" />
+        android:layout_below="@+id/line" />
 
 
 </RelativeLayout>

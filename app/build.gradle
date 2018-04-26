@@ -97,5 +97,5 @@ dependencies {
     compile 'com.github.zyyoona7:EasyPopup:1.0.1'
     //图片选择器
     compile 'cn.finalteam.rxgalleryfinal:library:1.1.3'
-
+//    compile 'com.lzy.widget:imagepicker:+'
 }

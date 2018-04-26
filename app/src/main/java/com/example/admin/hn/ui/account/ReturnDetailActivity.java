@@ -204,10 +204,14 @@ public class ReturnDetailActivity extends BaseActivity {
         @Override
         public boolean handleMessage(Message msg) {
             if (msg.what == 100) {
-                photoPath = cropPath;//修改当前显示的地址
                 isCrop = false;//已裁剪完成 改变状态
                 File file = new File(cropPath);
-                Glide.with(context).load(file).into(img);
+                if (file.exists()) {
+                    photoPath = cropPath;//修改当前显示的地址
+                    Glide.with(context).load(file).into(img);
+
+                }
+
             }
             return false;
         }

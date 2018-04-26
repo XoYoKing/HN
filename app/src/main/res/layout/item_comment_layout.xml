@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@drawable/layout_background"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_userLogo"
+        android:layout_marginTop="@dimen/common_15dp"
+        android:layout_width="@dimen/common_30dp"
+        android:layout_marginLeft="@dimen/common_15dp"
+        android:layout_height="@dimen/common_30dp"
+        android:src="@drawable/user_logo" />
+
+    <RelativeLayout
+        android:layout_toRightOf="@+id/iv_userLogo"
+        android:layout_marginTop="@dimen/common_15dp"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/common_10dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/relativeLayout">
+        <TextView
+            android:id="@+id/tv_userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="发傻实发分"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/common_14sp"
+            />
+        <RatingBar
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_userName"
+            android:numStars="5"
+            android:rating="4"
+            android:id="@+id/ratingBar" />
+        <TextView
+            android:id="@+id/tv_newsTime"
+            android:layout_width="wrap_content"
+            android:layout_marginRight="@dimen/common_15dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tv_userName"
+            android:layout_height="wrap_content"
+            android:text="2018-2-15"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/common_14sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl"
+        android:layout_toRightOf="@+id/iv_userLogo"
+        android:layout_marginLeft="@dimen/common_10dp"
+        android:layout_marginTop="@dimen/common_15dp"
+        android:layout_marginRight="@dimen/common_15dp"
+        android:layout_marginBottom="@dimen/common_10dp"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/common_14sp"
+            android:text="sad静安寺大街sad静安寺大街Hi好IE切诶诶开发商来房间sad静安寺大街Hi好IE切诶诶开发商来房间sad静安寺大街Hi好IE切诶诶开发商来房间sad静安寺大街Hi好IE切诶诶开发商来房间Hi好IE切诶诶开发商来房间"/>
+
+    </RelativeLayout>
+    <View
+        android:layout_below="@+id/rl"
+        android:layout_marginLeft="@dimen/common_15dp"
+        android:layout_marginRight="@dimen/common_15dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line"
+        android:background="@color/line_color"/>
+
+</RelativeLayout>

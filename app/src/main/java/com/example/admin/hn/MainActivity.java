@@ -197,8 +197,8 @@ public class MainActivity extends FragmentActivity {
                 } else {
                     transaction.show(mTabOne);
                 }
-                mIdTabOneImg.setImageResource(R.drawable.tab_icon_1_pressed);
-                mTvTabOne.setTextColor(getResources().getColor(R.color.yukon_gold));
+                mIdTabOneImg.setSelected(true);
+                mTvTabOne.setSelected(true);
                 break;
             case SWITCH_TO_TOW:
                 if (mTabTow == null) {
@@ -207,8 +207,8 @@ public class MainActivity extends FragmentActivity {
                 } else {
                     transaction.show(mTabTow);
                 }
-                mIdTabTowImg.setImageResource(R.drawable.tab_icon_5_pressed);
-                mTvTabTow.setTextColor(getResources().getColor(R.color.yukon_gold));
+                mIdTabTowImg.setSelected(true);
+                mTvTabTow.setSelected(true);
                 break;
             case SWITCH_TO_THREE:
                 if (mTabThree == null) {
@@ -217,8 +217,8 @@ public class MainActivity extends FragmentActivity {
                 } else {
                     transaction.show(mTabThree);
                 }
-                mIdTabThreeImg.setImageResource(R.drawable.tab_icon_3_pressed);
-                mTvTabThree.setTextColor(getResources().getColor(R.color.yukon_gold));
+                mIdTabThreeImg.setSelected(true);
+                mTvTabThree.setSelected(true);
                 break;
             case SWITCH_TO_FOUR:
                 if (mTabFour == null) {
@@ -227,8 +227,8 @@ public class MainActivity extends FragmentActivity {
                 } else {
                     transaction.show(mTabFour);
                 }
-                mIdTabFourImg.setImageResource(R.drawable.tab_icon_2_pressed);
-                mTvTabFour.setTextColor(getResources().getColor(R.color.yukon_gold));
+                mIdTabFourImg.setSelected(true);
+                mTvTabFour.setSelected(true);
                 break;
             case SWITCH_TO_FOUR2:
                 if (mTabFour2 == null) {
@@ -237,8 +237,8 @@ public class MainActivity extends FragmentActivity {
                 } else {
                     transaction.show(mTabFour2);
                 }
-                mIdTabFourImg2.setImageResource(R.drawable.tab_icon_2_pressed);
-                mTvTabFour2.setTextColor(getResources().getColor(R.color.yukon_gold));
+                mIdTabFourImg2.setSelected(true);
+                mTvTabFour2.setSelected(true);
                 break;
             case SWITCH_TO_FIVE:
                 if (mTabFive == null) {
@@ -247,8 +247,8 @@ public class MainActivity extends FragmentActivity {
                 } else {
                     transaction.show(mTabFive);
                 }
-                mIdTabFiveImg.setImageResource(R.drawable.tab_icon_4_pressed);
-                mTvTabFive.setTextColor(getResources().getColor(R.color.yukon_gold));
+                mIdTabFiveImg.setSelected(true);
+                mTvTabFive.setSelected(true);
                 break;
             default:
                 break;
@@ -283,20 +283,20 @@ public class MainActivity extends FragmentActivity {
      * 切换图片至暗色
      */
     private void resetImgs() {
-        mIdTabOneImg.setImageResource(R.drawable.tab_icon_1_normal);
-        mIdTabTowImg.setImageResource(R.drawable.tab_icon_5_normal);
-        mIdTabThreeImg.setImageResource(R.drawable.tab_icon_3_normal);
-        mIdTabFourImg.setImageResource(R.drawable.tab_icon_2_normal);
-        mIdTabFourImg2.setImageResource(R.drawable.tab_icon_2_normal);
-        mIdTabFiveImg.setImageResource(R.drawable.tab_icon_4_normal);
+        mIdTabOneImg.setSelected(false);
+        mIdTabTowImg.setSelected(false);
+        mIdTabThreeImg.setSelected(false);
+        mIdTabFourImg.setSelected(false);
+        mIdTabFourImg2.setSelected(false);
+        mIdTabFiveImg.setSelected(false);
 
         //设置文字颜色为暗色
-        mTvTabOne.setTextColor(getResources().getColor(R.color.mountain_mist));
-        mTvTabTow.setTextColor(getResources().getColor(R.color.mountain_mist));
-        mTvTabThree.setTextColor(getResources().getColor(R.color.mountain_mist));
-        mTvTabFour.setTextColor(getResources().getColor(R.color.mountain_mist));
-        mTvTabFour2.setTextColor(getResources().getColor(R.color.mountain_mist));
-        mTvTabFive.setTextColor(getResources().getColor(R.color.mountain_mist));
+        mTvTabOne.setSelected(false);
+        mTvTabTow.setSelected(false);
+        mTvTabThree.setSelected(false);
+        mTvTabFour.setSelected(false);
+        mTvTabFour2.setSelected(false);
+        mTvTabFive.setSelected(false);
     }
 
     /**

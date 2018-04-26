@@ -39,8 +39,6 @@ public class FragmentGoodsType extends BaseFragment {
     ImageView network_img;
     @Bind(R.id.noData_img)
     ImageView noData_img;
-    @Bind(R.id.top_type)
-    TextView top_type;
     @Bind(R.id.recycleView)
     RecyclerView recycleView;
 
@@ -66,8 +64,6 @@ public class FragmentGoodsType extends BaseFragment {
     public void initView() {
         Bundle bundle = getArguments();
         homeTypeInfo = (HomeTypeInfo) bundle.getSerializable("homeTypeInfo");
-        top_type.setVisibility(View.GONE);
-        top_type.setText(homeTypeInfo.getName());
         recycleView.setNestedScrollingEnabled(false);
         recycleView.setFocusable(false);
         recycleView.setLayoutManager(new LinearLayoutManager(activity));

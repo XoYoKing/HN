@@ -2,19 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/gray_background"
+    android:background="@drawable/layout_background"
     android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/relative_item"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/common_110dp"
+        android:layout_height="@dimen/common_120dp"
         android:background="@drawable/layout_background">
 
         <ImageView
             android:id="@+id/goods_icon"
-            android:layout_width="@dimen/common_110dp"
-            android:layout_height="@dimen/common_110dp"
+            android:layout_width="@dimen/common_100dp"
+            android:layout_height="@dimen/common_100dp"
             android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
             android:src="@drawable/tu"
@@ -27,11 +27,11 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="@dimen/common_10dp"
             android:layout_marginRight="@dimen/common_12dp"
-            android:layout_marginTop="@dimen/common_8dp"
+            android:layout_marginTop="@dimen/common_10dp"
             android:layout_toRightOf="@+id/goods_icon"
             android:maxLines="3"
             android:text="abc高级不沾abc高级不沾大容量汤锅abc高级不沾大容量汤锅c高级不沾大容量汤锅"
-            android:textColor="@color/line_color"
+            android:textColor="@color/text_color"
             android:textSize="@dimen/common_14sp" />
 
         <RelativeLayout
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/common_3dp"
                 android:text="2199条评价"
-                android:textColor="@color/line_color"
+                android:textColor="@color/text_color_hint"
                 android:textSize="@dimen/common_14sp" />
 
         </RelativeLayout>
@@ -69,6 +69,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_marginLeft="@dimen/common_110dp"
-        android:layout_height="@dimen/common_line"
+        android:layout_height="@dimen/line"
         android:background="@color/line_color"/>
 </LinearLayout>

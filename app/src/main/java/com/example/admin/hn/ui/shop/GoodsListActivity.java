@@ -4,18 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -26,7 +23,6 @@ import com.example.admin.hn.model.GoodsInfo;
 import com.example.admin.hn.model.ScreenTypeInfo;
 import com.example.admin.hn.ui.adapter.GoodsListAdapter;
 import com.example.admin.hn.ui.adapter.ScreenTypeAdapter;
-import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolAppUtils;
 import com.example.admin.hn.utils.ToolRefreshView;
 import com.example.admin.hn.utils.ToolString;
@@ -128,36 +124,42 @@ public class GoodsListActivity extends BaseActivity implements OnLoadmoreListene
         goods_list_all_linear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setSelectDefault();
+                goods_list_price_img.setSelected(false);
+                goods_list_most_img.setSelected(false);
                 goods_list_all_tv.setSelected(true);
             }
         });
+
+        goods_list_price_linear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setSelectDefault();
+                goods_list_most_img.setSelected(false);
+                goods_list_price_tv.setSelected(true);
+                setSelect(goods_list_price_img);
+            }
+        });
+        goods_list_most_linear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setSelectDefault();
+                goods_list_price_img.setSelected(false);
+                goods_list_most_tv.setSelected(true);
+                setSelect(goods_list_most_img);
+            }
+        });
+
         goods_list_screen_linear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                showPopWindow(v);
             }
         });
-        goods_list_price_linear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setSelect(goods_list_price_img);
-                goods_list_price_tv.setSelected(true);
-                goods_list_most_tv.setSelected(false);
-            }
-        });
-        goods_list_most_linear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setSelect(goods_list_most_img);
-                goods_list_most_tv.setSelected(true);
-                goods_list_price_tv.setSelected(false);
-            }
-        });
 
     }
     @OnClick({R.id.iv_back,R.id.noData_img,R.id.network_img,R.id.search_linear})
     public void onClick(View v) {
-        setSelectDefault();
         switch (v.getId()) {
             case R.id.iv_back:
                 finish();
@@ -175,23 +177,6 @@ public class GoodsListActivity extends BaseActivity implements OnLoadmoreListene
                 progressBar.setVisibility(View.VISIBLE);
                 network_img.setVisibility(View.GONE);
                 break;
-            case R.id.goods_list_all_linear:
-                clickHttp();
-                goods_list_all_tv.setSelected(true);
-                break;
-            case R.id.goods_list_most_linear:
-                clickHttp();
-                setSelect(goods_list_most_img);
-                goods_list_most_tv.setSelected(true);
-                break;
-            case R.id.goods_list_price_linear:
-                clickHttp();
-                setSelect(goods_list_price_img);
-                goods_list_price_tv.setSelected(true);
-                break;
-            case R.id.goods_list_screen_linear:
-                showPopWindow(v);
-                break;
         }
     }
 
@@ -202,8 +187,10 @@ public class GoodsListActivity extends BaseActivity implements OnLoadmoreListene
     private void setSelect(ImageView imageView) {
         if (imageView.isSelected()) {
             imageView.setSelected(false);
+            imageView.setImageResource(R.drawable.jiage_down);
         } else {
             imageView.setSelected(true);
+            imageView.setImageResource(R.drawable.jiage_up);
         }
     }
     private void setSelectDefault() {
@@ -211,6 +198,8 @@ public class GoodsListActivity extends BaseActivity implements OnLoadmoreListene
         goods_list_screen_tv.setSelected(false);
         goods_list_price_tv.setSelected(false);
         goods_list_most_tv.setSelected(false);
+        goods_list_price_img.setImageResource(R.drawable.jiage_normal);
+        goods_list_most_img.setImageResource(R.drawable.jiage_normal);
     }
 
 
@@ -293,12 +282,12 @@ public class GoodsListActivity extends BaseActivity implements OnLoadmoreListene
 
     @Override
     public void onLoadmore(RefreshLayout refreshlayout) {
-
+        refreshlayout.finishRefresh();
     }
 
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
-
+        refreshlayout.finishLoadmore();
     }
 
     @Override

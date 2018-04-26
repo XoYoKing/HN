@@ -108,7 +108,7 @@ public class SearchActivity extends BaseActivity {
         search_history.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
             @Override
             public boolean onTagClick(View view, int position, FlowLayout parent) {
-                search_edit_content.setText(history_data.get(position));
+                select(history_data.get(position));
                 return true;
             }
 
@@ -116,7 +116,7 @@ public class SearchActivity extends BaseActivity {
         search_hot.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
             @Override
             public boolean onTagClick(View view, int position, FlowLayout parent) {
-                search_edit_content.setText(hot_data.get(position));
+                select(hot_data.get(position));
                 return true;
             }
 
@@ -132,12 +132,16 @@ public class SearchActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_search:
-                Intent intent = new Intent();
-                intent.putExtra("search", search_edit_content.getText().toString());
-                setResult(100,intent);
-                finish();
+                select(search_edit_content.getText().toString());
                 break;
         }
+    }
+
+    private void select(String search) {
+        Intent intent = new Intent();
+        intent.putExtra("search",search);
+        setResult(100,intent);
+        finish();
     }
 
 }

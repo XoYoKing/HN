@@ -54,7 +54,7 @@ import butterknife.OnClick;
  */
 public class ReceiptFragment extends BaseFragment implements OnRefreshListener,OnLoadmoreListener {
 
-    private static final String TAG = "ReadMagazineFragment";
+    private static final String TAG = "ReceiptFragment";
     @Bind(R.id.listView)
     ListView listView;
 
