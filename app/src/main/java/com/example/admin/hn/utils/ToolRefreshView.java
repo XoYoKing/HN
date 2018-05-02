@@ -31,8 +31,8 @@ public class ToolRefreshView {
         refreshLayout.setOnRefreshListener(onRefreshListener);
     }
     public static void setRefreshLayout(Context context, RefreshLayout refreshLayout, OnRefreshListener onRefreshListener,OnLoadmoreListener onLoadmoreListener) {
-        refreshLayout.setDisableContentWhenLoading(true);
-        refreshLayout.setDisableContentWhenRefresh(true);
+//        refreshLayout.setDisableContentWhenLoading(true);
+//        refreshLayout.setDisableContentWhenRefresh(true);
         refreshLayout.setEnableScrollContentWhenLoaded(true);
         refreshLayout.setEnableAutoLoadmore(false);
         //设置 Header 为 Material风格

@@ -43,11 +43,7 @@ public class MaterialSelectAdapter extends CommonAdapter<OrderUseInfo> {
         viewHolder.setText(R.id.tv_date, item.publish_at + "");
         viewHolder.setText(R.id.tv_inventory, item.storage_amount + "");
         viewHolder.setText(R.id.tv_inventory, item.storage_amount + "");
-        if (item.storage_amount == 0) {
-            tv_buy_number.setText("0");
-        }else {
-            tv_buy_number.setText(item.quantity+"");
-        }
+        tv_buy_number.setText(item.quantity+"");
         viewHolder.setOnClickListener(R.id.tv_cancel, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,27 +118,15 @@ public class MaterialSelectAdapter extends CommonAdapter<OrderUseInfo> {
         public void afterTextChanged(Editable s) {
             if (ToolString.isEmpty(s.toString())) {
                 int number = Integer.parseInt(s.toString());
-                if (info.storage_amount!=0 && number > info.storage_amount) {//购买数量大于库存
-                    ToolAlert.showToast(mContext, "库存不足！");
-                    tv_buy_number.setText(info.storage_amount + "");
-                    info.quantity = info.storage_amount;
+                if (number == 0) {
+                    ToolAlert.showToast(mContext, "购买数量不能为0");
+                    info.quantity = 1;
+                    tv_buy_number.setText(info.quantity + "");
                     ToolViewUtils.setSelection(tv_buy_number);
                 }else {
-                    if (info.storage_amount == 0) {
-                        info.quantity = 0;
-                    }else {
-                        if (number == 0) {
-                            ToolAlert.showToast(mContext, "购买数量不能为0");
-                            info.quantity = 1;
-                            tv_buy_number.setText(info.quantity + "");
-                            ToolViewUtils.setSelection(tv_buy_number);
-                        }else {
-                            info.quantity = number;
-                        }
-                    }
+                    info.quantity = number;
                 }
             }
         }
     }
-
 }

@@ -35,17 +35,12 @@
                 android:orientation="vertical" />
         </ScrollView>
 
-        <!--<View-->
-            <!--android:layout_width="@dimen/line"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:background="@color/line_color"-->
-            <!--android:visibility="gone"></View>-->
-
         <com.example.admin.hn.widget.CusViewPager
             android:id="@+id/goods_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/common_10dp"
+            android:layout_marginRight="@dimen/common_10dp"
             android:layout_weight="1" />
     </LinearLayout>
 

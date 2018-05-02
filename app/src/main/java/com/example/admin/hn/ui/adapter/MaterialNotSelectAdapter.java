@@ -51,11 +51,7 @@ public class MaterialNotSelectAdapter extends CommonAdapter<OrderNotUseInfo>{
         viewHolder.setText(R.id.tv_english_name, info.eng_name + "");
         viewHolder.setText(R.id.tv_data_number, info.code + "");
         img_select.setSelected(info.isSelect);
-        if (info.storage_amount == 0) {//库存为0的时候 购买数量设置为0
-            tv_buy_number.setText("0");
-        } else {
-            tv_buy_number.setText(info.quantity+"");
-        }
+        tv_buy_number.setText(info.quantity+"");
         ToolViewUtils.setSelection(tv_buy_number);
         viewHolder.itemView.setOnClickListener(new MyOnClickListener(img_select, tv_buy_number, info));
         tv_buy_number.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -81,7 +77,6 @@ public class MaterialNotSelectAdapter extends CommonAdapter<OrderNotUseInfo>{
             number = 1;
         }
         item.quantity = number;
-        Logger.i("item.quantity", item.quantity + "");
         selectList.add(item);
     }
 
@@ -107,24 +102,25 @@ public class MaterialNotSelectAdapter extends CommonAdapter<OrderNotUseInfo>{
         public void afterTextChanged(Editable s) {
             if (ToolString.isEmpty(s.toString())) {
                 int number = Integer.parseInt(s.toString());
-                if (info.storage_amount!=0 && number > info.storage_amount) {//购买数量大于库存
-                    ToolAlert.showToast(mContext, "库存不足！", false);
-                    tv_buy_number.setText(info.storage_amount + "");
-                    info.quantity = info.storage_amount;
+//                if (info.storage_amount!=0 && number > info.storage_amount) {//购买数量大于库存
+//                    ToolAlert.showToast(mContext, "库存不足！", false);
+//                    tv_buy_number.setText(info.storage_amount + "");
+//                    info.quantity = info.storage_amount;
+//                    ToolViewUtils.setSelection(tv_buy_number);
+//                }else {
+//                    if (info.storage_amount == 0) {
+//                        info.quantity = 0;
+//                    }else {
+//
+//                    }
+//                }
+                if (number == 0) {
+                    ToolAlert.showToast(mContext, "购买数量不能为0");
+                    info.quantity = 1;
+                    tv_buy_number.setText(info.quantity + "");
                     ToolViewUtils.setSelection(tv_buy_number);
                 }else {
-                    if (info.storage_amount == 0) {
-                        info.quantity = 0;
-                    }else {
-                        if (number == 0) {
-                            ToolAlert.showToast(mContext, "购买数量不能为0");
-                            info.quantity = 1;
-                            tv_buy_number.setText(info.quantity + "");
-                            ToolViewUtils.setSelection(tv_buy_number);
-                        }else {
-                            info.quantity = number;
-                        }
-                    }
+                    info.quantity = number;
                 }
             }
         }
@@ -142,10 +138,6 @@ public class MaterialNotSelectAdapter extends CommonAdapter<OrderNotUseInfo>{
 
         @Override
         public void onClick(View v) {
-            if (info.storage_amount == 0) {
-                ToolAlert.showToast(mContext,"库存不足");
-                return;
-            }
             if (info.isSelect) {
                 info.isSelect = false;
                 selectList.remove(info);

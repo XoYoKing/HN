@@ -187,7 +187,7 @@
                         android:textColor="@color/red"
                         android:gravity="center"
                         android:inputType="number"
-                        android:maxLength="6"
+                        android:maxLength="7"
                         android:textColorHint="@color/text_color_hint"
                         android:background="@drawable/shape_rect_gray_radius_5"
                         android:text="1"

@@ -41,6 +41,8 @@ public class ReturnDetailActivity extends BaseActivity {
     TextView textTitleBack;
     @Bind(R.id.text_title)
     TextView textTitle;
+    @Bind(R.id.text_tile_right)
+    TextView text_tile_right;
     @Bind(R.id.img)
     ImageView img;
     private String[] permissions = {Manifest.permission.CAMERA};
@@ -67,6 +69,7 @@ public class ReturnDetailActivity extends BaseActivity {
         id = intent.getIntExtra("id", 0);
         title = intent.getStringExtra("title");
         textTitle.setText("回执详情");
+        text_tile_right.setText("上传");
         textTitleBack.setBackgroundResource(R.drawable.btn_back);
     }
     /**
@@ -79,7 +82,7 @@ public class ReturnDetailActivity extends BaseActivity {
         context.startActivity(intent);
     }
 
-    @OnClick({R.id.text_title_back,R.id.bt,R.id.img})
+    @OnClick({R.id.text_title_back,R.id.bt,R.id.img,R.id.text_tile_right})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.text_title_back:
@@ -88,6 +91,9 @@ public class ReturnDetailActivity extends BaseActivity {
             case R.id.bt:
                 isCrop = false;
                 requestPermissions(permissions, mListener);
+                break;
+            case R.id.text_tile_right:
+                ToolAlert.showToast(context,"上传成功");
                 break;
             case R.id.img:
                 //编辑图片

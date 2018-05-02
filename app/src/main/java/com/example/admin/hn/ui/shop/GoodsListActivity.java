@@ -120,7 +120,7 @@ public class GoodsListActivity extends BaseActivity implements OnLoadmoreListene
 
     @Override
     public void initData() {
-
+        goods_list_all_tv.setSelected(true);//默认选中全部
         goods_list_all_linear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -282,12 +282,13 @@ public class GoodsListActivity extends BaseActivity implements OnLoadmoreListene
 
     @Override
     public void onLoadmore(RefreshLayout refreshlayout) {
-        refreshlayout.finishRefresh();
+
+        refreshlayout.finishLoadmore();
     }
 
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
-        refreshlayout.finishLoadmore();
+        refreshlayout.finishRefresh();
     }
 
     @Override
