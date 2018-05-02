@@ -36,7 +36,7 @@
             android:layout_alignParentRight="true"
             android:background="@color/line_color"
             android:contentDescription="@null"
-            android:visibility="visible" />
+            android:visibility="gone" />
     </RelativeLayout>
 
 

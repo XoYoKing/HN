@@ -119,6 +119,46 @@ public class RequestManager {
 
 
     /**
+     * 返回String 带进度条
+     *
+     * @param url           接口
+     * @param tag           上下文
+     * @param params        post需要传的参数
+     * @param progressTitle 进度条文字  可以不传
+     * @param listener      回调
+     */
+    public static void get(String url, Object tag, Map params,
+                            String progressTitle, RequestListener listener) {
+        RequestManager.url = url;
+        if (tag != null) {
+            context = (Context) tag;
+        }
+        final ResponseListener responseListener;
+        if (progressTitle != null) {
+            LoadingFragment dialog = LoadingFragment.showLoading(((FragmentActivity) tag), progressTitle);
+            responseListener = responseListener(listener, true, dialog);
+        } else {
+            responseListener = responseListener(listener, false, null);
+        }
+        OkHttpUtils
+                .get()//
+                .url(url)//
+                .params(params)//
+                .build()//
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        responseListener.onErrorResponse(e);
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        responseListener.onResponse(response);
+                    }
+
+                });
+    }
+    /**
      * 返回String 不带进度条（参数以json形式传递）
      *
      * @param url      接口
@@ -241,6 +281,7 @@ public class RequestManager {
                 });
     }
 
+
     private static Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
@@ -258,6 +299,8 @@ public class RequestManager {
             return false;
         }
     });
+
+
 
     /**
      * 返回String 不带进度条（参数以Form表单形式传递）

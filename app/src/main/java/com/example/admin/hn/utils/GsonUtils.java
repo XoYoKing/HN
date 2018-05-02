@@ -40,6 +40,28 @@ public class GsonUtils {
     }
 
     /**
+     * json字符串解析为对象
+     *
+     * @param jsonResult
+     * @param clz
+     * @param <T>
+     *
+     * @return
+     */
+    public static <T> T jsonToBean2(String jsonResult, Class<T> clz) {
+        try {
+            Gson gson = new Gson();
+            JSONObject object = new JSONObject(jsonResult);
+            JSONObject data = object.getJSONObject("data");
+            T t = gson.fromJson(data.toString(), clz);
+            return t;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * json字符串解析为list集合
      *
      * @param jsonResult
@@ -53,6 +75,27 @@ public class GsonUtils {
             Gson gson = new Gson();
             JSONObject object = new JSONObject(jsonResult);
             JSONArray jsonArray = object.getJSONArray("Documents");
+            list = gson.fromJson(jsonArray.toString(), typeToken.getType());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    /**
+     * json字符串解析为list集合
+     *
+     * @param jsonResult
+     * @param typeToken
+     *
+     * @return
+     */
+    public static List<?> jsonToList(String jsonResult,TypeToken typeToken,String key) {
+        List<?> list = null;
+        try {
+            Gson gson = new Gson();
+            JSONObject object = new JSONObject(jsonResult);
+            JSONArray jsonArray = object.getJSONArray(key);
             list = gson.fromJson(jsonArray.toString(), typeToken.getType());
         } catch (Exception e) {
             e.printStackTrace();
@@ -129,13 +172,31 @@ public class GsonUtils {
      */
     public static boolean isSuccess(String json) {
         try {
+            //船舶解析
             JSONObject jsonObject = new JSONObject(json);
             String status = jsonObject.optString("status");
             return "success".equals(status);
         } catch (Exception e) {
+
         }
         return false;
     }
+    /**
+     * 判断网络请求结果
+     *
+     * @return 成功=true  失敗=false
+     */
+    public static boolean isShopSuccess(String json) {
+        try {
+            //商城解析
+            JSONObject jsonObject = new JSONObject(json);
+            return jsonObject.optBoolean("success");
+        } catch (JSONException e1) {
+            e1.printStackTrace();
+        }
+        return false;
+    }
+
 
     /**
      * 获取网络请求的错误信息

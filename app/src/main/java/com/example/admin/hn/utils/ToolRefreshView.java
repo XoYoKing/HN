@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.example.admin.hn.base.HNApplication;
+import com.example.admin.hn.http.Constant;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
@@ -152,4 +154,18 @@ public class ToolRefreshView {
         }
     }
 
+    /**
+     * 判断是否加载更多
+     * @param currPage
+     * @param totalPage
+     * @return
+     */
+    public static boolean isLoadMore(int currPage,int totalPage){
+        if(currPage >totalPage){
+            //当前页数大于总页数
+            ToolAlert.showToast(HNApplication.mApp.context, Constant.LOADED);
+            return false;
+        }
+        return true;
+    }
 }

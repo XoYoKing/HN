@@ -51,7 +51,8 @@ public class IRequest {
      */
     private static void setParams(Map params) {
 //        params.put("timestamp", AbDateUtil.getCurrentDate(AbDateUtil.dateFormatYMDHMS));
-        params.put("userid", HNApplication.mApp.getUserId());//用户ID 默认传递
+        params.put("userid", HNApplication.mApp.getUserId());//船舶用户ID 默认传递
+        params.put("memberId", HNApplication.mApp.getUserId());//商城用户ID 默认传递
         Logger.i("请求参数", params.toString());
     }
 
@@ -116,6 +117,22 @@ public class IRequest {
             setParams(params);
         }
         RequestManager.postJson(url, context, params, progressTitle, l);
+    }
+
+    /**
+     *  返回String 带进度条
+     * （参数以json形式传递）
+     *
+     * @param url
+     * @param params
+     * @param l
+     */
+    public void get(String url, Map params, String progressTitle,
+                         RequestListener l) {
+        if (params != null) {
+            setParams(params);
+        }
+        RequestManager.get(url, context, params, progressTitle, l);
     }
 
     /**

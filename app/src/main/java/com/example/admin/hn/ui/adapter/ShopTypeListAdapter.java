@@ -13,26 +13,31 @@ import android.widget.TextView;
 import com.example.admin.hn.R;
 import com.example.admin.hn.model.HomeInfo;
 import com.example.admin.hn.model.HomeItem;
+import com.example.admin.hn.model.HomeTypeInfo;
 import com.example.admin.hn.ui.article.ArticleDetailsActivity;
 import com.example.admin.hn.ui.shop.GoodsDetailActivity;
 import com.example.admin.hn.ui.shop.GoodsListActivity;
 import com.example.admin.hn.ui.shop.ShopTypeListActivity;
+import com.example.admin.hn.utils.GsonUtils;
+import com.example.admin.hn.utils.ToolString;
+import com.example.admin.hn.utils.ToolViewUtils;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
 
 /**
- * Created by Administrator on 2017/12/27 0027.
+ * 商品二级分类
  */
 
 public class ShopTypeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public static final int TYPE_TYPE1 = 1;//今日推荐
-    public static final int TYPE_TYPE2 = 2;//按银行卡选择
-    public static final int TYPE_TYPE3 = 3;//按银行卡选择
+    public static final int TYPE_TYPE1 = 1;//
+    public static final int TYPE_TYPE2 = 2;//
+    public static final int TYPE_TYPE3 = 3;//
     private Context mContext;
-    private List<HomeInfo> list;
+    private List<HomeTypeInfo.Children> list;
 
-    public ShopTypeListAdapter(Context mContext, List<HomeInfo> list) {
+    public ShopTypeListAdapter(Context mContext, List<HomeTypeInfo.Children> list) {
         this.mContext = mContext;
         this.list = list;
     }
@@ -50,25 +55,23 @@ public class ShopTypeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     private void bindType(HolderType holder, int position) {
-        HomeInfo info = list.get(position);
-        int itemViewType = info.type;
-        holder.mTvLabel.setText(info.name+"");
-        if (itemViewType == TYPE_TYPE1) {
-//            holder.item_recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-            holder.item_recyclerView.setLayoutManager(new GridLayoutManager(mContext, 3));
-        } else if (itemViewType == TYPE_TYPE2) {
-            holder.item_recyclerView.setLayoutManager(new GridLayoutManager(mContext, 3));
-        } else if (itemViewType == TYPE_TYPE3) {
-            holder.item_recyclerView.setLayoutManager(new GridLayoutManager(mContext, 3));
+        HomeTypeInfo.Children info = list.get(position);
+        holder.mTvLabel.setText(info.sitMenu.menuNames+"");
+        holder.item_recyclerView.setLayoutManager(new GridLayoutManager(mContext, 3));
+        TypeToken typeToken = new TypeToken<List<HomeItem>>() {
+        };
+        List<HomeItem> data = (List<HomeItem>) GsonUtils.jsonToList(info.sitMenu.menuData, typeToken, "data");
+        if (ToolString.isEmptyList(data)) {
+            ItemRecycleAdapter itemRecycleAdapter = new ItemRecycleAdapter(TYPE_TYPE1, data);
+            holder.item_recyclerView.setAdapter(itemRecycleAdapter);
+            holder.tv_item_more.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ShopTypeListActivity.startActivity(mContext);
+                }
+            });
         }
-        ItemRecycleAdapter itemRecycleAdapter = new ItemRecycleAdapter(itemViewType, info.data);
-        holder.item_recyclerView.setAdapter(itemRecycleAdapter);
-        holder.tv_item_more.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ShopTypeListActivity.startActivity(mContext);
-            }
-        });
+
     }
 
     @Override
@@ -117,64 +120,26 @@ public class ShopTypeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         }
 
-        /**
-         * 今日推荐
-         */
         class HolderType1 extends RecyclerView.ViewHolder {
 
             public TextView tv_name;
+            public ImageView type_icon;
             View itemView;
 
             HolderType1(View itemView) {
                 super(itemView);
                 this.itemView = itemView;
                 tv_name= (TextView) itemView.findViewById(R.id.type_name);
+                type_icon= (ImageView) itemView.findViewById(R.id.type_icon);
             }
         }
 
-        /**
-         * 按银行卡选择
-         */
         class HolderType2 extends RecyclerView.ViewHolder {
-            ImageView ivImg;
-            TextView tvName;
-            TextView tvDes;
             View itemView;
 
             HolderType2(View itemView) {
                 super(itemView);
                 this.itemView = itemView;
-            }
-        }
-
-        /**
-         * 按用途选择
-         */
-        class HolderType3 extends RecyclerView.ViewHolder {
-            ImageView ivImg;
-            TextView tvName;
-            View itemView;
-
-            HolderType3(View itemView) {
-                super(itemView);
-                this.itemView = itemView;
-
-            }
-        }
-
-        /**
-         * 按主题选择
-         */
-        class HolderType4 extends RecyclerView.ViewHolder {
-            ImageView ivImg;
-            TextView tvName;
-            TextView tvDes;
-            View itemView;
-
-            HolderType4(View itemView) {
-                super(itemView);
-                this.itemView = itemView;
-
             }
         }
 
@@ -189,15 +154,14 @@ public class ShopTypeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         private void bindType1(HolderType1 holder, int position) {
-            HomeItem info = (HomeItem) data.get(position);
-//            holder.tv_name.setText(info.goodsName);
+            final HomeItem info = (HomeItem) data.get(position);
+            holder.tv_name.setText(info.name + "");
+//            ToolViewUtils.glideImageList(info.imageurl,holder.type_icon,R.drawable.load_fail);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (true) {
-                        GoodsListActivity.startActivity(mContext);
-                    }else {
-                        GoodsDetailActivity.startActivity(mContext);
+                    if (info.operate==5) {
+                        GoodsListActivity.startActivity(mContext,info);
                     }
                 }
             });
@@ -207,7 +171,7 @@ public class ShopTypeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    GoodsListActivity.startActivity(mContext);
+
                 }
             });
         }

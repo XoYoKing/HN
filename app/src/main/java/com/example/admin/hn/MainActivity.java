@@ -20,35 +20,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.HNApplication;
-import com.example.admin.hn.http.OkHttpUtil;
-import com.example.admin.hn.model.ServerResponse;
 import com.example.admin.hn.model.ShipInfo;
-import com.example.admin.hn.ui.account.ShipActivity;
 import com.example.admin.hn.ui.account.ShipSelectActivity;
 import com.example.admin.hn.ui.fragment.FourFragment;
 import com.example.admin.hn.ui.fragment.FourFragment2;
 import com.example.admin.hn.ui.fragment.MapFragment;
 import com.example.admin.hn.ui.fragment.MoreFragment;
-import com.example.admin.hn.ui.fragment.OneFragment;
 import com.example.admin.hn.ui.fragment.ThreeFragment;
-import com.example.admin.hn.ui.fragment.TowFragment;
 import com.example.admin.hn.ui.fragment.TypeFragment;
-import com.example.admin.hn.utils.ExampleUtil;
-import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.StateBarUtil;
 import com.example.admin.hn.utils.ToolAlert;
-import com.orhanobut.logger.Logger;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
-import com.squareup.okhttp.Request;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 

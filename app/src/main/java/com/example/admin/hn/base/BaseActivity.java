@@ -42,7 +42,9 @@ public class BaseActivity extends FragmentActivity implements Initialable{
     public ProgressDialog progersssDialog;
     protected IRequest http;
     protected Map params;
+    protected boolean isRefresh = true;
     private PermissionsListener mListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

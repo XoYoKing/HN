@@ -23,13 +23,21 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.admin.hn.R;
+import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseFragment;
 import com.example.admin.hn.model.HomeTypeInfo;
+import com.example.admin.hn.model.OrderUseInfo;
 import com.example.admin.hn.ui.adapter.GroupAdapter;
 import com.example.admin.hn.ui.fragment.shop.FragmentGoodsType;
 import com.example.admin.hn.ui.shop.OrderManagerActivity;
 import com.example.admin.hn.ui.shop.ShopCartActivity;
+import com.example.admin.hn.utils.GsonUtils;
+import com.example.admin.hn.utils.ToolAlert;
+import com.example.admin.hn.utils.ToolRefreshView;
+import com.example.admin.hn.utils.ToolString;
+import com.example.admin.hn.volley.RequestListener;
 import com.google.gson.reflect.TypeToken;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,14 +72,14 @@ public class TypeFragment extends BaseFragment {
     private View view;
     private List<HomeTypeInfo> toolsList = new ArrayList<>();
     private TextView toolsTextViews[];
-    private ImageView toolsImgViews[];
+//    private ImageView toolsImgViews[];
     private RelativeLayout toolsRelative[];
     private View views[];
     private int scrollViewWidth = 0, scrollViewMiddle = 0;
     private int currentItem = 0;
     private ShopAdapter shopAdapter;
     private LayoutInflater inflater;
-
+    private String url = Api.SHOP_BASE_URL + Api.GET_SHOP_TYPE;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -96,8 +104,9 @@ public class TypeFragment extends BaseFragment {
 
     @Override
     public void initView() {
-        shopAdapter = new ShopAdapter(getChildFragmentManager());
         inflater = LayoutInflater.from(activity);
+
+        shopAdapter = new ShopAdapter(getChildFragmentManager());
         goods_pager = (ViewPager) view.findViewById(R.id.goods_pager);
         goods_pager.setAdapter(shopAdapter);
         goods_pager.setOnPageChangeListener(onPageChangeListener);
@@ -133,13 +142,11 @@ public class TypeFragment extends BaseFragment {
         }
         if (list != null) {
             toolsList.addAll(list);
-        } else {
-            initHomeData();
         }
         shopAdapter.notifyDataSetChanged();
         LinearLayout toolsLayout = (LinearLayout) view.findViewById(R.id.tools);
         toolsTextViews = new TextView[toolsList.size()];
-        toolsImgViews = new ImageView[toolsList.size()];
+//        toolsImgViews = new ImageView[toolsList.size()];
         toolsRelative = new RelativeLayout[toolsList.size()];
         views = new View[toolsList.size()];
 
@@ -150,34 +157,16 @@ public class TypeFragment extends BaseFragment {
             TextView textView = (TextView) view.findViewById(R.id.text);
             ImageView line_right = (ImageView) view.findViewById(R.id.line_right);
             RelativeLayout type_item_bg = (RelativeLayout) view.findViewById(R.id.type_item_bg);
-            textView.setText(toolsList.get(i).getName() + "");
+            textView.setText(toolsList.get(i).sitMenu.menuNames + "");
             toolsLayout.addView(view);
             toolsTextViews[i] = textView;
             views[i] = view;
             toolsRelative[i] = type_item_bg;
-            toolsImgViews[i] = line_right;
+//            toolsImgViews[i] = line_right;
         }
         changeTextColor(0);
     }
 
-    private void initHomeData() {
-        for (int i = 0; i < 5; i++) {
-            HomeTypeInfo homeTypeInfo = new HomeTypeInfo();
-            if (i == 0) {
-                homeTypeInfo.setName("今日推荐");
-            } else if (i == 1) {
-                homeTypeInfo.setName("纸版图书");
-            } else if (i == 2) {
-                homeTypeInfo.setName("电子版图书");
-            } else if (i == 3) {
-                homeTypeInfo.setName("丽佳通讯");
-            } else if (i == 4) {
-                homeTypeInfo.setName("新书速递");
-            }
-            homeTypeInfo.setId(i);
-            toolsList.add(homeTypeInfo);
-        }
-    }
 
     private View.OnClickListener toolsItemListener = new View.OnClickListener() {
         @Override
@@ -249,16 +238,16 @@ public class TypeFragment extends BaseFragment {
         for (int i = 0; i < toolsTextViews.length; i++) {
             if (i != id) {
                 toolsTextViews[i].setTextColor(0xff000000);
-                toolsImgViews[i].setVisibility(View.VISIBLE);
+//                toolsImgViews[i].setVisibility(View.VISIBLE);
                 toolsRelative[i].setSelected(false);
             }
         }
         if (toolsTextViews.length > 0) {
             toolsTextViews[id].setTextColor(0xffFF4081);
         }
-        if (toolsImgViews.length > 0) {
-            toolsImgViews[id].setVisibility(View.GONE);
-        }
+//        if (toolsImgViews.length > 0) {
+//            toolsImgViews[id].setVisibility(View.GONE);
+//        }
         if (toolsRelative.length > 0) {
             toolsRelative[id].setSelected(true);
         }
@@ -311,7 +300,36 @@ public class TypeFragment extends BaseFragment {
 
     private void sendHttp() {
         tools_linear.setVisibility(View.VISIBLE);
-        showToolsView(null);
+        http.get(url, params, progressTitle, new RequestListener() {
+            @Override
+            public void requestSuccess(String json) {
+                Logger.e("商城分类", json);
+                if (GsonUtils.isShopSuccess(json)) {
+                    progressBar.setVisibility(View.GONE);
+                    scrollView.setBackgroundResource(R.drawable.layout_background);
+                    TypeToken typeToken = new TypeToken<List<HomeTypeInfo>>() {
+                    };
+                    List<HomeTypeInfo> data = (List<HomeTypeInfo>) GsonUtils.jsonToList(json, typeToken, "data");
+                    if (ToolString.isEmptyList(data)) {
+                        showToolsView(data);
+                    }
+                }else {
+                    network_img.setVisibility(View.GONE);
+                    noData_img.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void requestError(String message) {
+                ToolAlert.showToast(activity, message);
+                network_img.setVisibility(View.VISIBLE);
+                noData_img.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+
+
     }
     private PopupWindow mPopupWindow;
     private View contentView;
