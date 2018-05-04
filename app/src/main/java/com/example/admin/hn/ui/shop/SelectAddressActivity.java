@@ -142,10 +142,10 @@ public class SelectAddressActivity extends BaseActivity {
                 if (GsonUtils.isShopSuccess(json)) {
                     TypeToken typeToken = new TypeToken<List<AddressInfo>>() {};
                     List<AddressInfo> data = (List<AddressInfo>) GsonUtils.jsonToList2(json, typeToken, "content");
+                    if (list.size() > 0) {
+                        list.clear();
+                    }
                     if (ToolString.isEmptyList(data)) {
-                        if (list.size() > 0) {
-                            list.clear();
-                        }
                         list.addAll(data);
                     }
                 }else {

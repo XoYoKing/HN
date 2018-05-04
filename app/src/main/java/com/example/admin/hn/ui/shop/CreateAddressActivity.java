@@ -29,6 +29,8 @@ import com.example.admin.hn.volley.RequestListener;
 import com.orhanobut.logger.Logger;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -50,6 +52,8 @@ public class CreateAddressActivity extends BaseActivity {
     private LocalBroadcastManager localBroadcastManager;
     private BroadcastReceiver br;
     private String url = Api.SHOP_BASE_URL + Api.GET_CREATE_ADDRESS;
+    private String url_del = Api.SHOP_BASE_URL + Api.GET_DELETE_ADDRESS;
+
     private AddressInfo info;
     private CityInfo provinceInfo;
     private CityInfo cityInfo;
@@ -96,7 +100,6 @@ public class CreateAddressActivity extends BaseActivity {
     public void initTitleBar() {
         textTitle.setText("添加新地址");
         textTitleBack.setBackgroundResource(R.drawable.btn_back);
-        text_tile_right.setText("删除");
     }
 
     @Override
@@ -115,6 +118,7 @@ public class CreateAddressActivity extends BaseActivity {
     public void initData() {
         info = (AddressInfo) getIntent().getSerializableExtra("info");
         if (info != null) {
+            text_tile_right.setText("删除");
             textTitle.setText("编辑收货地址");
             if (info.isDefaul==0) {//不是默认地址
                 rl_default_address.setVisibility(View.VISIBLE);
@@ -141,7 +145,7 @@ public class CreateAddressActivity extends BaseActivity {
                 ToolAlert.dialog(context, "", "是否删除此地址", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ToolAlert.showToast(context, "删除成功");
+                        deleteAddress();
                         dialog.dismiss();
                     }
                 }, new DialogInterface.OnClickListener() {
@@ -159,6 +163,28 @@ public class CreateAddressActivity extends BaseActivity {
                 saveAddress();
                 break;
         }
+    }
+
+    private void deleteAddress() {
+        Map map = new HashMap();
+        map.put("id", info.id);
+        http.post(url_del, map, "正在删除...", new RequestListener() {
+            @Override
+            public void requestSuccess(String json) {
+                Logger.e("删除地址", json);
+                if (GsonUtils.isShopSuccess(json)) {
+                    ToolAlert.showToast(context, "删除成功");
+                    finish();
+                } else {
+                    ToolAlert.showToast(context, GsonUtils.getError(json));
+                }
+            }
+
+            @Override
+            public void requestError(String message) {
+                ToolAlert.showToast(context, message);
+            }
+        });
     }
 
     private void getTextValue() {
@@ -200,7 +226,7 @@ public class CreateAddressActivity extends BaseActivity {
         params.put("areaId",addressId);
         params.put("areaName", region);
         params.put("phone", phone);
-        params.put("isDefaul", cb_default_address.isChecked() ? "1" : "0");
+        params.put("isDefaul", cb_default_address.isChecked() ? "0" : "1");
         http.post(url, params, "正在保存...", new RequestListener() {
             @Override
             public void requestSuccess(String json) {

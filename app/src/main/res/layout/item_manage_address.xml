@@ -7,16 +7,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginTop="@dimen/common_5dp"
         android:background="@drawable/layout_background"
         android:orientation="vertical">
+        <include layout="@layout/include_view_line"/>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/common_1dp"
-            android:background="@color/line_color"></View>
-
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/people"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,26 +23,26 @@
                 android:id="@+id/goods_receipt_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
                 android:layout_marginLeft="@dimen/common_12dp"
                 android:layout_toLeftOf="@+id/goods_receipt_phone"
                 android:singleLine="true"
-                android:text="收货人：张三"
+                android:text="张三"
+                android:textStyle="bold"
                 android:textColor="@color/black"
-                android:textSize="@dimen/common_14sp" />
+                android:textSize="@dimen/common_16sp" />
 
             <TextView
                 android:id="@+id/goods_receipt_phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/common_40dp"
                 android:layout_marginRight="@dimen/common_25dp"
                 android:singleLine="true"
                 android:text="1812255252"
+                android:textStyle="bold"
                 android:textColor="@color/black"
-                android:textSize="@dimen/common_14sp" />
-        </RelativeLayout>
+                android:textSize="@dimen/common_16sp" />
+        </LinearLayout>
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -56,32 +51,20 @@
             android:layout_marginBottom="@dimen/common_12dp"
             android:layout_marginTop="@dimen/common_10dp">
 
-            <TextView
-                android:id="@+id/text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="@dimen/common_12dp"
-                android:text="收货地址："
-                android:textColor="@color/black"
-                android:textSize="@dimen/common_12sp" />
 
             <TextView
+                android:layout_marginLeft="@dimen/common_12dp"
                 android:id="@+id/tv_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/common_20dp"
-                android:layout_toRightOf="@+id/text"
                 android:text="上海市开机时间哈哈哈大客上海市开机时间哈哈哈大客"
                 android:textColor="@color/black"
                 android:textSize="@dimen/common_12sp" />
 
         </RelativeLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/common_1dp"
-            android:background="@color/line_color"></View>
+        <include layout="@layout/include_view_line"/>
 
         <RelativeLayout
             android:id="@+id/relative_default"
@@ -142,6 +125,9 @@
             </LinearLayout>
         </RelativeLayout>
 
+        <include layout="@layout/include_view_line"/>
+
 
     </LinearLayout>
+
 </LinearLayout>

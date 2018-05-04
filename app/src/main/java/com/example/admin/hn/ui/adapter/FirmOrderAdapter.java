@@ -5,9 +5,9 @@ import android.widget.ImageView;
 
 import com.example.admin.hn.R;
 import com.example.admin.hn.model.ShoppingCartInfo;
-import com.example.admin.hn.utils.ToolViewUtils;
-import com.zhy.adapter.abslistview.CommonAdapter;
-import com.zhy.adapter.abslistview.ViewHolder;
+import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
+
 
 import java.util.List;
 

@@ -1,74 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <RelativeLayout
-        android:id="@+id/relative_item"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/common_100dp"
-        android:layout_marginTop="@dimen/common_5dp"
         android:background="@drawable/layout_background"
-        android:paddingBottom="@dimen/common_10dp"
-        android:paddingTop="@dimen/common_10dp">
-
-        <ImageView
-            android:id="@+id/goods_icon"
-            android:layout_width="@dimen/common_80dp"
-            android:layout_height="@dimen/common_80dp"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/common_25dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/goods" />
-
+        android:layout_height="@dimen/common_40dp">
         <TextView
-            android:id="@+id/goods_name"
+            android:id="@+id/tv_title"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/common_15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="@dimen/common_20dp"
-            android:layout_marginRight="@dimen/common_40dp"
-            android:layout_toRightOf="@+id/goods_icon"
-            android:text="abc高级不沾abc高级不沾大容量汤锅abc高级不沾大容量汤"
+            android:singleLine="true"
+            android:text="自营商品"
             android:textColor="@color/black"
-            android:textSize="@dimen/common_14sp" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
+            android:textSize="@dimen/common_15sp" />
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/common_15dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="@dimen/common_20dp"
-            android:layout_marginTop="@dimen/common_15dp"
-            android:layout_toRightOf="@+id/goods_icon"
-            android:visibility="visible">
+            android:layout_alignParentRight="true"
+            android:singleLine="true"
+            android:visibility="gone"
+            android:text="待付款"
+            android:layout_marginRight="@dimen/common_15dp"
+            android:textColor="@color/red"
+            android:textSize="@dimen/common_15sp" />
+    </RelativeLayout>
 
-            <LinearLayout
+    <LinearLayout
+        android:id="@+id/goods"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/goods_img"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="@dimen/common_15dp"
+            android:layout_marginTop="@dimen/common_10dp"
+            android:layout_marginBottom="@dimen/common_10dp"
+            android:src="@drawable/center_order_manager_img" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/common_10dp"
+            android:layout_marginRight="@dimen/common_12dp"
+            android:layout_marginTop="@dimen/common_10dp"
+            android:layout_marginBottom="@dimen/common_10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/goods_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:orientation="horizontal">
+                android:singleLine="true"
+                android:text="宝珠宝珠宝珠宝珠宝珠宝珠宝珠宝珠宝"
+                android:textColor="@color/black"
+                android:textSize="@dimen/common_14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/common_10dp"
+                android:text="专柜联保售后 任意门店清洗"
+                android:textColor="@color/black"
+                android:textSize="@dimen/common_12sp" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_marginTop="@dimen/common_40dp"
+                android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/goods_price"
+                    android:id="@+id/single_goods_money"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="￥99.99"
+                    android:layout_alignParentLeft="true"
+                    android:text="￥99.00"
                     android:textColor="@color/red"
-                    android:textSize="@dimen/common_14sp" />
+                    android:textSize="@dimen/common_12sp" />
 
                 <TextView
-                    android:id="@+id/goods_number"
+                    android:id="@+id/goods_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/common_30dp"
-                    android:layout_marginRight="@dimen/common_12dp"
-                    android:text="X 1"
+                    android:layout_alignParentRight="true"
+                    android:text="x 2"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/common_14sp" />
-            </LinearLayout>
+                    android:textSize="@dimen/common_12sp" />
 
-        </RelativeLayout>
+            </RelativeLayout>
 
-    </RelativeLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
 </LinearLayout>

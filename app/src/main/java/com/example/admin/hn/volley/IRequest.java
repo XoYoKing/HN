@@ -85,7 +85,13 @@ public class IRequest {
         }
         RequestManager.post(url, context, params, progressTitle, l);
     }
-
+    public static void post(Context context,String url, Map params,
+                     String progressTitle, RequestListener l) {
+        if (params != null) {
+            setParams(params);
+        }
+        RequestManager.post(url, context, params, progressTitle, l);
+    }
 
     /**
      *  返回String 不带进度条

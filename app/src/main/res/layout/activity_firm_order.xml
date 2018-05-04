@@ -27,18 +27,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"></include>
 
-            <ListView
-                android:id="@+id/listView"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycleView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/include1"
-                android:background="@null"></ListView>
+                android:layout_below="@+id/include1"></android.support.v7.widget.RecyclerView>
 
             <LinearLayout
                 android:id="@+id/remarks_linear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/listView"
+                android:layout_below="@+id/recycleView"
                 android:layout_marginTop="@dimen/common_10dp"
                 android:background="@drawable/layout_background"
                 android:orientation="horizontal">

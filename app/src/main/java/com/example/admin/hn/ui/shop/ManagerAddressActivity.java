@@ -95,6 +95,12 @@ public class ManagerAddressActivity extends BaseActivity {
         adapter = new ManageAddressAdapter(this, R.layout.item_manage_address, list);
         recycleView.setLayoutManager(new LinearLayoutManager(context));
         recycleView.setAdapter(adapter);
+        adapter.setOnDelListener(new ManageAddressAdapter.OnDelListener() {
+            @Override
+            public void onDelListener() {
+                ToolRefreshView.hintView(adapter, false, network, noData_img, network_img);
+            }
+        });
     }
 
 
@@ -111,6 +117,9 @@ public class ManagerAddressActivity extends BaseActivity {
                 if (GsonUtils.isShopSuccess(json)) {
                     TypeToken typeToken = new TypeToken<List<AddressInfo>>() {};
                     List<AddressInfo> data = (List<AddressInfo>) GsonUtils.jsonToList2(json, typeToken, "content");
+                    if (list.size() > 0) {
+                        list.clear();
+                    }
                     if (ToolString.isEmptyList(data)) {
                         list.addAll(data);
                     }
@@ -135,7 +144,7 @@ public class ManagerAddressActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.text_tile_del:
-                ToolAlert.showToast(context,"完成",false);
+                finish();
                 break;
             case R.id.network_img:
                 network_img.setVisibility(View.GONE);

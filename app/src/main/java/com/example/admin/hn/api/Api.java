@@ -89,6 +89,8 @@ public class Api {
     public static final String GET_ADDRESS_LIST = "usr/addr/list";
     //个人收货地址新增接口 "id": 1,//id存在为更新，否则进行新增操作
     public static final String GET_CREATE_ADDRESS = "usr/addr/save";
+    //删除收货地址
+    public static final String GET_DELETE_ADDRESS = "usr/addr/delete";
     //订单查询接口
     public static final String GET_LIST_ORDER = "sto/order/list";
 

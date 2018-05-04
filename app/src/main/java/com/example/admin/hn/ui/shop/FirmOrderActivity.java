@@ -3,6 +3,8 @@ package com.example.admin.hn.ui.shop;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,8 +35,8 @@ public class FirmOrderActivity extends BaseActivity {
     TextView textTitleBack;
     @Bind(R.id.text_title)
     TextView textTitle;
-    @Bind(R.id.listView)
-    ListView listView;
+    @Bind(R.id.recycleView)
+    RecyclerView recycleView;
     @Bind(R.id.goods_receipt_name)
     TextView goods_receipt_name;
     @Bind(R.id.goods_receipt_phone)
@@ -87,7 +89,8 @@ public class FirmOrderActivity extends BaseActivity {
             infos.add(new ShoppingCartInfo());
         }
         adapter = new FirmOrderAdapter(this, R.layout.item_firm_order_layout, infos);
-        listView.setAdapter(adapter);
+        recycleView.setLayoutManager(new LinearLayoutManager(context));
+        recycleView.setAdapter(adapter);
     }
 
     private void setAddress(AddressInfo info) {
