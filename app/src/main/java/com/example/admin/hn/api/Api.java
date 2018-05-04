@@ -83,8 +83,14 @@ public class Api {
     public static final String GET_SHOP_TYPE = "sit/menu/all";
     //商品列表
     public static final String GET_GOODS_LIST = "sto/goods/list";
-
-
+    //获取城市列表
+    public static final String GET_AREA_LIST = "sit/area/list";
+    //个人收货地址查询接口
+    public static final String GET_ADDRESS_LIST = "usr/addr/list";
+    //个人收货地址新增接口 "id": 1,//id存在为更新，否则进行新增操作
+    public static final String GET_CREATE_ADDRESS = "usr/addr/save";
+    //订单查询接口
+    public static final String GET_LIST_ORDER = "sto/order/list";
 
 
 //    ================== 商城接口========================

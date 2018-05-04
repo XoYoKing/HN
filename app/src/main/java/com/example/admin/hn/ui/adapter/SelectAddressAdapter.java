@@ -5,8 +5,9 @@ import android.view.View;
 
 import com.example.admin.hn.R;
 import com.example.admin.hn.model.AddressInfo;
-import com.zhy.adapter.abslistview.CommonAdapter;
-import com.zhy.adapter.abslistview.ViewHolder;
+import com.example.admin.hn.ui.shop.CreateAddressActivity;
+import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.List;
 
@@ -28,18 +29,24 @@ public class SelectAddressAdapter extends CommonAdapter<AddressInfo> {
 
     @Override
     protected void convert(ViewHolder viewHolder, final AddressInfo info, int position) {
-//        viewHolder.setChecked(R.id.select_address, info.isSelect());
-//        viewHolder.setText(R.id.goods_receipt_phone, info.getMobile());
-//        viewHolder.setText(R.id.goods_receipt_name, "收货人：" + info.getConsignee());
-//        viewHolder.setText(R.id.tv_address, AbStringUtil.getAddress(info.getProvince(), info.getCity(), info.getDistrict(), info.getAddress()));
-//        viewHolder.setOnClickListener(R.id.select_linear, new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (selectAddressClick != null) {
-//                    selectAddressClick.selectAddressClick(info);
-//                }
-//            }
-//        });
+        viewHolder.setChecked(R.id.select_address, info.isDefaul!=1);
+        viewHolder.setText(R.id.goods_receipt_phone, info.phone);
+        viewHolder.setText(R.id.goods_receipt_name, info.receiverName+"");
+        viewHolder.setText(R.id.tv_address,info.areaName+" "+info.receiverAddr);
+        viewHolder.setOnClickListener(R.id.select_linear, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (selectAddressClick != null) {
+                    selectAddressClick.selectAddressClick(info);
+                }
+            }
+        });
+        viewHolder.setOnClickListener(R.id.img_edit, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CreateAddressActivity.startActivity(mContext,info);
+            }
+        });
     }
 
     public interface OnSelectAddressClick {

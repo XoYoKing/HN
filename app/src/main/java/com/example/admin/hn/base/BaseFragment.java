@@ -32,6 +32,7 @@ public class BaseFragment extends Fragment implements Initialable {
     protected FragmentActivity activity;
     protected String progressTitle = Constant.LOADING;
     protected boolean isFirstHttp = true;//第一次请求
+    protected boolean isRefresh = true;
     protected IRequest http;
     protected HashMap params;
 

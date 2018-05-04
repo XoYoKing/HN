@@ -52,7 +52,7 @@ public class IRequest {
     private static void setParams(Map params) {
 //        params.put("timestamp", AbDateUtil.getCurrentDate(AbDateUtil.dateFormatYMDHMS));
         params.put("userid", HNApplication.mApp.getUserId());//船舶用户ID 默认传递
-        params.put("memberId", HNApplication.mApp.getUserId());//商城用户ID 默认传递
+        params.put("memberId", "1");//商城用户ID 默认传递
         Logger.i("请求参数", params.toString());
     }
 

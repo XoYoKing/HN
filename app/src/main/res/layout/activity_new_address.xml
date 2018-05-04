@@ -4,77 +4,102 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:clipToPadding="true"
+    android:background="@drawable/layout_background"
     android:orientation="vertical">
 
     <include layout="@layout/public_title"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/shape_edit_background_rect"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/layout_background"
         android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/common_44dp">
 
-            <EditText
+            <TextView
+                android:layout_marginLeft="@dimen/common_15dp"
+                android:id="@+id/text1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="收  货  人："/>
+
+            <com.example.admin.hn.widget.EditTextWithDel
                 android:id="@+id/et_consignee_name"
+                android:layout_toRightOf="@+id/text1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/common_12dp"
                 android:background="@null"
-                android:hint="收货人姓名"
+                android:paddingRight="@dimen/common_15dp"
+                android:hint="请输入收货人姓名"
                 android:maxLength="10"
                 android:singleLine="true"
-                android:textColor="@color/black"
+                android:textColor="@color/text_color"
                 android:textColorHint="@color/text_color_hint"
                 android:textSize="@dimen/common_12sp" />
         </RelativeLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#cccccc" />
+        <include layout="@layout/include_view_line"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/common_44dp">
+            <TextView
+                android:id="@+id/text2"
+                android:layout_marginLeft="@dimen/common_15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textColor="@color/text_gray_color"
+                android:text="手机号码："/>
 
-            <EditText
+            <com.example.admin.hn.widget.EditTextWithDel
+                android:layout_toRightOf="@+id/text2"
                 android:id="@+id/et_consignee_phone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/common_12dp"
+                android:paddingRight="@dimen/common_15dp"
+                android:maxLength="11"
                 android:background="@null"
-                android:hint="手机号码"
+                android:hint="请输入手机号码"
                 android:inputType="number"
                 android:singleLine="true"
-                android:textColor="@color/black"
+                android:textColor="@color/text_color"
                 android:textColorHint="@color/text_color_hint"
                 android:textSize="@dimen/common_12sp" />
         </RelativeLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#cccccc" />
+        <include layout="@layout/include_view_line"/>
 
         <RelativeLayout
             android:id="@+id/relative_region"
             android:layout_width="match_parent"
             android:layout_height="@dimen/common_44dp">
-
             <TextView
+                android:id="@+id/text3"
+                android:layout_marginLeft="@dimen/common_15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_gray_color"
+                android:layout_centerVertical="true"
+                android:text="所在地区："/>
+            <TextView
+                android:layout_toRightOf="@+id/text3"
                 android:id="@+id/tv_region"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/common_12dp"
-                android:hint="区域选择"
-                android:textColor="@color/black"
+                android:hint="请选择区域"
+                android:textColor="@color/text_color"
                 android:textColorHint="@color/text_color_hint"
                 android:textSize="@dimen/common_12sp" />
 
@@ -87,31 +112,83 @@
                 android:src="@drawable/right" />
 
         </RelativeLayout>
+        <include layout="@layout/include_view_line"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/layout_background">
+            <TextView
+                android:id="@+id/text4"
+                android:layout_marginLeft="@dimen/common_15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_gray_color"
+                android:layout_centerVertical="true"
+                android:text="详细地址："/>
+            <com.example.admin.hn.widget.EditTextWithDel
+                android:id="@+id/et_detailed_address"
+                android:layout_width="match_parent"
+                android:layout_toRightOf="@+id/text4"
+                android:layout_height="@dimen/common_44dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/common_12dp"
+                android:paddingRight="@dimen/common_15dp"
+                android:background="@null"
+                android:hint="请输入详细地址"
+                android:singleLine="true"
+                android:textColor="@color/text_color"
+                android:textColorHint="@color/text_color_hint"
+                android:textSize="@dimen/common_12sp"  />
+
+        </RelativeLayout>
+        <include layout="@layout/include_view_line"/>
+        <RelativeLayout
+            android:id="@+id/rl_default_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/text_default"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/common_10dp"
+                android:layout_marginLeft="@dimen/common_15dp"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/common_14sp"
+                android:text="设置为默认地址"/>
+            <TextView
+                android:id="@+id/text_tip"
+                android:layout_below="@+id/text_default"
+                android:layout_marginTop="@dimen/common_5dp"
+                android:layout_marginLeft="@dimen/common_15dp"
+                android:layout_width="wrap_content"
+                android:layout_marginBottom="@dimen/common_10dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_gray_color"
+                android:textSize="@dimen/common_14sp"
+                android:text="注：每次下单时会使用该地址"/>
+
+            <Switch
+                android:id="@+id/select_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/common_15dp"
+                android:layout_gravity="center_vertical"
+                android:layout_alignParentRight="true" />
+
+        </RelativeLayout>
+        <include layout="@layout/include_view_line"/>
     </LinearLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/common_5dp"
-        android:background="@drawable/shape_edit_background_rect">
-
-        <EditText
-            android:id="@+id/et_detailed_address"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/common_100dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginBottom="@dimen/common_5dp"
-            android:layout_marginLeft="@dimen/common_12dp"
-            android:layout_marginRight="@dimen/common_12dp"
-            android:layout_marginTop="@dimen/common_5dp"
-            android:background="@null"
-            android:gravity="top|left"
-            android:hint="请填写详细的收获地址"
-            android:textColor="@color/black"
-            android:textColorHint="@color/text_color_hint"
-            android:textSize="@dimen/common_12sp" />
-
-    </RelativeLayout>
-
-
+    <Button
+        android:id="@+id/bt_save"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="@dimen/common_200dp"
+        android:layout_height="@dimen/common_40dp"
+        android:layout_marginBottom="@dimen/common_10dp"
+        android:background="@drawable/shape_rect_blue_radius_20"
+        android:text="保存并使用"
+        android:textColor="@color/white"
+        android:textSize="@dimen/common_16dp"/>
 </LinearLayout>

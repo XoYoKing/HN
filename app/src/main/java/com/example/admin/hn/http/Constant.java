@@ -90,6 +90,8 @@ public class Constant {
     public static final String ACTION_FOUR_FRAGMENT2 = "FourFragment2";
     //船舶选择
     public static final String ACTION_SHIP_SELECT_FRAGMENT = "ShipSelectFragment";
+    //船舶选择
+    public static final String ACTION_CREATE_ADDRESS_ACTIVITY = "CreateAddressActivity";
 
 
 }

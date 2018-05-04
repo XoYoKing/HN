@@ -63,14 +63,21 @@ public class OrderManagerActivity extends BaseActivity {
         }
     }
 
+    /**
+     * NEW("待付款"),              0
+      PREPARE("待发货"),          1
+      SEND("待收货"),             2
+      NOEVAL("待评价"),           3
+      FINISH("已完成");           4
+     */
     @Override
     public void initData() {
         AllTabAdapter adapter = new AllTabAdapter(this, viewPager);
-        adapter.addTab("全部", "0", ShopOrderManagerFragment.class);
-        adapter.addTab("待付款","1", ShopOrderManagerFragment.class);
-        adapter.addTab("待发货","2", ShopOrderManagerFragment.class);
-        adapter.addTab("已发货","3", ShopOrderManagerFragment.class);
-        adapter.addTab("已取消","4", ShopOrderManagerFragment.class);
+        adapter.addTab("待付款","0", ShopOrderManagerFragment.class);
+        adapter.addTab("待发货","1", ShopOrderManagerFragment.class);
+        adapter.addTab("待收货","2", ShopOrderManagerFragment.class);
+        adapter.addTab("待评价","3", ShopOrderManagerFragment.class);
+        adapter.addTab("已完成","4", ShopOrderManagerFragment.class);
         viewPager.setOffscreenPageLimit(5);
         tabLayout.setupWithViewPager(viewPager);
     }

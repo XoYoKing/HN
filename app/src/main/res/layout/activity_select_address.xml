@@ -11,18 +11,28 @@
     <include
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/add_address"
-        layout="@layout/include_listview_layout"
+        android:layout_above="@+id/ll_bottom"
+        layout="@layout/include_recycle_view_layout"
         android:layout_below="@+id/title_layout" />
 
-    <Button
-        android:id="@+id/add_address"
+    <LinearLayout
+        android:id="@+id/ll_bottom"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/common_44dp"
+        android:gravity="center"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/shape_rect_blue"
-        android:text="添加新地址"
-        android:textColor="@color/white"
-        android:textSize="@dimen/common_14sp" />
+        android:background="@color/gray_F5F5F5"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/add_address"
+            android:layout_width="@dimen/common_200dp"
+            android:layout_height="@dimen/common_40dp"
+            android:layout_marginTop="@dimen/common_10dp"
+            android:layout_marginBottom="@dimen/common_10dp"
+            android:background="@drawable/shape_rect_blue_radius_20"
+            android:text="添加新地址"
+            android:textColor="@color/white"
+            android:textSize="@dimen/common_14sp" />
+
+    </LinearLayout>
 
 </RelativeLayout>

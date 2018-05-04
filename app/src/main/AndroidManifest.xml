@@ -114,6 +114,9 @@
         <activity android:name=".ui.shop.StepActivity" />
         <activity android:name=".ui.shop.SearchActivity" />
 
+        <activity android:name=".ui.shop.ProvinceActivity" />
+        <activity android:name=".ui.shop.CityActivity" />
+        <activity android:name=".ui.shop.AreaActivity" />
         //商城  ===============
         <activity
             android:name=".ui.account.MessageCenterActivity"

@@ -103,6 +103,28 @@ public class GsonUtils {
         return list;
     }
 
+    /**
+     * json字符串解析为list集合
+     *
+     * @param jsonResult
+     * @param typeToken
+     *
+     * @return
+     */
+    public static List<?> jsonToList2(String jsonResult,TypeToken typeToken,String key) {
+        List<?> list = null;
+        try {
+            Gson gson = new Gson();
+            JSONObject object = new JSONObject(jsonResult);
+            JSONObject data = object.getJSONObject("data");
+            JSONArray jsonArray = data.getJSONArray(key);
+            list = gson.fromJson(jsonArray.toString(), typeToken.getType());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
 
     /**
      * map数据组装成json字符串

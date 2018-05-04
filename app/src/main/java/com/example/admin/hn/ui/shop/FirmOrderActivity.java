@@ -35,6 +35,12 @@ public class FirmOrderActivity extends BaseActivity {
     TextView textTitle;
     @Bind(R.id.listView)
     ListView listView;
+    @Bind(R.id.goods_receipt_name)
+    TextView goods_receipt_name;
+    @Bind(R.id.goods_receipt_phone)
+    TextView goods_receipt_phone;
+    @Bind(R.id.tv_address)
+    TextView tv_address;
 
     private static List<ShoppingCartInfo> infos;
     private FirmOrderAdapter adapter;
@@ -86,8 +92,9 @@ public class FirmOrderActivity extends BaseActivity {
 
     private void setAddress(AddressInfo info) {
         if (info != null) {
-//            goods_receipt_name.setText("收货人：" + info.getConsignee());
-//            goods_receipt_phone.setText(info.getMobile());
+            goods_receipt_name.setText(info.receiverName+"");
+            goods_receipt_phone.setText(info.phone + "");
+            tv_address.setText(info.areaName + " " + info.receiverAddr);
         }
     }
 
@@ -101,7 +108,7 @@ public class FirmOrderActivity extends BaseActivity {
                 payOrder();
                 break;
             case R.id.address_linear:
-                SelectAddressActivity.startActivity(context);
+                SelectAddressActivity.startActivity(this);
                 break;
         }
     }
@@ -113,7 +120,7 @@ public class FirmOrderActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data != null) {
+        if (data != null) {//获取 选择的地址
             AddressInfo info = (AddressInfo) data.getSerializableExtra("info");
             setAddress(info);
         }

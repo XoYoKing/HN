@@ -129,4 +129,18 @@ public class ToolString {
             number = number.replaceAll("[^(0-9)]", "");
         return number;
     }
+
+    /**
+     * 拼接收货人详细地址
+     */
+    public static String getAddress(String province, String city, String district, String address) {
+        return province + " " + city + " " + district + " " + address;
+    }
+
+    /**
+     * 拼接收货人省市区地址
+     */
+    public static String getAddress(String province, String city, String district) {
+        return province + " " + city + " " + district + " ";
+    }
 }

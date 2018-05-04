@@ -32,6 +32,7 @@
     <color name="gray">#797474</color>
     <color name="gray_background">#efefef</color>
     <color name="grayDark">#595858</color>
+    <color name="gray_F5F5F5">#F5F5F5</color>
     <color name="golden_brown">#916112</color>
     <color name="buttercup">#ECA90C</color>
     <color name="athens_gray">#DEDEDE</color>

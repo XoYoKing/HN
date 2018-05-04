@@ -1,16 +1,21 @@
 package com.example.admin.hn.ui.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.CheckBox;
 
 import com.example.admin.hn.R;
 import com.example.admin.hn.model.AddressInfo;
-import com.zhy.adapter.abslistview.CommonAdapter;
-import com.zhy.adapter.abslistview.ViewHolder;
+import com.example.admin.hn.ui.shop.CreateAddressActivity;
+import com.example.admin.hn.utils.ToolAlert;
+import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -39,62 +44,60 @@ public class ManageAddressAdapter extends CommonAdapter<AddressInfo> {
 
     @Override
     protected void convert(ViewHolder viewHolder, final AddressInfo info, final int position) {
-//        viewHolder.setText(R.id.goods_receipt_phone, info.getMobile());
-//        viewHolder.setText(R.id.goods_receipt_name, "收货人：" + info.getConsignee());
-//        viewHolder.setText(R.id.tv_address, AbStringUtil.getAddress(info.getProvince(), info.getCity(), info.getDistrict(), info.getAddress()));
-//        CheckBox select_default_address = viewHolder.getView(R.id.select_default_address);
-//        if (info.getIs_default().equals("1")) {
-//            select_default_address.setChecked(true);
-//            select_default_address.setEnabled(false);
-//            select_default_address.setSelected(true);
-//        } else {
-//            select_default_address.setChecked(false);
-//            select_default_address.setEnabled(true);
-//            select_default_address.setSelected(false);
-//        }
-//        viewHolder.setOnClickListener(R.id.edit_address, new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                CreateAddressActivity.startActivity(context, info);
-//            }
-//        });
-//
-//        viewHolder.setOnClickListener(R.id.delete_address, new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                alertDelTip(position);
-//            }
-//        });
-//        viewHolder.setOnClickListener(R.id.select_default_address, new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                AddressInfo info = list.get(position);
-//                setDefaultAddress(position, info);
-//            }
-//        });
+        viewHolder.setText(R.id.goods_receipt_phone, info.phone+"");
+        viewHolder.setText(R.id.goods_receipt_name, "收货人：" + info.receiverName);
+        viewHolder.setText(R.id.tv_address, info.receiverAddr+"");
+        CheckBox select_default_address = viewHolder.getView(R.id.select_default_address);
+        if (info.isDefaul==1) {
+            select_default_address.setChecked(true);
+            select_default_address.setEnabled(false);
+            select_default_address.setSelected(true);
+        } else {
+            select_default_address.setChecked(false);
+            select_default_address.setEnabled(true);
+            select_default_address.setSelected(false);
+        }
+        viewHolder.setOnClickListener(R.id.edit_address, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CreateAddressActivity.startActivity(context, info);
+            }
+        });
+
+        viewHolder.setOnClickListener(R.id.delete_address, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDelTip(position);
+            }
+        });
+        viewHolder.setOnClickListener(R.id.select_default_address, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddressInfo info = list.get(position);
+                setDefaultAddress(position, info);
+            }
+        });
     }
 
-//    private void alertDelTip(final int position) {
-//        dialog = new AlertDialog(context);
-//        dialog.setBtColorConfirm(R.drawable.shape_btn_background_blue);
-//        dialog.showDialog("确认要删除此地址吗?", new AlertDialog.DialogOnClickListener() {
-//            @Override
-//            public void onPositiveClick() {
-//                AddressInfo info = list.get(position);
-//                delAddress(info);
-//                dialog.dismiss();
-//            }
+    private void alertDelTip(final int position) {
+        ToolAlert.dialog(context, "删除收货地址", "确认要删除此地址吗?", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                AddressInfo info = list.get(position);
+                delAddress(info);
+                dialog.dismiss();
+            }
+        }, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+    }
 //
-//            @Override
-//            public void onNegativeClick() {
-//                dialog.dismiss();
-//            }
-//        });
-//    }
-//
-//    private void delAddress(AddressInfo info) {
-//        RequestParams params = new RequestParams();
-//        params.put("address_id", info.getAddress_id());
+    private void delAddress(AddressInfo info) {
+        Map params = new HashMap();
+        params.put("address_id", info.id);
 //        IRequest.post(context, Config.URL_DEL_ADDRESS, params, "正在删除...", new RequestListener() {
 //            @Override
 //            public void requestSuccess(String json) {
@@ -112,11 +115,11 @@ public class ManageAddressAdapter extends CommonAdapter<AddressInfo> {
 //                AbToastUtil.showToast(context, message);
 //            }
 //        });
-//    }
-//
-//    private void setDefaultAddress(final int position, AddressInfo info) {
-//        RequestParams params = new RequestParams();
-//        params.put("address_id", info.getAddress_id());
+    }
+
+    private void setDefaultAddress(final int position, AddressInfo info) {
+        Map params = new HashMap();
+        params.put("address_id", info.id);
 //        IRequest.post(context, Config.URL_SET_DEFAULT_ADDRESS, params, "正在设置...", new RequestListener() {
 //            @Override
 //            public void requestSuccess(String json) {
@@ -140,7 +143,7 @@ public class ManageAddressAdapter extends CommonAdapter<AddressInfo> {
 //                AbToastUtil.showToast(context, message);
 //            }
 //        });
-//    }
+    }
 
     public interface OnDelListener {
         void onDelListener();
