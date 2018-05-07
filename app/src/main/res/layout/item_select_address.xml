@@ -16,6 +16,7 @@
             android:layout_toRightOf="@+id/select_address"
             android:layout_toLeftOf="@+id/img_edit"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/common_15dp"
             android:layout_gravity="center_vertical"
             android:layout_marginTop="@dimen/common_5dp"
             android:orientation="vertical">
@@ -68,13 +69,14 @@
 
         </LinearLayout>
 
-        <CheckBox
+        <ImageView
             android:id="@+id/select_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/common_10dp"
+            android:layout_marginLeft="@dimen/common_15dp"
+            android:src="@drawable/sreach_check"
             android:padding="@dimen/common_5dp" />
 
         <ImageView

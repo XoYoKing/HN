@@ -1,6 +1,7 @@
 package com.example.admin.hn.ui.shop;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +19,7 @@ import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.OrderInfo;
 import com.example.admin.hn.model.ShoppingCartInfo;
 import com.example.admin.hn.ui.adapter.ShopCartAdapter;
+import com.example.admin.hn.ui.fragment.shop.bean.ShopCartInfo;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolRefreshView;
@@ -63,12 +65,14 @@ public class ShopCartActivity extends BaseActivity implements OnRefreshListener,
     RefreshLayout refreshLayout;
     @Bind(R.id.img_pay_all)
     ImageView img_pay_all;
+    @Bind(R.id.img_del_all)
+    ImageView img_del_all;
     @Bind(R.id.rl_pay)
     RelativeLayout rl_pay;
     @Bind(R.id.rl_del)
     RelativeLayout rl_del;
 
-    private ArrayList<OrderInfo.Order> list = new ArrayList<>();
+    private ArrayList<ShopCartInfo> list = new ArrayList<>();
 
     private ShopCartAdapter adapter;
 
@@ -96,28 +100,49 @@ public class ShopCartActivity extends BaseActivity implements OnRefreshListener,
         context.startActivity(intent);
     }
 
-    @OnClick({R.id.text_title_back,R.id.text_tile_right,R.id.img_pay_all,R.id.go_pay})
+    @OnClick({R.id.text_title_back,R.id.text_tile_right,R.id.img_pay_all,R.id.img_del_all,R.id.go_pay,R.id.btn_delete})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.text_title_back:
                 finish();
             break;
             case R.id.text_tile_right:
-                if (rl_pay.getVisibility() == View.VISIBLE) {
+                if (rl_pay.getVisibility() == View.VISIBLE) {//编辑状态
                     text_tile_right.setText("完成");
                     rl_pay.setVisibility(View.GONE);
                     rl_del.setVisibility(View.VISIBLE);
-                }else {
+                    adapter.setSelectAll(true,false);
+                }else {//结算状态
+                    img_del_all.setSelected(false);//在结算时 把编辑默认设置为选中状态
                     text_tile_right.setText("编辑");
                     rl_pay.setVisibility(View.VISIBLE);
                     rl_del.setVisibility(View.GONE);
+                    adapter.notify(false);
                 }
                 break;
             case R.id.img_pay_all:
+                adapter.setSelectAll(false,!img_pay_all.isSelected());
                 img_pay_all.setSelected(!img_pay_all.isSelected());
+                break;
+            case R.id.img_del_all:
+                adapter.setSelectAll(true,!img_del_all.isSelected());
+                img_del_all.setSelected(!img_del_all.isSelected());
                 break;
             case R.id.go_pay:
                 FirmOrderActivity.startActivity(context, new ArrayList<ShoppingCartInfo>());
+                break;
+            case R.id.btn_delete:
+                ToolAlert.dialog(context, "", "是否删除选中的商品", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
                 break;
         }
     }
@@ -129,13 +154,23 @@ public class ShopCartActivity extends BaseActivity implements OnRefreshListener,
         recycleView.setLayoutManager(new LinearLayoutManager(context));
         adapter = new ShopCartAdapter(this, R.layout.item_shopping_cart, list);
         recycleView.setAdapter(adapter);
+        adapter.setOnItemClickListener(new ShopCartAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClickListener(boolean isEdit,boolean isAll) {
+                if (isEdit) {
+                    img_del_all.setSelected(isAll);
+                }else {
+                    img_pay_all.setSelected(isAll);
+                }
+            }
+        });
     }
 
 
     @Override
     public void initData() {
         for (int i = 0; i < 10; i++) {
-            list.add(new OrderInfo.Order());
+            list.add(new ShopCartInfo());
             adapter.notifyDataSetChanged();
         }
     }

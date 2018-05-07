@@ -120,10 +120,10 @@ public class CreateAddressActivity extends BaseActivity {
         if (info != null) {
             text_tile_right.setText("删除");
             textTitle.setText("编辑收货地址");
-            if (info.isDefaul==0) {//不是默认地址
-                rl_default_address.setVisibility(View.VISIBLE);
-            }else {
+            if (info.isDefaul==0) {//默认地址
                 rl_default_address.setVisibility(View.GONE);
+            }else {
+                rl_default_address.setVisibility(View.VISIBLE);
             }
             addressId = info.id;
             et_detailed_address.setText(info.receiverAddr);
@@ -220,13 +220,15 @@ public class CreateAddressActivity extends BaseActivity {
     private void submit() {
         if (info != null) {
             params.put("id", info.id);
+            params.put("isDefaul", info.isDefaul+"");
+        }else {
+            params.put("isDefaul", cb_default_address.isChecked() ? "0" : "1");
         }
         params.put("receiverName", name);
         params.put("receiverAddr", detailed_address);
         params.put("areaId",addressId);
         params.put("areaName", region);
         params.put("phone", phone);
-        params.put("isDefaul", cb_default_address.isChecked() ? "0" : "1");
         http.post(url, params, "正在保存...", new RequestListener() {
             @Override
             public void requestSuccess(String json) {

@@ -29,7 +29,12 @@ public class SelectAddressAdapter extends CommonAdapter<AddressInfo> {
 
     @Override
     protected void convert(ViewHolder viewHolder, final AddressInfo info, int position) {
-        viewHolder.setChecked(R.id.select_address, info.isDefaul!=1);
+//        viewHolder.setChecked(R.id.select_address, info.isDefaul!=1);
+        if (info.isDefaul == 0) {
+            viewHolder.getView(R.id.select_address).setVisibility(View.VISIBLE);
+        }else {
+            viewHolder.getView(R.id.select_address).setVisibility(View.GONE);
+        }
         viewHolder.setText(R.id.goods_receipt_phone, info.phone);
         viewHolder.setText(R.id.goods_receipt_name, info.receiverName+"");
         viewHolder.setText(R.id.tv_address,info.areaName+" "+info.receiverAddr);

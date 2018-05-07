@@ -186,8 +186,8 @@ public class LoginActivity extends BaseActivity {
                     isTest = false;
                 } else if (position == 1) {//测试环境
                     Api.BASE_URL = "http://10.18.4.31:9000/";
-//                    Api.SHOP_BASE_URL = "http://172.16.0.10:8990/";
-                    Api.SHOP_BASE_URL = "http://10.17.107.62:8990/";
+                    Api.SHOP_BASE_URL = "http://172.16.0.3:8990/";
+//                    Api.SHOP_BASE_URL = "http://10.17.107.62:8990/";
                     isTest = true;
                 }
                 HNApplication.mApp.setTestAmbient(isTest);
