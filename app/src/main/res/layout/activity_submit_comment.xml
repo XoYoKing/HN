@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white_smoke"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true">
+    <include layout="@layout/public_title"></include>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:paddingTop="@dimen/common_10dp"
+        android:paddingBottom="@dimen/common_10dp"
+        android:background="@drawable/layout_background"
+        android:layout_height="@dimen/common_120dp">
+
+        <ImageView
+            android:id="@+id/iv_img"
+            android:src="@drawable/tu"
+            android:layout_width="@dimen/common_100dp"
+            android:layout_marginLeft="@dimen/common_15dp"
+            android:layout_height="@dimen/common_100dp" />
+        <TextView
+            android:layout_toRightOf="@+id/iv_img"
+            android:id="@+id/tv_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/common_10dp"
+            android:text="商品评分"
+            android:layout_marginTop="@dimen/common_10dp"
+            android:textSize="@dimen/common_16sp"
+            android:textColor="@color/text_color"/>
+
+        <RatingBar
+            android:layout_toRightOf="@+id/iv_img"
+            style="?android:attr/ratingBarStyleIndicator"
+            android:layout_below="@+id/tv_comment"
+            android:layout_marginLeft="@dimen/common_10dp"
+            android:layout_marginTop="@dimen/common_10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:rating="5"
+            android:id="@+id/ratingBar" />
+
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/et_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_120dp"
+        android:hint="评价超过10字就可获得积分"
+        android:gravity="top"
+        android:padding="@dimen/common_10dp"
+        android:textColorHint="@color/text_color_hint" />
+
+</LinearLayout>

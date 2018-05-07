@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.admin.hn.R;
 import com.example.admin.hn.base.BaseActivity;
+import com.example.admin.hn.model.GoodsInfo;
 import com.example.admin.hn.model.ShoppingCartInfo;
 import com.example.admin.hn.ui.adapter.AllTabAdapter;
 import com.example.admin.hn.ui.fragment.shop.CommentFragment;
@@ -21,6 +22,7 @@ import com.example.admin.hn.ui.fragment.shop.ShopFragment;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.widget.AlertDialog;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -57,7 +59,15 @@ public class GoodsDetailActivity extends BaseActivity {
         Intent intent = new Intent(context, GoodsDetailActivity.class);
         context.startActivity(intent);
     }
-
+    /**
+     *
+     * @param context
+     */
+    public static void startActivity(Context context, GoodsInfo.Goods info) {
+        Intent intent = new Intent(context, GoodsDetailActivity.class);
+        intent.putExtra("info", info);
+        context.startActivity(intent);
+    }
 
     @Override
     public void initTitleBar() {
@@ -66,10 +76,11 @@ public class GoodsDetailActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        GoodsInfo.Goods info = (GoodsInfo.Goods) getIntent().getSerializableExtra("info");
         AllTabAdapter adapter = new AllTabAdapter(this, viewPager);
-        adapter.addTab("商品", GoodsFragment.class);
-        adapter.addTab("详情", GoodsFragment.class);
-        adapter.addTab("评价", CommentFragment.class);
+        adapter.addTab("商品",info.spuId, GoodsFragment.class);
+        adapter.addTab("详情",info.spuId,GoodsFragment.class);
+        adapter.addTab("评价",info.spuId, CommentFragment.class);
         viewPager.setOffscreenPageLimit(3);
         tabLayout.setupWithViewPager(viewPager);
     }

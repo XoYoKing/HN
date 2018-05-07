@@ -93,5 +93,17 @@ public class Constant {
     //船舶选择
     public static final String ACTION_CREATE_ADDRESS_ACTIVITY = "CreateAddressActivity";
 
-
+    /**
+     * 商品订单状态
+     * NEW("待付款"),              0
+      PREPARE("待发货"),          1
+      SEND("待收货"),             2
+      NOEVAL("待评价"),           3
+      FINISH("已完成");           4
+     */
+    public static final String SHOP_ORDER_STATUS_NEW = "0";
+    public static final String SHOP_ORDER_STATUS_PREPARE = "1";
+    public static final String SHOP_ORDER_STATUS_SEND = "2";
+    public static final String SHOP_ORDER_STATUS_NOEVAL = "3";
+    public static final String SHOP_ORDER_STATUS_FINISH = "4";
 }

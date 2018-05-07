@@ -26,7 +26,7 @@ public class GoodsListAdapter extends CommonAdapter<GoodsInfo.Goods> {
     }
 
     @Override
-    protected void convert(ViewHolder viewHolder, GoodsInfo.Goods info, int position) {
+    protected void convert(ViewHolder viewHolder, final GoodsInfo.Goods info, int position) {
         ImageView goods_icon = viewHolder.getView(R.id.goods_icon);
         viewHolder.setText(R.id.goods_name, info.goodsFullSpecs+"");
         viewHolder.setText(R.id.goods_price, "￥" + info.goodsPrice);
@@ -36,7 +36,7 @@ public class GoodsListAdapter extends CommonAdapter<GoodsInfo.Goods> {
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GoodsDetailActivity.startActivity(mContext);
+                GoodsDetailActivity.startActivity(mContext,info);
             }
         });
     }

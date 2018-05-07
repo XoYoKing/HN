@@ -83,6 +83,8 @@ public class Api {
     public static final String GET_SHOP_TYPE = "sit/menu/all";
     //商品列表
     public static final String GET_GOODS_LIST = "sto/goods/list";
+    //商品详情查询接口
+    public static final String GET_GOODS_DETAIL = "sto/goods/detail";
     //获取城市列表
     public static final String GET_AREA_LIST = "sit/area/list";
     //个人收货地址查询接口
@@ -93,6 +95,12 @@ public class Api {
     public static final String GET_DELETE_ADDRESS = "usr/addr/delete";
     //订单查询接口
     public static final String GET_LIST_ORDER = "sto/order/list";
+    //根据商品查询评论信息
+    public static final String GET_LIST_COMMENT = "com/comment/list";
+    //如果订单状态为待评价的状态，即:订单表 status:3; 时即可参加评论
+    public static final String GET_SAVE_COMMENT = "com/comment/save";
+    //根据商品ID查询商品的收藏量
+    public static final String GET_CONLLECT_LIST= "usr/goods/conllect/list";
 
 
 //    ================== 商城接口========================

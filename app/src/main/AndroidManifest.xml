@@ -113,7 +113,7 @@
         <activity android:name=".ui.shop.GoodsDetailActivity" />
         <activity android:name=".ui.shop.StepActivity" />
         <activity android:name=".ui.shop.SearchActivity" />
-
+        <activity android:name=".ui.shop.SubmitCommentActivity" />
         <activity android:name=".ui.shop.ProvinceActivity" />
         <activity android:name=".ui.shop.CityActivity" />
         <activity android:name=".ui.shop.AreaActivity" />

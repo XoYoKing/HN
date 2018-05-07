@@ -13,11 +13,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.admin.hn.R;
+import com.example.admin.hn.http.Constant;
 import com.example.admin.hn.model.HomeItem;
 import com.example.admin.hn.model.HomeTypeInfo;
 import com.example.admin.hn.ui.fragment.shop.bean.ShopOrderInfo;
 import com.example.admin.hn.ui.shop.GoodsListActivity;
 import com.example.admin.hn.ui.shop.ShopTypeListActivity;
+import com.example.admin.hn.ui.shop.StepActivity;
+import com.example.admin.hn.ui.shop.SubmitCommentActivity;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolString;
 import com.example.admin.hn.utils.ToolViewUtils;
@@ -74,12 +77,51 @@ public class ShopOrderListAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     private void bindType1(HolderType1 holder, int position) {
-        ShopOrderInfo info = list.get(position);
+        final ShopOrderInfo info = list.get(position);
 //        List<ShopOrderInfo.OrderItems> orderItems = info.orderItems;
 //        ShopOrderInfo.OrderItems item = orderItems.get(0);
 //        ToolViewUtils.glideImageList(item.,holder.goods_img,R.drawable.load_fail);
 //        holder.goods_title.setText(item.goodsName + "");
 //        holder.goods_amount.setText(item.amount + "");
+        if (Constant.SHOP_ORDER_STATUS_NEW.equals(info.status)) {
+            holder.lock_logistics.setVisibility(View.GONE);
+            holder.pay.setVisibility(View.VISIBLE);
+            holder.pay.setText("去支付");
+            holder.tv_status.setText("等待付款");
+        }else if (Constant.SHOP_ORDER_STATUS_PREPARE.equals(info.status)) {
+            holder.lock_logistics.setVisibility(View.VISIBLE);
+            holder.pay.setVisibility(View.GONE);
+            holder.tv_status.setText("等待发货");
+        }else if (Constant.SHOP_ORDER_STATUS_SEND.equals(info.status)) {
+            holder.lock_logistics.setVisibility(View.VISIBLE);
+            holder.pay.setVisibility(View.VISIBLE);
+            holder.pay.setText("确认收货");
+            holder.tv_status.setText("等待收货");
+        }else if (Constant.SHOP_ORDER_STATUS_NOEVAL.equals(info.status)) {
+            holder.lock_logistics.setVisibility(View.GONE);
+            holder.pay.setVisibility(View.VISIBLE);
+            holder.pay.setText("评价");
+            holder.tv_status.setText("等待评价");
+         }else if(Constant.SHOP_ORDER_STATUS_FINISH.equals(info.status)){
+            holder.lock_logistics.setVisibility(View.GONE);
+            holder.pay.setVisibility(View.VISIBLE);
+            holder.pay.setText("再次购买");
+            holder.tv_status.setText("已完成");
+         }
+        holder.pay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Constant.SHOP_ORDER_STATUS_NOEVAL.equals(info.status)) {
+                    SubmitCommentActivity.startActivity(mContext,info);
+                }
+            }
+        });
+        holder.lock_logistics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StepActivity.startActivity(mContext);
+            }
+        });
     }
 
     private void bindType2(HolderType2 holder, int position) {
@@ -96,8 +138,8 @@ public class ShopOrderListAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     public class HolderType1 extends RecyclerView.ViewHolder {
         private ImageView goods_img;
-        private TextView all_goods_money, goods_title, single_goods_money, goods_amount, shipping_price, all_goods_amount;
-        private Button cancel_order, pay;
+        private TextView tv_status,all_goods_money, goods_title, single_goods_money, goods_amount, shipping_price, all_goods_amount;
+        private Button lock_logistics, pay;
         private LinearLayout btn_linear;
 
         public HolderType1(View itemView) {
@@ -109,7 +151,8 @@ public class ShopOrderListAdapter extends RecyclerView.Adapter<RecyclerView.View
             goods_amount = (TextView) itemView.findViewById(R.id.goods_amount);
             shipping_price = (TextView) itemView.findViewById(R.id.shipping_price);
             all_goods_amount = (TextView) itemView.findViewById(R.id.all_goods_amount);
-            cancel_order = (Button) itemView.findViewById(R.id.cancel_order);
+            lock_logistics = (Button) itemView.findViewById(R.id.lock_logistics);
+            tv_status = (TextView) itemView.findViewById(R.id.tv_status);
             pay = (Button) itemView.findViewById(R.id.pay);
             btn_linear = (LinearLayout) itemView.findViewById(R.id.btn_linear);
         }

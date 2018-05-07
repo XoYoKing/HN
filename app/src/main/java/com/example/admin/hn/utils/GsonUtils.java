@@ -236,5 +236,18 @@ public class GsonUtils {
         return message;
     }
 
-
+    /**
+     * 获取网络请求的错误信息
+     *
+     * @return
+     */
+    public static int getTotalPage(String json) {
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            JSONObject data = jsonObject.getJSONObject("data");
+            return data.optInt("totalPages");
+        } catch (Exception e) {
+        }
+        return 1;
+    }
 }
