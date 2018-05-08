@@ -156,7 +156,7 @@ public class ShopOrderManagerFragment extends BaseFragment implements OnLoadmore
 	public void onLoadmore(RefreshLayout refreshlayout) {
 		isRefresh = false;
 		page=page+1;
-		if (ToolRefreshView.isLoadMore(page, totalPage)) {
+		if (ToolRefreshView.isLoadMore(refreshlayout,page, totalPage)) {
 			sendHttp();
 		}
 	}

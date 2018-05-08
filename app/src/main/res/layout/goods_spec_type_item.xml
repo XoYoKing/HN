@@ -16,7 +16,7 @@
         android:layout_marginLeft="@dimen/common_20dp"
         android:gravity="center_vertical"
         android:text="选择颜色"
-        android:textColor="@color/text_color"
+        android:textColor="@color/text_gray_color"
         android:textSize="@dimen/common_14sp" />
 
     <com.zhy.view.flowlayout.TagFlowLayout

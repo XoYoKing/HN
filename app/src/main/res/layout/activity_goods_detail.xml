@@ -13,38 +13,35 @@
         android:layout_above="@+id/ll_bottom"
         android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/tabLinear"
             android:layout_width="match_parent"
             android:layout_height="@dimen/common_40dp"
-            android:background="@color/colorPrimary"
-            android:gravity="center_vertical"
+            android:background="@drawable/layout_background"
             android:orientation="horizontal">
 
             <ImageView
+                android:layout_centerVertical="true"
                 android:id="@+id/iv_back"
+                android:layout_marginLeft="@dimen/common_10dp"
+                android:padding="@dimen/common_10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/btn_back" />
+                android:src="@drawable/left" />
 
             <android.support.design.widget.TabLayout
                 android:id="@+id/tabLayout"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/common_200dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/common_20dp"
-                android:layout_weight="4"
-                android:background="@color/colorPrimary"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
                 app:tabGravity="fill"
-                app:tabIndicatorColor="@color/white"
+                app:tabIndicatorColor="@color/colorPrimary"
                 app:tabMode="fixed"
-                app:tabSelectedTextColor="@color/white"
+                app:tabSelectedTextColor="@color/colorPrimary"
                 app:tabTextColor="@color/black" />
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-        </LinearLayout>
+        </RelativeLayout>
 
         <android.support.v4.view.ViewPager
             android:id="@+id/viewPager"
@@ -85,7 +82,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/goods_detail_shop_cart" />
                 <TextView
-                    android:layout_width="40dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="购物车"
@@ -93,35 +90,33 @@
                     android:textSize="@dimen/common_12sp" />
 
             </LinearLayout>
-
             <TextView
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/common_30dp"
                 android:layout_marginLeft="@dimen/common_10dp"
-                android:background="@color/grey_dde1e7"
-                android:gravity="center"
-                android:text="+"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/common_18sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/common_10dp"
-                android:layout_marginRight="@dimen/common_10dp"
-                android:gravity="center"
-                android:text="99"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/common_14sp" />
-
-            <TextView
-                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:background="@color/grey_dde1e7"
                 android:gravity="center"
                 android:text="-"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/common_18sp" />
+
+            <TextView
+                android:layout_width="@dimen/common_40dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="99"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/common_14sp" />
+
+            <TextView
+                android:layout_width="@dimen/common_30dp"
+                android:layout_height="wrap_content"
+                android:background="@color/grey_dde1e7"
+                android:gravity="center"
+                android:text="+"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/common_18sp" />
+
         </LinearLayout>
 
         <Button

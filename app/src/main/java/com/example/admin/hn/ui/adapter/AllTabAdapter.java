@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 
 import com.example.admin.hn.utils.ToolString;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class AllTabAdapter extends FragmentPagerAdapter {
         private Class<?> clazz;
         private String tab;
         private String type;
+        private Serializable obj;
 
         public TabInfo(String tab, Class<?> clazz) {
             this.tab = tab;
@@ -42,6 +44,11 @@ public class AllTabAdapter extends FragmentPagerAdapter {
             this.tab = tab;
             this.clazz = clazz;
             this.type = type;
+        }
+        public TabInfo(String tab,  Serializable obj, Class<?> clazz) {
+            this.tab = tab;
+            this.clazz = clazz;
+            this.obj = obj;
         }
     }
 
@@ -70,6 +77,20 @@ public class AllTabAdapter extends FragmentPagerAdapter {
         notifyDataSetChanged();
     }
 
+
+    /**
+     * 如果使用同一个fragment
+     *
+     * @param tab   title
+     * @param obj  传递的对象数据
+     * @param clazz fragment 的类
+     */
+    public void addTab(String tab, Serializable obj, Class<?> clazz) {
+        TabInfo info = new TabInfo(tab, obj, clazz);
+        list.add(info);
+        notifyDataSetChanged();
+    }
+
     @Override
     public Fragment getItem(int arg0) {
         TabInfo tabinfo = list.get(arg0);
@@ -77,6 +98,11 @@ public class AllTabAdapter extends FragmentPagerAdapter {
         if (ToolString.isNoBlankAndNoNull(tabinfo.type)) {
             Bundle bundle = new Bundle();
             bundle.putString("type", tabinfo.type);
+            fragment.setArguments(bundle);
+        }
+        if (tabinfo.obj != null) {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("obj", tabinfo.obj);
             fragment.setArguments(bundle);
         }
         return fragment;

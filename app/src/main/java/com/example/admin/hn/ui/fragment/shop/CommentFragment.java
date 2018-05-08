@@ -124,7 +124,7 @@ public class CommentFragment extends BaseFragment implements OnLoadmoreListener,
 	public void onLoadmore(RefreshLayout refreshlayout) {
 		page = page + 1;
 		isRefresh = false;
-		if (ToolRefreshView.isLoadMore(page, totalPage)) {
+		if (ToolRefreshView.isLoadMore(refreshlayout,page, totalPage)) {
 			sendHttp();
 		}
 	}

@@ -5,9 +5,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.admin.hn.R;
+import com.example.admin.hn.model.GoodsInfo;
 import com.example.admin.hn.model.SpecGoodsPriceInfo;
-import com.example.admin.hn.model.SpecInfo;
-import com.example.admin.hn.model.SpecTypeInfo;
+import com.orhanobut.logger.Logger;
 import com.zhy.adapter.abslistview.CommonAdapter;
 import com.zhy.adapter.abslistview.ViewHolder;
 import com.zhy.view.flowlayout.FlowLayout;
@@ -23,23 +23,16 @@ import java.util.Map;
 /**
  * 商品规格适配器
  */
-public class GoodsSpecTypeAdapter extends CommonAdapter<SpecTypeInfo> {
+public class GoodsSpecTypeAdapter extends CommonAdapter<GoodsInfo.SpecInfo> {
     private Context context;
-
-    private List<SpecTypeInfo> spec_data;
+    private List<GoodsInfo.SpecInfo> spec_data;
     private Map<Integer, String> select_id = new HashMap<>();
     private SpecGoodsPriceInfo goodsPriceInfo;
-
 
     public GoodsSpecTypeAdapter(Context context, int layoutId, List datas) {
         super(context, layoutId, datas);
         this.context = context;
         this.spec_data = datas;
-        for (int i = 0; i < spec_data.size(); i++) {
-            SpecTypeInfo typeInfo = spec_data.get(i);
-            SpecInfo specInfo = typeInfo.getData().get(0);
-            select_id.put(i, specInfo.getItem_id());
-        }
     }
 
     //被选中的子控件
@@ -49,25 +42,23 @@ public class GoodsSpecTypeAdapter extends CommonAdapter<SpecTypeInfo> {
     public void changeData(int group, int child) {
         childPosition = child;
         groupPosition = group;
-        SpecTypeInfo typeInfo = spec_data.get(group);
-        SpecInfo specInfo = typeInfo.getData().get(child);
-        specInfo.setCheck_id(child);
-        select_id.put(group, specInfo.getItem_id());
+        GoodsInfo.SpecInfo spec = spec_data.get(group);
+        GoodsInfo.SpecInfo.SpecItem specItem = spec.specItem.get(child);
+        specItem.isSelect = true;
+        select_id.put(group, specItem.id);
         notifyDataSetChanged();
     }
 
     @Override
-    protected void convert(ViewHolder viewHolder, final SpecTypeInfo info, final int position) {
-        viewHolder.setText(R.id.tv_spec_type, "选择" + info.getTitle());
+    protected void convert(ViewHolder viewHolder, final GoodsInfo.SpecInfo info, final int position) {
+        viewHolder.setText(R.id.tv_spec_type, info.spec.specName+"");
         TagFlowLayout flow_spec_type = viewHolder.getView(R.id.flow_spec_type);
-        final MyAdapter adapter = new MyAdapter(info.getData(), position);
+        final MyAdapter adapter = new MyAdapter(info.specItem, position);
         flow_spec_type.setAdapter(adapter);
-        if (groupPosition == position) {
+        if (groupPosition == position && info.specItem.get(childPosition).isSelect) {
             adapter.setSelectedList(childPosition);
-        } else {
-            adapter.setSelectedList(0);
         }
-        if (info.getData().size() > 1) {
+        if (info.specItem.size() > 1) {
             flow_spec_type.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
                 @Override
                 public boolean onTagClick(View view, int item, FlowLayout parent) {
@@ -96,6 +87,10 @@ public class GoodsSpecTypeAdapter extends CommonAdapter<SpecTypeInfo> {
     }
 
     private void sendHttp(String key) {
+        Logger.e("key", key);
+        if (selectSpecListener != null) {
+//            selectSpecListener.onSelectSpecListener(goodsPriceInfo);
+        }
 //        RequestParams params = new RequestParams();
 //        params.put("key", key);
 //        AbLogUtil.e("key", key);
@@ -136,7 +131,7 @@ public class GoodsSpecTypeAdapter extends CommonAdapter<SpecTypeInfo> {
         void onSelectSpecListener(SpecGoodsPriceInfo specGoodsPriceInfo);
     }
 
-    class MyAdapter extends TagAdapter<SpecInfo> {
+    class MyAdapter extends TagAdapter<GoodsInfo.SpecInfo.SpecItem> {
 
         private int position;
 
@@ -146,9 +141,9 @@ public class GoodsSpecTypeAdapter extends CommonAdapter<SpecTypeInfo> {
         }
 
         @Override
-        public View getView(FlowLayout parent, int position, SpecInfo s) {
+        public View getView(FlowLayout parent, int position, GoodsInfo.SpecInfo.SpecItem s) {
             TextView bt = (TextView) View.inflate(context, R.layout.goods_space_item, null);
-            bt.setText(s.getItem());
+            bt.setText(s.specItemName);
             return bt;
         }
     }

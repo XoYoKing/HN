@@ -7,10 +7,9 @@ package com.example.admin.hn.ui.adapter;
 import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.admin.hn.R;
-import com.example.admin.hn.model.GoodsInfo;
+import com.example.admin.hn.model.GoodsListInfo;
 import com.example.admin.hn.ui.shop.GoodsDetailActivity;
 import com.example.admin.hn.utils.ToolViewUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -19,14 +18,14 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 import java.util.List;
 
 
-public class GoodsListAdapter extends CommonAdapter<GoodsInfo.Goods> {
+public class GoodsListAdapter extends CommonAdapter<GoodsListInfo.Goods> {
 
-    public GoodsListAdapter(Context context, int layoutId, List<GoodsInfo.Goods> datas) {
+    public GoodsListAdapter(Context context, int layoutId, List<GoodsListInfo.Goods> datas) {
         super(context, layoutId, datas);
     }
 
     @Override
-    protected void convert(ViewHolder viewHolder, final GoodsInfo.Goods info, int position) {
+    protected void convert(ViewHolder viewHolder, final GoodsListInfo.Goods info, int position) {
         ImageView goods_icon = viewHolder.getView(R.id.goods_icon);
         viewHolder.setText(R.id.goods_name, info.goodsFullSpecs+"");
         viewHolder.setText(R.id.goods_price, "￥" + info.goodsPrice);

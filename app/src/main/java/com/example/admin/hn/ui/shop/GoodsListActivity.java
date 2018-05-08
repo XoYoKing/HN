@@ -14,14 +14,13 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseActivity;
-import com.example.admin.hn.model.GoodsInfo;
+import com.example.admin.hn.model.GoodsListInfo;
 import com.example.admin.hn.model.HomeItem;
 import com.example.admin.hn.model.ScreenTypeInfo;
 import com.example.admin.hn.ui.adapter.GoodsListAdapter;
@@ -32,13 +31,11 @@ import com.example.admin.hn.utils.ToolAppUtils;
 import com.example.admin.hn.utils.ToolRefreshView;
 import com.example.admin.hn.utils.ToolString;
 import com.example.admin.hn.volley.RequestListener;
-import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,7 +85,7 @@ public class GoodsListActivity extends BaseActivity implements OnLoadmoreListene
     @Bind(R.id.search_tv_content)
     TextView search_tv_content;
 
-    private List<GoodsInfo.Goods> list = new ArrayList<>();
+    private List<GoodsListInfo.Goods> list = new ArrayList<>();
     private GoodsListAdapter adapter;
     private int page;
     private int rows = 10;
@@ -221,14 +218,14 @@ public class GoodsListActivity extends BaseActivity implements OnLoadmoreListene
             public void requestSuccess(String json) {
                 Logger.e("商品列表", json);
                 if (GsonUtils.isShopSuccess(json)) {
-                    GoodsInfo  goodsInfo = GsonUtils.jsonToBean2(json, GoodsInfo.class);
-                    if (goodsInfo != null) {
-                        totalPages = goodsInfo.totalPages;
+                    GoodsListInfo goodsListInfo = GsonUtils.jsonToBean2(json, GoodsListInfo.class);
+                    if (goodsListInfo != null) {
+                        totalPages = goodsListInfo.totalPages;
                         if (isRefresh) {
                             list.clear();
                         }
-                        if (ToolString.isEmptyList(goodsInfo.content)) {
-                            list.addAll(goodsInfo.content);
+                        if (ToolString.isEmptyList(goodsListInfo.content)) {
+                            list.addAll(goodsListInfo.content);
                         }
                     }
                 }
@@ -343,7 +340,7 @@ public class GoodsListActivity extends BaseActivity implements OnLoadmoreListene
     public void onLoadmore(RefreshLayout refreshlayout) {
         page = page + 1;
         isRefresh = false;
-        if (ToolRefreshView.isLoadMore(page, totalPages)) {
+        if (ToolRefreshView.isLoadMore(refreshlayout,page, totalPages)) {
             sendHttp();
         }
     }

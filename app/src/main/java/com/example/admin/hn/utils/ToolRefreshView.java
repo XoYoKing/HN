@@ -160,9 +160,10 @@ public class ToolRefreshView {
      * @param totalPage
      * @return
      */
-    public static boolean isLoadMore(int currPage,int totalPage){
+    public static boolean isLoadMore(RefreshLayout refreshLayout,int currPage,int totalPage){
         if(currPage >totalPage){
             //当前页数大于总页数
+            refreshLayout.finishLoadmore();
             ToolAlert.showToast(HNApplication.mApp.context, Constant.LOADED);
             return false;
         }
