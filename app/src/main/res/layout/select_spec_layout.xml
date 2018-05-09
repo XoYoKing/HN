@@ -6,7 +6,9 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
 
         <LinearLayout
             android:id="@+id/search_relative"
@@ -19,6 +21,7 @@
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -74,9 +77,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/common_10dp"
                                 android:text="请选择 颜色 尺码"
-                                android:visibility="gone"
                                 android:textColor="@color/black"
-                                android:textSize="@dimen/common_12sp" />
+                                android:textSize="@dimen/common_12sp"
+                                android:visibility="gone" />
                         </LinearLayout>
 
                         <ImageView
@@ -90,7 +93,7 @@
                             android:src="@drawable/close_img" />
                     </RelativeLayout>
 
-                    <include layout="@layout/include_view_line"/>
+                    <include layout="@layout/include_view_line" />
 
                     <ListView
                         android:id="@+id/type_lv"
@@ -105,64 +108,70 @@
                     <RelativeLayout
                         android:id="@+id/rl_number"
                         android:layout_width="match_parent"
-                        android:layout_marginTop="@dimen/common_10dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/common_10dp"
-                        android:layout_height="wrap_content">
+                        android:layout_marginTop="@dimen/common_10dp">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="数量"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="@dimen/common_15dp"
-                            android:textSize="@dimen/common_14sp"
-                            android:textColor="@color/text_gray_color"/>
+                            android:text="数量"
+                            android:textColor="@color/text_gray_color"
+                            android:textSize="@dimen/common_14sp" />
+
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true"
                             android:layout_alignParentRight="true"
                             android:layout_marginRight="@dimen/common_15dp"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
                             android:orientation="horizontal">
 
-                            <TextView
+                            <ImageView
                                 android:id="@+id/remove"
-                                android:layout_width="@dimen/common_20dp"
-                                android:layout_height="@dimen/common_20dp"
-                                android:gravity="center"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:background="@drawable/shape_left_radius"
-                                android:text="-"/>
+                                android:gravity="center"
+                                android:padding="@dimen/common_3dp"
+                                android:src="@drawable/selector_img_remove" />
+
                             <EditText
                                 android:id="@+id/et_number"
-                                android:background="@drawable/shape_center_radius"
                                 android:layout_width="@dimen/common_40dp"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/shape_center_radius"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:maxLength="5"
                                 android:text="1"
                                 android:textColor="@color/text_color"
-                                android:gravity="center"
-                                android:maxLength="5"
-                                android:inputType="number"
-                                android:textSize="@dimen/common_14sp"
-                                android:layout_height="@dimen/common_20dp" />
-                            <TextView
+                                android:textSize="@dimen/common_14sp" />
+
+                            <ImageView
                                 android:id="@+id/add"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:background="@drawable/shape_right_radius"
-                                android:layout_width="@dimen/common_20dp"
                                 android:gravity="center"
-                                android:layout_height="@dimen/common_20dp"
-                                android:text="+"/>
+                                android:padding="@dimen/common_3dp"
+                                android:src="@drawable/selector_img_add" />
 
                         </LinearLayout>
                     </RelativeLayout>
 
-                    <include layout="@layout/include_view_line"/>
+                    <include layout="@layout/include_view_line" />
                 </LinearLayout>
             </ScrollView>
 
             <LinearLayout
                 android:id="@+id/space_linear"
-                android:layout_marginTop="@dimen/common_20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/common_20dp"
                 android:orientation="horizontal">
 
                 <Button

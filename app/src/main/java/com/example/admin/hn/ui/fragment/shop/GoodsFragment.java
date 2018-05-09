@@ -81,8 +81,10 @@ public class GoodsFragment extends BaseFragment {
 	private GoodsSpecTypeAdapter adapter;
 	private List<BannerInfo> mActivityListBean = new ArrayList<>();
 	private GoodsInfo goodsInfo;
-	private int number;
+	private int number=1;
 	private String[] split;
+	private ImageView add;
+	private ImageView remove;
 
 
 	@Override
@@ -106,7 +108,7 @@ public class GoodsFragment extends BaseFragment {
 		try {
 			goodsInfo = (GoodsInfo) bundle.getSerializable("obj");
 			if (goodsInfo != null) {
-                goods_name.setText(goodsInfo.goods.goodsFullSpecs + "");
+                goods_name.setText(goodsInfo.spu.goodsName + "");
                 goods_name_tip.setText(goodsInfo.spu.usp + "");
 				tv_price.setText("￥"+goodsInfo.goods.goodsPrice + "");
 				tv_spec.setText(goodsInfo.goods.goodsSpec + "");
@@ -179,13 +181,16 @@ public class GoodsFragment extends BaseFragment {
 		space_close_img = (ImageView) popView.findViewById(R.id.space_close_img);
 		goods_spec_icon = (ImageView) popView.findViewById(R.id.goods_spec_icon);
 		tv_goods_price = (TextView) popView.findViewById(R.id.tv_goods_price);
-		View add = popView.findViewById(R.id.add);
-		View remove = popView.findViewById(R.id.remove);
+		add = (ImageView) popView.findViewById(R.id.add);
+		remove = (ImageView) popView.findViewById(R.id.remove);
 		tv_goods_inventory = (TextView) popView.findViewById(R.id.tv_goods_inventory);
 		et_number = (EditText) popView.findViewById(R.id.et_number);
 		tv_goods_price.setText("￥"+goodsInfo.goods.goodsPrice + "");
 		tv_goods_inventory.setText("库存：" + goodsInfo.goods.qty + "");
-
+		et_number.setText("1");//设置默认购买数量为1
+		if (goodsInfo.goods.qty > 1) {//库存大于
+			add.setSelected(true);
+		}
 		ToolViewUtils.glideImageList(goodsInfo.goods.imageUrl, goods_spec_icon, R.drawable.load_fail);
 		space_close_img.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -224,6 +229,28 @@ public class GoodsFragment extends BaseFragment {
 						number = goodsInfo.goods.qty;
 						et_number.setText(number+"");
 						ToolViewUtils.setSelection(et_number);
+						add.setSelected(false);
+						if (number == 1) {
+							remove.setSelected(false);
+						}else {
+							remove.setSelected(true);
+						}
+					}else {
+						if (goodsInfo.goods.qty == 0) {
+							add.setSelected(false);
+							remove.setSelected(false);
+						}else {
+							if (number == goodsInfo.goods.qty) {
+								add.setSelected(false);
+							}else {
+								add.setSelected(true);
+							}
+							if (number == 1) {
+								remove.setSelected(false);
+							}else {
+								remove.setSelected(true);
+							}
+						}
 					}
 				}
 			}
@@ -235,8 +262,6 @@ public class GoodsFragment extends BaseFragment {
 				if (number +1 <= goodsInfo.goods.qty) {
 					et_number.setText((number + 1) + "");
 					ToolViewUtils.setSelection(et_number);
-				}else {
-
 				}
 			}
 		});
@@ -247,8 +272,6 @@ public class GoodsFragment extends BaseFragment {
 				if (number - 1 >= 1) {
 					et_number.setText((number - 1) + "");
 					ToolViewUtils.setSelection(et_number);
-				} else {
-
 				}
 			}
 		});
