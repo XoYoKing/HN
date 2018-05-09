@@ -11,8 +11,6 @@ import android.widget.TextView;
 import com.example.admin.hn.R;
 import com.example.admin.hn.base.BaseActivity;
 import com.example.admin.hn.ui.adapter.AllTabAdapter;
-import com.example.admin.hn.ui.fragment.shop.HnShopFragment;
-import com.example.admin.hn.ui.fragment.shop.ShopFragment;
 import com.example.admin.hn.ui.fragment.shop.ShopOrderManagerFragment;
 
 import butterknife.Bind;

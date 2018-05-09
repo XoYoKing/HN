@@ -143,7 +143,7 @@ public class OrderManagerStatusFragment extends BaseFragment implements OnRefres
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (getUserVisibleHint() && isFirstHttp && http != null) {
+        if (getUserVisibleHint() && isFirstHttp) {
             isFirstHttp = false;
             data(status, shipName, 0);
         }
@@ -152,7 +152,7 @@ public class OrderManagerStatusFragment extends BaseFragment implements OnRefres
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser && http != null) {
+        if (isVisibleToUser) {
             isFirstHttp = false;
             data(status, shipName, 0);
         }

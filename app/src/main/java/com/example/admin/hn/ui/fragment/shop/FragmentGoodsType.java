@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.admin.hn.R;
@@ -18,6 +19,8 @@ import com.example.admin.hn.model.HomeInfo;
 import com.example.admin.hn.model.HomeItem;
 import com.example.admin.hn.model.HomeTypeInfo;
 import com.example.admin.hn.ui.adapter.ShopTypeListAdapter;
+import com.example.admin.hn.utils.ToolRefreshView;
+import com.example.admin.hn.utils.ToolString;
 
 
 import java.util.ArrayList;
@@ -33,12 +36,13 @@ import butterknife.OnClick;
  */
 public class FragmentGoodsType extends BaseFragment {
 
-    @Bind(R.id.progressBar)
-    ProgressBar progressBar;
     @Bind(R.id.network_img)
     ImageView network_img;
     @Bind(R.id.noData_img)
     ImageView noData_img;
+    @Bind(R.id.network_disabled)
+    RelativeLayout network_disabled;
+
     @Bind(R.id.recycleView)
     RecyclerView recycleView;
     private ShopTypeListAdapter adapter;
@@ -65,16 +69,11 @@ public class FragmentGoodsType extends BaseFragment {
         recycleView.setLayoutManager(new LinearLayoutManager(activity));
         adapter = new ShopTypeListAdapter(activity, homeTypeInfo.children);
         recycleView.setAdapter(adapter);
-    }
-
-
-    @OnClick({R.id.noData_img})
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.noData_img:
-                noData_img.setVisibility(View.GONE);
-                progressBar.setVisibility(View.VISIBLE);
-                break;
+        if (ToolString.isEmptyList(homeTypeInfo.children)) {
+            network_disabled.setVisibility(View.GONE);
+        }else {
+            network_disabled.setVisibility(View.VISIBLE);
+            noData_img.setVisibility(View.VISIBLE);
         }
     }
 

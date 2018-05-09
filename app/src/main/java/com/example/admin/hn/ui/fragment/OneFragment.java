@@ -37,6 +37,7 @@ import com.example.admin.hn.ui.shop.ShopCartActivity;
 import com.example.admin.hn.utils.GlideImageLoader;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolAppUtils;
+import com.example.admin.hn.utils.ToolRefreshView;
 import com.example.admin.hn.utils.ToolString;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -140,13 +141,7 @@ public class OneFragment extends BaseFragment  {
     public void initView() {
         //下拉刷新
         refreshLayout = (RefreshLayout) view.findViewById(R.id.refreshLayout);
-        refreshLayout.setDisableContentWhenLoading(true);
-        refreshLayout.setDisableContentWhenRefresh(true);
-        refreshLayout.setEnableScrollContentWhenLoaded(true);
-        //设置 Header 为 Material风格
-        refreshLayout.setRefreshHeader(new MaterialHeader(getActivity()).setShowBezierWave(true));
-        //设置 Footer 为 球脉冲
-        refreshLayout.setRefreshFooter(new BallPulseFooter(getActivity()).setSpinnerStyle(SpinnerStyle.Scale));
+        ToolRefreshView.setRefreshLayout(activity,refreshLayout);
         //监听
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override

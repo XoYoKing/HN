@@ -3,8 +3,6 @@ package com.example.admin.hn.ui.fragment;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +14,6 @@ import com.example.admin.hn.R;
 
 import com.example.admin.hn.base.BaseFragment;
 import com.example.admin.hn.ui.adapter.AllChildTabAdapter;
-import com.example.admin.hn.ui.fragment.shop.HnShopFragment;
-import com.example.admin.hn.ui.fragment.shop.ShopFragment;
 
 
 import butterknife.Bind;
@@ -65,8 +61,8 @@ public class TowFragment extends BaseFragment {
 	private void addChildFragment() {
 
 		AllChildTabAdapter adapter = new AllChildTabAdapter(getChildFragmentManager(), activity, viewPager);
-		adapter.addTab("海宁海图", HnShopFragment.class);
-		adapter.addTab("纸质海图", ShopFragment.class);
+//		adapter.addTab("海宁海图", HnShopFragment.class);
+//		adapter.addTab("纸质海图", ShopFragment.class);
 		tabLayout.setupWithViewPager(viewPager);
 	}
 

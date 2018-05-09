@@ -210,8 +210,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="已选："
-                        android:textColor="@color/black"
+                        android:text="已选"
+                        android:textColor="@color/text_gray_color"
                         android:textSize="@dimen/common_15sp" />
 
                     <TextView
@@ -219,6 +219,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:maxLines="1"
+                        android:layout_marginLeft="@dimen/common_10dp"
                         android:text="红色 黄色  蓝色"
                         android:textColor="@color/black"
                         android:textSize="@dimen/common_15sp" />
@@ -240,26 +241,54 @@
                     android:layout_marginRight="@dimen/common_12dp"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/tv_address"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/common_10dp"
-                        android:maxLines="2"
-                        android:text="送货地址：上海市上海市上海市上海市上海市"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/common_15sp" />
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxLines="2"
+                            android:text="送至"
+                            android:textColor="@color/text_gray_color"
+                            android:textSize="@dimen/common_15sp" />
+                        <TextView
+                            android:id="@+id/tv_address"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxLines="2"
+                            android:layout_marginLeft="@dimen/common_10dp"
+                            android:layout_marginRight="@dimen/common_15dp"
+                            android:text="上海市上海市上海市上海市上海市上海市上海市上海市上海市上海市"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/common_15sp" />
+                    </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/tv_weight"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/common_10dp"
-                        android:maxLines="2"
-                        android:text="重量：20kg"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/common_15sp" />
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxLines="2"
+                            android:text="重量"
+                            android:textColor="@color/text_gray_color"
+                            android:textSize="@dimen/common_15sp" />
 
+                        <TextView
+                            android:id="@+id/tv_weight"
+                            android:layout_width="wrap_content"
+                            android:layout_marginLeft="@dimen/common_10dp"
+                            android:layout_height="wrap_content"
+                            android:maxLines="2"
+                            android:text="20kg"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/common_15sp" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 

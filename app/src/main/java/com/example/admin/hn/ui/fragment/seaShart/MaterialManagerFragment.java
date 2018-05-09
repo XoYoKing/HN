@@ -70,7 +70,6 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
     private View view;
     private int page = 1;
     private int screen = 1;
-    private boolean isRefresh = true;
     private String url = Api.BASE_URL + Api.GET_SUBMITTED_DOCUMENTS;
     private RefreshLayout refreshLayout;
     private LocalBroadcastManager localBroadcastManager;

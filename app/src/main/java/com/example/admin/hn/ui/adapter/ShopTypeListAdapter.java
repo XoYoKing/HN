@@ -76,7 +76,7 @@ public class ShopTypeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return list != null ? list.size() : 0;
     }
 
     public class HolderType extends RecyclerView.ViewHolder {

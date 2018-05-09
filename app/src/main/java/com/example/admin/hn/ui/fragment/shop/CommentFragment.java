@@ -1,6 +1,7 @@
 package com.example.admin.hn.ui.fragment.shop;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -86,7 +87,24 @@ public class CommentFragment extends BaseFragment implements OnLoadmoreListener,
 	public void initData() {
 		Bundle bundle = getArguments();
 		spuId = bundle.getString("type");
-		sendHttp();
+	}
+
+	@Override
+	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		if (getUserVisibleHint() && isFirstHttp) {
+			isFirstHttp = false;
+			sendHttp();
+		}
+	}
+
+	@Override
+	public void setUserVisibleHint(boolean isVisibleToUser) {
+		super.setUserVisibleHint(isVisibleToUser);
+		if (isVisibleToUser && isFirstHttp) {
+			isFirstHttp = false;
+			sendHttp();
+		}
 	}
 
 	private void sendHttp() {

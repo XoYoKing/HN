@@ -1,7 +1,9 @@
 package com.example.admin.hn.ui.fragment.shop;
 
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
@@ -17,8 +19,11 @@ import android.widget.TextView;
 
 import com.example.admin.hn.R;
 
+import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseFragment;
 
+import com.example.admin.hn.http.Constant;
+import com.example.admin.hn.model.AddressInfo;
 import com.example.admin.hn.model.BannerInfo;
 import com.example.admin.hn.model.GoodsInfo;
 
@@ -26,11 +31,15 @@ import com.example.admin.hn.model.HomeItem;
 import com.example.admin.hn.model.SpecGoodsPriceInfo;
 import com.example.admin.hn.ui.account.HtmlActivity;
 import com.example.admin.hn.ui.adapter.GoodsSpecTypeAdapter;
+import com.example.admin.hn.ui.shop.SelectAddressActivity;
 import com.example.admin.hn.utils.GlideImageLoader;
 import com.example.admin.hn.utils.GsonUtils;
+import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolAppUtils;
+import com.example.admin.hn.utils.ToolRefreshView;
 import com.example.admin.hn.utils.ToolString;
 import com.example.admin.hn.utils.ToolViewUtils;
+import com.example.admin.hn.volley.RequestListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
@@ -65,8 +74,15 @@ public class GoodsFragment extends BaseFragment {
 	TextView tv_price;
 	@Bind(R.id.tv_spec)
 	TextView tv_spec;
+	@Bind(R.id.tv_brandName)
+	TextView tv_brandName;
+	@Bind(R.id.tv_address)
+	TextView tv_address;
+	@Bind(R.id.tv_weight)
+	TextView tv_weight;
 	@Bind(R.id.img)
 	ImageView img;
+
 
 	private View view;
 	private PopupWindow window;
@@ -112,6 +128,8 @@ public class GoodsFragment extends BaseFragment {
                 goods_name_tip.setText(goodsInfo.spu.usp + "");
 				tv_price.setText("￥"+goodsInfo.goods.goodsPrice + "");
 				tv_spec.setText(goodsInfo.goods.goodsSpec + "");
+				tv_brandName.setText(goodsInfo.spu.brandName+"");
+				tv_weight.setText(goodsInfo.spu.freightWeight + "kg");
 				ToolViewUtils.glideImageList(goodsInfo.goods.imageUrl, img, R.drawable.load_fail);
 				String specItemsIds = goodsInfo.goods.specItemsIds.substring(0, goodsInfo.goods.specItemsIds.length());
 				split = specItemsIds.split(",");
@@ -124,6 +142,56 @@ public class GoodsFragment extends BaseFragment {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		getAddress();
+	}
+
+	private String url = Api.SHOP_BASE_URL + Api.GET_ADDRESS_LIST;
+
+	private void getAddress(){
+		http.get(url, params, null, new RequestListener() {
+			@Override
+			public void requestSuccess(String json) {
+				Logger.e("收货地址列表", json);
+				if (GsonUtils.isShopSuccess(json)) {
+					TypeToken typeToken = new TypeToken<List<AddressInfo>>() {};
+					List<AddressInfo> data = (List<AddressInfo>) GsonUtils.jsonToList2(json, typeToken, "content");
+					if (ToolString.isEmptyList(data)) {
+						for (int i = 0; i < data.size(); i++) {
+							AddressInfo info = data.get(i);
+							if (info.isDefaul == 1) {
+								setAddress(false,info);
+								break;
+							}
+						}
+					}else {
+						setAddress(false,null);
+					}
+				}else {
+					setAddress(true,null);
+				}
+			}
+
+			@Override
+			public void requestError(String message) {
+				setAddress(true,null);
+			}
+		});
+	}
+
+	//设置默认地址
+	private void setAddress(boolean isNet, AddressInfo info) {
+		if (info != null) {
+			Intent intent = new Intent(Constant.ACTION_GOODS_DETAIL_ACTIVITY);
+			intent.putExtra("info", info);
+			LocalBroadcastManager.getInstance(activity).sendBroadcast(intent);
+			tv_address.setText(info.areaName + " " + info.receiverAddr);
+		} else {
+			if (isNet) {
+				tv_address.setText("获取收货地址失败，快去设置吧!");
+			}else {
+				tv_address.setText("您还没有设置收货地址，快去设置吧!");
+			}
+		}
 	}
 
 
@@ -132,11 +200,14 @@ public class GoodsFragment extends BaseFragment {
 
 	}
 
-	@OnClick({R.id.ll_spec})
+	@OnClick({R.id.ll_spec,R.id.tv_address})
 	public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.ll_spec:
 				showPopWindow(v);
+				break;
+			case R.id.tv_address:
+				SelectAddressActivity.startActivity(activity);
 				break;
 		}
 	}
@@ -338,6 +409,15 @@ public class GoodsFragment extends BaseFragment {
 			});
 			//banner设置方法全部调用完毕时最后调用
 			bannerGuideContent.start();
+		}
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode == 100 && data != null) {
+			AddressInfo info = (AddressInfo) data.getSerializableExtra("info");
+			setAddress(false, info);
 		}
 	}
 }

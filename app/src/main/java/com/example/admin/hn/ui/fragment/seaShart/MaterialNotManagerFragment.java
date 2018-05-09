@@ -73,7 +73,6 @@ public class MaterialNotManagerFragment extends BaseFragment implements OnRefres
     private String url = Api.BASE_URL + Api.GET_DOCUMENTS;
     private String submit_url = Api.BASE_URL + Api.SUBMIT_DOCUMENTS;
     private RefreshLayout refreshLayout;
-    private boolean isRefresh = true;//是否下拉刷新
     private LocalBroadcastManager localBroadcastManager;
     private BroadcastReceiver br;
 

@@ -12,7 +12,7 @@
 
         <View
             android:id="@+id/step_top_line"
-            android:layout_width="@dimen/common_1dp"
+            android:layout_width="@dimen/line"
             android:layout_height="@dimen/common_10dp"
             android:background="@color/line_color" />
 
@@ -24,7 +24,7 @@
 
         <View
             android:id="@+id/step_bottom_line"
-            android:layout_width="@dimen/common_1dp"
+            android:layout_width="@dimen/line"
             android:layout_height="match_parent"
             android:background="@color/line_color" />
     </LinearLayout>
@@ -57,7 +57,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="@dimen/common_1dp"
+            android:layout_height="@dimen/line"
             android:layout_marginBottom="@dimen/common_10dp"
             android:background="@color/line_color"></View>
     </LinearLayout>

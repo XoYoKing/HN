@@ -102,7 +102,6 @@ public class Api {
     //根据商品ID查询商品的收藏量
     public static final String GET_CONLLECT_LIST= "usr/goods/conllect/list";
 
-
 //    ================== 商城接口========================
 
 }

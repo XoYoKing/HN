@@ -92,6 +92,8 @@ public class Constant {
     public static final String ACTION_SHIP_SELECT_FRAGMENT = "ShipSelectFragment";
     //船舶选择
     public static final String ACTION_CREATE_ADDRESS_ACTIVITY = "CreateAddressActivity";
+    //商品详情
+    public static final String ACTION_GOODS_DETAIL_ACTIVITY = "GoodsDetailActivity";
 
     /**
      * 商品订单状态

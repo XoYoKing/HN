@@ -10,10 +10,7 @@ import android.widget.TextView;
 
 import com.example.admin.hn.R;
 import com.example.admin.hn.base.BaseActivity;
-import com.example.admin.hn.ui.adapter.AllChildTabAdapter;
 import com.example.admin.hn.ui.adapter.AllTabAdapter;
-import com.example.admin.hn.ui.fragment.shop.HnShopFragment;
-import com.example.admin.hn.ui.fragment.shop.ShopFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -66,15 +63,15 @@ public class ShopTypeListActivity extends BaseActivity {
     @Override
     public void initData() {
         AllTabAdapter adapter = new AllTabAdapter(this, viewPager);
-        adapter.addTab("海宁海图", HnShopFragment.class);
-        adapter.addTab("纸质海图", ShopFragment.class);
-        adapter.addTab("电脑配件", HnShopFragment.class);
-        adapter.addTab("船舶物料", HnShopFragment.class);
-        adapter.addTab("手机数码", HnShopFragment.class);
-        adapter.addTab("个人化妆", HnShopFragment.class);
-        adapter.addTab("大家电", HnShopFragment.class);
-        adapter.addTab("家用产品", HnShopFragment.class);
-        adapter.addTab("扶贫产品", HnShopFragment.class);
+//        adapter.addTab("海宁海图", HnShopFragment.class);
+//        adapter.addTab("纸质海图", ShopFragment.class);
+//        adapter.addTab("电脑配件", HnShopFragment.class);
+//        adapter.addTab("船舶物料", HnShopFragment.class);
+//        adapter.addTab("手机数码", HnShopFragment.class);
+//        adapter.addTab("个人化妆", HnShopFragment.class);
+//        adapter.addTab("大家电", HnShopFragment.class);
+//        adapter.addTab("家用产品", HnShopFragment.class);
+//        adapter.addTab("扶贫产品", HnShopFragment.class);
         viewPager.setOffscreenPageLimit(8);
         tabLayout.setupWithViewPager(viewPager);
     }
