@@ -33,7 +33,7 @@
                     android:id="@+id/img"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/common_250dp"
-                    android:scaleType="fitXY"/>
+                    android:scaleType="fitCenter"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"

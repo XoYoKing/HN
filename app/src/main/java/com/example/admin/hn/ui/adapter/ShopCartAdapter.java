@@ -21,6 +21,7 @@ import com.example.admin.hn.widget.ExtendedEditText;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,25 +39,30 @@ public class ShopCartAdapter extends CommonAdapter<ShopCartInfo> {
     @Override
     protected void convert(ViewHolder holder, final ShopCartInfo info, final int position) {
         final ImageView img_select = holder.getView(R.id.img_select);
+        final ImageView goods_img = holder.getView(R.id.goods_img);
         final ImageView add = holder.getView(R.id.add);
         final ImageView remove = holder.getView(R.id.remove);
         final TextView tv_number = holder.getView(R.id.tv_number);
-        tv_number.setText(info.buyNumber + "");
-        if (info.buyNumber < info.qty && info.qty > 1) {
+        ToolViewUtils.glideImageList(info.getImageUrl(), goods_img, R.drawable.load_fail);
+        holder.setText(R.id.goods_title, info.getGoodsName() + "");
+        holder.setText(R.id.tv_usp, info.getUsp() + "");
+        holder.setText(R.id.tv_goods_price, info.getGoodsPrice() + "");
+        tv_number.setText(info.getBuyNumber() + "");
+        if (info.getBuyNumber() < info.getQty() && info.getQty() > 1) {
             add.setSelected(true);
         } else {
             add.setSelected(false);
         }
-        if (info.buyNumber > 1 && info.qty > 1) {
+        if (info.getBuyNumber() > 1 && info.getQty() > 1) {
             remove.setSelected(true);
         } else {
             remove.setSelected(false);
         }
 
         if (isEdit) {
-            img_select.setSelected(info.isEditSelect);
+            img_select.setSelected(info.isEditSelect());
         } else {
-            img_select.setSelected(info.isSelect);
+            img_select.setSelected(info.isSelect());
         }
         holder.setOnClickListener(R.id.img_select, new View.OnClickListener() {
             @Override
@@ -81,11 +87,11 @@ public class ShopCartAdapter extends CommonAdapter<ShopCartInfo> {
     }
 
     private void updateAddOrRemove(ImageView add, ImageView remove, TextView tv_number, int number, ShopCartInfo goodsInfo) {
-        if (goodsInfo.qty == 0) {
+        if (goodsInfo.getQty() == 0) {
             add.setSelected(false);
             remove.setSelected(false);
         } else {
-            if (number == goodsInfo.qty) {
+            if (number == goodsInfo.getQty()) {
                 add.setSelected(false);
             } else {
                 add.setSelected(true);
@@ -102,26 +108,26 @@ public class ShopCartAdapter extends CommonAdapter<ShopCartInfo> {
      * 增加数量
      */
     private void add(ImageView add, ImageView remove,TextView tv_number, ShopCartInfo info) {
-        if (info.buyNumber>=info.qty) {
+        if (info.getBuyNumber()>=info.getQty()) {
             //购买数量大于等于库存的時候不能继续增加
         } else {
-            info.buyNumber = info.buyNumber + 1;
-            tv_number.setText(info.buyNumber + "");
+            info.setBuyNumber(info.getBuyNumber() + 1);
+            tv_number.setText(info.getBuyNumber() + "");
         }
-        updateAddOrRemove(add, remove, tv_number, info.buyNumber, info);
+        updateAddOrRemove(add, remove, tv_number, info.getBuyNumber(), info);
     }
 
     /**
      * 减少数量
      */
     private void remove(ImageView add, ImageView remove,TextView tv_number, ShopCartInfo info) {
-        if (info.buyNumber == 1) {
+        if (info.getBuyNumber() == 1) {
             //购买数量为1的时候 不能继续减少
         } else {
-            info.buyNumber = info.buyNumber - 1;
-            tv_number.setText(info.buyNumber + "");
+            info.setBuyNumber(info.getBuyNumber() - 1);
+            tv_number.setText(info.getBuyNumber() + "");
         }
-        updateAddOrRemove(add, remove, tv_number, info.buyNumber, info);
+        updateAddOrRemove(add, remove, tv_number, info.getBuyNumber(), info);
     }
 
     /**
@@ -132,25 +138,25 @@ public class ShopCartAdapter extends CommonAdapter<ShopCartInfo> {
      */
     private void updateView(ShopCartInfo info, ImageView img_select) {
         if (isEdit) {
-            if (info.isEditSelect) {
-                info.isEditSelect = false;
+            if (info.isEditSelect()) {
+                info.setEditSelect(false);
             } else {
-                info.isEditSelect = true;
+                info.setEditSelect(true);
             }
-            img_select.setSelected(info.isEditSelect);
+            img_select.setSelected(info.isEditSelect());
         } else {
-            if (info.isSelect) {
-                info.isSelect = false;
+            if (info.isSelect()) {
+                info.setSelect(false);
             } else {
-                info.isSelect = true;
+                info.setSelect(true);
             }
-            img_select.setSelected(info.isSelect);
+            img_select.setSelected(info.isSelect());
         }
         if (onItemClickListener != null) {
             for (int i = 0; i < mDatas.size(); i++) {
                 //遍历集合是否被全部选中
                 if (isEdit) {
-                    if (mDatas.get(i).isEditSelect) {
+                    if (mDatas.get(i).isEditSelect()) {
                         isAll = true;
                     } else {
                         //只要有一个没有被选中 跳出循环
@@ -158,7 +164,7 @@ public class ShopCartAdapter extends CommonAdapter<ShopCartInfo> {
                         break;
                     }
                 } else {
-                    if (mDatas.get(i).isSelect) {
+                    if (mDatas.get(i).isSelect()) {
                         isAll = true;
                     } else {
                         //只要有一个没有被选中 跳出循环
@@ -184,13 +190,37 @@ public class ShopCartAdapter extends CommonAdapter<ShopCartInfo> {
         for (int i = 0; i < mDatas.size(); i++) {
             ShopCartInfo info = mDatas.get(i);
             if (isEdit) {
-                info.isEditSelect = isSelect;
+                info.setEditSelect(isSelect);
             } else {
-                info.isSelect = isSelect;
+                info.setSelect(isSelect);
             }
         }
         notifyDataSetChanged();
     }
+
+    /**
+     * 获取被选中的商品集合
+     * @param isEdit  区分是编辑状态还是 结算状态
+     * @return
+     */
+    public List<ShopCartInfo> getSelectInfo(boolean isEdit){
+        List<ShopCartInfo> list = new ArrayList<>();
+        for (int i = 0; i < mDatas.size(); i++) {
+            ShopCartInfo info = mDatas.get(i);
+            if (isEdit) {
+                if (info.isEditSelect()) {
+                    list.add(info);
+                }
+            } else {
+                if (info.isSelect()) {
+                    list.add(info);
+                }
+            }
+        }
+        return list;
+    }
+
+
 
     /**
      * 刷新列表

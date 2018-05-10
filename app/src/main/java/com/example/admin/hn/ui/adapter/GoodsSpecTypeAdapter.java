@@ -14,6 +14,7 @@ import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
 
+import java.nio.Buffer;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -77,44 +78,23 @@ public class GoodsSpecTypeAdapter extends CommonAdapter<GoodsInfo.SpecInfo> {
     private void reckon(Map<Integer, String> map) {
         Iterator iterator = map.entrySet().iterator();
         StringBuffer buffer = new StringBuffer();
+        buffer.append("[");
         while (iterator.hasNext()) {
             Map.Entry<Integer, String> entry = (Map.Entry<Integer, String>) iterator.next();
             String value = entry.getValue();
-            buffer.append(value).append("_");
+            buffer.append(value).append(",");
         }
-        String key = buffer.toString();
-        sendHttp(key.substring(0, key.length() - 1));
+        String substring = buffer.substring(0, buffer.length() - 1);
+        StringBuffer buffer1 = new StringBuffer(substring);
+        buffer1.append("]");
+        String key = buffer1.toString();
+        sendHttp(key);
     }
 
     private void sendHttp(String key) {
-        Logger.e("key", key);
         if (selectSpecListener != null) {
-//            selectSpecListener.onSelectSpecListener(goodsPriceInfo);
+            selectSpecListener.onSelectSpecListener(key.substring(0, key.length()));
         }
-//        RequestParams params = new RequestParams();
-//        params.put("key", key);
-//        AbLogUtil.e("key", key);
-//        IRequest.post(context, Config.URL_GET_GOODS_SPCINFO, params, "加载中...", new RequestListener() {
-//            @Override
-//            public void requestSuccess(String json) {
-//                AbLogUtil.e("json", json);
-//                if (AbJsonUtil.isSuccess(json)) {
-//                    goodsPriceInfo = (SpecGoodsPriceInfo) AbJsonUtil.fromJson(json, SpecGoodsPriceInfo.class);
-//                    if (goodsPriceInfo != null) {
-//                        if (selectSpecListener != null) {
-//                            selectSpecListener.onSelectSpecListener(goodsPriceInfo);
-//                        }
-//                    }
-//                } else {
-//                    AbToastUtil.showToast(context, AbJsonUtil.getError(json));
-//                }
-//            }
-//
-//            @Override
-//            public void requestError(String message) {
-//                AbToastUtil.showToast(context, message);
-//            }
-//        });
     }
 
     private OnSelectSpecListener selectSpecListener;
@@ -128,7 +108,7 @@ public class GoodsSpecTypeAdapter extends CommonAdapter<GoodsInfo.SpecInfo> {
     }
 
     public interface OnSelectSpecListener {
-        void onSelectSpecListener(SpecGoodsPriceInfo specGoodsPriceInfo);
+        void onSelectSpecListener(String spec);
     }
 
     class MyAdapter extends TagAdapter<GoodsInfo.SpecInfo.SpecItem> {

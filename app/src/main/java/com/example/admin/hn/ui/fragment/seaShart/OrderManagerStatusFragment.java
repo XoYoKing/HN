@@ -152,7 +152,7 @@ public class OrderManagerStatusFragment extends BaseFragment implements OnRefres
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
+        if (isVisibleToUser && http!=null) {
             isFirstHttp = false;
             data(status, shipName, 0);
         }

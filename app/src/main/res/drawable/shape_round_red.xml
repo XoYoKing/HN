@@ -1,0 +1,14 @@
+<!--<shape xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:shape="ring"-->
+    <!--android:innerRadius="@dimen/common_9dp"-->
+    <!--android:thickness="@dimen/common_1dp"-->
+    <!--android:useLevel="false">-->
+    <!--&lt;!&ndash; 填充的颜色 &ndash;&gt;-->
+    <!--<solid android:color="@color/red" />-->
+<!--</shape>-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 填充的颜色 -->
+    <solid android:color="@color/white" />
+    <stroke android:color="@color/red" android:width="@dimen/common_1dp"/>
+    <corners android:radius="9dp"/>
+</shape>

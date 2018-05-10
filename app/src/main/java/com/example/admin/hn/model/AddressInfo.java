@@ -30,6 +30,7 @@ public class AddressInfo implements Serializable {
     public String areaName;//区域全称
     public String phone;//联系人电话
     public int isDefaul;//是否默认地址
+    public boolean isSelect;//在选择地址时判断是否选中状态
 
     @Override
     public String toString() {

@@ -6,16 +6,19 @@ import android.content.Context;
 import com.example.admin.hn.R;
 import com.zhy.http.okhttp.OkHttpUtils;
 
+import org.litepal.LitePalApplication;
+
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
+import cn.jpush.android.api.JPushInterface;
 import okhttp3.OkHttpClient;
 
 /**
  * Created by WIN10 on 2018/3/27.
  */
 
-public class HNApplication extends Application {
+public class HNApplication extends LitePalApplication {
     public static HNApplication mApp;
     public Context context;
     public Session session;
@@ -32,7 +35,9 @@ public class HNApplication extends Application {
         initOkHttp();
         initGallery();//初始化Gallery
         this.session = new SharedPreferencesSession(this);
-        this.test_session = new SharedPreferencesSession(this,"configs");
+        this.test_session = new SharedPreferencesSession(this, "configs");
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
     }
     public static String getAPPName() {
         return mApp.getApplicationContext().getResources().getString(R.string.app_name);

@@ -156,7 +156,7 @@ public class ShopTypeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         private void bindType1(HolderType1 holder, int position) {
             final HomeItem info = (HomeItem) data.get(position);
             holder.tv_name.setText(info.name + "");
-//            ToolViewUtils.glideImageList(info.imageurl,holder.type_icon,R.drawable.load_fail);
+            ToolViewUtils.glideImageList(info.imageurl,holder.type_icon,R.drawable.load_fail);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

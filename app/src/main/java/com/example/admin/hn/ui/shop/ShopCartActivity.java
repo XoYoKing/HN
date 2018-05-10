@@ -23,6 +23,10 @@ import com.example.admin.hn.ui.fragment.shop.bean.ShopCartInfo;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolRefreshView;
+import com.example.admin.hn.utils.ToolShopCartUtil;
+import com.example.admin.hn.utils.ToolString;
+import com.example.admin.hn.volley.RequestListener;
+import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
@@ -31,9 +35,12 @@ import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.squareup.okhttp.Request;
 
+import org.litepal.crud.DataSupport;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -73,8 +80,10 @@ public class ShopCartActivity extends BaseActivity implements OnRefreshListener,
     RelativeLayout rl_del;
 
     private ArrayList<ShopCartInfo> list = new ArrayList<>();
-
+    private String url = Api.SHOP_BASE_URL + Api.GET_CONLLECT_LIST;
     private ShopCartAdapter adapter;
+    private int page;
+    private int totalPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +144,9 @@ public class ShopCartActivity extends BaseActivity implements OnRefreshListener,
                 ToolAlert.dialog(context, "", "是否删除选中的商品", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        List<ShopCartInfo> selectInfo = adapter.getSelectInfo(true);
+                        Logger.e("selectInfo", selectInfo.toString());
+                        ToolShopCartUtil.deleteShopCartInfo(context,selectInfo);
                         dialog.dismiss();
                     }
                 }, new DialogInterface.OnClickListener() {
@@ -166,22 +178,35 @@ public class ShopCartActivity extends BaseActivity implements OnRefreshListener,
         });
     }
 
-
     @Override
     public void initData() {
-        for (int i = 0; i < 10; i++) {
-            list.add(new ShopCartInfo());
-            adapter.notifyDataSetChanged();
+        sendHttp();
+    }
+
+    private void sendHttp() {
+        List<ShopCartInfo> infoList = DataSupport.findAll(ShopCartInfo.class);
+        if (ToolString.isEmptyList(infoList)) {
+            list.clear();
+            list.addAll(infoList);
+            ToolRefreshView.hintView(adapter, refreshLayout, false, network, noData_img, network_img);
+        }else {
+            ToolRefreshView.hintView(adapter, refreshLayout, false, network, noData_img, network_img);
         }
     }
 
     @Override
     public void onLoadmore(RefreshLayout refreshlayout) {
-
+        isRefresh = false;
+        page = page + 1;
+        if (ToolRefreshView.isLoadMore(refreshlayout, page, totalPage)) {
+            sendHttp();
+        }
     }
 
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
-
+        page = 0;
+        isRefresh = true;
+        sendHttp();
     }
 }

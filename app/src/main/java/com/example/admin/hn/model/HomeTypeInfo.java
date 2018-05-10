@@ -12,7 +12,7 @@ public class HomeTypeInfo implements Serializable {
     public SitMenu sitMenu;//一级分类
     public List<Children> children;//二级分类
 
-    public class SitMenu implements Serializable{
+    public class SitMenu implements Serializable {
         //一级分类
         public String id;// "id": 1,
         public String menuNames;//  "menuNames": "服饰鞋帽",
@@ -32,8 +32,10 @@ public class HomeTypeInfo implements Serializable {
         }
     }
 
-    public class Children implements Serializable{
+    public class Children implements Serializable {
         //二级分类
         public SitMenu sitMenu;
     }
+
+
 }

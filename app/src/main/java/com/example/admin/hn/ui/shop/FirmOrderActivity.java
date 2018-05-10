@@ -93,8 +93,10 @@ public class FirmOrderActivity extends BaseActivity {
         recycleView.setAdapter(adapter);
     }
 
+
     private void setAddress(AddressInfo info) {
         if (info != null) {
+            addressInfo = info;
             goods_receipt_name.setText(info.receiverName+"");
             goods_receipt_phone.setText(info.phone + "");
             tv_address.setText(info.areaName + " " + info.receiverAddr);
@@ -111,7 +113,7 @@ public class FirmOrderActivity extends BaseActivity {
                 payOrder();
                 break;
             case R.id.address_linear:
-                SelectAddressActivity.startActivity(this);
+                SelectAddressActivity.startActivity(this,addressInfo);
                 break;
         }
     }

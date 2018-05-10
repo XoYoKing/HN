@@ -85,6 +85,9 @@ public class Api {
     public static final String GET_GOODS_LIST = "sto/goods/list";
     //商品详情查询接口
     public static final String GET_GOODS_DETAIL = "sto/goods/";
+    //通过SpuId和规格的specItemsIds查询商品详情接口
+    public static final String GET_GOODS_SPEC_DETAIL = "sto/goods/detail";
+
     //获取城市列表
     public static final String GET_AREA_LIST = "sit/area/list";
     //个人收货地址查询接口

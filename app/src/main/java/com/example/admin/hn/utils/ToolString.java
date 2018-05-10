@@ -1,5 +1,9 @@
 package com.example.admin.hn.utils;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -128,6 +132,24 @@ public class ToolString {
         if (number != null)
             number = number.replaceAll("[^(0-9)]", "");
         return number;
+    }
+
+    // 校验Tag Alias 只能是数字,英文字母和中文
+    public static boolean isValidTagAndAlias(String s) {
+        Pattern p = Pattern.compile("^[\u4E00-\u9FA50-9a-zA-Z_!@#$&*+=.|]+$");
+        Matcher m = p.matcher(s);
+        return m.matches();
+    }
+
+    /**
+     * 网络是否连接
+     * @param context
+     * @return
+     */
+    public static boolean isConnected(Context context) {
+        ConnectivityManager conn = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = conn.getActiveNetworkInfo();
+        return (info != null && info.isConnected());
     }
 
     /**

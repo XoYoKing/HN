@@ -62,7 +62,7 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -72,15 +72,34 @@
             android:paddingLeft="@dimen/common_20dp">
 
             <LinearLayout
+                android:id="@+id/ll_cart"
+                android:layout_alignParentRight="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:layout_marginRight="@dimen/common_40dp"
                 android:orientation="vertical">
-                <ImageView
-                    android:id="@+id/iv_shop_cart"
+                <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/goods_detail_shop_cart" />
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/iv_shop_cart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/goods_detail_shop_cart" />
+                    <TextView
+                        android:id="@+id/tv_cartNumber"
+                        android:layout_marginLeft="-10dp"
+                        android:layout_toRightOf="@+id/iv_shop_cart"
+                        android:layout_width="@dimen/common_18dp"
+                        android:gravity="center"
+                        android:layout_height="@dimen/common_18dp"
+                        android:background="@drawable/shape_round_red"
+                        android:text="99"
+                        android:textSize="@dimen/common_12sp"
+                        android:textColor="@color/red"/>
+                </RelativeLayout>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -88,36 +107,9 @@
                     android:text="购物车"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/common_12sp" />
-
             </LinearLayout>
-            <TextView
-                android:layout_width="@dimen/common_30dp"
-                android:layout_marginLeft="@dimen/common_10dp"
-                android:layout_height="wrap_content"
-                android:background="@color/grey_dde1e7"
-                android:gravity="center"
-                android:text="-"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/common_18sp" />
 
-            <TextView
-                android:layout_width="@dimen/common_40dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="99"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/common_14sp" />
-
-            <TextView
-                android:layout_width="@dimen/common_30dp"
-                android:layout_height="wrap_content"
-                android:background="@color/grey_dde1e7"
-                android:gravity="center"
-                android:text="+"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/common_18sp" />
-
-        </LinearLayout>
+        </RelativeLayout>
 
         <Button
             android:id="@+id/add_shopping_cart"

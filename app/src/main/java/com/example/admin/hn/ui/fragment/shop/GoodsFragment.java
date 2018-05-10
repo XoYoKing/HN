@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -31,12 +32,14 @@ import com.example.admin.hn.model.HomeItem;
 import com.example.admin.hn.model.SpecGoodsPriceInfo;
 import com.example.admin.hn.ui.account.HtmlActivity;
 import com.example.admin.hn.ui.adapter.GoodsSpecTypeAdapter;
+import com.example.admin.hn.ui.fragment.shop.bean.ShopCartInfo;
 import com.example.admin.hn.ui.shop.SelectAddressActivity;
 import com.example.admin.hn.utils.GlideImageLoader;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolAppUtils;
 import com.example.admin.hn.utils.ToolRefreshView;
+import com.example.admin.hn.utils.ToolShopCartUtil;
 import com.example.admin.hn.utils.ToolString;
 import com.example.admin.hn.utils.ToolViewUtils;
 import com.example.admin.hn.volley.RequestListener;
@@ -49,9 +52,12 @@ import com.youth.banner.Transformer;
 import com.youth.banner.listener.OnBannerListener;
 
 import org.json.JSONObject;
+import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -97,11 +103,15 @@ public class GoodsFragment extends BaseFragment {
 	private GoodsSpecTypeAdapter adapter;
 	private List<BannerInfo> mActivityListBean = new ArrayList<>();
 	private GoodsInfo goodsInfo;
-	private int number=1;
-	private String[] split;
+	private int number;
 	private ImageView add;
 	private ImageView remove;
+	private AddressInfo selectInfo;//当前选择的地址
 
+	private String url = Api.SHOP_BASE_URL + Api.GET_ADDRESS_LIST;
+	private Button space_add_shopping_cart;
+	private Button space_confirm_bid;
+	private ShopCartInfo shopCartInfo;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -120,32 +130,37 @@ public class GoodsFragment extends BaseFragment {
 
 	@Override
 	public void initData() {
-		Bundle bundle = getArguments();
-		try {
-			goodsInfo = (GoodsInfo) bundle.getSerializable("obj");
-			if (goodsInfo != null) {
-                goods_name.setText(goodsInfo.spu.goodsName + "");
-                goods_name_tip.setText(goodsInfo.spu.usp + "");
-				tv_price.setText("￥"+goodsInfo.goods.goodsPrice + "");
-				tv_spec.setText(goodsInfo.goods.goodsSpec + "");
-				tv_brandName.setText(goodsInfo.spu.brandName+"");
-				tv_weight.setText(goodsInfo.spu.freightWeight + "kg");
-				ToolViewUtils.glideImageList(goodsInfo.goods.imageUrl, img, R.drawable.load_fail);
-				String specItemsIds = goodsInfo.goods.specItemsIds.substring(0, goodsInfo.goods.specItemsIds.length());
-				split = specItemsIds.split(",");
+		setValue(null);//设置参数
+		getAddress();
+	}
+
+	private void setValue(GoodsInfo goods) {
+		if (goods == null) {
+			try {
+				Bundle bundle = getArguments();
+				goodsInfo = (GoodsInfo) bundle.getSerializable("obj");
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
+		}else {
+			goodsInfo = goods;
+		}
+		if (goodsInfo != null) {
+			goods_name.setText(goodsInfo.spu.goodsName + "");
+			goods_name_tip.setText(goodsInfo.spu.usp + "");
+			tv_price.setText("￥"+goodsInfo.goods.goodsPrice + "");
+			tv_spec.setText(goodsInfo.goods.goodsSpec + "");
+			tv_brandName.setText(goodsInfo.spu.brandName+"");
+			tv_weight.setText(goodsInfo.spu.freightWeight + "kg");
+			ToolViewUtils.glideImageList(goodsInfo.goods.imageUrl, img, R.drawable.load_fail);
 //			List<BannerInfo> bannerInfos = new ArrayList<>();
 //			BannerInfo bannerInfo = new BannerInfo();
 //			bannerInfo.imgUrl = goodsInfo.goods.imageUrl;
 //			bannerInfos.add(bannerInfo);
 //			initBanner(bannerInfos);
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
-		getAddress();
 	}
 
-	private String url = Api.SHOP_BASE_URL + Api.GET_ADDRESS_LIST;
 
 	private void getAddress(){
 		http.get(url, params, null, new RequestListener() {
@@ -178,10 +193,13 @@ public class GoodsFragment extends BaseFragment {
 		});
 	}
 
+
 	//设置默认地址
 	private void setAddress(boolean isNet, AddressInfo info) {
 		if (info != null) {
+			selectInfo = info;
 			Intent intent = new Intent(Constant.ACTION_GOODS_DETAIL_ACTIVITY);
+			intent.putExtra("status", 1);
 			intent.putExtra("info", info);
 			LocalBroadcastManager.getInstance(activity).sendBroadcast(intent);
 			tv_address.setText(info.areaName + " " + info.receiverAddr);
@@ -192,6 +210,39 @@ public class GoodsFragment extends BaseFragment {
 				tv_address.setText("您还没有设置收货地址，快去设置吧!");
 			}
 		}
+	}
+
+	/**
+	 * 通过SpuId和规格的specItemsIds查询商品详情接口
+	 */
+	private String url_detail = Api.SHOP_BASE_URL + Api.GET_GOODS_SPEC_DETAIL;
+	private void getGoodsDetail(String specItemsIds){
+		Map map = new HashMap();
+		map.put("specItemsIds", specItemsIds);
+		map.put("spuId", goodsInfo.spu.id);
+		http.get(url_detail, map, progressTitle, new RequestListener() {
+			@Override
+			public void requestSuccess(String json) {
+				Logger.e("商品详情", json);
+				if (GsonUtils.isShopSuccess(json)) {
+					goodsInfo = GsonUtils.jsonToBean2(json, GoodsInfo.class);
+					if (goodsInfo != null) {
+						setValue(goodsInfo);
+						Intent intent = new Intent(Constant.ACTION_GOODS_DETAIL_ACTIVITY);
+						intent.putExtra("status", 3);
+						intent.putExtra("goodsInfo", goodsInfo);
+						LocalBroadcastManager.getInstance(activity).sendBroadcast(intent);
+					}
+				}else {
+					ToolAlert.showToast(activity, GsonUtils.getError(json));
+				}
+			}
+
+			@Override
+			public void requestError(String message) {
+				ToolAlert.showToast(activity,message);
+			}
+		});
 	}
 
 
@@ -207,7 +258,7 @@ public class GoodsFragment extends BaseFragment {
 				showPopWindow(v);
 				break;
 			case R.id.tv_address:
-				SelectAddressActivity.startActivity(activity);
+				SelectAddressActivity.startActivity(activity,selectInfo);
 				break;
 		}
 	}
@@ -249,6 +300,8 @@ public class GoodsFragment extends BaseFragment {
 	 */
 	private void initPopView() {
 		type_lv = (ListView) popView.findViewById(R.id.type_lv);
+		space_add_shopping_cart = (Button) popView.findViewById(R.id.space_add_shopping_cart);
+		space_confirm_bid = (Button) popView.findViewById(R.id.space_confirm_bid);
 		space_close_img = (ImageView) popView.findViewById(R.id.space_close_img);
 		goods_spec_icon = (ImageView) popView.findViewById(R.id.goods_spec_icon);
 		tv_goods_price = (TextView) popView.findViewById(R.id.tv_goods_price);
@@ -258,6 +311,7 @@ public class GoodsFragment extends BaseFragment {
 		et_number = (EditText) popView.findViewById(R.id.et_number);
 		tv_goods_price.setText("￥"+goodsInfo.goods.goodsPrice + "");
 		tv_goods_inventory.setText("库存：" + goodsInfo.goods.qty + "");
+		number = 1;
 		et_number.setText("1");//设置默认购买数量为1
 		if (goodsInfo.goods.qty > 1) {//库存大于
 			add.setSelected(true);
@@ -274,8 +328,11 @@ public class GoodsFragment extends BaseFragment {
 		type_lv.setAdapter(adapter);
 		adapter.setSelectSpecListener(new GoodsSpecTypeAdapter.OnSelectSpecListener() {
 			@Override
-			public void onSelectSpecListener(SpecGoodsPriceInfo specGoodsPriceInfo) {
-
+			public void onSelectSpecListener(String spec) {
+				//把选择的规格赋值给商品的规格
+				Logger.e("specItemsIds1", goodsInfo.goods.specItemsIds);
+				Logger.e("specItemsIds2", spec);
+				getGoodsDetail(spec);
 			}
 		});
 
@@ -326,7 +383,6 @@ public class GoodsFragment extends BaseFragment {
 				}
 			}
 		});
-
 		add.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -347,16 +403,22 @@ public class GoodsFragment extends BaseFragment {
 			}
 		});
 
-//		setCheckSpecPriceInfo(checkPriceInfo);
+		space_add_shopping_cart.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				ToolShopCartUtil.addShopCartInfo(activity, goodsInfo, Integer.parseInt(et_number.getText().toString()));
+			}
+		});
 	}
+
 
 	//初始化 被选中的状态
 	private void setSelectItem() {
 		try {
-			for (int i = 0; i < split.length; i++) {
-                GoodsInfo.SpecInfo spec = goodsInfo.spec.get(i);
+			for (int i = 0; i < goodsInfo.currGoodsSpecItemsIds.size(); i++) {
+				String specItemId = goodsInfo.currGoodsSpecItemsIds.get(i);
+				GoodsInfo.SpecInfo spec = goodsInfo.spec.get(i);
                 List<GoodsInfo.SpecInfo.SpecItem> specItem = spec.specItem;
-                String specItemId = split[i];//获取选中的ID
                 for (int j = 0; j <specItem.size(); j++) {
                     //查找被选中的ID的下标
                     GoodsInfo.SpecInfo.SpecItem item = specItem.get(j);

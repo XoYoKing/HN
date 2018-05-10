@@ -64,6 +64,8 @@ public class SelectAddressActivity extends BaseActivity {
     private List<AddressInfo> list=new ArrayList<>();
     private SelectAddressAdapter adapter;
     private String url = Api.SHOP_BASE_URL + Api.GET_ADDRESS_LIST;
+    private AddressInfo addressInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,11 +77,11 @@ public class SelectAddressActivity extends BaseActivity {
     }
 
     /**
-     *
      * @param context
      */
-    public static void startActivity(Activity context) {
+    public static void startActivity(Activity context, AddressInfo info) {
         Intent intent = new Intent(context, SelectAddressActivity.class);
+        intent.putExtra("info", info);
         context.startActivityForResult(intent, 100);
     }
 
@@ -98,6 +100,7 @@ public class SelectAddressActivity extends BaseActivity {
         adapter = new SelectAddressAdapter(this, R.layout.item_select_address, list);
         recycleView.setLayoutManager(new LinearLayoutManager(context));
         recycleView.setAdapter(adapter);
+        addressInfo = (AddressInfo) getIntent().getSerializableExtra("info");
 
         adapter.setSelectAddressClick(new SelectAddressAdapter.OnSelectAddressClick() {
             @Override
@@ -150,6 +153,7 @@ public class SelectAddressActivity extends BaseActivity {
                     if (ToolString.isEmptyList(data)) {
                         list.addAll(data);
                     }
+                    setSelectAddress();
                 }else {
                     ToolAlert.showToast(context, GsonUtils.getError(json));
                 }
@@ -164,5 +168,18 @@ public class SelectAddressActivity extends BaseActivity {
         });
     }
 
+    /**
+     * 设置当前选中的地址
+     */
+    private void setSelectAddress() {
+        if (addressInfo != null) {
+            for (int i = 0; i < list.size(); i++) {
+                AddressInfo info = list.get(i);
+                if (info.id.equals(addressInfo.id)) {
+                    info.isSelect = true;
+                }
+            }
+        }
+    }
 
 }

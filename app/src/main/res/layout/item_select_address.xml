@@ -48,6 +48,18 @@
                     android:textStyle="bold"
                     android:textColor="@color/black"
                     android:textSize="@dimen/common_16sp" />
+
+                <TextView
+                    android:layout_marginLeft="@dimen/common_20dp"
+                    android:id="@+id/tv_default"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="默认"
+                    android:background="@drawable/shape_rect_red_radius"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:padding="@dimen/common_2dp"
+                    android:textSize="@dimen/common_14sp" />
             </LinearLayout>
 
             <RelativeLayout

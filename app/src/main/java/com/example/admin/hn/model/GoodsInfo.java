@@ -12,7 +12,7 @@ public class GoodsInfo implements Serializable {
     public Spu spu;//商品spu
     public Goods goods;//商品
     public List<SpecInfo> spec;//規格
-    public AddressInfo address;
+    public List<String> currGoodsSpecItemsIds;//当前规格参数
 
     public class Spu implements Serializable{
         public String id;//商品ID
@@ -33,6 +33,7 @@ public class GoodsInfo implements Serializable {
     }
 
     public class Goods implements Serializable{
+        public String id;//商品ID
         public String storeId;//店铺ID
         public String spuId;//商品SPUID
         public double goodsPrice;//商品价格
