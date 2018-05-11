@@ -64,7 +64,6 @@ public class ShopCartAdapter extends CommonAdapter<ShopCartInfo> {
         } else {
             remove.setSelected(false);
         }
-
         if (isEdit) {
             img_select.setSelected(info.isEditSelect());
         } else {
@@ -225,7 +224,10 @@ public class ShopCartAdapter extends CommonAdapter<ShopCartInfo> {
                 info.setEditSelect(isSelect);
             } else {
                 info.setSelect(isSelect);
-                info.update(info.getId());
+                //修改本地数据库选中状态
+                ContentValues values = new ContentValues();
+                values.put("select", info.isSelect());
+                DataSupport.update(ShopCartInfo.class, values, info.getId());
                 if (isSelect) {
                     //如果是全选就计算所有的商品价格的总和
                     double goodsPrice = info.getGoodsPrice() * info.getBuyNumber();
