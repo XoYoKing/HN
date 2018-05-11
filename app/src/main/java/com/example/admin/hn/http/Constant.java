@@ -94,7 +94,8 @@ public class Constant {
     public static final String ACTION_CREATE_ADDRESS_ACTIVITY = "CreateAddressActivity";
     //商品详情
     public static final String ACTION_GOODS_DETAIL_ACTIVITY = "GoodsDetailActivity";
-
+    //商品详情
+    public static final String ACTION_GOODS_DETAIL_FRAGMENT = "GoodsDetailFragment";
     /**
      * 商品订单状态
      * NEW("待付款"),              0

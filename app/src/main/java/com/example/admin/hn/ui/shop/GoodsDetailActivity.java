@@ -201,12 +201,16 @@ public class GoodsDetailActivity extends BaseActivity {
                     }else if (status==2){
                         //更新购物车数量
                         int count = intent.getIntExtra("count", 0);
-                        tv_cartNumber.setText(count + "");
+                        if (count == 0) {
+                            tv_cartNumber.setVisibility(View.GONE);
+                        }else {
+                            tv_cartNumber.setText(count + "");
+                            tv_cartNumber.setVisibility(View.VISIBLE);
+                        }
                     }else if (status==3){
                         //更新商品信息
                         goodsInfo = (GoodsInfo) intent.getSerializableExtra("goodsInfo");
                     }
-                    Logger.e("defaultInfo",defaultInfo.toString());
                 }
             }
         };

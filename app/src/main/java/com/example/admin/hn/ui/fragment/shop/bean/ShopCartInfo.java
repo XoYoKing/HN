@@ -1,5 +1,6 @@
 package com.example.admin.hn.ui.fragment.shop.bean;
 
+import org.litepal.annotation.Column;
 import org.litepal.crud.DataSupport;
 
 import java.io.Serializable;
@@ -11,18 +12,38 @@ import java.util.List;
  */
 
 public class ShopCartInfo extends DataSupport implements Serializable {
-    private int id;
-    private boolean isSelect;//是否选中
-    private boolean isEditSelect;//是否编辑状态下的选中
+
+    @Column(unique = true)
+    private long id;
+    private boolean select;//是否选中
+    private boolean editSelect;//是否编辑状态下的选中
     private int buyNumber;//购买数量
     private int qty;//库存
     private String goodsId;//商品ID
     private String spuId;//SPUID
     private String goodsName;//商品名称
+    private String goodsFullSpecs;//商品规格
+    private String goodsFullName;//商品标题
     private String usp;//商品买点
     private double goodsPrice;//商品价格
     private String imageUrl;//商品图片
     private List<String> currGoodsSpecItemsIds;//当前规格参数
+
+    public String getGoodsFullName() {
+        return goodsFullName;
+    }
+
+    public void setGoodsFullName(String goodsFullName) {
+        this.goodsFullName = goodsFullName;
+    }
+
+    public String getGoodsFullSpecs() {
+        return goodsFullSpecs;
+    }
+
+    public void setGoodsFullSpecs(String goodsFullSpecs) {
+        this.goodsFullSpecs = goodsFullSpecs;
+    }
 
     public List<String> getCurrGoodsSpecItemsIds() {
         return currGoodsSpecItemsIds;
@@ -32,14 +53,13 @@ public class ShopCartInfo extends DataSupport implements Serializable {
         this.currGoodsSpecItemsIds = currGoodsSpecItemsIds;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
-
 
     public String getUsp() {
         return usp;
@@ -49,20 +69,21 @@ public class ShopCartInfo extends DataSupport implements Serializable {
         this.usp = usp;
     }
 
+
     public boolean isSelect() {
-        return isSelect;
+        return select;
     }
 
     public void setSelect(boolean select) {
-        isSelect = select;
+        this.select = select;
     }
 
     public boolean isEditSelect() {
-        return isEditSelect;
+        return editSelect;
     }
 
     public void setEditSelect(boolean editSelect) {
-        isEditSelect = editSelect;
+        this.editSelect = editSelect;
     }
 
     public int getBuyNumber() {

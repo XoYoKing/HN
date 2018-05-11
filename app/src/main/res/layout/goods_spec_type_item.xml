@@ -30,4 +30,14 @@
         app:max_select="1">
 
     </com.zhy.view.flowlayout.TagFlowLayout>
+
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/recycleView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginBottom="@dimen/common_10dp"-->
+        <!--android:layout_marginLeft="@dimen/common_15dp"-->
+        <!--android:layout_marginRight="@dimen/common_15dp">-->
+
+    <!--</android.support.v7.widget.RecyclerView>-->
 </LinearLayout>

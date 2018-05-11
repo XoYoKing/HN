@@ -23,13 +23,11 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 public class ToolRefreshView {
 
     public static void setRefreshLayout(Context context, RefreshLayout refreshLayout, OnRefreshListener onRefreshListener) {
-        refreshLayout.setDisableContentWhenLoading(true);
-        refreshLayout.setDisableContentWhenRefresh(true);
+        refreshLayout.setEnableLoadmore(false);
         refreshLayout.setEnableScrollContentWhenLoaded(true);
         //设置 Header 为 Material风格
         refreshLayout.setRefreshHeader(new MaterialHeader(context).setShowBezierWave(true));
         //设置 Footer 为 球脉冲
-//		refreshLayout.setRefreshFooter(new BallPulseFooter(context).setSpinnerStyle(SpinnerStyle.Scale));
         refreshLayout.setOnRefreshListener(onRefreshListener);
     }
     public static void setRefreshLayout(Context context, RefreshLayout refreshLayout, OnRefreshListener onRefreshListener,OnLoadmoreListener onLoadmoreListener) {

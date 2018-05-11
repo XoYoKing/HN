@@ -347,7 +347,7 @@ public class GoodsListActivity extends BaseActivity implements OnLoadmoreListene
 
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
-        page = 1;
+        page = 0;
         isRefresh = true;
         sendHttp();
     }

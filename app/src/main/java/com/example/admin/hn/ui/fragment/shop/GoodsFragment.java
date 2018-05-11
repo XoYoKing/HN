@@ -1,9 +1,14 @@
 package com.example.admin.hn.ui.fragment.shop;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
@@ -34,6 +39,7 @@ import com.example.admin.hn.ui.account.HtmlActivity;
 import com.example.admin.hn.ui.adapter.GoodsSpecTypeAdapter;
 import com.example.admin.hn.ui.fragment.shop.bean.ShopCartInfo;
 import com.example.admin.hn.ui.shop.SelectAddressActivity;
+import com.example.admin.hn.utils.AbMathUtil;
 import com.example.admin.hn.utils.GlideImageLoader;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
@@ -93,12 +99,10 @@ public class GoodsFragment extends BaseFragment {
 	private View view;
 	private PopupWindow window;
 	private View popView;
-	private ListView type_lv;
+	private RecyclerView type_lv;
 	private ImageView space_close_img;
 	private ImageView goods_spec_icon;
-//	private TextView tv_goods_spec;
 	private TextView tv_goods_price;
-	private TextView tv_goods_inventory;
 	private EditText et_number;
 	private GoodsSpecTypeAdapter adapter;
 	private List<BannerInfo> mActivityListBean = new ArrayList<>();
@@ -112,6 +116,9 @@ public class GoodsFragment extends BaseFragment {
 	private Button space_add_shopping_cart;
 	private Button space_confirm_bid;
 	private ShopCartInfo shopCartInfo;
+	private TextView tv_goods_no;
+	private LocalBroadcastManager localBroadcastManager;
+	private BroadcastReceiver br;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -146,9 +153,9 @@ public class GoodsFragment extends BaseFragment {
 			goodsInfo = goods;
 		}
 		if (goodsInfo != null) {
-			goods_name.setText(goodsInfo.spu.goodsName + "");
+			goods_name.setText(goodsInfo.goods.goodsFullName + "");
 			goods_name_tip.setText(goodsInfo.spu.usp + "");
-			tv_price.setText("￥"+goodsInfo.goods.goodsPrice + "");
+			tv_price.setText("￥" + AbMathUtil.roundStr(goodsInfo.goods.goodsPrice, 2) + "");
 			tv_spec.setText(goodsInfo.goods.goodsSpec + "");
 			tv_brandName.setText(goodsInfo.spu.brandName+"");
 			tv_weight.setText(goodsInfo.spu.freightWeight + "kg");
@@ -158,6 +165,9 @@ public class GoodsFragment extends BaseFragment {
 //			bannerInfo.imgUrl = goodsInfo.goods.imageUrl;
 //			bannerInfos.add(bannerInfo);
 //			initBanner(bannerInfos);
+			if (tv_goods_price != null) {
+				tv_goods_price.setText("￥ " + goodsInfo.goods.goodsPrice + "");
+			}
 		}
 	}
 
@@ -198,11 +208,12 @@ public class GoodsFragment extends BaseFragment {
 	private void setAddress(boolean isNet, AddressInfo info) {
 		if (info != null) {
 			selectInfo = info;
+			tv_address.setText(info.areaName + " " + info.receiverAddr);
+
 			Intent intent = new Intent(Constant.ACTION_GOODS_DETAIL_ACTIVITY);
 			intent.putExtra("status", 1);
 			intent.putExtra("info", info);
 			LocalBroadcastManager.getInstance(activity).sendBroadcast(intent);
-			tv_address.setText(info.areaName + " " + info.receiverAddr);
 		} else {
 			if (isNet) {
 				tv_address.setText("获取收货地址失败，快去设置吧!");
@@ -248,7 +259,7 @@ public class GoodsFragment extends BaseFragment {
 
 	@Override
 	public void initTitleBar() {
-
+//		initBroadcastReceiver();
 	}
 
 	@OnClick({R.id.ll_spec,R.id.tv_address})
@@ -299,7 +310,7 @@ public class GoodsFragment extends BaseFragment {
 	 * 初始化规格参数弹窗界面
 	 */
 	private void initPopView() {
-		type_lv = (ListView) popView.findViewById(R.id.type_lv);
+		type_lv = (RecyclerView) popView.findViewById(R.id.type_lv);
 		space_add_shopping_cart = (Button) popView.findViewById(R.id.space_add_shopping_cart);
 		space_confirm_bid = (Button) popView.findViewById(R.id.space_confirm_bid);
 		space_close_img = (ImageView) popView.findViewById(R.id.space_close_img);
@@ -307,10 +318,10 @@ public class GoodsFragment extends BaseFragment {
 		tv_goods_price = (TextView) popView.findViewById(R.id.tv_goods_price);
 		add = (ImageView) popView.findViewById(R.id.add);
 		remove = (ImageView) popView.findViewById(R.id.remove);
-		tv_goods_inventory = (TextView) popView.findViewById(R.id.tv_goods_inventory);
+		tv_goods_no = (TextView) popView.findViewById(R.id.tv_goods_no);
 		et_number = (EditText) popView.findViewById(R.id.et_number);
-		tv_goods_price.setText("￥"+goodsInfo.goods.goodsPrice + "");
-		tv_goods_inventory.setText("库存：" + goodsInfo.goods.qty + "");
+		tv_goods_price.setText("￥ "+goodsInfo.goods.goodsPrice + "");
+		tv_goods_no.setText("商品编号：" + goodsInfo.goods.goodsSerial + "");
 		number = 1;
 		et_number.setText("1");//设置默认购买数量为1
 		if (goodsInfo.goods.qty > 1) {//库存大于
@@ -320,18 +331,17 @@ public class GoodsFragment extends BaseFragment {
 		space_close_img.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				window.dismiss();
+				dismiss();
 			}
 		});
-		setSelectItem();
-		adapter = new GoodsSpecTypeAdapter(activity, R.layout.goods_spec_type_item, goodsInfo.spec);
+		Map<Integer, String> selectItem = setSelectItem();
+		adapter = new GoodsSpecTypeAdapter(activity, R.layout.goods_spec_type_item, goodsInfo.spec,selectItem);
+		type_lv.setLayoutManager(new LinearLayoutManager(activity));
 		type_lv.setAdapter(adapter);
 		adapter.setSelectSpecListener(new GoodsSpecTypeAdapter.OnSelectSpecListener() {
 			@Override
 			public void onSelectSpecListener(String spec) {
 				//把选择的规格赋值给商品的规格
-				Logger.e("specItemsIds1", goodsInfo.goods.specItemsIds);
-				Logger.e("specItemsIds2", spec);
 				getGoodsDetail(spec);
 			}
 		});
@@ -407,14 +417,16 @@ public class GoodsFragment extends BaseFragment {
 			@Override
 			public void onClick(View v) {
 				ToolShopCartUtil.addShopCartInfo(activity, goodsInfo, Integer.parseInt(et_number.getText().toString()));
+				dismiss();
 			}
 		});
 	}
 
 
 	//初始化 被选中的状态
-	private void setSelectItem() {
+	private Map<Integer, String> setSelectItem() {
 		try {
+			Map<Integer, String> select_id = new HashMap<>();
 			for (int i = 0; i < goodsInfo.currGoodsSpecItemsIds.size(); i++) {
 				String specItemId = goodsInfo.currGoodsSpecItemsIds.get(i);
 				GoodsInfo.SpecInfo spec = goodsInfo.spec.get(i);
@@ -422,16 +434,19 @@ public class GoodsFragment extends BaseFragment {
                 for (int j = 0; j <specItem.size(); j++) {
                     //查找被选中的ID的下标
                     GoodsInfo.SpecInfo.SpecItem item = specItem.get(j);
-                    if (specItemId.equals(item.id)) {
+					if (specItemId.equals(item.specItemId)) {
                         //找到被选中的下标  设置为选中
-                        item.isSelect = true;
-                        break;
+						item.isSelect = true;
+						select_id.put(i, item.specItemId);
+						break;
                     }
                 }
             }
+			return select_id;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 
 	/**
@@ -481,5 +496,37 @@ public class GoodsFragment extends BaseFragment {
 			AddressInfo info = (AddressInfo) data.getSerializableExtra("info");
 			setAddress(false, info);
 		}
+	}
+
+	private void dismiss(){
+		if (window != null) {
+			window.dismiss();
+			window = null;
+			popView = null;
+		}
+	}
+
+
+	private void initBroadcastReceiver(){
+		localBroadcastManager = LocalBroadcastManager.getInstance(activity);
+		IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction(Constant.ACTION_GOODS_DETAIL_FRAGMENT);
+		br = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				if (intent != null) {
+					int status = intent.getIntExtra("status", 0);
+					if (status == 1) {
+						dismiss();
+					}
+				}
+			}
+		};
+		localBroadcastManager.registerReceiver(br, intentFilter);
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
 	}
 }

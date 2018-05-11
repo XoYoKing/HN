@@ -91,7 +91,7 @@ public class SearchActivity extends BaseActivity {
         }
         search_history.setAdapter(new TagAdapter<String>(history_data) {
             @Override
-            public View getView(com.zhy.view.flowlayout.FlowLayout parent, int position, String s) {
+            public View getView(FlowLayout parent, int position, String s) {
                 TextView bt = (TextView) View.inflate(context, R.layout.search_hos_item, null);
                 bt.setText(s);
                 return bt;
@@ -99,7 +99,7 @@ public class SearchActivity extends BaseActivity {
         });
         search_hot.setAdapter(new TagAdapter<String>(hot_data) {
             @Override
-            public View getView(com.zhy.view.flowlayout.FlowLayout parent, int position, String s) {
+            public View getView(FlowLayout parent, int position, String s) {
                 TextView bt = (TextView) View.inflate(context, R.layout.search_hos_item, null);
                 bt.setText(s);
                 return bt;

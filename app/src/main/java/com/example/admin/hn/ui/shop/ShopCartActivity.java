@@ -14,34 +14,24 @@ import android.widget.TextView;
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseActivity;
-import com.example.admin.hn.base.HNApplication;
-import com.example.admin.hn.http.OkHttpUtil;
-import com.example.admin.hn.model.OrderInfo;
+
 import com.example.admin.hn.model.ShoppingCartInfo;
 import com.example.admin.hn.ui.adapter.ShopCartAdapter;
 import com.example.admin.hn.ui.fragment.shop.bean.ShopCartInfo;
-import com.example.admin.hn.utils.GsonUtils;
+import com.example.admin.hn.utils.AbMathUtil;
+
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolRefreshView;
 import com.example.admin.hn.utils.ToolShopCartUtil;
 import com.example.admin.hn.utils.ToolString;
-import com.example.admin.hn.volley.RequestListener;
+
 import com.orhanobut.logger.Logger;
-import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
-import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
-import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.squareup.okhttp.Request;
 
 import org.litepal.crud.DataSupport;
-
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -53,7 +43,7 @@ import butterknife.OnClick;
  *
  * @author Administrator
  */
-public class ShopCartActivity extends BaseActivity implements OnRefreshListener,OnLoadmoreListener{
+public class ShopCartActivity extends BaseActivity implements OnRefreshListener{
     @Bind(R.id.text_title_back)
     TextView textTitleBack;
     @Bind(R.id.text_title)
@@ -78,6 +68,9 @@ public class ShopCartActivity extends BaseActivity implements OnRefreshListener,
     RelativeLayout rl_pay;
     @Bind(R.id.rl_del)
     RelativeLayout rl_del;
+    @Bind(R.id.tv_all_price)
+    TextView tv_all_price;
+
 
     private ArrayList<ShopCartInfo> list = new ArrayList<>();
     private String url = Api.SHOP_BASE_URL + Api.GET_CONLLECT_LIST;
@@ -120,7 +113,7 @@ public class ShopCartActivity extends BaseActivity implements OnRefreshListener,
                     text_tile_right.setText("完成");
                     rl_pay.setVisibility(View.GONE);
                     rl_del.setVisibility(View.VISIBLE);
-                    adapter.setSelectAll(true,false);
+                    adapter.setSelectAll(true,false,true);
                 }else {//结算状态
                     img_del_all.setSelected(false);//在结算时 把编辑默认设置为选中状态
                     text_tile_right.setText("编辑");
@@ -130,11 +123,12 @@ public class ShopCartActivity extends BaseActivity implements OnRefreshListener,
                 }
                 break;
             case R.id.img_pay_all:
-                adapter.setSelectAll(false,!img_pay_all.isSelected());
+                double sum = adapter.setSelectAll(false, !img_pay_all.isSelected(), false);
+                tv_all_price.setText(AbMathUtil.roundStr(sum, 2) + "");
                 img_pay_all.setSelected(!img_pay_all.isSelected());
                 break;
             case R.id.img_del_all:
-                adapter.setSelectAll(true,!img_del_all.isSelected());
+                adapter.setSelectAll(true,!img_del_all.isSelected(),false);
                 img_del_all.setSelected(!img_del_all.isSelected());
                 break;
             case R.id.go_pay:
@@ -147,6 +141,7 @@ public class ShopCartActivity extends BaseActivity implements OnRefreshListener,
                         List<ShopCartInfo> selectInfo = adapter.getSelectInfo(true);
                         Logger.e("selectInfo", selectInfo.toString());
                         ToolShopCartUtil.deleteShopCartInfo(context,selectInfo);
+                        sendHttp();
                         dialog.dismiss();
                     }
                 }, new DialogInterface.OnClickListener() {
@@ -162,16 +157,17 @@ public class ShopCartActivity extends BaseActivity implements OnRefreshListener,
     @Override
     public void initView() {
         //下拉刷新
-        ToolRefreshView.setRefreshLayout(context,refreshLayout,this,this);
+        ToolRefreshView.setRefreshLayout(context,refreshLayout,this);
         recycleView.setLayoutManager(new LinearLayoutManager(context));
         adapter = new ShopCartAdapter(this, R.layout.item_shopping_cart, list);
         recycleView.setAdapter(adapter);
         adapter.setOnItemClickListener(new ShopCartAdapter.OnItemClickListener() {
             @Override
-            public void onItemClickListener(boolean isEdit,boolean isAll) {
+            public void onItemClickListener(boolean isEdit,boolean isAll,double sumPrice) {
                 if (isEdit) {
                     img_del_all.setSelected(isAll);
                 }else {
+                    tv_all_price.setText(AbMathUtil.roundStr(sumPrice, 2) + "");
                     img_pay_all.setSelected(isAll);
                 }
             }
@@ -184,28 +180,23 @@ public class ShopCartActivity extends BaseActivity implements OnRefreshListener,
     }
 
     private void sendHttp() {
-        List<ShopCartInfo> infoList = DataSupport.findAll(ShopCartInfo.class);
-        if (ToolString.isEmptyList(infoList)) {
+        try {
+            List<ShopCartInfo> infoList = DataSupport.findAll(ShopCartInfo.class);
             list.clear();
-            list.addAll(infoList);
-            ToolRefreshView.hintView(adapter, refreshLayout, false, network, noData_img, network_img);
-        }else {
-            ToolRefreshView.hintView(adapter, refreshLayout, false, network, noData_img, network_img);
-        }
-    }
-
-    @Override
-    public void onLoadmore(RefreshLayout refreshlayout) {
-        isRefresh = false;
-        page = page + 1;
-        if (ToolRefreshView.isLoadMore(refreshlayout, page, totalPage)) {
-            sendHttp();
+            if (ToolString.isEmptyList(infoList)) {
+                list.addAll(infoList);
+                ToolRefreshView.hintView(adapter, refreshLayout, false, network, noData_img, network_img);
+            }else {
+                ToolRefreshView.hintView(adapter, refreshLayout, false, network, noData_img, network_img);
+            }
+            adapter.getSumPrice();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
-        page = 0;
         isRefresh = true;
         sendHttp();
     }

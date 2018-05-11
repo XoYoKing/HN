@@ -59,27 +59,19 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/common_10dp"
                                 android:text="￥99.99"
+                                android:textStyle="bold"
                                 android:textColor="@color/red"
                                 android:textSize="@dimen/common_12sp" />
 
                             <TextView
-                                android:id="@+id/tv_goods_inventory"
+                                android:id="@+id/tv_goods_no"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/common_10dp"
-                                android:text="库存：666件"
-                                android:textColor="@color/black"
+                                android:text="商品编号"
+                                android:textColor="@color/text_gray_color"
                                 android:textSize="@dimen/common_12sp" />
 
-                            <TextView
-                                android:id="@+id/tv_goods_spec"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/common_10dp"
-                                android:text="请选择 颜色 尺码"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/common_12sp"
-                                android:visibility="gone" />
                         </LinearLayout>
 
                         <ImageView
@@ -90,20 +82,20 @@
                             android:layout_alignParentTop="true"
                             android:layout_marginRight="@dimen/common_15dp"
                             android:layout_marginTop="@dimen/common_10dp"
-                            android:src="@drawable/close_img" />
+                            android:src="@drawable/scan_back_icon_sel" />
                     </RelativeLayout>
 
                     <include layout="@layout/include_view_line" />
 
-                    <ListView
+                    <android.support.v7.widget.RecyclerView
                         android:id="@+id/type_lv"
                         android:layout_width="match_parent"
-                        android:layout_height="250dp"
+                        android:layout_height="wrap_content"
                         android:layout_above="@+id/space_linear"
                         android:layout_below="@+id/goods_space_relative"
                         android:background="@null"
                         android:divider="@null"
-                        android:listSelector="@android:color/transparent"></ListView>
+                        android:listSelector="@android:color/transparent"></android.support.v7.widget.RecyclerView>
 
                     <RelativeLayout
                         android:id="@+id/rl_number"

@@ -38,7 +38,9 @@ public class GoodsInfo implements Serializable {
         public String spuId;//商品SPUID
         public double goodsPrice;//商品价格
         public String goodsSpec;//商品规格
+        public String goodsSerial;//商品编号
         public String goodsFullSpecs;//商品规格
+        public String goodsFullName;//商品标题
         public int qty;//库存
         public String imageUrl;//图片
         public String mainSpecId;//商品属性ID(映射第一个属性)

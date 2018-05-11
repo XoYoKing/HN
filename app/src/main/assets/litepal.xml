@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <litepal>
     <dbname value="hn_shop_cart"></dbname>   <!-- 数据库的名字 -->
-    <version value="1"></version>  <!-- 数据库的版本号 -->
+    <version value="4"></version>  <!-- 数据库的版本号 -->
     <list>
         <!-- 配置数据库中相应的表，暂时不写 -->
         <mapping class="com.example.admin.hn.ui.fragment.shop.bean.ShopCartInfo"></mapping>
