@@ -68,13 +68,12 @@ public class ShopCartAdapter extends CommonAdapter<ShopCartInfo> {
         if (isEdit) {
             img_select.setSelected(info.isEditSelect());
         } else {
-            Logger.e("isSelect", info.getId()+"");
             img_select.setSelected(info.isSelect());
         }
         holder.setOnClickListener(R.id.img_select, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateView(info, img_select);
+                updateDtat(info, img_select);
             }
         });
 
@@ -93,7 +92,7 @@ public class ShopCartAdapter extends CommonAdapter<ShopCartInfo> {
         });
     }
 
-    private void updateAddOrRemove(ImageView add, ImageView remove, TextView tv_number, int number, ShopCartInfo goodsInfo) {
+    private void updateAddOrRemove(ImageView add, ImageView remove,  int number, ShopCartInfo goodsInfo) {
         if (goodsInfo.getQty() == 0) {
             add.setSelected(false);
             remove.setSelected(false);
@@ -129,7 +128,7 @@ public class ShopCartAdapter extends CommonAdapter<ShopCartInfo> {
             tv_number.setText(info.getBuyNumber() + "");
             info.update(info.getId());//更新数据库
         }
-        updateAddOrRemove(add, remove, tv_number, info.getBuyNumber(), info);
+        updateAddOrRemove(add, remove, info.getBuyNumber(), info);
     }
 
     /**
@@ -147,7 +146,7 @@ public class ShopCartAdapter extends CommonAdapter<ShopCartInfo> {
             tv_number.setText(info.getBuyNumber() + "");
             info.update(info.getId());//更新数据库
         }
-        updateAddOrRemove(add, remove, tv_number, info.getBuyNumber(), info);
+        updateAddOrRemove(add, remove, info.getBuyNumber(), info);
     }
 
     /**
@@ -156,7 +155,7 @@ public class ShopCartAdapter extends CommonAdapter<ShopCartInfo> {
      * @param info
      * @param img_select
      */
-    private void updateView(ShopCartInfo info, ImageView img_select) {
+    private void updateDtat(ShopCartInfo info, ImageView img_select) {
         if (isEdit) {
             if (info.isEditSelect()) {
                 info.setEditSelect(false);
@@ -171,6 +170,7 @@ public class ShopCartAdapter extends CommonAdapter<ShopCartInfo> {
                 info.setSelect(true);
             }
             img_select.setSelected(info.isSelect());
+            //修改本地数据库选中状态
             ContentValues values = new ContentValues();
             values.put("select", info.isSelect());
             DataSupport.update(ShopCartInfo.class, values, info.getId());

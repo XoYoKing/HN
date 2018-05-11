@@ -139,7 +139,6 @@ public class ShopCartActivity extends BaseActivity implements OnRefreshListener{
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         List<ShopCartInfo> selectInfo = adapter.getSelectInfo(true);
-                        Logger.e("selectInfo", selectInfo.toString());
                         ToolShopCartUtil.deleteShopCartInfo(context,selectInfo);
                         sendHttp();
                         dialog.dismiss();
@@ -181,7 +180,10 @@ public class ShopCartActivity extends BaseActivity implements OnRefreshListener{
 
     private void sendHttp() {
         try {
-            List<ShopCartInfo> infoList = DataSupport.findAll(ShopCartInfo.class);
+//            List<ShopCartInfo> infoList = DataSupport.findAll(ShopCartInfo.class);
+            List<ShopCartInfo> infoList = DataSupport.select("*")
+                    .order("id desc")
+                    .find(ShopCartInfo.class);
             list.clear();
             if (ToolString.isEmptyList(infoList)) {
                 list.addAll(infoList);
