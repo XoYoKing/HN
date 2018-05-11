@@ -139,6 +139,18 @@ public class GsonUtils {
         String jsonStr = gson.toJson(map);
         return jsonStr;
     }
+    /**
+     * 将list集合转换成json字符串
+     *
+     * @param list
+     *
+     * @return
+     */
+    public static String toListJson(List<?> list) {
+        Gson gson = new Gson();
+        String jsonStr = gson.toJson(list);
+        return jsonStr.toString();
+    }
 
     /**
      * 将java对象转换成json字符串

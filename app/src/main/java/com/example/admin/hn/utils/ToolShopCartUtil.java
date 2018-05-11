@@ -30,18 +30,14 @@ public class ToolShopCartUtil {
                 for (int i = 0; i < all.size(); i++) {
                     ShopCartInfo shop = all.get(i);
                     List<String> specItemsIds = shop.getCurrGoodsSpecItemsIds();
-                    Logger.e("specItemsIds", specItemsIds.toString());
                     List<String> itemsIds = goodsInfo.currGoodsSpecItemsIds;
-                    boolean is = true;
-                    for (int j = 0; j < specItemsIds.size(); j++) {
-                        //检测添加的规格参数是否相同
-                        String s1 = specItemsIds.get(j);
-                        String s2 = itemsIds.get(j);
-                        if (!s1.equals(s2)) {
-                            //找到一个规格数据不匹配的时候就跳出循环
-                            is = false;
-                            break;
-                        }
+                    String json1 = GsonUtils.toListJson(specItemsIds);
+                    String json2 = GsonUtils.toListJson(itemsIds);
+                    boolean is;
+                    if (json1.equals(json2)) {
+                        is = true;
+                    }else {
+                        is = false;
                     }
                     if (shop.getGoodsId().equals(goodsInfo.goods.id) && is) {
                         //如果找到同一个商品同一种规格就修改购买的数量
