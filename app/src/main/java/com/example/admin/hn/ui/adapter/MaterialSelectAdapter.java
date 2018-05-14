@@ -11,6 +11,7 @@ import com.example.admin.hn.R;
 import com.example.admin.hn.model.OrderInfo;
 import com.example.admin.hn.model.OrderNotUseInfo;
 import com.example.admin.hn.model.OrderUseInfo;
+import com.example.admin.hn.utils.AbDateUtil;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolString;
 import com.example.admin.hn.utils.ToolViewUtils;
@@ -36,13 +37,12 @@ public class MaterialSelectAdapter extends CommonAdapter<OrderUseInfo> {
     @Override
     protected void convert(ViewHolder viewHolder,final OrderUseInfo item, final int position) {
         final ExtendedEditText tv_buy_number = viewHolder.getView(R.id.tv_buy_number);
-        viewHolder.setText(R.id.tv_type, item.category_name + "");
+//        viewHolder.setText(R.id.tv_type, item.category_name + "");
         viewHolder.setText(R.id.tv_ship_name, item.ship_name + "");
         viewHolder.setText(R.id.tv_name, item.chs_name + "");
         viewHolder.setText(R.id.tv_number, item.code + "");
-        viewHolder.setText(R.id.tv_date, item.publish_at + "");
-        viewHolder.setText(R.id.tv_inventory, item.storage_amount + "");
-        viewHolder.setText(R.id.tv_inventory, item.storage_amount + "");
+        viewHolder.setText(R.id.tv_date, AbDateUtil.getStringByFormat(item.publish_at,AbDateUtil.dateFormatYMD)  + "");
+//        viewHolder.setText(R.id.tv_inventory, item.storage_amount + "");
         tv_buy_number.setText(item.quantity+"");
         viewHolder.setOnClickListener(R.id.tv_cancel, new View.OnClickListener() {
             @Override
@@ -119,7 +119,6 @@ public class MaterialSelectAdapter extends CommonAdapter<OrderUseInfo> {
             if (ToolString.isEmpty(s.toString())) {
                 int number = Integer.parseInt(s.toString());
                 if (number == 0) {
-                    ToolAlert.showToast(mContext, "购买数量不能为0");
                     info.quantity = 1;
                     tv_buy_number.setText(info.quantity + "");
                     ToolViewUtils.setSelection(tv_buy_number);

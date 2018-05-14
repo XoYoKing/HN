@@ -12,6 +12,7 @@ import com.example.admin.hn.R;
 
 import com.example.admin.hn.model.OrderNotUseInfo;
 import com.example.admin.hn.model.OrderUseInfo;
+import com.example.admin.hn.utils.AbDateUtil;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolString;
 import com.example.admin.hn.utils.ToolViewUtils;
@@ -45,10 +46,13 @@ public class MaterialNotSelectAdapter extends CommonAdapter<OrderNotUseInfo>{
     protected void convert(ViewHolder viewHolder, final OrderNotUseInfo info, int position) {
         ImageView img_select = viewHolder.getView(R.id.img_select);
         final ExtendedEditText tv_buy_number = viewHolder.getView(R.id.tv_buy_number);
-        viewHolder.setText(R.id.tv_inventory, info.storage_amount + "");
-        viewHolder.setText(R.id.tv_date, info.publis_at + "");
-        viewHolder.setText(R.id.tv_chinese_name, info.chs_name + "");
-        viewHolder.setText(R.id.tv_english_name, info.eng_name + "");
+//        viewHolder.setText(R.id.tv_inventory, info.storage_amount + "");
+        viewHolder.setText(R.id.tv_date,  AbDateUtil.getStringByFormat(info.publis_at,AbDateUtil.dateFormatYMD)  + "");
+        if (ToolString.isEmpty(info.chs_name)) {
+            viewHolder.setText(R.id.tv_chinese_name, info.chs_name + "");
+        }else {
+            viewHolder.setText(R.id.tv_chinese_name, info.eng_name + "");
+        }
         viewHolder.setText(R.id.tv_data_number, info.code + "");
         img_select.setSelected(info.isSelect);
         tv_buy_number.setText(info.quantity+"");
@@ -115,7 +119,6 @@ public class MaterialNotSelectAdapter extends CommonAdapter<OrderNotUseInfo>{
 //                    }
 //                }
                 if (number == 0) {
-                    ToolAlert.showToast(mContext, "购买数量不能为0");
                     info.quantity = 1;
                     tv_buy_number.setText(info.quantity + "");
                     ToolViewUtils.setSelection(tv_buy_number);

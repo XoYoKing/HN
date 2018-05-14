@@ -43,6 +43,7 @@ public class ToolShopCartUtil {
                         //如果找到同一个商品同一种规格就修改购买的数量
                         shop.setBuyNumber(shop.getBuyNumber() + 1);
                         shop.update(shop.getId());
+                        ToolAlert.showToast(context,"已添加到购物车");
                         break;
                     }
                     if (i == all.size() - 1) {

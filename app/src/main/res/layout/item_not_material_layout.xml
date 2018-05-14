@@ -2,62 +2,85 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/layout_background"
     android:orientation="vertical">
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/layout_background"
-        android:orientation="vertical">
+        android:padding="@dimen/common_10dp">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/img_select"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_margin="@dimen/common_5dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/seletor_shop_cart" />
+
+        <LinearLayout
+            android:id="@+id/ll_center"
+            android:layout_marginLeft="@dimen/common_5dp"
+            android:layout_toRightOf="@+id/img_select"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/common_10dp">
-
-            <ImageView
-                android:id="@+id/img_select"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
-                android:layout_margin="@dimen/common_5dp"
-                android:layout_centerVertical="true"
-                android:background="@drawable/seletor_shop_cart" />
-
-            <LinearLayout
-                android:layout_marginLeft="@dimen/common_5dp"
-                android:layout_toRightOf="@+id/img_select"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:id="@+id/relative"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <RelativeLayout
-                    android:id="@+id/relative"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                android:layout_height="wrap_content">
 
-                    <LinearLayout
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:text="资料编号："
+                        android:textColor="@color/text_gray_color"
+                        android:textSize="@dimen/common_14sp" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="资料编号："
-                            android:textColor="@color/text_gray_color"
-                            android:textSize="@dimen/common_15sp" />
+                    <TextView
+                        android:id="@+id/tv_data_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="22226"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/common_14sp" />
 
-                        <TextView
-                            android:id="@+id/tv_data_number"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="22226"
-                            android:textColor="@color/text_color"
-                            android:textSize="@dimen/common_15sp" />
-
-                    </LinearLayout>
+                </LinearLayout>
 
 
-                </RelativeLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/common_10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="资料名称："
+                    android:textColor="@color/text_gray_color"
+                    android:textSize="@dimen/common_14sp" />
+
+                <TextView
+                    android:id="@+id/tv_chinese_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color"
+                    android:text="bai lu zuo "
+                    android:lines="1"
+                    android:textSize="@dimen/common_14sp" />
+
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:visibility="gone"
+                android:layout_height="wrap_content">
                 <LinearLayout
                     android:layout_marginTop="@dimen/common_5dp"
                     android:layout_width="wrap_content"
@@ -67,138 +90,117 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="中文名称："
+                        android:text="英文名称："
                         android:textColor="@color/text_gray_color"
-                        android:textSize="@dimen/common_15sp" />
+                        android:textSize="@dimen/common_14sp" />
 
                     <TextView
-                        android:id="@+id/tv_chinese_name"
+                        android:id="@+id/tv_english_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/text_color"
-                        android:text="bai lu zuo "
-                        android:textSize="@dimen/common_15sp" />
+                        android:text="22226"
+                        android:textSize="@dimen/common_14sp" />
 
                 </LinearLayout>
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <LinearLayout
-                        android:layout_marginTop="@dimen/common_5dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="英文名称："
-                            android:textColor="@color/text_gray_color"
-                            android:textSize="@dimen/common_15sp" />
+            </RelativeLayout>
 
-                        <TextView
-                            android:id="@+id/tv_english_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/text_color"
-                            android:text="22226"
-                            android:textSize="@dimen/common_15sp" />
+            <RelativeLayout
+                android:layout_marginTop="@dimen/common_10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                    </LinearLayout>
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_marginTop="@dimen/common_5dp"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_marginBottom="@dimen/common_10dp"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="出版日期："
-                            android:textColor="@color/text_gray_color"
-                            android:textSize="@dimen/common_15sp" />
-
-                        <TextView
-                            android:id="@+id/tv_date"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/text_color"
-                            android:text="2016-2-12"
-                            android:textSize="@dimen/common_15sp" />
-
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="库存："
-                            android:textColor="@color/text_gray_color"
-                            android:textSize="@dimen/common_15sp" />
-
-                        <TextView
-                            android:id="@+id/tv_inventory"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="125"
-                            android:textColor="@color/colorPrimary"
-                            android:textSize="@dimen/common_15sp" />
-
-                    </LinearLayout>
-                </RelativeLayout>
-
-                <include layout="@layout/include_view_line"/>
-
-                <RelativeLayout
-                    android:layout_marginTop="@dimen/common_5dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="购买数量："
-                        android:layout_centerVertical="true"
+                        android:text="出版日期："
                         android:textColor="@color/text_gray_color"
                         android:textSize="@dimen/common_15sp" />
 
-                    <com.example.admin.hn.widget.ExtendedEditText
-                        android:id="@+id/tv_buy_number"
-                        android:layout_width="@dimen/common_120dp"
-                        android:layout_height="@dimen/common_35dp"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentRight="true"
-                        android:textColor="@color/red"
-                        android:gravity="center"
-                        android:inputType="number"
-                        android:maxLength="7"
-                        android:textColorHint="@color/text_color_hint"
-                        android:background="@drawable/shape_rect_gray_radius_5"
-                        android:text="1"
-                        android:hint="请输入购买数量"
+                    <TextView
+                        android:id="@+id/tv_date"
+                        android:layout_width="wrap_content"
+                        android:lines="1"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_color"
+                        android:text="2016-2-12"
                         android:textSize="@dimen/common_15sp" />
 
-                </RelativeLayout>
+                </LinearLayout>
 
-            </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="库存："
+                        android:textColor="@color/text_gray_color"
+                        android:textSize="@dimen/common_14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_inventory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="125"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/common_14sp" />
+
+                </LinearLayout>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view1"
+            android:layout_below="@+id/ll_center"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_line"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_number"
+            android:layout_above="@+id/view1"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="购买数量："
+                android:layout_centerVertical="true"
+                android:visibility="gone"
+                android:textColor="@color/text_gray_color"
+                android:textSize="@dimen/common_14sp" />
+
+            <com.example.admin.hn.widget.ExtendedEditText
+                android:id="@+id/tv_buy_number"
+                android:layout_width="@dimen/common_100dp"
+                android:layout_height="@dimen/common_30dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/red"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="7"
+                android:textColorHint="@color/text_color_hint"
+                android:background="@drawable/shape_rect_gray_radius_5"
+                android:text="1"
+                android:hint="请输入购买数量"
+                android:textSize="@dimen/common_14sp" />
 
         </RelativeLayout>
-    </LinearLayout>
 
+    </RelativeLayout>
 </LinearLayout>

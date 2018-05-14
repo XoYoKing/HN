@@ -106,7 +106,7 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser && screen == 2) {
+        if (isVisibleToUser && screen == 3) {
             sendHttp();
         }
     }

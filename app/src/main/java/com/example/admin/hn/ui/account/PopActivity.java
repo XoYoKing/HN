@@ -111,7 +111,11 @@ public class PopActivity extends BaseActivity {
         view = View.inflate(this, layoutId, null);
         linear_top.addView(view);
         if (requestCode == Constant.POP_NOT_MATERIAL) {//船舶资料管理
-            tv_type_name.setText("订单领用-待选");
+            if (childItem == 0) {
+                tv_type_name.setText("订单领用-待选");
+            } else if (childItem == 1) {
+                tv_type_name.setText("订单领用-新品推荐");
+            }
             initNotMaterialView();
         } else if (requestCode == Constant.POP_ORDER_MANAGER) {//电子海图 订单管理
             tv_type_name.setText("订单管理");

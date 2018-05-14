@@ -1,11 +1,16 @@
 package com.example.admin.hn.ui.fragment;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,10 +23,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.acker.simplezxing.activity.CaptureActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseFragment;
 import com.example.admin.hn.base.HNApplication;
+import com.example.admin.hn.base.PermissionsListener;
 import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.AppUpdateInfo;
 import com.example.admin.hn.ui.account.AboutActivity;
@@ -39,6 +46,7 @@ import com.squareup.okhttp.Request;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -66,7 +74,7 @@ public class MoreFragment extends BaseFragment {
 
 
     private MyBaseAdapter myAdapter;
-    private int[] imageIds = {R.drawable.right, R.drawable.right, R.drawable.right, R.drawable.right, R.drawable.right, R.drawable.right};
+    private int[] imageIds = {R.drawable.right,R.drawable.right, R.drawable.right, R.drawable.right, R.drawable.right, R.drawable.right, R.drawable.right};
     private String[] functionDesc;
     private String url_update = Api.BASE_URL + Api.UPDATE;
 
@@ -156,6 +164,8 @@ public class MoreFragment extends BaseFragment {
             checkVersion();
         } else if (position == 5){
             AboutActivity.startActivity(activity);
+        }else if (position == 6){
+            requestPermissions(permissions, mListener);
         }
 
     }
@@ -263,5 +273,90 @@ public class MoreFragment extends BaseFragment {
         }
         return versionName;
     }
+    private String[] permissions = {Manifest.permission.CAMERA};
+    private PermissionsListener mListener = new PermissionsListener() {
+        @Override
+        public void onGranted() {
+            startCaptureActivityForResult();
+        }
 
+        @Override
+        public void onDenied(List<String> deniedPermissions, boolean isNeverAsk) {
+            if (!isNeverAsk) {//请求权限没有全被勾选不再提示然后拒绝
+                ToolAlert.dialog(activity, "权限申请",
+                        "为了能正常使用拍摄照片功能，请授予所需权限!",
+                        "授权","取消",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                requestPermissions(permissions, mListener);
+                            }
+                        }, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+            } else {//全被勾选不再提示
+                ToolAlert.dialog(activity, "权限申请",
+                        "为了能正常使用拍摄照片功能，请手动授予所需权限!",
+                        "授权","取消",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                intent.setData(Uri.parse("package:" + activity.getPackageName()));
+                                startActivity(intent);
+                            }
+                        }, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+
+                            }
+                        });
+            }
+        }
+    };
+
+    //开启扫码
+    private void startCaptureActivityForResult() {
+        Intent intent = new Intent(activity, CaptureActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(CaptureActivity.KEY_NEED_BEEP, CaptureActivity.VALUE_BEEP);
+        bundle.putBoolean(CaptureActivity.KEY_NEED_VIBRATION, CaptureActivity.VALUE_VIBRATION);
+        bundle.putBoolean(CaptureActivity.KEY_NEED_EXPOSURE, CaptureActivity.VALUE_NO_EXPOSURE);
+        bundle.putByte(CaptureActivity.KEY_FLASHLIGHT_MODE, CaptureActivity.VALUE_FLASHLIGHT_OFF);
+        bundle.putByte(CaptureActivity.KEY_ORIENTATION_MODE, CaptureActivity.VALUE_ORIENTATION_AUTO);
+        bundle.putBoolean(CaptureActivity.KEY_SCAN_AREA_FULL_SCREEN, CaptureActivity.VALUE_SCAN_AREA_FULL_SCREEN);
+        bundle.putBoolean(CaptureActivity.KEY_NEED_SCAN_HINT_TEXT, CaptureActivity.VALUE_SCAN_HINT_TEXT);
+        intent.putExtra(CaptureActivity.EXTRA_SETTING_BUNDLE, bundle);
+        startActivityForResult(intent, CaptureActivity.REQ_CODE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case CaptureActivity.REQ_CODE:
+                switch (resultCode) {
+                    case Activity.RESULT_OK:
+                        String extra = data.getStringExtra(CaptureActivity.EXTRA_SCAN_RESULT);
+                        Logger.e("扫码成功",extra);
+                        ToolAlert.showToast(activity,extra);
+                        break;
+                    case Activity.RESULT_CANCELED:
+                        if (data != null) {
+                            // for some reason camera is not working correctly
+                            String extra1 = data.getStringExtra(CaptureActivity.EXTRA_SCAN_RESULT);
+                            ToolAlert.showToast(activity,extra1);
+                            Logger.e("扫码失败",extra1);
+                        }
+                        break;
+                }
+                break;
+        }
+    }
 }

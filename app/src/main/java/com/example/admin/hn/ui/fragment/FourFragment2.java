@@ -120,7 +120,7 @@ public class FourFragment2 extends BaseFragment implements ViewPager.OnPageChang
 		switch (v.getId()) {
 			case R.id.text_tile_del:
 				if (currentItem == 0) {
-					PopActivity.startActivity(activity, R.layout.popup_not_material__layout, Constant.POP_NOT_MATERIAL);
+					PopActivity.startActivity(activity, childCurrentItem,R.layout.popup_not_material__layout, Constant.POP_NOT_MATERIAL);
 				} else if (currentItem == 1) {
 					PopActivity.startActivity(activity,childCurrentItem,R.layout.popup_order_manager_layout, Constant.POP_SHIP_AUDITING);
 				}
@@ -186,17 +186,17 @@ public class FourFragment2 extends BaseFragment implements ViewPager.OnPageChang
 	private void updateUI() {
 		switch (currentItem) {
 			case 0://订单领用
-				if (childCurrentItem == 0) {
+				if (childCurrentItem == 0 || childCurrentItem==1) {
 					text_tile_del.setVisibility(View.VISIBLE);
 					text_tile_del.setText("搜索");
 					right.setText("确认");
-				} else if (childCurrentItem == 1) {
-					text_tile_del.setVisibility(View.GONE);
-					right.setText("提交");
 				} else if (childCurrentItem == 2) {
 					text_tile_del.setVisibility(View.GONE);
-					right.setText("");
+					right.setText("提交");
 				} else if (childCurrentItem == 3) {
+					text_tile_del.setVisibility(View.GONE);
+					right.setText("");
+				} else if (childCurrentItem == 4) {
 					text_tile_del.setVisibility(View.GONE);
 					right.setText("");
 				}else {

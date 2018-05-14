@@ -100,4 +100,6 @@ dependencies {
 //    compile 'com.lzy.widget:imagepicker:+'
     //数据库
     compile 'org.litepal.android:core:1.6.1'
+    //二维码
+    compile 'com.acker:simplezxing:1.5'
 }

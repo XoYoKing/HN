@@ -7,6 +7,7 @@
     android:padding="@dimen/common_15dp">
 
     <LinearLayout
+        android:id="@+id/ll_center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -16,6 +17,7 @@
             android:layout_height="wrap_content">
             <LinearLayout
                 android:layout_width="match_parent"
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
@@ -35,15 +37,9 @@
                     android:textSize="@dimen/common_15sp" />
 
             </LinearLayout>
-
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -62,12 +58,12 @@
                     android:textSize="@dimen/common_15sp" />
 
             </LinearLayout>
-
         </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/common_10dp"
+            android:visibility="gone"
             android:orientation="horizontal">
 
             <TextView
@@ -92,7 +88,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/common_10dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -114,9 +110,8 @@
 
         </RelativeLayout>
         <RelativeLayout
-            android:layout_marginTop="@dimen/common_5dp"
+            android:layout_marginTop="@dimen/common_10dp"
             android:layout_width="match_parent"
-            android:layout_marginBottom="@dimen/common_10dp"
             android:layout_height="wrap_content">
 
             <LinearLayout
@@ -145,6 +140,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_alignParentRight="true"
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
@@ -165,49 +161,57 @@
 
             </LinearLayout>
         </RelativeLayout>
-        <include layout="@layout/include_view_line"/>
-        <RelativeLayout
-            android:layout_marginTop="@dimen/common_5dp"
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="购买数量："
-                android:layout_centerVertical="true"
-                android:textColor="@color/text_gray_color"
-                android:textSize="@dimen/common_15sp" />
-
-            <com.example.admin.hn.widget.ExtendedEditText
-                android:id="@+id/tv_buy_number"
-                android:layout_width="@dimen/common_120dp"
-                android:layout_height="@dimen/common_35dp"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:textColor="@color/red"
-                android:gravity="center"
-                android:maxLength="7"
-                android:textColorHint="@color/text_color_hint"
-                android:background="@drawable/shape_rect_gray_radius_5"
-                android:text="1"
-                android:hint="请输入购买数量"
-                android:textSize="@dimen/common_15sp" />
-
-        </RelativeLayout>
     </LinearLayout>
+
+    <View
+        android:layout_below="@+id/ll_center"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_line"
+        android:id="@+id/view1"/>
 
     <TextView
         android:id="@+id/tv_cancel"
         android:layout_alignParentRight="true"
         android:layout_width="@dimen/common_60dp"
-        android:layout_height="@dimen/common_30dp"
+        android:layout_height="@dimen/common_25dp"
         android:gravity="center"
         android:textSize="@dimen/common_15sp"
         android:background="@drawable/shape_rect_red_radius"
         android:textColor="@color/white"
         android:text="删除"/>
+
+    <RelativeLayout
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_above="@+id/view1"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="购买数量："
+            android:visibility="gone"
+            android:layout_centerVertical="true"
+            android:textColor="@color/text_gray_color"
+            android:textSize="@dimen/common_15sp" />
+
+        <com.example.admin.hn.widget.ExtendedEditText
+            android:id="@+id/tv_buy_number"
+            android:layout_width="@dimen/common_100dp"
+            android:layout_height="@dimen/common_30dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/red"
+            android:gravity="center"
+            android:maxLength="7"
+            android:textColorHint="@color/text_color_hint"
+            android:background="@drawable/shape_rect_gray_radius_5"
+            android:text="1"
+            android:hint="请输入购买数量"
+            android:textSize="@dimen/common_14sp" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

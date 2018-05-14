@@ -26,6 +26,7 @@ public class GoodsListInfo implements Serializable {
         public String descriptionUrl;//商品详情地址
         public String imageUrl;//图片地址
         public String goodsFullSpecs;//规格全称
+        public String goodsFullName;//商品标题
         public String usp;//买点
         public double goodsFreight;//运费
         public double freightWeight;//重量

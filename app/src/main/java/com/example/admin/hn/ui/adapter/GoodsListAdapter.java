@@ -28,7 +28,7 @@ public class GoodsListAdapter extends CommonAdapter<GoodsListInfo.Goods> {
     @Override
     protected void convert(ViewHolder viewHolder, final GoodsListInfo.Goods info, int position) {
         ImageView goods_icon = viewHolder.getView(R.id.goods_icon);
-        viewHolder.setText(R.id.goods_name, info.goodsFullSpecs+"");
+        viewHolder.setText(R.id.goods_name, info.goodsFullName+"");
         viewHolder.setText(R.id.goods_price, "￥" + AbMathUtil.roundStr(info.goodsPrice, 2));
         viewHolder.setText(R.id.tv_comment,info.reviewCount+ "条评价");
         ToolViewUtils.glideImageList(info.imageUrl, goods_icon,  R.drawable.load_fail);

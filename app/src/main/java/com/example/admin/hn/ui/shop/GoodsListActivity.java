@@ -144,6 +144,7 @@ public class GoodsListActivity extends BaseActivity implements OnLoadmoreListene
                 goods_list_most_img.setSelected(false);
                 goods_list_all_tv.setSelected(true);
                 sort = "";
+                list.clear();
                 sendHttp();
             }
         });
@@ -160,6 +161,7 @@ public class GoodsListActivity extends BaseActivity implements OnLoadmoreListene
                 }else {
                     sort = sort_price_dsc;
                 }
+                list.clear();
                 sendHttp();
             }
         });
@@ -175,6 +177,7 @@ public class GoodsListActivity extends BaseActivity implements OnLoadmoreListene
                 }else {
                     sort = sort_count_dsc;
                 }
+                list.clear();
                 sendHttp();
             }
         });
