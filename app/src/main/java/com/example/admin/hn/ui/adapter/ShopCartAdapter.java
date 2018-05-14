@@ -52,7 +52,7 @@ public class ShopCartAdapter extends CommonAdapter<ShopCartInfo> {
         ToolViewUtils.glideImageList(info.getImageUrl(), goods_img, R.drawable.load_fail);
         holder.setText(R.id.goods_title, info.getGoodsFullName()+ "");
         holder.setText(R.id.tv_usp, info.getUsp() + "");
-        holder.setText(R.id.tv_goods_price, AbMathUtil.roundStr(info.getGoodsPrice(), 2) + "");
+        holder.setText(R.id.tv_goods_price,"￥"+ AbMathUtil.roundStr(info.getGoodsPrice(), 2) + "");
         tv_number.setText(info.getBuyNumber() + "");
         if (info.getBuyNumber() < info.getQty() && info.getQty() > 1) {
             add.setSelected(true);

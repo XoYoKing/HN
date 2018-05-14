@@ -41,11 +41,16 @@
                     android:textColor="@color/red"
                     android:textSize="@dimen/common_15sp" />
             </RelativeLayout>
+            <View
+                android:layout_marginLeft="@dimen/common_15dp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/line"
+                android:background="@color/line_color"/>
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/goods"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/common_110dp"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -56,11 +61,13 @@
                     android:layout_marginTop="@dimen/common_10dp"
                     android:layout_marginBottom="@dimen/common_10dp"
                     android:src="@drawable/center_order_manager_img" />
-                <LinearLayout
+
+                <RelativeLayout
+                    android:layout_toRightOf="@+id/goods_img"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/common_10dp"
-                    android:layout_marginRight="@dimen/common_12dp"
+                    android:layout_marginRight="@dimen/common_15dp"
                     android:layout_marginTop="@dimen/common_10dp"
                     android:layout_marginBottom="@dimen/common_10dp"
                     android:orientation="vertical">
@@ -69,79 +76,38 @@
                         android:id="@+id/goods_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:singleLine="true"
+                        android:lines="1"
                         android:text="宝珠宝珠宝珠宝珠宝珠宝珠宝珠宝珠宝"
-                        android:textColor="@color/black"
+                        android:textColor="@color/text_color"
                         android:textSize="@dimen/common_14sp" />
 
                     <TextView
                         android:id="@+id/tv_usp"
+                        android:layout_below="@+id/goods_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/common_10dp"
                         android:text="专柜联保售后 任意门店清洗"
-                        android:textColor="@color/black"
+                        android:textColor="@color/text_gray_color"
                         android:textSize="@dimen/common_12sp" />
 
                     <RelativeLayout
                         android:layout_width="wrap_content"
-                        android:layout_marginTop="@dimen/common_40dp"
+                        android:layout_alignParentBottom="true"
                         android:layout_height="wrap_content">
-
                         <TextView
                             android:id="@+id/tv_goods_price"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_centerVertical="true"
                             android:text="￥99.00"
+                            android:layout_alignParentBottom="true"
                             android:textColor="@color/red"
-                            android:textSize="@dimen/common_12sp" />
-
-                        <!--<LinearLayout-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_alignParentRight="true"-->
-                            <!--android:layout_marginRight="@dimen/common_15dp"-->
-                            <!--android:focusable="true"-->
-                            <!--android:focusableInTouchMode="true"-->
-                            <!--android:orientation="horizontal">-->
-
-                            <!--<ImageView-->
-                                <!--android:id="@+id/remove"-->
-                                <!--android:layout_width="wrap_content"-->
-                                <!--android:layout_height="wrap_content"-->
-                                <!--android:background="@drawable/shape_left_radius"-->
-                                <!--android:gravity="center"-->
-                                <!--android:padding="@dimen/common_3dp"-->
-                                <!--android:src="@drawable/selector_img_remove" />-->
-
-                            <!--<EditText-->
-                                <!--android:id="@+id/et_number"-->
-                                <!--android:layout_width="@dimen/common_40dp"-->
-                                <!--android:layout_height="match_parent"-->
-                                <!--android:background="@drawable/shape_center_radius"-->
-                                <!--android:gravity="center"-->
-                                <!--android:inputType="number"-->
-                                <!--android:maxLength="5"-->
-                                <!--android:text="1"-->
-                                <!--android:textColor="@color/text_color"-->
-                                <!--android:textSize="@dimen/common_14sp" />-->
-
-                            <!--<ImageView-->
-                                <!--android:id="@+id/add"-->
-                                <!--android:layout_width="wrap_content"-->
-                                <!--android:layout_height="wrap_content"-->
-                                <!--android:background="@drawable/shape_right_radius"-->
-                                <!--android:gravity="center"-->
-                                <!--android:padding="@dimen/common_3dp"-->
-                                <!--android:src="@drawable/selector_img_add" />-->
-
-                        <!--</LinearLayout>-->
+                            android:textStyle="bold"
+                            android:textSize="@dimen/common_16sp" />
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_alignParentRight="true"
-                            android:layout_marginRight="@dimen/common_15dp"
+                            android:layout_alignParentBottom="true"
                             android:orientation="horizontal"
                             android:background="@drawable/layout_background"
                             android:layout_height="@dimen/common_30dp">
@@ -179,9 +145,9 @@
 
                     </RelativeLayout>
 
-                </LinearLayout>
+                </RelativeLayout>
 
-            </LinearLayout>
+            </RelativeLayout>
         </LinearLayout>
 
         <ImageView

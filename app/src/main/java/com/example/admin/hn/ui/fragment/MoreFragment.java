@@ -37,6 +37,7 @@ import com.example.admin.hn.ui.account.ChangeLoginPasswordActivity;
 import com.example.admin.hn.ui.account.ChartUpdateActivity;
 import com.example.admin.hn.ui.account.ShipSelectActivity;
 import com.example.admin.hn.ui.login.LoginActivity;
+import com.example.admin.hn.ui.login.ScanLoginActivity;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.volley.RequestListener;
@@ -345,7 +346,7 @@ public class MoreFragment extends BaseFragment {
                     case Activity.RESULT_OK:
                         String extra = data.getStringExtra(CaptureActivity.EXTRA_SCAN_RESULT);
                         Logger.e("扫码成功",extra);
-                        ToolAlert.showToast(activity,extra);
+                        ScanLoginActivity.startActivity(activity, extra);
                         break;
                     case Activity.RESULT_CANCELED:
                         if (data != null) {

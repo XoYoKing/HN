@@ -1,5 +1,6 @@
 package com.example.admin.hn.ui.shop;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -87,12 +88,12 @@ public class CreateAddressActivity extends BaseActivity {
      */
     public static void startActivity(Context context) {
         Intent intent = new Intent(context, CreateAddressActivity.class);
-        context.startActivity(intent);
+        ((Activity)context).startActivityForResult(intent, 101);
     }
     public static void startActivity(Context context, AddressInfo info) {
         Intent intent = new Intent(context, CreateAddressActivity.class);
         intent.putExtra("info", info);
-        context.startActivity(intent);
+        ((Activity)context).startActivityForResult(intent, 101);
     }
 
 
@@ -236,6 +237,9 @@ public class CreateAddressActivity extends BaseActivity {
             public void requestSuccess(String json) {
                 Logger.e("保存地址", json);
                 if (GsonUtils.isShopSuccess(json)) {
+                    Intent intent = new Intent();
+                    intent.putExtra("info", info);
+                    setResult(100,intent);
                     finish();
                 } else {
                     ToolAlert.showToast(context, GsonUtils.getError(json));

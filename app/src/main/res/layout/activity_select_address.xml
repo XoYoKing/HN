@@ -27,7 +27,7 @@
             android:layout_width="@dimen/common_200dp"
             android:layout_height="@dimen/common_40dp"
             android:layout_marginTop="@dimen/common_10dp"
-            android:layout_marginBottom="@dimen/common_10dp"
+            android:layout_marginBottom="@dimen/common_20dp"
             android:background="@drawable/shape_rect_blue_radius_20"
             android:text="添加新地址"
             android:textColor="@color/white"

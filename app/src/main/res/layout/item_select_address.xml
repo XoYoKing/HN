@@ -56,10 +56,12 @@
                     android:layout_height="wrap_content"
                     android:text="默认"
                     android:background="@drawable/shape_rect_red_radius"
-                    android:textStyle="bold"
                     android:textColor="@color/white"
-                    android:padding="@dimen/common_2dp"
-                    android:textSize="@dimen/common_14sp" />
+                    android:paddingLeft="@dimen/common_5dp"
+                    android:paddingRight="@dimen/common_5dp"
+                    android:paddingTop="@dimen/common_2dp"
+                    android:paddingBottom="@dimen/common_2dp"
+                    android:textSize="@dimen/common_12sp" />
             </LinearLayout>
 
             <RelativeLayout

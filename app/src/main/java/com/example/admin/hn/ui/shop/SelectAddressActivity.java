@@ -182,4 +182,13 @@ public class SelectAddressActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 100 && data != null) {
+            //如果接收到 创建地址返回的数据就关闭当前 并把数据返回给初始页面
+            setResult(100,data);
+            finish();
+        }
+    }
 }
