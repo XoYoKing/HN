@@ -38,6 +38,7 @@ import com.example.admin.hn.model.SpecGoodsPriceInfo;
 import com.example.admin.hn.ui.account.HtmlActivity;
 import com.example.admin.hn.ui.adapter.GoodsSpecTypeAdapter;
 import com.example.admin.hn.ui.fragment.shop.bean.ShopCartInfo;
+import com.example.admin.hn.ui.shop.FirmOrderActivity;
 import com.example.admin.hn.ui.shop.SelectAddressActivity;
 import com.example.admin.hn.utils.AbMathUtil;
 import com.example.admin.hn.utils.GlideImageLoader;
@@ -209,7 +210,6 @@ public class GoodsFragment extends BaseFragment {
 		if (info != null) {
 			selectInfo = info;
 			tv_address.setText(info.areaName + " " + info.receiverAddr);
-
 			Intent intent = new Intent(Constant.ACTION_GOODS_DETAIL_ACTIVITY);
 			intent.putExtra("status", 1);
 			intent.putExtra("info", info);
@@ -273,7 +273,23 @@ public class GoodsFragment extends BaseFragment {
 				break;
 		}
 	}
-
+	private ArrayList<ShopCartInfo> shopCartInfos = new ArrayList<>();
+	private void confirmOrder() {
+		ShopCartInfo shopCartInfo = new ShopCartInfo();
+		shopCartInfo.setBuyNumber(1);
+		shopCartInfo.setGoodsId(goodsInfo.goods.id);
+		shopCartInfo.setGoodsName(goodsInfo.spu.goodsName);
+		shopCartInfo.setGoodsFullSpecs(goodsInfo.goods.goodsFullSpecs);
+		shopCartInfo.setGoodsFullName(goodsInfo.goods.goodsFullName);
+		shopCartInfo.setGoodsPrice(goodsInfo.goods.goodsPrice);
+		shopCartInfo.setQty(goodsInfo.goods.qty);
+		shopCartInfo.setImageUrl(goodsInfo.goods.imageUrl);
+		shopCartInfo.setSpuId(goodsInfo.goods.spuId);
+		shopCartInfo.setUsp(goodsInfo.spu.usp);
+		shopCartInfo.setCurrGoodsSpecItemsIds(goodsInfo.currGoodsSpecItemsIds);
+		shopCartInfos.add(shopCartInfo);
+		FirmOrderActivity.startActivity(activity, shopCartInfos,selectInfo);
+	}
 	/**
 	 * 显示规格参数弹窗界面
 	 */
@@ -412,7 +428,7 @@ public class GoodsFragment extends BaseFragment {
 				}
 			}
 		});
-
+		//添加到购物车
 		space_add_shopping_cart.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -420,6 +436,15 @@ public class GoodsFragment extends BaseFragment {
 				dismiss();
 			}
 		});
+
+		space_confirm_bid.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				confirmOrder();
+
+			}
+		});
+
 	}
 
 

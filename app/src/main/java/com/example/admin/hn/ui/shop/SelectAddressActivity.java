@@ -10,7 +10,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,9 +17,6 @@ import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseActivity;
 import com.example.admin.hn.model.AddressInfo;
-import com.example.admin.hn.model.ShoppingCartInfo;
-import com.example.admin.hn.ui.adapter.FirmOrderAdapter;
-import com.example.admin.hn.ui.adapter.ManageAddressAdapter;
 import com.example.admin.hn.ui.adapter.SelectAddressAdapter;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
@@ -187,7 +183,7 @@ public class SelectAddressActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 100 && data != null) {
             //如果接收到 创建地址返回的数据就关闭当前 并把数据返回给初始页面
-            setResult(100,data);
+            setResult(resultCode,data);
             finish();
         }
     }

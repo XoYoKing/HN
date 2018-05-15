@@ -237,6 +237,7 @@ public class CreateAddressActivity extends BaseActivity {
             public void requestSuccess(String json) {
                 Logger.e("保存地址", json);
                 if (GsonUtils.isShopSuccess(json)) {
+                    AddressInfo info = GsonUtils.jsonToBean2(json, AddressInfo.class);
                     Intent intent = new Intent();
                     intent.putExtra("info", info);
                     setResult(100,intent);

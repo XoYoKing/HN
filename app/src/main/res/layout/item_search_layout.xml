@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical">
 
@@ -11,7 +11,8 @@
         android:layout_marginLeft="@dimen/common_12dp"
         android:gravity="center"
         android:text="天津"
-        android:textColor="@color/black"
+        android:textColor="@color/text_color"
         android:textSize="@dimen/common_12sp" />
+    <include layout="@layout/include_view_line"/>
 
 </LinearLayout>

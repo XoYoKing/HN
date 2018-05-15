@@ -20,7 +20,6 @@ import com.example.admin.hn.http.Constant;
 import com.example.admin.hn.model.AddressInfo;
 import com.example.admin.hn.model.GoodsInfo;
 import com.example.admin.hn.model.GoodsListInfo;
-import com.example.admin.hn.model.ShoppingCartInfo;
 import com.example.admin.hn.ui.adapter.AllTabAdapter;
 import com.example.admin.hn.ui.fragment.shop.CommentFragment;
 import com.example.admin.hn.ui.fragment.shop.GoodsFragment;
@@ -29,9 +28,7 @@ import com.example.admin.hn.ui.fragment.shop.bean.ShopCartInfo;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolShopCartUtil;
-import com.example.admin.hn.utils.ToolString;
 import com.example.admin.hn.volley.RequestListener;
-import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
 
 import org.litepal.crud.DataSupport;
@@ -102,14 +99,14 @@ public class GoodsDetailActivity extends BaseActivity {
         info = (GoodsListInfo.Goods) getIntent().getSerializableExtra("info");
     }
 
-    private ShopCartInfo shopCartInfo;
-
     @Override
     public void initData() {
         sendHttp();//获取商品详情
         int count = DataSupport.count(ShopCartInfo.class);
-        tv_cartNumber.setText(count + "");
+        setCartCount(count);
     }
+
+
 
     @OnClick({R.id.iv_back,R.id.confirm_bid,R.id.add_shopping_cart,R.id.ll_cart})
     public void onClick(View v) {
@@ -121,12 +118,29 @@ public class GoodsDetailActivity extends BaseActivity {
                 ToolShopCartUtil.addShopCartInfo(context,goodsInfo,1);
                 break;
             case R.id.confirm_bid:
-                FirmOrderActivity.startActivity(context, new ArrayList<ShoppingCartInfo>());
+                confirmOrder();
                 break;
             case R.id.ll_cart:
                 ShopCartActivity.startActivity(context);
                 break;
         }
+    }
+    private ArrayList<ShopCartInfo> shopCartInfos = new ArrayList<>();
+    private void confirmOrder() {
+        ShopCartInfo shopCartInfo = new ShopCartInfo();
+        shopCartInfo.setBuyNumber(1);
+        shopCartInfo.setGoodsId(goodsInfo.goods.id);
+        shopCartInfo.setGoodsName(goodsInfo.spu.goodsName);
+        shopCartInfo.setGoodsFullSpecs(goodsInfo.goods.goodsFullSpecs);
+        shopCartInfo.setGoodsFullName(goodsInfo.goods.goodsFullName);
+        shopCartInfo.setGoodsPrice(goodsInfo.goods.goodsPrice);
+        shopCartInfo.setQty(goodsInfo.goods.qty);
+        shopCartInfo.setImageUrl(goodsInfo.goods.imageUrl);
+        shopCartInfo.setSpuId(goodsInfo.goods.spuId);
+        shopCartInfo.setUsp(goodsInfo.spu.usp);
+        shopCartInfo.setCurrGoodsSpecItemsIds(goodsInfo.currGoodsSpecItemsIds);
+        shopCartInfos.add(shopCartInfo);
+        FirmOrderActivity.startActivity(context, shopCartInfos, defaultInfo);
     }
 
     private void sendHttp(){
@@ -201,12 +215,7 @@ public class GoodsDetailActivity extends BaseActivity {
                     }else if (status==2){
                         //更新购物车数量
                         int count = intent.getIntExtra("count", 0);
-                        if (count == 0) {
-                            tv_cartNumber.setVisibility(View.GONE);
-                        }else {
-                            tv_cartNumber.setText(count + "");
-                            tv_cartNumber.setVisibility(View.VISIBLE);
-                        }
+                        setCartCount(count);
                     }else if (status==3){
                         //更新商品信息
                         goodsInfo = (GoodsInfo) intent.getSerializableExtra("goodsInfo");
@@ -215,6 +224,15 @@ public class GoodsDetailActivity extends BaseActivity {
             }
         };
         localBroadcastManager.registerReceiver(br, intentFilter);
+    }
+
+    private void setCartCount(int count) {
+        if (count == 0) {
+            tv_cartNumber.setVisibility(View.GONE);
+        }else {
+            tv_cartNumber.setText(count + "");
+            tv_cartNumber.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

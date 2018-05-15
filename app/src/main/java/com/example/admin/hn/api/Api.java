@@ -104,6 +104,12 @@ public class Api {
     public static final String GET_SAVE_COMMENT = "com/comment/save";
     //根据商品ID查询商品的收藏量
     public static final String GET_CONLLECT_LIST= "usr/goods/conllect/list";
+    //根据商品订单新增接口 ID save请求，若参数带ID，则是修改，若不带ID就是新增
+    public static final String GET_ORDER_SAVE= "sto/order/save";
+    //根据会员信息新增商品订单
+    public static final String GET_ORDER_ADD= "sto/order/add";
+    // id:文库ID ，当传入id时可根据id获取文库数据
+    public static final String GET_PUB_LIST= "lib/pub/list";
 
 //    ================== 商城接口========================
 

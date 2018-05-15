@@ -246,7 +246,7 @@ public class ShopCartAdapter extends CommonAdapter<ShopCartInfo> {
      * 获取被选中的商品总价格
      * @return
      */
-    public double getSumPrice(){
+    public double getSumPrice(boolean isEdit){
         sumPrice = 0;
         if (ToolString.isEmptyList(mDatas)) {
             isAll = true;

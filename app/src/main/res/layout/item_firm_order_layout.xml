@@ -32,7 +32,11 @@
             android:textColor="@color/red"
             android:textSize="@dimen/common_15sp" />
     </RelativeLayout>
-
+    <View
+        android:layout_marginLeft="@dimen/common_15dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line"
+        android:background="@color/line_color"/>
     <LinearLayout
         android:id="@+id/goods"
         android:layout_width="match_parent"
@@ -47,9 +51,10 @@
             android:layout_marginTop="@dimen/common_10dp"
             android:layout_marginBottom="@dimen/common_10dp"
             android:src="@drawable/center_order_manager_img" />
-        <LinearLayout
+
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/common_110dp"
             android:layout_marginLeft="@dimen/common_10dp"
             android:layout_marginRight="@dimen/common_12dp"
             android:layout_marginTop="@dimen/common_10dp"
@@ -57,15 +62,16 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/goods_title"
+                android:id="@+id/goods_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
                 android:text="宝珠宝珠宝珠宝珠宝珠宝珠宝珠宝珠宝"
                 android:textColor="@color/black"
                 android:textSize="@dimen/common_14sp" />
 
             <TextView
+                android:layout_below="@+id/goods_name"
+                android:id="@+id/goods_usp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/common_10dp"
@@ -74,12 +80,13 @@
                 android:textSize="@dimen/common_12sp" />
 
             <RelativeLayout
+                android:layout_marginBottom="@dimen/common_10dp"
                 android:layout_width="wrap_content"
-                android:layout_marginTop="@dimen/common_40dp"
+                android:layout_alignParentBottom="true"
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/single_goods_money"
+                    android:id="@+id/goods_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
@@ -88,7 +95,7 @@
                     android:textSize="@dimen/common_12sp" />
 
                 <TextView
-                    android:id="@+id/goods_amount"
+                    android:id="@+id/goods_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -98,7 +105,7 @@
 
             </RelativeLayout>
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </LinearLayout>
 

@@ -27,6 +27,7 @@ public class GoodsInfo implements Serializable {
         public double goodsFreight;//运费
         public double freightWeight;//重量
         public double freightVolume;//体积
+        public int freightTemplateUse;//1为使用固定运费，运费取goodsFreight，0为使用物流规则，根据运费模板数据进行运算
         public int collectCount;//收藏数量
         public int reviewCount;//评论数量
         public int orderCount;//销量

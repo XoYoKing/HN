@@ -22,12 +22,30 @@ public class ShopCartInfo extends DataSupport implements Serializable {
     private String goodsId;//商品ID
     private String spuId;//SPUID
     private String goodsName;//商品名称
+    private String goodsSpec;//商品规格
     private String goodsFullSpecs;//商品规格
     private String goodsFullName;//商品标题
     private String usp;//商品买点
     private double goodsPrice;//商品价格
+    private double goodsFreight;//运费
     private String imageUrl;//商品图片
     private List<String> currGoodsSpecItemsIds;//当前规格参数
+
+    public String getGoodsSpec() {
+        return goodsSpec;
+    }
+
+    public void setGoodsSpec(String goodsSpec) {
+        this.goodsSpec = goodsSpec;
+    }
+
+    public double getGoodsFreight() {
+        return goodsFreight;
+    }
+
+    public void setGoodsFreight(double goodsFreight) {
+        this.goodsFreight = goodsFreight;
+    }
 
     public String getGoodsFullName() {
         return goodsFullName;

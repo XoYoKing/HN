@@ -1,18 +1,12 @@
 package com.example.admin.hn.ui.adapter;
 
 import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.TextView;
 
 import com.example.admin.hn.R;
-import com.example.admin.hn.model.OrderInfo;
-import com.zhy.adapter.abslistview.CommonAdapter;
-import com.zhy.adapter.abslistview.ViewHolder;
+import com.example.admin.hn.model.ArticleInfo;
+import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,14 +15,15 @@ import java.util.List;
  * @date on 2017/7/31 15:35
  * 海圖資料
  */
-public class SeaMapAdapter extends CommonAdapter {
+public class SeaMapAdapter extends CommonAdapter<ArticleInfo> {
 
     public SeaMapAdapter(Context context, int layoutId, List datas) {
         super(context, layoutId, datas);
     }
 
     @Override
-    protected void convert(ViewHolder viewHolder, Object item, int position) {
+    protected void convert(ViewHolder viewHolder, ArticleInfo info, int position) {
+        viewHolder.setText(R.id.tv_name, info.pubTitle + "");
 
     }
 }

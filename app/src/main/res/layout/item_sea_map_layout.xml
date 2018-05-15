@@ -39,7 +39,6 @@
             android:text="查看详情>"/>
     </RelativeLayout>
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

@@ -93,6 +93,7 @@
                         android:layout_toRightOf="@+id/iv_shop_cart"
                         android:layout_width="@dimen/common_18dp"
                         android:gravity="center"
+                        android:visibility="gone"
                         android:layout_height="@dimen/common_18dp"
                         android:background="@drawable/shape_round_red"
                         android:text="99"

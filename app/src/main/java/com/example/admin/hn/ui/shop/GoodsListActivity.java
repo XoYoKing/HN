@@ -196,7 +196,7 @@ public class GoodsListActivity extends BaseActivity implements OnLoadmoreListene
                 finish();
                 break;
             case R.id.search_linear:
-                SearchActivity.startActivity(this);
+                SearchActivity.startActivity(this,info.name);
                 break;
             case R.id.noData_img:
                 sendHttp();
@@ -208,7 +208,6 @@ public class GoodsListActivity extends BaseActivity implements OnLoadmoreListene
                 break;
         }
     }
-
 
 
     private void sendHttp() {

@@ -66,6 +66,7 @@ public class ToolShopCartUtil {
         shopCartInfo.setEditSelect(false);
         shopCartInfo.setGoodsId(goodsInfo.goods.id);
         shopCartInfo.setGoodsName(goodsInfo.spu.goodsName);
+        shopCartInfo.setGoodsSpec(goodsInfo.goods.goodsSpec);
         shopCartInfo.setGoodsFullSpecs(goodsInfo.goods.goodsFullSpecs);
         shopCartInfo.setGoodsFullName(goodsInfo.goods.goodsFullName);
         shopCartInfo.setGoodsPrice(goodsInfo.goods.goodsPrice);

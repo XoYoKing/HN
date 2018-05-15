@@ -15,16 +15,19 @@ import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseActivity;
 
-import com.example.admin.hn.model.ShoppingCartInfo;
+import com.example.admin.hn.model.AddressInfo;
 import com.example.admin.hn.ui.adapter.ShopCartAdapter;
 import com.example.admin.hn.ui.fragment.shop.bean.ShopCartInfo;
 import com.example.admin.hn.utils.AbMathUtil;
 
+import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolRefreshView;
 import com.example.admin.hn.utils.ToolShopCartUtil;
 import com.example.admin.hn.utils.ToolString;
 
+import com.example.admin.hn.volley.RequestListener;
+import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -73,10 +76,9 @@ public class ShopCartActivity extends BaseActivity implements OnRefreshListener{
 
 
     private ArrayList<ShopCartInfo> list = new ArrayList<>();
-    private String url = Api.SHOP_BASE_URL + Api.GET_CONLLECT_LIST;
+    private String url = Api.SHOP_BASE_URL + Api.GET_ADDRESS_LIST;
     private ShopCartAdapter adapter;
-    private int page;
-    private int totalPage;
+    private AddressInfo defaultInfo;//默认地址
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,7 +134,12 @@ public class ShopCartActivity extends BaseActivity implements OnRefreshListener{
                 img_del_all.setSelected(!img_del_all.isSelected());
                 break;
             case R.id.go_pay:
-                FirmOrderActivity.startActivity(context, new ArrayList<ShoppingCartInfo>());
+                List<ShopCartInfo> selectInfo = adapter.getSelectInfo(false);
+                if (ToolString.isEmptyList(selectInfo)) {
+                    FirmOrderActivity.startActivity(context, selectInfo,defaultInfo);
+                }else {
+                    ToolAlert.showToast(context, "请选择需要结算的商品");
+                }
                 break;
             case R.id.btn_delete:
                 ToolAlert.dialog(context, "", "是否删除选中的商品", new DialogInterface.OnClickListener() {
@@ -176,11 +183,11 @@ public class ShopCartActivity extends BaseActivity implements OnRefreshListener{
     @Override
     public void initData() {
         sendHttp();
+        getAddress();
     }
 
     private void sendHttp() {
         try {
-//            List<ShopCartInfo> infoList = DataSupport.findAll(ShopCartInfo.class);
             List<ShopCartInfo> infoList = DataSupport.select("*")
                     .order("id desc")
                     .find(ShopCartInfo.class);
@@ -189,17 +196,49 @@ public class ShopCartActivity extends BaseActivity implements OnRefreshListener{
                 list.addAll(infoList);
                 ToolRefreshView.hintView(adapter, refreshLayout, false, network, noData_img, network_img);
             }else {
+                //如果购物车为空，把选中状态都设置为false
+                img_del_all.setSelected(false);
+                img_pay_all.setSelected(false);
                 ToolRefreshView.hintView(adapter, refreshLayout, false, network, noData_img, network_img);
             }
-            adapter.getSumPrice();
+            adapter.getSumPrice(false);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    private void getAddress(){
+        http.get(url, params, null, new RequestListener() {
+            @Override
+            public void requestSuccess(String json) {
+                Logger.e("收货地址列表", json);
+                if (GsonUtils.isShopSuccess(json)) {
+                    TypeToken typeToken = new TypeToken<List<AddressInfo>>() {};
+                    List<AddressInfo> data = (List<AddressInfo>) GsonUtils.jsonToList2(json, typeToken, "content");
+                    if (ToolString.isEmptyList(data)) {
+                        for (int i = 0; i < data.size(); i++) {
+                            AddressInfo info = data.get(i);
+                            if (info.isDefaul == 1) {
+                                defaultInfo = info;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void requestError(String message) {
+
+            }
+        });
+    }
+
+
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
         isRefresh = true;
         sendHttp();
+        getAddress();
     }
 }

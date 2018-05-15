@@ -111,6 +111,7 @@
                         android:textSize="@dimen/common_12sp" />
 
                     <ImageView
+                        android:id="@+id/iv_del"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -124,13 +125,23 @@
                     android:layout_height="@dimen/common_line"
                     android:background="@color/line_color"></View>
 
-                <com.zhy.view.flowlayout.TagFlowLayout
-                    android:id="@+id/search_history"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:max_select="1">
+                <!--<com.zhy.view.flowlayout.TagFlowLayout-->
+                    <!--android:id="@+id/search_history"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--app:max_select="1">-->
 
-                </com.zhy.view.flowlayout.TagFlowLayout>
+                <!--</com.zhy.view.flowlayout.TagFlowLayout>-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycleView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+                    <include layout="@layout/network_disabled" />
+                </RelativeLayout>
+
             </LinearLayout>
 
             <LinearLayout
@@ -138,6 +149,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/search_history_linear"
                 android:layout_gravity="center_vertical"
+                android:visibility="gone"
                 android:orientation="vertical">
 
                 <TextView

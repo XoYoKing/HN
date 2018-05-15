@@ -4,20 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.admin.hn.R;
 import com.example.admin.hn.base.BaseActivity;
-import com.example.admin.hn.model.AddressInfo;
-import com.example.admin.hn.model.ShoppingCartInfo;
-import com.example.admin.hn.ui.adapter.FirmOrderAdapter;
 import com.example.admin.hn.utils.ToolAlert;
 
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
