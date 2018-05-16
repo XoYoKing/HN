@@ -31,6 +31,9 @@ public class ManageAddressAdapter extends CommonAdapter<AddressInfo> {
     private Context context;
     private List<AddressInfo> list;
     private OnDelListener onDelListener;
+    private String url_del = Api.SHOP_BASE_URL + Api.GET_DELETE_ADDRESS;
+    private String url_default = Api.SHOP_BASE_URL + Api.SET_DEFAULT_ADDRESS;
+    private boolean isDeleteAble=true;
 
     public ManageAddressAdapter(Context context, int layoutId, List<AddressInfo> datas) {
         super(context, layoutId, datas);
@@ -48,7 +51,7 @@ public class ManageAddressAdapter extends CommonAdapter<AddressInfo> {
         viewHolder.setText(R.id.goods_receipt_name, info.receiverName);
         viewHolder.setText(R.id.tv_address, info.areaName+" "+info.receiverAddr);
         CheckBox select_default_address = viewHolder.getView(R.id.select_default_address);
-        if (info.isDefaul==0) {
+        if (info.isDefaul==1) {
             select_default_address.setChecked(true);
             select_default_address.setEnabled(false);
             select_default_address.setSelected(true);
@@ -94,7 +97,6 @@ public class ManageAddressAdapter extends CommonAdapter<AddressInfo> {
         });
     }
 //
-    private String url_del = Api.SHOP_BASE_URL + Api.GET_DELETE_ADDRESS;
 
     private void delAddress(final int position) {
         AddressInfo info = list.get(position);
@@ -121,7 +123,7 @@ public class ManageAddressAdapter extends CommonAdapter<AddressInfo> {
             }
         });
     }
-    private boolean isDeleteAble=true;
+
     public void remove(int position) {
         if (isDeleteAble) {//此时为增加动画效果，刷新部分数据源，防止删除错乱
             isDeleteAble = false;//初始值为true,当点击删除按钮以后，休息0.5秒钟再让他为
@@ -145,30 +147,30 @@ public class ManageAddressAdapter extends CommonAdapter<AddressInfo> {
 
     private void setDefaultAddress(final int position, AddressInfo info) {
         Map params = new HashMap();
-        params.put("address_id", info.id);
-//        IRequest.post(context, Config.URL_SET_DEFAULT_ADDRESS, params, "正在设置...", new RequestListener() {
-//            @Override
-//            public void requestSuccess(String json) {
-//                if (AbJsonUtil.isSuccess(json)) {
-//                    for (int i1 = 0; i1 < list.size(); i1++) {
-//                        AddressInfo info1 = list.get(i1);
-//                        if (i1 != position) {
-//                            info1.setIs_default("0");
-//                        } else {
-//                            info1.setIs_default("1");
-//                        }
-//                        notifyDataSetChanged();
-//                    }
-//                } else {
-//                    AbToastUtil.showToast(context, AbJsonUtil.getError(json));
-//                }
-//            }
-//
-//            @Override
-//            public void requestError(String message) {
-//                AbToastUtil.showToast(context, message);
-//            }
-//        });
+        params.put("id", info.id);
+        IRequest.post(context, url_default, params, "正在设置...", new RequestListener() {
+            @Override
+            public void requestSuccess(String json) {
+                if (GsonUtils.isShopSuccess(json)) {
+                    for (int i1 = 0; i1 < list.size(); i1++) {
+                        AddressInfo info1 = list.get(i1);
+                        if (i1 != position) {
+                            info1.isDefaul = 0;
+                        } else {
+                            info1.isDefaul = 1;
+                        }
+                        notifyDataSetChanged();
+                    }
+                } else {
+                    ToolAlert.showToast(context, GsonUtils.getError(json));
+                }
+            }
+
+            @Override
+            public void requestError(String message) {
+                ToolAlert.showToast(context, message);
+            }
+        });
     }
 
     public interface OnDelListener {

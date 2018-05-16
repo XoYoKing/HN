@@ -261,6 +261,7 @@ public class RequestManager {
             responseListener = responseListener(listener, false, null);
         }
         String json = GsonUtils.mapToJson(params);
+        Logger.e("请求参数json", json);
         OkHttpUtils
                 .postString()
                 .url(url)

@@ -1,5 +1,6 @@
 package com.example.admin.hn.ui.shop;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -63,7 +64,7 @@ public class ManagerAddressActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_select_address);
+        setContentView(R.layout.activity_manager_address);
         ButterKnife.bind(this);
         initTitleBar();
         initView();
@@ -76,7 +77,7 @@ public class ManagerAddressActivity extends BaseActivity {
      */
     public static void startActivity(Context context) {
         Intent intent = new Intent(context, ManagerAddressActivity.class);
-        context.startActivity(intent);
+        ((Activity) context).startActivityForResult(intent, 100);
     }
 
 
@@ -155,5 +156,13 @@ public class ManagerAddressActivity extends BaseActivity {
                 break;
         }
     }
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 100 && data != null) {
+            //如果接收到 创建地址返回的数据就关闭当前 并把数据返回给初始页面
+            setResult(resultCode,data);
+            finish();
+        }
+    }
 }

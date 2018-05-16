@@ -96,6 +96,8 @@ public class Api {
     public static final String GET_CREATE_ADDRESS = "usr/addr/save";
     //删除收货地址
     public static final String GET_DELETE_ADDRESS = "usr/addr/delete";
+    //个人收货地址设置默认收货地址接口
+    public static final String SET_DEFAULT_ADDRESS = "usr/addr/default";
     //订单查询接口
     public static final String GET_LIST_ORDER = "sto/order/list";
     //根据商品查询评论信息
@@ -108,6 +110,9 @@ public class Api {
     public static final String GET_ORDER_SAVE= "sto/order/save";
     //根据会员信息新增商品订单
     public static final String GET_ORDER_ADD= "sto/order/add";
+    //	运费
+    public static final String GET_GOODS_FREIGHT= "sto/goods/freight";
+
     // id:文库ID ，当传入id时可根据id获取文库数据
     public static final String GET_PUB_LIST= "lib/pub/list";
 

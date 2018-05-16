@@ -7,17 +7,16 @@
     android:orientation="vertical">
 
     <include layout="@layout/public_title" />
-
-    <RelativeLayout
+    <android.support.v4.widget.NestedScrollView
+        android:layout_below="@+id/title_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/title_layout">
+        android:layout_above="@+id/include2"
+        android:layout_height="wrap_content">
 
         <RelativeLayout
             android:id="@+id/relative"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/include2"
             android:layout_alignParentTop="true">
 
             <include
@@ -66,6 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/remarks_linear"
                 android:layout_centerVertical="true"
+                android:layout_marginBottom="@dimen/common_10dp"
                 android:layout_marginTop="@dimen/common_10dp"
                 android:background="@drawable/layout_background"
                 android:orientation="vertical">
@@ -123,13 +123,13 @@
 
 
         </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
 
-        <include
-            android:id="@+id/include2"
-            layout="@layout/include_firm_order"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"></include>
-    </RelativeLayout>
+    <include
+        android:id="@+id/include2"
+        layout="@layout/include_firm_order"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"></include>
 
 </RelativeLayout>

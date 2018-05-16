@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.admin.hn.R;
@@ -14,6 +15,7 @@ import com.example.admin.hn.base.BaseActivity;
 import com.example.admin.hn.model.AddressInfo;
 import com.example.admin.hn.ui.adapter.FirmOrderAdapter;
 import com.example.admin.hn.ui.fragment.shop.bean.ShopCartInfo;
+import com.example.admin.hn.ui.fragment.shop.bean.SubmitFreightInfo;
 import com.example.admin.hn.ui.fragment.shop.bean.SubmitGoodsInfo;
 import com.example.admin.hn.utils.AbDateUtil;
 import com.example.admin.hn.utils.AbMathUtil;
@@ -23,7 +25,9 @@ import com.example.admin.hn.volley.RequestListener;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -54,13 +58,17 @@ public class FirmOrderActivity extends BaseActivity {
     TextView tv_goods_money;
     @Bind(R.id.tv_goodsFreight)
     TextView tv_goodsFreight;
+    @Bind(R.id.et_remarks)
+    EditText et_remarks;
 
 
     private static List<ShopCartInfo> list;
-    private  List<SubmitGoodsInfo> sub_list=new ArrayList<>();
+    private List<SubmitGoodsInfo.Goods> sub_list = new ArrayList<>();
+    private List<SubmitFreightInfo> freight_list = new ArrayList<>();
     private FirmOrderAdapter adapter;
     private AddressInfo addressInfo;
     private String url = Api.SHOP_BASE_URL + Api.GET_ORDER_ADD;
+    private String url_freight = Api.SHOP_BASE_URL + Api.GET_GOODS_FREIGHT;
     private double sum_price;//总价格
     private double goods_price;//总价格
     private double sum_freight;//运费
@@ -102,9 +110,8 @@ public class FirmOrderActivity extends BaseActivity {
         for (int i = 0; i < list.size(); i++) {
             ShopCartInfo cartInfo = list.get(i);
             goods_price += cartInfo.getBuyNumber() * cartInfo.getGoodsPrice();
-            sum_freight += cartInfo.getGoodsFreight();
             //初始化需要提交的订单列表
-            SubmitGoodsInfo submit = new SubmitGoodsInfo();
+            SubmitGoodsInfo.Goods submit = new SubmitGoodsInfo.Goods();
             submit.goodsName = cartInfo.getGoodsName();
             submit.goodsId = cartInfo.getGoodsId();
             submit.spuId = cartInfo.getSpuId();
@@ -113,20 +120,66 @@ public class FirmOrderActivity extends BaseActivity {
             submit.goodsPrice = cartInfo.getGoodsPrice();
             submit.amount = cartInfo.getBuyNumber() * cartInfo.getGoodsPrice();
             submit.qty = cartInfo.getBuyNumber();
+            submit.isComment = 1;
             sub_list.add(submit);
+
+            //初始化获取运费的列表
+            SubmitFreightInfo submitFreightInfo = new SubmitFreightInfo();
+            submitFreightInfo.spuId = cartInfo.getSpuId();
+            if (addressInfo != null) {
+                submitFreightInfo.areaId = addressInfo.areaId;
+            }
+            submitFreightInfo.count = cartInfo.getBuyNumber();
+//            freight_list.add(submitFreightInfo);
         }
-        sum_price = goods_price + sum_freight;
-        tv_goods_money.setText("￥" + AbMathUtil.roundStr(goods_price, 2));
-        tv_goodsFreight.setText("￥" + AbMathUtil.roundStr(sum_freight, 2));
-        tv_sum_money.setText(AbMathUtil.roundStr(sum_price, 2));
     }
 
 
     @Override
     public void initData() {
         adapter = new FirmOrderAdapter(this, R.layout.item_firm_order_layout, list);
+        recycleView.setFocusable(false);
+        recycleView.setNestedScrollingEnabled(false);
         recycleView.setLayoutManager(new LinearLayoutManager(context));
         recycleView.setAdapter(adapter);
+        getFreight();
+    }
+
+    /**
+     * 获取运费
+     */
+    private void getFreight() {
+        SubmitFreightInfo info = new SubmitFreightInfo();
+        info.spuId = "246";
+        info.areaId = "6";
+        info.count = 4;
+        freight_list.add(info);
+//      params.put("goods_list", GsonUtils.toListJson(freight_list));
+        http.postJson(url_freight, freight_list, progressTitle, new RequestListener() {
+            @Override
+            public void requestSuccess(String json) {
+                Logger.e("运费", json);
+                if (GsonUtils.isShopSuccess(json)) {
+                    sum_freight = Double.parseDouble(json);
+                    sum_price = goods_price + sum_price;
+                } else {
+                    ToolAlert.showToast(context, GsonUtils.getError(json));
+                }
+                setPrice();
+            }
+
+            @Override
+            public void requestError(String message) {
+                setPrice();
+                ToolAlert.showToast(context, message);
+            }
+        });
+    }
+
+    private void setPrice() {
+        tv_goods_money.setText("￥" + AbMathUtil.roundStr(goods_price, 2));
+        tv_goodsFreight.setText("￥" + AbMathUtil.roundStr(sum_freight, 2));
+        tv_sum_money.setText(AbMathUtil.roundStr(sum_price, 2));
     }
 
 
@@ -173,26 +226,45 @@ public class FirmOrderActivity extends BaseActivity {
      * 订单金额:orderSource
      * 订单生成时间:cancelDate
      * 订单是否取消 isCancel 0为未取消，1为取消
-     *
+     * <p>
      * 可选参数
      * 收货人地址:receiverAddr
      * 收货人姓名:receiverName
      * 收货人电话:receiverPhone
      * 收货人备注:receiverNote
-     *
      */
     private void createOrder() {
-        params.put("memberName", "memberName");
-        params.put("orderSource", "1");
-        params.put("orderAmount", sum_price+"");
-        params.put("receiverAddr", addressInfo.receiverAddr);
-        params.put("receiverName", addressInfo.receiverName);
-        params.put("receiverPhone", addressInfo.phone);
-        params.put("sub_list", GsonUtils.toListJson(sub_list));
-        http.post(url, params, "确认订单...", new RequestListener() {
+        SubmitGoodsInfo info = new SubmitGoodsInfo();
+        info.item = sub_list;
+        info.isCancel = 0;
+        info.memberId = "1";
+        info.memberName = "";
+        info.orderAmount = sum_price;
+        info.orderSource = "1";
+        info.receiverAddr = addressInfo.receiverAddr;
+        info.receiverName = addressInfo.receiverName;
+        info.receiverPhone = addressInfo.phone;
+        info.receiverNote = et_remarks.getText().toString() + "";
+
+//        params.put("memberName", "memberName");
+//        params.put("orderSource", "1");
+//        params.put("status", "0");
+//        params.put("isCancel", "0");
+//        params.put("orderAmount", sum_price+"");
+//        params.put("receiverAddr", addressInfo.receiverAddr);
+//        params.put("receiverName", addressInfo.receiverName);
+//        params.put("receiverPhone", addressInfo.phone);
+//        params.put("receiverNote", et_remarks.getText().toString() + "");
+//        params.put("item", GsonUtils.toListJson(sub_list));
+        http.postJson(url, info, "确认订单...", new RequestListener() {
             @Override
             public void requestSuccess(String json) {
                 Logger.e("确认订单", json);
+                if (GsonUtils.isShopSuccess(json)) {
+
+                } else {
+                    ToolAlert.showToast(context, GsonUtils.getError(json));
+                }
             }
 
             @Override

@@ -8,21 +8,12 @@
 
     <include layout="@layout/public_title" />
 
-    <RelativeLayout
+    <include
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/ll_bottom"
-        android:layout_below="@+id/title_layout"
-        android:layout_marginBottom="@dimen/common_20dp">
-
-        <com.example.admin.hn.recycleView.DeleteRecyclerView
-            android:id="@+id/recycleView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <include layout="@layout/network_disabled" />
-    </RelativeLayout>
-
+        layout="@layout/include_recycle_view_layout"
+        android:layout_below="@+id/title_layout" />
 
     <LinearLayout
         android:id="@+id/ll_bottom"

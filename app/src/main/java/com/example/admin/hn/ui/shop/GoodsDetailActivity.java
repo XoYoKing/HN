@@ -23,6 +23,7 @@ import com.example.admin.hn.model.GoodsListInfo;
 import com.example.admin.hn.ui.adapter.AllTabAdapter;
 import com.example.admin.hn.ui.fragment.shop.CommentFragment;
 import com.example.admin.hn.ui.fragment.shop.GoodsFragment;
+import com.example.admin.hn.ui.fragment.shop.bean.CommentInfo;
 import com.example.admin.hn.ui.fragment.shop.bean.GoodsDetailFragment;
 import com.example.admin.hn.ui.fragment.shop.bean.ShopCartInfo;
 import com.example.admin.hn.utils.GsonUtils;
@@ -127,10 +128,14 @@ public class GoodsDetailActivity extends BaseActivity {
     }
     private ArrayList<ShopCartInfo> shopCartInfos = new ArrayList<>();
     private void confirmOrder() {
+        if (shopCartInfos.size() > 0) {
+            shopCartInfos.clear();
+        }
         ShopCartInfo shopCartInfo = new ShopCartInfo();
         shopCartInfo.setBuyNumber(1);
         shopCartInfo.setGoodsId(goodsInfo.goods.id);
         shopCartInfo.setGoodsName(goodsInfo.spu.goodsName);
+        shopCartInfo.setGoodsSpec(goodsInfo.goods.goodsSpec);
         shopCartInfo.setGoodsFullSpecs(goodsInfo.goods.goodsFullSpecs);
         shopCartInfo.setGoodsFullName(goodsInfo.goods.goodsFullName);
         shopCartInfo.setGoodsPrice(goodsInfo.goods.goodsPrice);
@@ -170,6 +175,15 @@ public class GoodsDetailActivity extends BaseActivity {
         adapter.addTab("评价", info.spuId, CommentFragment.class);
         viewPager.setOffscreenPageLimit(3);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    /**
+     *
+     * 跳转到对应的页面
+     * @param currentPage
+     */
+    public void setCurrentPage(int currentPage){
+        viewPager.setCurrentItem(currentPage);
     }
 
     @Override
