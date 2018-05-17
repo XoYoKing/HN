@@ -21,6 +21,7 @@ import com.example.admin.hn.ui.shop.GoodsListActivity;
 import com.example.admin.hn.ui.shop.ShopTypeListActivity;
 import com.example.admin.hn.ui.shop.StepActivity;
 import com.example.admin.hn.ui.shop.SubmitCommentActivity;
+import com.example.admin.hn.utils.AbMathUtil;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolString;
 import com.example.admin.hn.utils.ToolViewUtils;
@@ -83,6 +84,8 @@ public class ShopOrderListAdapter extends RecyclerView.Adapter<RecyclerView.View
 //        ToolViewUtils.glideImageList(item.,holder.goods_img,R.drawable.load_fail);
 //        holder.goods_title.setText(item.goodsName + "");
 //        holder.goods_amount.setText(item.amount + "");
+        holder.tv_freight.setText("（含运费￥" + AbMathUtil.roundStr(info.freight, 2) + "）");
+        holder.all_goods_amount.setText("合计：￥" + AbMathUtil.roundStr(info.orderAmount, 2));
         if (Constant.SHOP_ORDER_STATUS_NEW.equals(info.status)) {
             holder.lock_logistics.setVisibility(View.GONE);
             holder.pay.setVisibility(View.VISIBLE);
@@ -129,6 +132,8 @@ public class ShopOrderListAdapter extends RecyclerView.Adapter<RecyclerView.View
         holder.item_recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
         ItemRecycleAdapter itemRecycleAdapter = new ItemRecycleAdapter(TYPE_TYPE1, info.orderItems);
         holder.item_recyclerView.setAdapter(itemRecycleAdapter);
+        holder.tv_freight.setText("（含运费￥" + AbMathUtil.roundStr(info.freight, 2) + "）");
+        holder.all_goods_amount.setText("合计：￥" + AbMathUtil.roundStr(info.orderAmount, 2));
     }
 
     @Override
@@ -138,18 +143,18 @@ public class ShopOrderListAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     public class HolderType1 extends RecyclerView.ViewHolder {
         private ImageView goods_img;
-        private TextView tv_status,all_goods_money, goods_title, single_goods_money, goods_amount, shipping_price, all_goods_amount;
+        private TextView tv_status,all_goods_number, goods_title, single_goods_money, goods_amount, tv_freight, all_goods_amount;
         private Button lock_logistics, pay;
         private LinearLayout btn_linear;
 
         public HolderType1(View itemView) {
             super(itemView);
             goods_img = (ImageView) itemView.findViewById(R.id.goods_img);
-            all_goods_money = (TextView) itemView.findViewById(R.id.all_goods_money);
+            all_goods_number = (TextView) itemView.findViewById(R.id.all_goods_number);
             goods_title = (TextView) itemView.findViewById(R.id.goods_title);
             single_goods_money = (TextView) itemView.findViewById(R.id.single_goods_money);
             goods_amount = (TextView) itemView.findViewById(R.id.goods_amount);
-            shipping_price = (TextView) itemView.findViewById(R.id.shipping_price);
+            tv_freight = (TextView) itemView.findViewById(R.id.tv_freight);
             all_goods_amount = (TextView) itemView.findViewById(R.id.all_goods_amount);
             lock_logistics = (Button) itemView.findViewById(R.id.lock_logistics);
             tv_status = (TextView) itemView.findViewById(R.id.tv_status);
@@ -160,12 +165,17 @@ public class ShopOrderListAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     public class HolderType2 extends RecyclerView.ViewHolder {
         private RecyclerView item_recyclerView;
+        private TextView all_goods_number,tv_freight, all_goods_amount;
 
         public HolderType2(View itemView) {
             super(itemView);
             item_recyclerView = (RecyclerView) itemView.findViewById(R.id.item_recyclerView);
             item_recyclerView.setNestedScrollingEnabled(false);
             item_recyclerView.setFocusable(false);
+            all_goods_number = (TextView) itemView.findViewById(R.id.all_goods_number);
+            tv_freight = (TextView) itemView.findViewById(R.id.tv_freight);
+            all_goods_amount = (TextView) itemView.findViewById(R.id.all_goods_amount);
+
         }
     }
 

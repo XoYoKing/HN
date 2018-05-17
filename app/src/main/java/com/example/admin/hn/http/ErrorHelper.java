@@ -1,6 +1,8 @@
 package com.example.admin.hn.http;
 
 import com.example.admin.hn.utils.ToolString;
+import com.orhanobut.logger.Logger;
+
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 //正如前面代码看到的，在创建一个请求时，需要添加一个错误监听onErrorResponse。如果请求发生异常，会返回一个VolleyError实例。  
@@ -24,6 +26,7 @@ public class ErrorHelper {
      */
     public static String getMessage(Exception error) {
         //获取错误信息里面的状态码
+        Logger.e("error", error);
         String code = ToolString.filterNumber(error.getMessage());
         if (ToolString.isEmpty(code)) {
             //如果没有获取到状态码，就判断错误类型

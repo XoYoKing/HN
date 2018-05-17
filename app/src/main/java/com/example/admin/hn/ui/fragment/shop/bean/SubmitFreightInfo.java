@@ -9,8 +9,7 @@ import java.io.Serializable;
  */
 
 public class SubmitFreightInfo implements Serializable {
-
     public String areaId;//城市ID
     public String spuId;//SPUID
-    public int count;//购买数量
+    public String count;//购买数量
 }

@@ -21,7 +21,8 @@ public class ShopOrderInfo implements Serializable {
     public String memberId;//会员ID
     public String memberName;//会员名称
     public String status;//订单状态
-    public String freight;//运费
+    public double freight;//运费
+    public double orderAmount;//订单金额
     public String expressId;//快递公司ID
     public String expressName;//快递公司名称
     public String expressNo;//快递单号

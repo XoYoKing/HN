@@ -39,6 +39,50 @@
         android:id="@+id/item_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+
+    <include layout="@layout/include_view_line"/>
+
+    <LinearLayout
+        android:id="@+id/amount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/goods"
+        android:layout_marginBottom="@dimen/common_10dp"
+        android:layout_marginRight="@dimen/common_12dp"
+        android:layout_marginTop="@dimen/common_10dp"
+        android:background="@drawable/layout_background"
+        android:gravity="right"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/all_goods_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="共2件商品"
+            android:textColor="@color/black"
+            android:textSize="@dimen/common_12sp" />
+
+        <TextView
+            android:id="@+id/all_goods_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/common_5dp"
+            android:text="合计：￥198"
+            android:textColor="@color/black"
+            android:textSize="@dimen/common_12sp" />
+
+        <TextView
+            android:id="@+id/tv_freight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/common_5dp"
+            android:text="（含运费￥0.00）"
+            android:textColor="@color/black"
+            android:textSize="@dimen/common_12sp" />
+
+    </LinearLayout>
+
     <include layout="@layout/include_view_line"/>
 
     <LinearLayout

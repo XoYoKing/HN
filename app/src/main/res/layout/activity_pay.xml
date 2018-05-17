@@ -2,12 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:clipToPadding="true"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-   <include layout="@layout/public_title"/>
-
+    <include layout="@layout/public_title" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,22 +23,21 @@
             android:textColor="@color/black"
             android:textSize="@dimen/common_14sp" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/common_1dp"
-            android:background="@color/line_color"></View>
+        <include layout="@layout/include_view_line" />
 
         <LinearLayout
+            android:id="@+id/ll_weixin"
             android:layout_width="match_parent"
             android:layout_height="@dimen/common_44dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <CheckBox
+            <ImageView
+                android:id="@+id/cb_weixin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/common_12dp"
-                android:button="@drawable/selector_pay" />
+                android:src="@drawable/selector_pay" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -49,22 +47,21 @@
 
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/common_1dp"
-            android:background="@color/line_color"></View>
+        <include layout="@layout/include_view_line" />
 
         <LinearLayout
+            android:id="@+id/ll_zhifub"
             android:layout_width="match_parent"
             android:layout_height="@dimen/common_44dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <CheckBox
+            <ImageView
+                android:id="@+id/cb_zhifub"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/common_12dp"
-                android:button="@drawable/selector_pay" />
+                android:src="@drawable/selector_pay" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -74,10 +71,7 @@
 
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/common_1dp"
-            android:background="@color/line_color"></View>
+        <include layout="@layout/include_view_line" />
     </LinearLayout>
 
     <RelativeLayout
@@ -86,10 +80,7 @@
         android:layout_alignParentBottom="true"
         android:background="@color/white">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/common_1dp"
-            android:background="@color/line_color"></View>
+        <include layout="@layout/include_view_line"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -102,17 +93,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="合计："
-                android:textColor="@color/black"
+                android:text="￥"
+                android:textColor="@color/red"
                 android:textSize="@dimen/common_12sp" />
 
             <TextView
-                android:id="@+id/tv_sum_integral"
+                android:id="@+id/tv_orderAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="￥0"
+                android:text="0.00"
                 android:textColor="@color/red"
-                android:textSize="@dimen/common_12sp" />
+                android:textSize="@dimen/common_16sp" />
         </LinearLayout>
 
         <LinearLayout

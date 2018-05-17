@@ -14,6 +14,7 @@ import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseActivity;
 import com.example.admin.hn.model.AddressInfo;
 import com.example.admin.hn.ui.adapter.FirmOrderAdapter;
+import com.example.admin.hn.ui.fragment.shop.bean.PayOrderInfo;
 import com.example.admin.hn.ui.fragment.shop.bean.ShopCartInfo;
 import com.example.admin.hn.ui.fragment.shop.bean.SubmitFreightInfo;
 import com.example.admin.hn.ui.fragment.shop.bean.SubmitGoodsInfo;
@@ -120,7 +121,7 @@ public class FirmOrderActivity extends BaseActivity {
             submit.goodsPrice = cartInfo.getGoodsPrice();
             submit.amount = cartInfo.getBuyNumber() * cartInfo.getGoodsPrice();
             submit.qty = cartInfo.getBuyNumber();
-            submit.isComment = 1;
+            submit.isComment = 0;
             sub_list.add(submit);
 
             //初始化获取运费的列表
@@ -129,7 +130,7 @@ public class FirmOrderActivity extends BaseActivity {
             if (addressInfo != null) {
                 submitFreightInfo.areaId = addressInfo.areaId;
             }
-            submitFreightInfo.count = cartInfo.getBuyNumber();
+            submitFreightInfo.count = cartInfo.getBuyNumber()+"";
 //            freight_list.add(submitFreightInfo);
         }
     }
@@ -152,15 +153,15 @@ public class FirmOrderActivity extends BaseActivity {
         SubmitFreightInfo info = new SubmitFreightInfo();
         info.spuId = "246";
         info.areaId = "6";
-        info.count = 4;
+        info.count = "4";
         freight_list.add(info);
-//      params.put("goods_list", GsonUtils.toListJson(freight_list));
-        http.postJson(url_freight, freight_list, progressTitle, new RequestListener() {
+        params.put("goods_list", GsonUtils.toListJson(freight_list));
+        http.post(url_freight, params, progressTitle, new RequestListener() {
             @Override
             public void requestSuccess(String json) {
                 Logger.e("运费", json);
                 if (GsonUtils.isShopSuccess(json)) {
-                    sum_freight = Double.parseDouble(json);
+                    sum_freight = GsonUtils.getDouble(json, "data");
                     sum_price = goods_price + sum_price;
                 } else {
                     ToolAlert.showToast(context, GsonUtils.getError(json));
@@ -177,6 +178,9 @@ public class FirmOrderActivity extends BaseActivity {
     }
 
     private void setPrice() {
+        if (sum_price == 0) {
+            sum_price = goods_price;
+        }
         tv_goods_money.setText("￥" + AbMathUtil.roundStr(goods_price, 2));
         tv_goodsFreight.setText("￥" + AbMathUtil.roundStr(sum_freight, 2));
         tv_sum_money.setText(AbMathUtil.roundStr(sum_price, 2));
@@ -245,23 +249,13 @@ public class FirmOrderActivity extends BaseActivity {
         info.receiverName = addressInfo.receiverName;
         info.receiverPhone = addressInfo.phone;
         info.receiverNote = et_remarks.getText().toString() + "";
-
-//        params.put("memberName", "memberName");
-//        params.put("orderSource", "1");
-//        params.put("status", "0");
-//        params.put("isCancel", "0");
-//        params.put("orderAmount", sum_price+"");
-//        params.put("receiverAddr", addressInfo.receiverAddr);
-//        params.put("receiverName", addressInfo.receiverName);
-//        params.put("receiverPhone", addressInfo.phone);
-//        params.put("receiverNote", et_remarks.getText().toString() + "");
-//        params.put("item", GsonUtils.toListJson(sub_list));
         http.postJson(url, info, "确认订单...", new RequestListener() {
             @Override
             public void requestSuccess(String json) {
                 Logger.e("确认订单", json);
                 if (GsonUtils.isShopSuccess(json)) {
-
+                    PayOrderInfo orderInfo = GsonUtils.jsonToBean2(json, PayOrderInfo.class);
+                    PayActivity.startActivity(context,orderInfo);
                 } else {
                     ToolAlert.showToast(context, GsonUtils.getError(json));
                 }

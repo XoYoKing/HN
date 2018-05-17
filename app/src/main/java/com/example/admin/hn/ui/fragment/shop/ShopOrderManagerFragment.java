@@ -57,7 +57,8 @@ public class ShopOrderManagerFragment extends BaseFragment implements OnLoadmore
 	private String url = Api.SHOP_BASE_URL + Api.GET_LIST_ORDER;
 	private RefreshLayout refreshLayout;
 	private String type;
-	private int page = 0;
+	private int page;
+	private int rows = 10;
 	private int totalPage;
 
 	@Override
@@ -123,6 +124,8 @@ public class ShopOrderManagerFragment extends BaseFragment implements OnLoadmore
 	}
 
 	private void sendHttp(){
+		params.put("page", page+"");
+		params.put("rows", rows+"");
 		params.put("status", type+"");
 		http.get(url, params, progressTitle, new RequestListener() {
 			@Override

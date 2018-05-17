@@ -262,4 +262,18 @@ public class GsonUtils {
         }
         return 1;
     }
+
+    /**
+     * 获取网络请求的错误信息
+     *
+     * @return
+     */
+    public static double getDouble(String json,String key) {
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            return jsonObject.optDouble(key);
+        } catch (Exception e) {
+        }
+        return 0;
+    }
 }
