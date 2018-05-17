@@ -155,8 +155,7 @@ public class FirmOrderActivity extends BaseActivity {
         info.areaId = "6";
         info.count = "4";
         freight_list.add(info);
-        params.put("goods_list", GsonUtils.toListJson(freight_list));
-        http.post(url_freight, params, progressTitle, new RequestListener() {
+        http.postJson(url_freight, freight_list, progressTitle, new RequestListener() {
             @Override
             public void requestSuccess(String json) {
                 Logger.e("运费", json);
