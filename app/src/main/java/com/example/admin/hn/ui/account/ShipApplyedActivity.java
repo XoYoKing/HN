@@ -11,7 +11,9 @@ import android.widget.TextView;
 
 import com.example.admin.hn.R;
 import com.example.admin.hn.base.BaseActivity;
+import com.example.admin.hn.model.ApplyingInfo;
 import com.example.admin.hn.model.OrderInfo;
+import com.example.admin.hn.ui.adapter.ShipApplyedAdapter;
 import com.example.admin.hn.ui.adapter.ShipApplyingAdapter;
 import com.example.admin.hn.utils.SpaceItemDecoration;
 import com.example.admin.hn.utils.ToolRefreshView;
@@ -44,7 +46,7 @@ public class ShipApplyedActivity extends BaseActivity implements OnRefreshListen
     private int id;
     private String title;
 
-    private ShipApplyingAdapter adapter;
+    private ShipApplyedAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,12 +66,12 @@ public class ShipApplyedActivity extends BaseActivity implements OnRefreshListen
         textTitle.setText("领用详情");
         textTitleBack.setBackgroundResource(R.drawable.btn_back);
     }
-    private ArrayList<OrderInfo.Order> list = new ArrayList<>();
+    private ArrayList<ApplyingInfo> list = new ArrayList<>();
     @Override
     public void initView() {
         //下拉刷新
         ToolRefreshView.setRefreshLayout(this, refreshLayout, this, this);
-        adapter = new ShipApplyingAdapter(this, R.layout.item_ship_applyed_adapter, list);
+        adapter = new ShipApplyedAdapter(this, R.layout.item_ship_applyed_adapter, list);
         recycleView.addItemDecoration(new SpaceItemDecoration(10, 20, 0, 0));
         recycleView.setLayoutManager(new LinearLayoutManager(context));
         recycleView.setAdapter(adapter);
@@ -101,7 +103,7 @@ public class ShipApplyedActivity extends BaseActivity implements OnRefreshListen
 
     public void data() {
         for (int i = 0; i < 10; i++) {
-            list.add(new OrderInfo.Order());
+            list.add(new ApplyingInfo());
         }
         adapter.notifyDataSetChanged();
     }

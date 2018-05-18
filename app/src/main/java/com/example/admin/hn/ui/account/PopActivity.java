@@ -132,12 +132,6 @@ public class PopActivity extends BaseActivity {
                 tv_type_name.setText("审核管理-领用单");
             }
             initOrderManagerView(view);
-        } else if (requestCode == 500) {
-
-        } else if (requestCode == 600) {
-
-        } else if (requestCode == 700) {
-
         }
 
     }
@@ -217,17 +211,29 @@ public class PopActivity extends BaseActivity {
 
     @OnClick({R.id.bt_reset, R.id.bt_sure})
     public void onClick(View v) {
+        Intent intent = new Intent();
         switch (v.getId()) {
             case R.id.bt_reset:
-                if (requestCode ==  Constant.POP_ORDER_MANAGER) {
-                    //订单管理
-                    et_name1.setText("");
-                } else if (requestCode ==  Constant.POP_SHIP_AUDITING) {
-                    et_name1.setText("");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String curr_end = sdf.format(new Date());
+                Calendar c = Calendar.getInstance();
+                c.add(Calendar.MONTH, -1);
+                String curr_start = sdf.format(c.getTime());
+                if (requestCode == Constant.POP_ORDER_MANAGER) {//订单管理
+                    intent.putExtra("start", curr_start);
+                    intent.putExtra("end", curr_end);
+                    intent.putExtra("childItem", childItem);
+                }else if (requestCode == Constant.POP_SHIP_AUDITING) {//审核申领搜索
+                    intent.putExtra("start", curr_start);
+                    intent.putExtra("end", curr_end);
+                } else if (requestCode == Constant.POP_NOT_MATERIAL) {//待选搜索
+                    intent.putExtra("dataNumber", "");
+                    intent.putExtra("chineseName", "");
                 }
+                setResult(requestCode,intent);
+                finish();
                 break;
             case R.id.bt_sure:
-                Intent intent = new Intent();
                 if (requestCode == Constant.POP_ORDER_MANAGER) {//订单管理
                     String start = startDate1.getText().toString();
                     String end = endDate1.getText().toString();

@@ -8,16 +8,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseFragment;
 import com.example.admin.hn.http.Constant;
+import com.example.admin.hn.model.ApplyingInfo;
 import com.example.admin.hn.model.OrderInfo;
 import com.example.admin.hn.ui.adapter.BankApplyingAdapter;
+import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.SpaceItemDecoration;
+import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolRefreshView;
+import com.example.admin.hn.utils.ToolString;
+import com.example.admin.hn.volley.RequestListener;
+import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -26,6 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -48,19 +54,16 @@ public class BankApplyingFragment extends BaseFragment implements OnRefreshListe
     ImageView network_img;
     @Bind(R.id.noData_img)
     ImageView noData_img;
+    @Bind(R.id.refreshLayout)
+    RefreshLayout refreshLayout;
 
-
-    private ArrayList<OrderInfo.Order> list = new ArrayList<>();
+    private ArrayList<ApplyingInfo> list = new ArrayList<>();
     private BankApplyingAdapter adapter;
     private View view;
-    private String name;//搜索条件
-    //搜索条件1(查询该用户全部订单) 2(根据船舶名称)
-    private int status = 1;
     private int page = 1;
-    private int screen = 1;
-    private String url_order = Api.BASE_URL + Api.ORDER;
-    private RefreshLayout refreshLayout;
-
+    private int screen;
+    private String url = Api.BASE_URL + Api.GET_SUBMITTED_DOCUMENTS;
+    private String name;//搜索条件
     private String endDate;
     private String startDate;
 
@@ -84,7 +87,7 @@ public class BankApplyingFragment extends BaseFragment implements OnRefreshListe
         startDate = sdf.format(c.getTime());
 
         //下拉刷新
-        refreshLayout = (RefreshLayout) view.findViewById(R.id.refreshLayout);
+
         ToolRefreshView.setRefreshLayout(activity, refreshLayout, this, this);
         adapter = new BankApplyingAdapter(activity, R.layout.item_bank_applying_layout, list);
         recycleView.setLayoutManager(new LinearLayoutManager(activity));
@@ -95,7 +98,7 @@ public class BankApplyingFragment extends BaseFragment implements OnRefreshListe
 
     @Override
     public void initData() {
-        data(name);
+        sendHttp(name);
     }
 
 
@@ -111,24 +114,40 @@ public class BankApplyingFragment extends BaseFragment implements OnRefreshListe
         switch (v.getId()) {
             case R.id.network_img:
                 network_img.setVisibility(View.GONE);
-                data(name);
-                refreshLayout.finishRefresh(1000);
+                sendHttp(name);
                 break;
         }
     }
 
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-    }
+    public void sendHttp(String name) {
+        params.put("page", page);
+        http.postJson(url, params, progressTitle, new RequestListener() {
+            @Override
+            public void requestSuccess(String json) {
+                Logger.e("申请单", json);
+                progressTitle = null;
+                if (GsonUtils.isSuccess(json)) {
+                    TypeToken typeToken=new TypeToken<List<ApplyingInfo>>(){};
+                    List<ApplyingInfo> applys = (List<ApplyingInfo>) GsonUtils.jsonToList(json, typeToken, "applys");
+                    if (ToolString.isEmptyList(applys)) {
+                        if (isRefresh) {
+                            list.clear();
+                        }
+                        list.addAll(applys);
+                    }
+                }else {
+                    ToolAlert.showToast(activity, GsonUtils.getError(json));
+                }
+                ToolRefreshView.hintView(adapter,refreshLayout,false,network,noData_img,network_img);
+            }
 
-
-    public void data(String name) {
-        for (int i = 0; i < 20; i++) {
-            list.add(new OrderInfo.Order());
-        }
-        adapter.notifyDataSetChanged();
+            @Override
+            public void requestError(String message) {
+                ToolAlert.showToast(activity, message);
+                ToolRefreshView.hintView(adapter,refreshLayout,true,network,noData_img,network_img);
+            }
+        });
     }
 
     @Override
@@ -138,23 +157,19 @@ public class BankApplyingFragment extends BaseFragment implements OnRefreshListe
             name = data.getStringExtra("name");
             startDate = data.getStringExtra("start");
             endDate = data.getStringExtra("end");
-            Logger.i("request", name +"--"+startDate+"--" + endDate);
-            data(name);
+            sendHttp(name);
         }
     }
 
     @Override
     public void onLoadmore(RefreshLayout refreshlayout) {
         page = page + 1;
-//        data(name);
-        adapter.notifyDataSetChanged();
-        refreshlayout.finishLoadmore(1000);
+        sendHttp(name);
     }
 
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
         page = 1;
-//        data(name);
-        refreshlayout.finishRefresh(1000);
+        sendHttp(name);
     }
 }
