@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -97,12 +98,27 @@ public class MaterialNotManagerFragment extends BaseFragment implements OnRefres
         recycleView.addItemDecoration(new SpaceItemDecoration(10,20,0,0));
         recycleView.setAdapter(adapter);
     }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (getUserVisibleHint() && isFirstHttp && http != null) {
+            isFirstHttp = false;
+            sendHttp();
+        }
+    }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && isFirstHttp && http != null) {
+            isFirstHttp = false;
+            sendHttp();
+        }
+    }
 
     @Override
     public void initData() {
         initBroadcastReceiver();
-        sendHttp();
     }
 
     private void sendHttp() {

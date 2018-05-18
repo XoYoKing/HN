@@ -214,6 +214,9 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
     private List<SubmitSelect> submits=new ArrayList<>();
     private String submit_url = Api.BASE_URL + Api.SUBMIT_APPLY_ORDER;
     private void submit() {
+        if (submits.size() > 0) {
+            submits.clear();
+        }
         List<OrderUseInfo> selectList = adapter.getDatas();
         if (ToolString.isEmptyList(selectList)) {
             for (int i = 0; i < selectList.size(); i++) {

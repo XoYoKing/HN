@@ -2,6 +2,7 @@ package com.example.admin.hn.ui.fragment.seaShart;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
@@ -46,8 +47,27 @@ public class AuditingManagerFragment extends BaseFragment implements ViewPager.O
 
 	@Override
 	public void initData() {
-		addChildFragment();
+
 	}
+
+	@Override
+	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		if (getUserVisibleHint() && isFirstHttp && http != null) {
+			isFirstHttp = false;
+			addChildFragment();
+		}
+	}
+
+	@Override
+	public void setUserVisibleHint(boolean isVisibleToUser) {
+		super.setUserVisibleHint(isVisibleToUser);
+		if (isVisibleToUser && isFirstHttp&& http != null) {
+			isFirstHttp = false;
+			addChildFragment();
+		}
+	}
+
 
 	private void addChildFragment() {
 		AllChildTabAdapter adapter = new AllChildTabAdapter(getChildFragmentManager(), activity, viewPager);

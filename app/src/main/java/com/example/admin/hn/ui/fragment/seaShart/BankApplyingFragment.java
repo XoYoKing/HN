@@ -2,6 +2,7 @@ package com.example.admin.hn.ui.fragment.seaShart;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -98,8 +99,26 @@ public class BankApplyingFragment extends BaseFragment implements OnRefreshListe
 
     @Override
     public void initData() {
-        sendHttp(name);
+
     }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (getUserVisibleHint() && http != null) {
+            sendHttp(name);
+        }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && http != null) {
+            isRefresh = true;
+            sendHttp(name);
+        }
+    }
+
 
 
     @Override
