@@ -106,18 +106,6 @@ public class MaterialNotSelectAdapter extends CommonAdapter<OrderNotUseInfo>{
         public void afterTextChanged(Editable s) {
             if (ToolString.isEmpty(s.toString())) {
                 int number = Integer.parseInt(s.toString());
-//                if (info.storage_amount!=0 && number > info.storage_amount) {//购买数量大于库存
-//                    ToolAlert.showToast(mContext, "库存不足！", false);
-//                    tv_buy_number.setText(info.storage_amount + "");
-//                    info.quantity = info.storage_amount;
-//                    ToolViewUtils.setSelection(tv_buy_number);
-//                }else {
-//                    if (info.storage_amount == 0) {
-//                        info.quantity = 0;
-//                    }else {
-//
-//                    }
-//                }
                 if (number == 0) {
                     info.quantity = 1;
                     tv_buy_number.setText(info.quantity + "");

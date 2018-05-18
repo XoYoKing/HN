@@ -224,7 +224,7 @@ public class MaterialNotManagerFragment extends BaseFragment implements OnRefres
     private List<OrderNotUseSubmit> submits = new ArrayList<>();
     //提交数据
     private void submit() {
-        List<OrderNotUseInfo> selectList = adapter.getSelectList();
+        final List<OrderNotUseInfo> selectList = adapter.getSelectList();
         if (ToolString.isEmptyList(selectList)) {
             for (int i = 0; i < selectList.size(); i++) {
                 OrderNotUseInfo notUseInfo = selectList.get(i);
@@ -241,6 +241,7 @@ public class MaterialNotManagerFragment extends BaseFragment implements OnRefres
                 public void requestSuccess(String json) {
                     Logger.e("待选提交结果",json);
                     if (GsonUtils.isSuccess(json)) {
+                        selectList.clear();
                         //刷新列表
                         sendHttp();
                     }
