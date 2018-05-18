@@ -32,6 +32,7 @@
 
         </LinearLayout>
         <TextView
+            android:id="@+id/tv_status"
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -59,7 +60,7 @@
                 android:textSize="@dimen/common_15sp" />
 
             <TextView
-                android:id="@+id/tv_number"
+                android:id="@+id/tv_numberNo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="DIS180403001-3"
@@ -111,7 +112,7 @@
                 android:textSize="@dimen/common_15sp" />
 
             <TextView
-                android:id="@+id/tv_number1"
+                android:id="@+id/tv_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="6"

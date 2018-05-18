@@ -101,7 +101,6 @@ public class MaterialNotManagerFragment extends BaseFragment implements OnRefres
 
     @Override
     public void initData() {
-        //默认隐藏搜索条件
         initBroadcastReceiver();
         sendHttp();
     }
@@ -130,7 +129,6 @@ public class MaterialNotManagerFragment extends BaseFragment implements OnRefres
                     if (ToolString.isEmptyList(data)) {
                         list.addAll(data);
                     }
-                    Logger.e("list", list.toString()+"");
                 }else {
                     if (page != 1) {
                         ToolAlert.showToast(getActivity(),Constant.LOADED);

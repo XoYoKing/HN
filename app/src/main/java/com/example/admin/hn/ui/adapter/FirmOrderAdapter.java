@@ -30,7 +30,9 @@ public class FirmOrderAdapter extends CommonAdapter<ShopCartInfo> {
         viewHolder.setText(R.id.goods_name, info.getGoodsFullName()+ "");
         viewHolder.setText(R.id.goods_usp, info.getUsp()+"");
         viewHolder.setText(R.id.goods_price, "￥" + AbMathUtil.roundStr(info.getGoodsPrice(),2));
-        viewHolder.setText(R.id.goods_number, "X " + info.getBuyNumber());
+        viewHolder.setText(R.id.goods_number, "数量：" + info.getBuyNumber());
+        viewHolder.setText(R.id.goods_freight, "运费：" + AbMathUtil.roundStr(info.getGoodsFreight(), 2));
+
         ToolViewUtils.glideImageList(info.getImageUrl(), (ImageView) viewHolder.getView(R.id.goods_img), R.drawable.load_fail);
     }
 

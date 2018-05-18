@@ -36,7 +36,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/recycleView"
-                android:layout_marginTop="@dimen/common_10dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:background="@drawable/layout_background"
                 android:orientation="horizontal">
 

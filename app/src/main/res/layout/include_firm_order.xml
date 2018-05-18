@@ -37,13 +37,13 @@
 
         <Button
             android:id="@+id/go_pay"
-            android:layout_width="133dp"
-            android:layout_height="60dp"
+            android:layout_width="@dimen/common_130dp"
+            android:layout_height="@dimen/common_44dp"
             android:layout_alignParentRight="true"
             android:layout_gravity="center"
             android:background="@drawable/shape_rect_blue"
             android:text="提交订单"
             android:textColor="@color/white"
-            android:textSize="@dimen/common_18sp" />
+            android:textSize="@dimen/common_16sp" />
     </RelativeLayout>
 </LinearLayout>

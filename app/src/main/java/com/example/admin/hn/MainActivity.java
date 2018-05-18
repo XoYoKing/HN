@@ -4,12 +4,10 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -29,24 +27,19 @@ import com.example.admin.hn.ui.fragment.ThreeFragment;
 import com.example.admin.hn.ui.fragment.TypeFragment;
 import com.example.admin.hn.utils.StateBarUtil;
 import com.example.admin.hn.utils.ToolAlert;
-import com.example.admin.hn.utils.ToolString;
 import com.orhanobut.logger.Logger;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
-import org.litepal.LitePal;
 import org.litepal.tablemanager.Connector;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.jpush.android.api.JPushInterface;
-import cn.jpush.android.api.TagAliasCallback;
 
 /**
  * @author duantao
@@ -410,60 +403,60 @@ public class MainActivity extends FragmentActivity {
 //            return;
 //        }
         //调用JPush API设置Alias
-        mHandler.sendMessage(mHandler.obtainMessage(MSG_SET_ALIAS, alias));
+//        mHandler.sendMessage(mHandler.obtainMessage(MSG_SET_ALIAS, alias));
     }
 
-    private static final int MSG_SET_ALIAS = 1001;
-    private static final int MSG_SET_TAGS = 1002;
-    private final Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(android.os.Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case MSG_SET_ALIAS:
-                    Log.d(TAG, "Set alias in handler.");
-                    JPushInterface.setAliasAndTags(getApplicationContext(), (String) msg.obj, null, mAliasCallback);
-                    break;
+//    private static final int MSG_SET_ALIAS = 1001;
+//    private static final int MSG_SET_TAGS = 1002;
+//    private final Handler mHandler = new Handler() {
+//        @Override
+//        public void handleMessage(android.os.Message msg) {
+//            super.handleMessage(msg);
+//            switch (msg.what) {
+//                case MSG_SET_ALIAS:
+//                    Log.d(TAG, "Set alias in handler.");
+//                    JPushInterface.setAliasAndTags(getApplicationContext(), (String) msg.obj, null, mAliasCallback);
+//                    break;
+//
+//                case MSG_SET_TAGS:
+//                    Log.d(TAG, "Set tags in handler.");
+//                    //JPushInterface.setAliasAndTags(getApplicationContext(), null, (Set<String>) msg.obj, mTagsCallback);
+//                    break;
+//
+//                default:
+//                    Log.i(TAG, "Unhandled msg - " + msg.what);
+//            }
+//        }
+//    };
 
-                case MSG_SET_TAGS:
-                    Log.d(TAG, "Set tags in handler.");
-                    //JPushInterface.setAliasAndTags(getApplicationContext(), null, (Set<String>) msg.obj, mTagsCallback);
-                    break;
-
-                default:
-                    Log.i(TAG, "Unhandled msg - " + msg.what);
-            }
-        }
-    };
-
-    private final TagAliasCallback mAliasCallback = new TagAliasCallback() {
-
-        @Override
-        public void gotResult(int code, String alias, Set<String> tags) {
-            String logs;
-            switch (code) {
-                case 0:
-                    logs = "Set tag and alias success";
-                    Log.i(TAG, logs);
-                    break;
-
-                case 6002:
-                    logs = "Failed to set alias and tags due to timeout. Try again after 60s.";
-                    Log.i(TAG, logs);
-                    if (ToolString.isConnected(getApplicationContext())) {
-                        mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_SET_ALIAS, alias), 1000 * 60);
-                    } else {
-                        Log.i(TAG, "No network");
-                    }
-                    break;
-
-                default:
-                    logs = "Failed with errorCode = " + code;
-                    Log.e(TAG, logs);
-            }
-
-        }
-
-    };
+//    private final TagAliasCallback mAliasCallback = new TagAliasCallback() {
+//
+//        @Override
+//        public void gotResult(int code, String alias, Set<String> tags) {
+//            String logs;
+//            switch (code) {
+//                case 0:
+//                    logs = "Set tag and alias success";
+//                    Log.i(TAG, logs);
+//                    break;
+//
+//                case 6002:
+//                    logs = "Failed to set alias and tags due to timeout. Try again after 60s.";
+//                    Log.i(TAG, logs);
+//                    if (ToolString.isConnected(getApplicationContext())) {
+//                        mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_SET_ALIAS, alias), 1000 * 60);
+//                    } else {
+//                        Log.i(TAG, "No network");
+//                    }
+//                    break;
+//
+//                default:
+//                    logs = "Failed with errorCode = " + code;
+//                    Log.e(TAG, logs);
+//            }
+//
+//        }
+//
+//    };
 }
 

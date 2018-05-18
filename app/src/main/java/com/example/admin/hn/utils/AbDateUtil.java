@@ -194,17 +194,18 @@ public class AbDateUtil {
      * @return String 转换后的String类型的日期时间
      */
     public static String getStringByFormat(String strDate, String format) {
-        String mDateTime = null;
-        try {
-            Calendar c = new GregorianCalendar();
-            SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat(dateFormatYMDHMS);
-            c.setTime(mSimpleDateFormat.parse(strDate));
-            SimpleDateFormat mSimpleDateFormat2 = new SimpleDateFormat(format);
-            mDateTime = mSimpleDateFormat2.format(c.getTime());
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (ToolString.isEmpty(strDate)) {
+            try {
+                Calendar c = new GregorianCalendar();
+                SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat(dateFormatYMDHMS);
+                c.setTime(mSimpleDateFormat.parse(strDate));
+                SimpleDateFormat mSimpleDateFormat2 = new SimpleDateFormat(format);
+                return mSimpleDateFormat2.format(c.getTime());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        return mDateTime;
+        return strDate;
     }
 
     /**

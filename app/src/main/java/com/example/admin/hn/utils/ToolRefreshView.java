@@ -162,7 +162,7 @@ public class ToolRefreshView {
         if(currPage >totalPage){
             //当前页数大于总页数
             refreshLayout.finishLoadmore();
-            ToolAlert.showToast(HNApplication.mApp.context, Constant.LOADED);
+            ToolAlert.showToast(HNApplication.mApp.mContext, Constant.LOADED);
             return false;
         }
         return true;

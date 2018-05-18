@@ -126,7 +126,7 @@ public class FourFragment2 extends BaseFragment implements ViewPager.OnPageChang
 				}
 				break;
 			case R.id.text_tile_right:
-				if (childCurrentItem == 0) {
+				if (childCurrentItem == 0 ||childCurrentItem == 1) {
 					ToolAlert.dialog(activity,
 							"资料提交",
 							"是否确定提交资料到此船舶"
@@ -145,7 +145,7 @@ public class FourFragment2 extends BaseFragment implements ViewPager.OnPageChang
 									dialog.dismiss();
 								}
 							});
-				}else if (childCurrentItem == 1){
+				}else if (childCurrentItem == 2){
 					ToolAlert.dialog(activity,
 							"资料提交",
 							"是否确定提交资料到" + HNApplication.mApp.getShipName() + "",

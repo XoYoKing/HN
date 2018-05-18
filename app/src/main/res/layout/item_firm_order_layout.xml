@@ -40,6 +40,7 @@
     <LinearLayout
         android:id="@+id/goods"
         android:layout_width="match_parent"
+        android:background="@drawable/layout_background"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
@@ -49,7 +50,6 @@
             android:layout_height="100dp"
             android:layout_marginLeft="@dimen/common_15dp"
             android:layout_marginTop="@dimen/common_10dp"
-            android:layout_marginBottom="@dimen/common_10dp"
             android:src="@drawable/center_order_manager_img" />
 
         <RelativeLayout
@@ -58,7 +58,6 @@
             android:layout_marginLeft="@dimen/common_10dp"
             android:layout_marginRight="@dimen/common_12dp"
             android:layout_marginTop="@dimen/common_10dp"
-            android:layout_marginBottom="@dimen/common_10dp"
             android:orientation="vertical">
 
             <TextView
@@ -93,14 +92,24 @@
                     android:text="￥99.00"
                     android:textColor="@color/red"
                     android:textSize="@dimen/common_12sp" />
-
                 <TextView
                     android:id="@+id/goods_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/goods_price"
                     android:text="x 2"
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/common_12sp" />
+
+                <TextView
+                    android:id="@+id/goods_freight"
+                    android:layout_below="@+id/goods_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/text_color"
+                    android:text="111"
                     android:textSize="@dimen/common_12sp" />
 
             </RelativeLayout>

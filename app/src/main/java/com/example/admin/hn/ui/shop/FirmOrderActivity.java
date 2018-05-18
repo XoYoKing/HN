@@ -14,6 +14,7 @@ import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseActivity;
 import com.example.admin.hn.model.AddressInfo;
 import com.example.admin.hn.ui.adapter.FirmOrderAdapter;
+import com.example.admin.hn.ui.fragment.shop.bean.OrderFreightInfo;
 import com.example.admin.hn.ui.fragment.shop.bean.PayOrderInfo;
 import com.example.admin.hn.ui.fragment.shop.bean.ShopCartInfo;
 import com.example.admin.hn.ui.fragment.shop.bean.SubmitFreightInfo;
@@ -21,8 +22,11 @@ import com.example.admin.hn.ui.fragment.shop.bean.SubmitGoodsInfo;
 import com.example.admin.hn.utils.AbDateUtil;
 import com.example.admin.hn.utils.AbMathUtil;
 import com.example.admin.hn.utils.GsonUtils;
+import com.example.admin.hn.utils.SpaceItemDecoration;
 import com.example.admin.hn.utils.ToolAlert;
+import com.example.admin.hn.utils.ToolString;
 import com.example.admin.hn.volley.RequestListener;
+import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
@@ -139,8 +143,7 @@ public class FirmOrderActivity extends BaseActivity {
     @Override
     public void initData() {
         adapter = new FirmOrderAdapter(this, R.layout.item_firm_order_layout, list);
-        recycleView.setFocusable(false);
-        recycleView.setNestedScrollingEnabled(false);
+        recycleView.addItemDecoration(new SpaceItemDecoration(10, 20, 0, 0));
         recycleView.setLayoutManager(new LinearLayoutManager(context));
         recycleView.setAdapter(adapter);
         getFreight();
@@ -160,8 +163,16 @@ public class FirmOrderActivity extends BaseActivity {
             public void requestSuccess(String json) {
                 Logger.e("运费", json);
                 if (GsonUtils.isShopSuccess(json)) {
-                    sum_freight = GsonUtils.getDouble(json, "data");
-                    sum_price = goods_price + sum_price;
+                    TypeToken typeToken = new TypeToken<List<OrderFreightInfo>>(){};
+                    List<OrderFreightInfo> orderFreightInfos = (List<OrderFreightInfo>) GsonUtils.jsonToList(json, typeToken, "data");
+                    if (ToolString.isEmptyList(orderFreightInfos)) {
+                        for (int i = 0; i < orderFreightInfos.size(); i++) {
+                            sum_freight += orderFreightInfos.get(i).freight;
+                            list.get(i).setGoodsFreight(orderFreightInfos.get(i).freight);
+                        }
+                        sum_price = goods_price + sum_freight;
+                        adapter.notifyDataSetChanged();
+                    }
                 } else {
                     ToolAlert.showToast(context, GsonUtils.getError(json));
                 }

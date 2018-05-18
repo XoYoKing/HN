@@ -1,7 +1,7 @@
 package com.example.admin.hn.base;
 
-import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import com.example.admin.hn.R;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -11,7 +11,6 @@ import org.litepal.LitePalApplication;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
-import cn.jpush.android.api.JPushInterface;
 import okhttp3.OkHttpClient;
 
 /**
@@ -20,24 +19,29 @@ import okhttp3.OkHttpClient;
 
 public class HNApplication extends LitePalApplication {
     public static HNApplication mApp;
-    public Context context;
+    public Context mContext;
     public Session session;
     public Session test_session;
     public static HashMap<String, Long> map;
-
 
     @Override
     public void onCreate() {
         super.onCreate();
         //初始化本地数据存储
         mApp = this;
-        context = getApplicationContext();
+        mContext = getApplicationContext();
         initOkHttp();
         initGallery();//初始化Gallery
         this.session = new SharedPreferencesSession(this);
         this.test_session = new SharedPreferencesSession(this, "configs");
-        JPushInterface.setDebugMode(true);
-        JPushInterface.init(this);
+//        JPushInterface.setDebugMode(true);
+//        JPushInterface.init(this);
+    }
+
+    @Override
+    protected void attachBaseContext(Context context) {
+        super.attachBaseContext(context);
+        MultiDex.install(context);
     }
     public static String getAPPName() {
         return mApp.getApplicationContext().getResources().getString(R.string.app_name);

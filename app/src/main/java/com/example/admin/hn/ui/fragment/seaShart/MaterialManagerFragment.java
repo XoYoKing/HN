@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +27,8 @@ import com.example.admin.hn.model.OrderNotUseSubmit;
 import com.example.admin.hn.model.OrderUseInfo;
 import com.example.admin.hn.model.OrderUseSubmit;
 import com.example.admin.hn.model.SubmitListInfo;
+import com.example.admin.hn.model.SubmitSelect;
+import com.example.admin.hn.model.SubmitSelectInfo;
 import com.example.admin.hn.ui.adapter.MaterialSelectAdapter;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.SpaceItemDecoration;
@@ -104,9 +107,18 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (getUserVisibleHint() && screen == 3) {
+            sendHttp();
+        }
+    }
+
+    @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && screen == 3) {
+            isRefresh = true;
             sendHttp();
         }
     }
@@ -142,10 +154,10 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
                     TypeToken typeToken = new TypeToken<List<OrderUseInfo>>() {
                     };
                     List<OrderUseInfo> data = (List<OrderUseInfo>) GsonUtils.jsonToList(json, typeToken);
+                    if (isRefresh) {
+                        list.clear();
+                    }
                     if (ToolString.isEmptyList(data)) {
-                        if (isRefresh) {
-                            list.clear();
-                        }
                         list.addAll(data);
                     }
                 } else {
@@ -199,25 +211,21 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
         localBroadcastManager.unregisterReceiver(br);
     }
 
-    private List<OrderUseSubmit> submits=new ArrayList<>();
-    private String submit_url = Api.BASE_URL + Api.SUBMIT_DOCUMENTS;
+    private List<SubmitSelect> submits=new ArrayList<>();
+    private String submit_url = Api.BASE_URL + Api.SUBMIT_APPLY_ORDER;
     private void submit() {
-        ToolAlert.showToast(activity, "已选-提交", false);
         List<OrderUseInfo> selectList = adapter.getDatas();
         if (ToolString.isEmptyList(selectList)) {
             for (int i = 0; i < selectList.size(); i++) {
                 OrderUseInfo useInfo = selectList.get(i);
-                OrderUseSubmit useSubmit = new OrderUseSubmit(useInfo.quantity,
-                        useInfo.id, useInfo.code,
-                        MainActivity.list.get(0).getShipid(),
-                        useInfo.publish_at,useInfo.distribute_no,useInfo.source);
+                SubmitSelect useSubmit = new SubmitSelect(useInfo.quantity, useInfo.id, useInfo.distribute_no);
                 submits.add(useSubmit);
             }
             if (!ToolString.isEmptyList(selectList)) {
                 ToolAlert.showToast(activity, "请选择需要提交的资料", false);
                 return;
             }
-            SubmitListInfo submitListInfo = new SubmitListInfo(HNApplication.mApp.getUserId(), submits);
+            SubmitSelectInfo submitListInfo = new SubmitSelectInfo(HNApplication.mApp.getUserId(), "7340", submits);
             http.postJson(submit_url, submitListInfo, "提交中...", new RequestListener() {
                 @Override
                 public void requestSuccess(String json) {

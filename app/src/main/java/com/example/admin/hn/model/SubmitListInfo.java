@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * Created by WIN10 on 2018/4/16.
- * 提交列表数据
+ * 提交待选列表数据
  */
 
 public class SubmitListInfo implements Serializable{
