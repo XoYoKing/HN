@@ -154,11 +154,13 @@ public class ShipApplyingFragment extends BaseFragment implements OnRefreshListe
     @Override
     public void onLoadmore(RefreshLayout refreshlayout) {
         page = page + 1;
+        isRefresh = false;
         sendHttp();
     }
 
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
+        isRefresh = true;
         page = 1;
         sendHttp();
     }

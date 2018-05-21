@@ -1,5 +1,6 @@
 package com.example.admin.hn;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -101,7 +102,7 @@ public class MainActivity extends FragmentActivity {
     public static final String KEY_TITLE = "title";
     public static final String KEY_MESSAGE = "message";
     public static final String KEY_EXTRAS = "extras";
-    public static List<ShipInfo.ship> list = new ArrayList<>();
+    public static List<ShipInfo.Ship> list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,11 +116,7 @@ public class MainActivity extends FragmentActivity {
 
     private void init() {
         Intent intent = getIntent();
-        list = (ArrayList<ShipInfo.ship>) intent.getSerializableExtra("list");
-        if (list.size() == 0) {
-            ToolAlert.showToast(MainActivity.this, "请选择船舶", false);
-            ShipSelectActivity.startActivity(this);
-        }
+        list = (ArrayList<ShipInfo.Ship>) intent.getSerializableExtra("list");
         resetImgs();
         setSelect(SWITCH_TO_ONE);
         //设置推送别名 以用户ID
@@ -186,8 +183,9 @@ public class MainActivity extends FragmentActivity {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         hideFragment(transaction);
-        // 把图片设置为亮的
-        // 设置内容区域
+        if (!isShipSelect()) {
+           return;
+        }
         switch (i) {
             case SWITCH_TO_ONE:
                 if (mTabOne == null) {
@@ -253,6 +251,16 @@ public class MainActivity extends FragmentActivity {
                 break;
         }
         transaction.commit();
+    }
+
+    private boolean isShipSelect() {
+        if (list.size() == 0) {
+            //如果沒有选择船舶 就跳转到选择船舶界面
+            ToolAlert.showToast(MainActivity.this, "请选择船舶", false);
+            ShipSelectActivity.startActivity(this);
+            return false;
+        }
+        return true;
     }
 
     private void hideFragment(FragmentTransaction transaction) {
@@ -365,6 +373,7 @@ public class MainActivity extends FragmentActivity {
         super.onDestroy();
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
@@ -382,6 +391,7 @@ public class MainActivity extends FragmentActivity {
      * @param resultCode
      * @param data
      */
+    @SuppressLint("RestrictedApi")
     private void handleResult(Fragment fragment,int requestCode,int resultCode,Intent data) {
         fragment.onActivityResult(requestCode, resultCode, data);//调用每个Fragment的onActivityResult
         List<Fragment> childFragment = fragment.getChildFragmentManager().getFragments(); //找到第二层Fragment

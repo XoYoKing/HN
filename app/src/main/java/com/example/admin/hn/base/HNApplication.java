@@ -215,6 +215,21 @@ public class HNApplication extends LitePalApplication {
         }
     }
 
+    public String getShipId() {
+        if (isTestAmbient()) {
+            return this.test_session.getString("shipId","");
+        }
+        return this.session.getString("shipId","");
+    }
+
+    public void setShipId(String shipId) {
+        if (isTestAmbient()) {
+            this.test_session.putString("shipId", shipId);
+        }else {
+            this.session.putString("shipId", shipId);
+        }
+    }
+
     /**
      * 获取消息数量
      * @return

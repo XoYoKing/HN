@@ -52,7 +52,7 @@ public class Api {
     public static final String ORDERDETAIL = "menusystem/mobilenew/getOrderDetail.action";
 
     //船舶查询
-    public static final String SHIPINQUIRY = "menusystem/mobile/shipinquiry.action";
+    public static final String QUERY_SHIP = "menusystem/mobile/queryShip.action";
 
     //船舶选择
     public static final String SHIPSELECTION = "menusystem/mobile/shipselection.action";

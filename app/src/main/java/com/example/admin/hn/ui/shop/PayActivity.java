@@ -1,8 +1,10 @@
 package com.example.admin.hn.ui.shop;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -13,6 +15,7 @@ import com.example.admin.hn.base.BaseActivity;
 import com.example.admin.hn.ui.fragment.shop.bean.PayOrderInfo;
 import com.example.admin.hn.utils.AbMathUtil;
 import com.example.admin.hn.utils.ToolAlert;
+import com.example.admin.hn.widget.AlertDialog;
 
 
 import java.io.Serializable;
@@ -82,7 +85,7 @@ public class PayActivity extends BaseActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.text_title_back:
-                finish();
+                close();
                 break;
             case R.id.go_pay:
                 ToolAlert.showToast(context, "支付成功", false);
@@ -102,4 +105,29 @@ public class PayActivity extends BaseActivity {
         }
     }
 
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            close();
+            return true;
+        } else
+            return super.onKeyDown(keyCode, event);
+    }
+
+    private void close() {
+
+        final AlertDialog dialog = new AlertDialog(context);
+        dialog.showDialog("确定离开支付？", "您的订单将在24小时之内未支付将被取消，请尽快完成支付", new AlertDialog.DialogOnClickListener() {
+            @Override
+            public void onPositiveClick() {
+                OrderManagerActivity.startActivity(context, 0);
+                dialog.dismiss();
+                finish();
+            }
+
+            @Override
+            public void onNegativeClick() {
+                dialog.dismiss();
+            }
+        },true);
+    }
 }

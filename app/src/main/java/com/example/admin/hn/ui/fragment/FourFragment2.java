@@ -25,7 +25,9 @@ import com.example.admin.hn.ui.adapter.AllChildTabAdapter;
 import com.example.admin.hn.ui.fragment.seaShart.AuditingManagerFragment;
 import com.example.admin.hn.ui.fragment.seaShart.MaterialUseManagerFragment;
 import com.example.admin.hn.ui.fragment.seaShart.ReceiptFragment;
+import com.example.admin.hn.ui.shop.OrderManagerActivity;
 import com.example.admin.hn.utils.ToolAlert;
+import com.example.admin.hn.widget.AlertDialog;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -127,41 +129,42 @@ public class FourFragment2 extends BaseFragment implements ViewPager.OnPageChang
 				break;
 			case R.id.text_tile_right:
 				if (childCurrentItem == 0 ||childCurrentItem == 1) {
-					ToolAlert.dialog(activity,
-							"资料提交",
-							"是否确定提交资料到此船舶"
-									+ "\n船舶名称："+MainActivity.list.get(0).getShipname()
-									+ "\n船舶编号："+MainActivity.list.get(0).getShipid(),
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog, int which) {
-									Intent intent = new Intent(Constant.ACTION_MATERIAL_NOT_MANAGER_FRAGMENT);
-									LocalBroadcastManager.getInstance(activity).sendBroadcast(intent);
-									dialog.dismiss();
-								}
-							}, new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog, int which) {
-									dialog.dismiss();
-								}
-							});
+					final AlertDialog dialog = new AlertDialog(activity);
+					dialog.showDialog("资料提交", "是否确定提交资料到此船舶"
+							+ "\n船舶名称："+MainActivity.list.get(0).shipname
+							+ "\n船舶编号："+MainActivity.list.get(0).shipid, new AlertDialog.DialogOnClickListener() {
+						@Override
+						public void onPositiveClick() {
+							Intent intent = new Intent();
+							intent.putExtra("isNew", childCurrentItem);
+							intent.setAction(Constant.ACTION_MATERIAL_NOT_MANAGER_FRAGMENT);
+							LocalBroadcastManager.getInstance(activity).sendBroadcast(intent);
+							dialog.dismiss();
+						}
+
+						@Override
+						public void onNegativeClick() {
+							dialog.dismiss();
+						}
+					},true);
+
 				}else if (childCurrentItem == 2){
-					ToolAlert.dialog(activity,
-							"资料提交",
-							"是否确定提交资料到" + HNApplication.mApp.getShipName() + "",
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog, int which) {
-									Intent intent = new Intent(Constant.ACTION_MATERIAL_MANAGER_FRAGMENT);
-									LocalBroadcastManager.getInstance(activity).sendBroadcast(intent);
-									dialog.dismiss();
-								}
-							}, new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog, int which) {
-									dialog.dismiss();
-								}
-							});
+					final AlertDialog dialog = new AlertDialog(activity);
+					dialog.showDialog("资料提交", "是否确定提交资料到此船舶"
+							+ "\n船舶名称："+MainActivity.list.get(0).shipname
+							+ "\n船舶编号："+MainActivity.list.get(0).shipid, new AlertDialog.DialogOnClickListener() {
+						@Override
+						public void onPositiveClick() {
+							Intent intent = new Intent(Constant.ACTION_MATERIAL_MANAGER_FRAGMENT);
+							LocalBroadcastManager.getInstance(activity).sendBroadcast(intent);
+							dialog.dismiss();
+						}
+
+						@Override
+						public void onNegativeClick() {
+							dialog.dismiss();
+						}
+					},true);
 				}
 				break;
 		}

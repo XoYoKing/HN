@@ -28,7 +28,15 @@ public class ServerResponse {
     private String phonenumber;
     private String username;
     private String companyid;
-    private List<ShipInfo.ship> Documents;
+    private List<ShipInfo.Ship> myShip;
+
+    public List<ShipInfo.Ship> getMyShip() {
+        return myShip;
+    }
+
+    public void setMyShip(List<ShipInfo.Ship> myShip) {
+        this.myShip = myShip;
+    }
 
     public String getCompanyid() {
         return companyid;
@@ -37,13 +45,6 @@ public class ServerResponse {
         this.companyid = companyid;
     }
 
-    public List<ShipInfo.ship> getDocuments() {
-        return Documents;
-    }
-
-    public void setDocuments(List<ShipInfo.ship> documents) {
-        Documents = documents;
-    }
 
     public String getUserid() {
         return userid;

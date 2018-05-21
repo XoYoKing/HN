@@ -131,7 +131,7 @@ public class OneFragment extends BaseFragment  {
                 ShopCartActivity.startActivity(activity);
                 break;
             case R.id.text_tile_del:
-                OrderManagerActivity.startActivity(activity);
+                OrderManagerActivity.startActivity(activity,0);
                 break;
         }
     }

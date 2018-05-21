@@ -8,6 +8,7 @@ public class OrderUseInfo {
     public String code;//资料编号
     public String chs_name;//中文名
     public String eng_name;//英文名
+    public String doc_id;//
     public int quantity;//购买数量
     public int storage_amount;//库存
     public String publish_at;//出版日期

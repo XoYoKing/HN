@@ -131,7 +131,6 @@
             android:screenOrientation="portrait"/>
 
         <activity android:name=".ui.login.AgreementActivity" />
-        <activity android:name=".ui.account.ShipActivity" />
         <activity android:name=".ui.account.OrderdetailsActivity" />
         <activity android:name=".ui.account.ChartUpdateActivity" />
         <activity android:name=".ui.account.ChartUpdatedetailsActivity" />

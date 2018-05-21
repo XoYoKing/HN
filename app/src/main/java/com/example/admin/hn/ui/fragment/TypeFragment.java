@@ -368,7 +368,7 @@ public class TypeFragment extends BaseFragment {
                 }
                 switch (position) {
                     case 0:
-                        OrderManagerActivity.startActivity(activity);
+                        OrderManagerActivity.startActivity(activity,0);
                         break;
                     case 1:
                         ShopCartActivity.startActivity(activity);

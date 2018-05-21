@@ -74,7 +74,7 @@ public class GsonUtils {
         try {
             Gson gson = new Gson();
             JSONObject object = new JSONObject(jsonResult);
-            JSONArray jsonArray = object.getJSONArray("Documents");
+            JSONArray jsonArray = object.getJSONArray("documents");
             list = gson.fromJson(jsonArray.toString(), typeToken.getType());
         } catch (Exception e) {
             e.printStackTrace();

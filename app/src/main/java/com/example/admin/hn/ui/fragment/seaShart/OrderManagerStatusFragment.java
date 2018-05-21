@@ -75,11 +75,9 @@ public class OrderManagerStatusFragment extends BaseFragment implements OnRefres
     private ArrayList<OrderInfo.Order> list = new ArrayList<>();
     private OrderAdapter adapter;
     private View view;
-    //搜索条件  1(查询该用户全部订单) 2(根据船舶名称)3(船舶编号)4(订单号) 默认查询全部
-    private int status = 1;
+    private int status = 1;//搜索条件  1(查询该用户全部订单) 2(根据船舶名称) 3(船舶编号) 4(订单号) 默认查询全部
+    private int screen = 1;//订单状态  1 ：全部   2:退回  3：通过 4：待审核
     private int page = 1;//当前页面
-    private int screen = 1;//订单状态
-    //screen 1 ：审核   2:已完成  3：失败
     private String url_order = Api.BASE_URL + Api.ORDER;
     private RefreshLayout refreshLayout;
     private String shipName = "";//搜索内容

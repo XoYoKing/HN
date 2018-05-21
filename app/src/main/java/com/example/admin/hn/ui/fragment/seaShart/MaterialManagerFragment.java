@@ -135,6 +135,7 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
         switch (v.getId()) {
             case R.id.network_img:
                 network_img.setVisibility(View.GONE);
+                isRefresh = true;
                 sendHttp();
                 break;
         }
@@ -143,8 +144,7 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
 
     public void sendHttp() {
         params.put("page", page);
-//        params.put("shipId", MainActivity.list.get(0).getShipid() + "");
-        params.put("shipId", "7340");
+        params.put("shipId", MainActivity.list.get(0).shipid + "");
         http.postJson(url, params, progressTitle, new RequestListener() {
             @Override
             public void requestSuccess(String json) {
@@ -159,6 +159,8 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
                     }
                     if (ToolString.isEmptyList(data)) {
                         list.addAll(data);
+                    }else {
+                        list.clear();
                     }
                 } else {
                     if (page != 1) {
@@ -221,20 +223,21 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
         if (ToolString.isEmptyList(selectList)) {
             for (int i = 0; i < selectList.size(); i++) {
                 OrderUseInfo useInfo = selectList.get(i);
-                SubmitSelect useSubmit = new SubmitSelect(useInfo.quantity, useInfo.id, useInfo.distribute_no);
+                SubmitSelect useSubmit = new SubmitSelect(useInfo.quantity, useInfo.doc_id, useInfo.distribute_no);
                 submits.add(useSubmit);
             }
             if (!ToolString.isEmptyList(selectList)) {
                 ToolAlert.showToast(activity, "请选择需要提交的资料", false);
                 return;
             }
-            SubmitSelectInfo submitListInfo = new SubmitSelectInfo(HNApplication.mApp.getUserId(), "7340", submits);
+            SubmitSelectInfo submitListInfo = new SubmitSelectInfo(HNApplication.mApp.getUserId(), MainActivity.list.get(0).shipid, submits);
             http.postJson(submit_url, submitListInfo, "提交中...", new RequestListener() {
                 @Override
                 public void requestSuccess(String json) {
                     Logger.e("已选提交结果", json);
                     if (GsonUtils.isSuccess(json)) {
                         //刷新列表
+                        isRefresh = true;
                         sendHttp();
                     }
                     ToolAlert.showToast(activity, GsonUtils.getError(json));

@@ -46,11 +46,13 @@ public class OrderManagerActivity extends BaseActivity {
         textTitle.setText("订单管理");
         textTitleBack.setBackgroundResource(R.drawable.btn_back);
     }
+
     /**
      *
      */
-    public static void startActivity(Context context) {
+    public static void startActivity(Context context,int current) {
         Intent intent = new Intent(context, OrderManagerActivity.class);
+        intent.putExtra("current", current);
         context.startActivity(intent);
     }
 
@@ -78,5 +80,8 @@ public class OrderManagerActivity extends BaseActivity {
         adapter.addTab("已完成","4", ShopOrderManagerFragment.class);
         viewPager.setOffscreenPageLimit(5);
         tabLayout.setupWithViewPager(viewPager);
+        int current = getIntent().getIntExtra("current", 0);
+        viewPager.setCurrentItem(current);
+
     }
 }

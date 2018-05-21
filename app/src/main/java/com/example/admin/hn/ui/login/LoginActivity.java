@@ -299,10 +299,10 @@ public class LoginActivity extends BaseActivity {
                     ServerResponse serverResponse = GsonUtils.jsonToBean(json, ServerResponse.class);
                     //保存登录信息
                     saveLoginInfo(serverResponse,mCbAgreeProtocol.isChecked());
-                    ArrayList<ShipInfo.ship> list = new ArrayList<>();
-                    for (int i = 0; i < serverResponse.getDocuments().size(); i++) {
-                        ShipInfo.ship ship = serverResponse.getDocuments().get(i);
-                        list.add(new ShipInfo.ship(ship.getShipid(), ship.getShipnumber(), ship.getShipname()));
+                    ArrayList<ShipInfo.Ship> list = new ArrayList<>();
+                    for (int i = 0; i < serverResponse.getMyShip().size(); i++) {
+                        ShipInfo.Ship ship = serverResponse.getMyShip().get(i);
+                        list.add(new ShipInfo.Ship(ship.shipid,ship.shipname));
                     }
                     Intent intent_homepage = new Intent(LoginActivity.this, MainActivity.class);
                     Bundle bundle = new Bundle();

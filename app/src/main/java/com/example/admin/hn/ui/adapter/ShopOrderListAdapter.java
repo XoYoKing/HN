@@ -16,8 +16,10 @@ import com.example.admin.hn.R;
 import com.example.admin.hn.http.Constant;
 import com.example.admin.hn.model.HomeItem;
 import com.example.admin.hn.model.HomeTypeInfo;
+import com.example.admin.hn.ui.fragment.shop.bean.PayOrderInfo;
 import com.example.admin.hn.ui.fragment.shop.bean.ShopOrderInfo;
 import com.example.admin.hn.ui.shop.GoodsListActivity;
+import com.example.admin.hn.ui.shop.PayActivity;
 import com.example.admin.hn.ui.shop.ShopTypeListActivity;
 import com.example.admin.hn.ui.shop.StepActivity;
 import com.example.admin.hn.ui.shop.SubmitCommentActivity;
@@ -115,7 +117,15 @@ public class ShopOrderListAdapter extends RecyclerView.Adapter<RecyclerView.View
             @Override
             public void onClick(View v) {
                 if (Constant.SHOP_ORDER_STATUS_NOEVAL.equals(info.status)) {
+                    //去待评价
                     SubmitCommentActivity.startActivity(mContext,info);
+                }else if (Constant.SHOP_ORDER_STATUS_NEW.equals(info.status)) {
+                    //去支付
+                    PayOrderInfo payOrderInfo = new PayOrderInfo();
+                    payOrderInfo.orderAmount = info.orderAmount;
+                    payOrderInfo.orderNo = info.orderNo;
+                    payOrderInfo.paymentNo = info.paymentNo;
+                    PayActivity.startActivity(mContext,payOrderInfo);
                 }
             }
         });

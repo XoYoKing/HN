@@ -135,7 +135,7 @@ public class FirmOrderActivity extends BaseActivity {
                 submitFreightInfo.areaId = addressInfo.areaId;
             }
             submitFreightInfo.count = cartInfo.getBuyNumber()+"";
-//            freight_list.add(submitFreightInfo);
+            freight_list.add(submitFreightInfo);
         }
     }
 
@@ -153,11 +153,11 @@ public class FirmOrderActivity extends BaseActivity {
      * 获取运费
      */
     private void getFreight() {
-        SubmitFreightInfo info = new SubmitFreightInfo();
-        info.spuId = "246";
-        info.areaId = "6";
-        info.count = "4";
-        freight_list.add(info);
+//        SubmitFreightInfo info = new SubmitFreightInfo();
+//        info.spuId = "246";
+//        info.areaId = "6";
+//        info.count = "4";
+//        freight_list.add(info);
         http.postJson(url_freight, freight_list, progressTitle, new RequestListener() {
             @Override
             public void requestSuccess(String json) {

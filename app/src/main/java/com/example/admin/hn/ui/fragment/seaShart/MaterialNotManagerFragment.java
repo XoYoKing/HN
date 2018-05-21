@@ -70,7 +70,7 @@ public class MaterialNotManagerFragment extends BaseFragment implements OnRefres
     private String code;//资料编号
     private String cname;//中文名称
     private int page = 1;
-    private int screen = 1;
+    private int type;
     private String url = Api.BASE_URL + Api.GET_DOCUMENTS;
     private String submit_url = Api.BASE_URL + Api.SUBMIT_DOCUMENTS;
     private RefreshLayout refreshLayout;
@@ -164,7 +164,7 @@ public class MaterialNotManagerFragment extends BaseFragment implements OnRefres
     @Override
     public void initTitleBar() {
         Bundle bundle = getArguments();
-        screen = Integer.parseInt(bundle.getString("type"));
+        type = Integer.parseInt(bundle.getString("type"));
     }
 
 
@@ -214,7 +214,10 @@ public class MaterialNotManagerFragment extends BaseFragment implements OnRefres
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent != null) {
-                    submit();
+                    int isNew = intent.getIntExtra("isNew", 0);
+                    if (isNew+1 == type) {
+                        submit();
+                    }
                 }
             }
         };
@@ -224,11 +227,15 @@ public class MaterialNotManagerFragment extends BaseFragment implements OnRefres
     private List<OrderNotUseSubmit> submits = new ArrayList<>();
     //提交数据
     private void submit() {
+        if (submits.size() > 0) {
+            submits.clear();
+        }
         final List<OrderNotUseInfo> selectList = adapter.getSelectList();
         if (ToolString.isEmptyList(selectList)) {
             for (int i = 0; i < selectList.size(); i++) {
                 OrderNotUseInfo notUseInfo = selectList.get(i);
-                OrderNotUseSubmit useSubmit = new OrderNotUseSubmit(notUseInfo.quantity,notUseInfo.id, notUseInfo.code, notUseInfo.publis_at, MainActivity.list.get(0).getShipid());
+                OrderNotUseSubmit useSubmit = new OrderNotUseSubmit(notUseInfo.quantity,notUseInfo.id, notUseInfo.code, notUseInfo.publis_at, MainActivity.list.get(0).shipid
+                );
                 submits.add(useSubmit);
             }
             if (!ToolString.isEmptyList(selectList)) {

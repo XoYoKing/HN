@@ -23,12 +23,14 @@ import com.example.admin.hn.base.BaseFragment;
 import com.example.admin.hn.base.HNApplication;
 import com.example.admin.hn.http.Constant;
 import com.example.admin.hn.model.ShipInfo;
+import com.example.admin.hn.model.SubmitShipInfo;
 import com.example.admin.hn.ui.account.ShipSelectActivity;
 import com.example.admin.hn.ui.adapter.ShipAdapter;
 import com.example.admin.hn.ui.shop.ShopCartActivity;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolRefreshView;
+import com.example.admin.hn.utils.ToolString;
 import com.example.admin.hn.volley.RequestListener;
 import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -61,18 +63,18 @@ public class ShipSelectFragment extends BaseFragment implements OnRefreshListene
     ImageView network_img;
     @Bind(R.id.noData_img)
     ImageView noData_img;
+    @Bind(R.id.refreshLayout)
+    RefreshLayout refreshLayout;
 
-    private List<HashMap<String, Object>> list = new ArrayList<>();
-    private List<ShipInfo.ship> listStr = new ArrayList<>();
-    private List<String> lists = new ArrayList<>();
-    private List<String> listss = new ArrayList<>();
-    private List<String> listId = new ArrayList<>();
+    private List<ShipInfo.Ship> list = new ArrayList<>();
+    private List<ShipInfo.Ship> list_select = new ArrayList<>();
+    private List<String> list_id = new ArrayList<>();
     private ShipAdapter adapter;
     private View view;
     private int page = 1;
-    private String url_ship = Api.BASE_URL + Api.SHIPINQUIRY;
-    private String url_shipselection = Api.BASE_URL + Api.SHIPSELECTION;
-    private RefreshLayout refreshLayout;
+    private int rows = 20;
+    private String url_ship = Api.BASE_URL + Api.QUERY_SHIP;
+    private String url_select = Api.BASE_URL + Api.SHIPSELECTION;
     private int type;//区分是否选择  0 未选择 1 已选择
     private LocalBroadcastManager localBroadcastManager;
     private BroadcastReceiver br;
@@ -93,10 +95,7 @@ public class ShipSelectFragment extends BaseFragment implements OnRefreshListene
     @Override
     public void initView() {
         //下拉刷新
-        refreshLayout = (RefreshLayout) view.findViewById(R.id.refreshLayout);
         ToolRefreshView.setRefreshLayout(activity, refreshLayout, this, this);
-        refreshLayout.setEnableRefresh(false);
-        refreshLayout.setEnableLoadmore(false);
         adapter = new ShipAdapter(activity, R.layout.ship_adapter, list);
         listView.setAdapter(adapter);
     }
@@ -109,24 +108,15 @@ public class ShipSelectFragment extends BaseFragment implements OnRefreshListene
         if (type == 0) {
             //在未选择中注册广播
             initBroadcastReceiver();
-            data();
+            sendHttp();
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     ViewHolder viewCache = (ViewHolder) view.getTag();
                     CheckBox checkBox = viewCache.getView(R.id.cb_status);
                     checkBox.toggle();
-                    list.get(position).put("boolean", checkBox.isChecked());
+                    list.get(position).isSelect = checkBox.isChecked();
                     adapter.notifyDataSetChanged();
-                    if (checkBox.isChecked()) {//被选中状态
-                        lists.add(list.get(position).get("name").toString());
-                        listss.add(list.get(position).get("number").toString());
-                        listId.add(list.get(position).get("id").toString());
-                    } else {//从选中状态转化为未选中
-                        listss.remove(list.get(position).get("number").toString());
-                        lists.remove(list.get(position).get("name").toString());
-                        listId.remove(list.get(position).get("id").toString());
-                    }
                 }
             });
         }
@@ -137,14 +127,7 @@ public class ShipSelectFragment extends BaseFragment implements OnRefreshListene
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && type == 1) {
             list.clear();
-            for (int i = 0; i < MainActivity.list.size(); i++) {
-                HashMap<String, Object> map = new HashMap<String, Object>();
-                map.put("name", MainActivity.list.get(i).getShipname());
-                map.put("boolean", true);//初始化为未选
-                map.put("number", MainActivity.list.get(i).getShipnumber());
-                map.put("id", MainActivity.list.get(i).getShipid());
-                list.add(map);
-            }//初始化数据
+            list.addAll(MainActivity.list);
             adapter.notifyDataSetChanged();
         }
     }
@@ -161,62 +144,68 @@ public class ShipSelectFragment extends BaseFragment implements OnRefreshListene
             case R.id.network_img:
                 network_img.setVisibility(View.GONE);
                 if (type == 0) {
-                    data();
+                    sendHttp();
                 }
                 break;
         }
     }
 
-    private void data() {
-        params.put("Userid", HNApplication.mApp.getUserId());
+    /**
+     * 获取船舶列表
+     */
+    private void sendHttp() {
+        params.put("page", page + "");
+        params.put("rows", rows + "");
         http.postJson(url_ship, params, progressTitle, new RequestListener() {
             @Override
             public void requestSuccess(String json) {
-                Logger.i(TAG, json);
+                Logger.i("船舶列表", json);
                 if (GsonUtils.isSuccess(json)) {
-                    ShipInfo shipInfo = GsonUtils.jsonToBean(
-                            json, ShipInfo.class
-                    );
-                    for (int i = 0; i < shipInfo.getDocuments().size(); i++) {
-                        HashMap<String, Object> map = new HashMap<String, Object>();
-                        map.put("name", shipInfo.getDocuments().get(i).getShipname());
-                        map.put("boolean", false);//初始化为未选
-                        map.put("number", shipInfo.getDocuments().get(i).getShipnumber());
-                        map.put("id", shipInfo.getDocuments().get(i).getShipid());
-                        list.add(map);
+                    progressTitle = null;
+                    ShipInfo shipInfo = GsonUtils.jsonToBean(json, ShipInfo.class);
+                    if (ToolString.isEmptyList(shipInfo.ships)) {
+                        if (isRefresh) {
+                            list.clear();
+                        }
+                        list.addAll(shipInfo.ships);
                     }
                 }else {
-                    ToolAlert.showToast(activity, GsonUtils.getError(json), false);
+                    ToolAlert.showToast(activity, GsonUtils.getError(json));
                 }
                 ToolRefreshView.hintView(adapter, refreshLayout,false, network, noData_img, network_img);
             }
             @Override
             public void requestError(String message) {
-                ToolAlert.showToast(activity,message, false);
+                ToolAlert.showToast(activity,message);
                 ToolRefreshView.hintView(adapter, refreshLayout, true, network, noData_img, network_img);
             }
         });
 
     }
 
-    private void shipSelection(ShipInfo shipInfo) {
-        http.postJson(url_shipselection, shipInfo, progressTitle, new RequestListener() {
+    /**
+     * 提交选择的船舶列表
+     * @param shipInfo
+     */
+    private void shipSelection(SubmitShipInfo shipInfo) {
+        http.postJson(url_select, shipInfo, progressTitle, new RequestListener() {
             @Override
             public void requestSuccess(String json) {
                 Logger.i(TAG, json);
                 if (GsonUtils.isSuccess(json)) {
                     ToolAlert.showToast(activity, "提交成功", false);
-                    MainActivity.list = new ArrayList<>(listStr);
-                    HNApplication.mApp.setShipName(listStr.get(0).getShipname());
+                    MainActivity.list = new ArrayList<>(list_select);
+//                    HNApplication.mApp.setShipName(listStr.get(0).shipname);
+//                    HNApplication.mApp.setShipId(listStr.get(0).shipid);
                     activity.setCurrentItem(1);
                 }else {
-                    ToolAlert.showToast(activity,GsonUtils.getError(json), false);
+                    ToolAlert.showToast(activity,GsonUtils.getError(json));
                 }
             }
 
             @Override
             public void requestError(String message) {
-                ToolAlert.showToast(activity, message, false);
+                ToolAlert.showToast(activity, message);
             }
         });
 
@@ -225,11 +214,15 @@ public class ShipSelectFragment extends BaseFragment implements OnRefreshListene
     @Override
     public void onLoadmore(RefreshLayout refreshlayout) {
         page = page + 1;
+        isRefresh = false;
+        sendHttp();
     }
 
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
         page = 1;
+        isRefresh = true;
+        sendHttp();
     }
 
     private void initBroadcastReceiver() {
@@ -258,33 +251,39 @@ public class ShipSelectFragment extends BaseFragment implements OnRefreshListene
     }
 
     private void cancel() {
+        if (!ToolString.isEmptyList(list)) {
+            ToolAlert.showToast(activity, "船舶列表为空");
+            return;
+        }
         for (int i = 0; i < list.size(); i++) {
-            list.get(i).put("boolean", false);
+            list.get(i).isSelect = false;
             adapter.notifyDataSetChanged();
-            listss.remove(list.get(i).get("number").toString());
-            lists.remove(list.get(i).get("name").toString());
-            listId.remove(list.get(i).get("id").toString());
         }//初始化数据
     }
 
     private void allSelect() {
+        if (!ToolString.isEmptyList(list)) {
+            ToolAlert.showToast(activity, "船舶列表为空");
+            return;
+        }
         for (int i = 0; i < list.size(); i++) {
-            list.get(i).put("boolean", true);
+            list.get(i).isSelect = true;
             adapter.notifyDataSetChanged();
-            lists.add(list.get(i).get("name").toString());
-            listss.add(list.get(i).get("number").toString());
-            listId.add(list.get(i).get("id").toString());
         }//初始化数据
     }
 
     private void submit() {
-        for (int i = 0; i < listss.size(); i++) {
-            listStr.add(new ShipInfo.ship(listId.get(i), listss.get(i), lists.get(i)));
+        for (int i = 0; i < list.size(); i++) {
+            ShipInfo.Ship ship = list.get(i);
+            if (ship.isSelect) {
+                list_select.add(new ShipInfo.Ship(ship.shipid, ship.shipname));
+                list_id.add(ship.shipid);
+            }
         }
-        if (listStr.size() == 0) {
-            ToolAlert.showToast(activity, "请选择船舶后再提交", false);
+        if (list_select.size() == 0) {
+            ToolAlert.showToast(activity, "请选择船舶后再提交");
         } else {
-            ShipInfo shipInfo = new ShipInfo(HNApplication.mApp.getUserId(), listStr);
+            SubmitShipInfo shipInfo = new SubmitShipInfo(HNApplication.mApp.getUserId(), list_id);
             shipSelection(shipInfo);
         }
     }

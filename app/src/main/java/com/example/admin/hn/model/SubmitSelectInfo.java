@@ -9,13 +9,13 @@ import java.util.List;
  */
 
 public class SubmitSelectInfo implements Serializable{
-    public String userid;//用户ID
-    public String shipid;//船舶ID
+    public String userId;//用户ID
+    public String shipId;//船舶ID
     public List<?> docs;//数据集合
 
-    public SubmitSelectInfo(String userId,String shipid, List<?> list) {
-        this.userid = userId;
-        this.shipid = shipid;
+    public SubmitSelectInfo(String userId,String shipId, List<?> list) {
+        this.userId = userId;
+        this.shipId = shipId;
         this.docs = list;
     }
 }
