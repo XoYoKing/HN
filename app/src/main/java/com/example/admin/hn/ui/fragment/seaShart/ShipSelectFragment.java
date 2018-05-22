@@ -75,11 +75,12 @@ public class ShipSelectFragment extends BaseFragment implements OnRefreshListene
     private int rows = 20;
     private String url_ship = Api.BASE_URL + Api.QUERY_SHIP;
     private String url_select = Api.BASE_URL + Api.SHIPSELECTION;
-    private int type;//区分是否选择  0 未选择 1 已选择
     private LocalBroadcastManager localBroadcastManager;
     private BroadcastReceiver br;
     private ShipSelectActivity activity;
-
+    private int type;//区分是否选择  0 未选择 1 已选择
+    private boolean isSingle=true;//区分是单选还是多选  true是单选  默认false是多选
+    private boolean isClick;//区分是否可以点击选中 true可以 false不可以
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_list_layout, container, false);
@@ -95,30 +96,21 @@ public class ShipSelectFragment extends BaseFragment implements OnRefreshListene
     @Override
     public void initView() {
         //下拉刷新
+        Bundle bundle = getArguments();
+        type = Integer.parseInt(bundle.getString("type"));
         ToolRefreshView.setRefreshLayout(activity, refreshLayout, this, this);
-        adapter = new ShipAdapter(activity, R.layout.ship_adapter, list);
+        isClick = type == 0 ? true : false;
+        adapter = new ShipAdapter(activity, R.layout.ship_adapter, list,isSingle,isClick);
         listView.setAdapter(adapter);
     }
 
 
     @Override
     public void initData() {
-        Bundle bundle = getArguments();
-        type = Integer.parseInt(bundle.getString("type"));
         if (type == 0) {
             //在未选择中注册广播
             initBroadcastReceiver();
             sendHttp();
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    ViewHolder viewCache = (ViewHolder) view.getTag();
-                    CheckBox checkBox = viewCache.getView(R.id.cb_status);
-                    checkBox.toggle();
-                    list.get(position).isSelect = checkBox.isChecked();
-                    adapter.notifyDataSetChanged();
-                }
-            });
         }
     }
 
@@ -195,8 +187,6 @@ public class ShipSelectFragment extends BaseFragment implements OnRefreshListene
                 if (GsonUtils.isSuccess(json)) {
                     ToolAlert.showToast(activity, "提交成功", false);
                     MainActivity.list = new ArrayList<>(list_select);
-//                    HNApplication.mApp.setShipName(listStr.get(0).shipname);
-//                    HNApplication.mApp.setShipId(listStr.get(0).shipid);
                     activity.setCurrentItem(1);
                 }else {
                     ToolAlert.showToast(activity,GsonUtils.getError(json));
@@ -273,10 +263,14 @@ public class ShipSelectFragment extends BaseFragment implements OnRefreshListene
     }
 
     private void submit() {
+        if (list_id.size() > 0) {
+            list_id.clear();
+            list_select.clear();
+        }
         for (int i = 0; i < list.size(); i++) {
             ShipInfo.Ship ship = list.get(i);
             if (ship.isSelect) {
-                list_select.add(new ShipInfo.Ship(ship.shipid, ship.shipname));
+                list_select.add(new ShipInfo.Ship(ship.shipid, ship.shipname,ship.isSelect));
                 list_id.add(ship.shipid);
             }
         }

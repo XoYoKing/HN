@@ -69,6 +69,8 @@ public class Constant {
 
     //船舶物料管理 待选搜索
     public static final int POP_NOT_MATERIAL = 800;
+    //船舶物料管理 待选搜索 新品推荐
+    public static final int POP_NEW_MATERIAL = 801;
     //船舶物料管理 审核申领搜索
     public static final int POP_SHIP_AUDITING = 900;
     //电子海图订单管理 搜索
@@ -84,6 +86,8 @@ public class Constant {
     public static final String ACTION_MATERIAL_MANAGER_FRAGMENT = "MaterialManagerFragment";
     //船舶资料管理 未选择
     public static final String ACTION_MATERIAL_NOT_MANAGER_FRAGMENT = "MaterialNotManagerFragment";
+    //船舶资料管理 未选择 新品推荐
+    public static final String ACTION_MATERIAL_NEW_MANAGER_FRAGMENT = "MaterialNewManagerFragment";
     //电子海图  主页
     public static final String ACTION_FOUR_FRAGMENT = "FourFragment";
     //船舶资料管理 主页

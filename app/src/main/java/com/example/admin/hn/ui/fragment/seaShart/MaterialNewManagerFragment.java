@@ -49,11 +49,11 @@ import butterknife.OnClick;
 /**
  * @author duantao
  * @date on 2017/7/26 16:04
- * @describe 未选择
+ * @describe 未选择 新品推荐
  */
-public class MaterialNotManagerFragment extends BaseFragment implements OnRefreshListener,OnLoadmoreListener{
+public class MaterialNewManagerFragment extends BaseFragment implements OnRefreshListener,OnLoadmoreListener{
 
-    private static final String TAG = "未选择";
+    private static final String TAG = "新品推荐";
 
     @Bind(R.id.recycleView)
     RecyclerView recycleView;
@@ -135,7 +135,7 @@ public class MaterialNotManagerFragment extends BaseFragment implements OnRefres
             @Override
             public void requestSuccess(String json) {
                 progressTitle = null;
-                Logger.i("待选列表", json);
+                Logger.i("新品推荐", json);
                 if (GsonUtils.isSuccess(json)) {
                     TypeToken typeToken = new TypeToken<List<OrderNotUseInfo>>() {
                     };
@@ -183,7 +183,7 @@ public class MaterialNotManagerFragment extends BaseFragment implements OnRefres
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Constant.POP_NOT_MATERIAL && data != null) {
+        if (resultCode == Constant.POP_NEW_MATERIAL && data != null) {
             code = data.getStringExtra("dataNumber");
             cname = data.getStringExtra("chineseName");
             isRefresh = true;
@@ -210,7 +210,7 @@ public class MaterialNotManagerFragment extends BaseFragment implements OnRefres
     private void initBroadcastReceiver(){
         localBroadcastManager = LocalBroadcastManager.getInstance(activity);
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Constant.ACTION_MATERIAL_NOT_MANAGER_FRAGMENT);
+        intentFilter.addAction(Constant.ACTION_MATERIAL_NEW_MANAGER_FRAGMENT);
         br = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {

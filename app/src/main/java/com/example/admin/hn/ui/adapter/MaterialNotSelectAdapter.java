@@ -75,7 +75,6 @@ public class MaterialNotSelectAdapter extends CommonAdapter<OrderNotUseInfo>{
         try {
             String tv_number = tv_buy_number.getText().toString();
             number = Integer.parseInt(tv_number);
-            Logger.i("number", number + "");
         } catch (NumberFormatException e) {
             e.printStackTrace();
             number = 1;

@@ -122,7 +122,11 @@ public class FourFragment2 extends BaseFragment implements ViewPager.OnPageChang
 		switch (v.getId()) {
 			case R.id.text_tile_del:
 				if (currentItem == 0) {
-					PopActivity.startActivity(activity, childCurrentItem,R.layout.popup_not_material__layout, Constant.POP_NOT_MATERIAL);
+					if (childCurrentItem == 0) {
+						PopActivity.startActivity(activity, childCurrentItem,R.layout.popup_not_material__layout, Constant.POP_NOT_MATERIAL);
+					} else if (childCurrentItem == 1) {
+						PopActivity.startActivity(activity, childCurrentItem,R.layout.popup_not_material__layout, Constant.POP_NEW_MATERIAL);
+					}
 				} else if (currentItem == 1) {
 					PopActivity.startActivity(activity,childCurrentItem,R.layout.popup_order_manager_layout, Constant.POP_SHIP_AUDITING);
 				}
@@ -136,8 +140,11 @@ public class FourFragment2 extends BaseFragment implements ViewPager.OnPageChang
 						@Override
 						public void onPositiveClick() {
 							Intent intent = new Intent();
-							intent.putExtra("isNew", childCurrentItem);
-							intent.setAction(Constant.ACTION_MATERIAL_NOT_MANAGER_FRAGMENT);
+							if (childCurrentItem == 0) {
+								intent.setAction(Constant.ACTION_MATERIAL_NOT_MANAGER_FRAGMENT);
+							} else if (childCurrentItem == 1) {
+								intent.setAction(Constant.ACTION_MATERIAL_NEW_MANAGER_FRAGMENT);
+							}
 							LocalBroadcastManager.getInstance(activity).sendBroadcast(intent);
 							dialog.dismiss();
 						}

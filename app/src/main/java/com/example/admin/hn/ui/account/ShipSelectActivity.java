@@ -22,9 +22,10 @@ import butterknife.OnClick;
 
 /**
  * 选择船舶
+ *
  * @author Administrator
  */
-public class ShipSelectActivity extends BaseActivity implements ViewPager.OnPageChangeListener{
+public class ShipSelectActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
     @Bind(R.id.text_title_back)
     TextView textTitleBack;
     @Bind(R.id.text_title)
@@ -37,8 +38,9 @@ public class ShipSelectActivity extends BaseActivity implements ViewPager.OnPage
     ViewPager viewPager;
     @Bind(R.id.tabLayout)
     TabLayout tabLayout;
+    private boolean isSingle = true;//区分是单选还是多选  true是单选  默认false是多选
+    private boolean isCancel = true;
 
-    private boolean isCancel=true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,9 +55,13 @@ public class ShipSelectActivity extends BaseActivity implements ViewPager.OnPage
         textTitle.setText("选择船舶");
         textTitleBack.setBackgroundResource(R.drawable.btn_back);
         right.setText("提交");
-        text_tile_del.setVisibility(View.VISIBLE);
-        text_tile_del.setText("全选");
+        if (!isSingle) {
+            //如果可以多选
+            text_tile_del.setVisibility(View.VISIBLE);
+            text_tile_del.setText("全选");
+        }
     }
+
     /**
      *
      */
@@ -64,7 +70,7 @@ public class ShipSelectActivity extends BaseActivity implements ViewPager.OnPage
         context.startActivity(intent);
     }
 
-    @OnClick({R.id.text_title_back,R.id.text_tile_right, R.id.text_tile_del})
+    @OnClick({R.id.text_title_back, R.id.text_tile_right, R.id.text_tile_del})
     public void onClick(View v) {
         Intent intent = new Intent(Constant.ACTION_SHIP_SELECT_FRAGMENT);
         switch (v.getId()) {
@@ -77,12 +83,12 @@ public class ShipSelectActivity extends BaseActivity implements ViewPager.OnPage
                 break;
             case R.id.text_tile_del:
                 if (isCancel) {
-                    isCancel=false;
+                    isCancel = false;
                     text_tile_del.setText("取消");
                     intent.putExtra("status", 2);
                     LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-                }else {
-                    isCancel=true;
+                } else {
+                    isCancel = true;
                     text_tile_del.setText("全选");
                     intent.putExtra("status", 3);
                     LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
@@ -91,15 +97,15 @@ public class ShipSelectActivity extends BaseActivity implements ViewPager.OnPage
         }
     }
 
-    public void setCurrentItem(int current){
+    public void setCurrentItem(int current) {
         viewPager.setCurrentItem(current);
     }
 
     @Override
     public void initData() {
         AllTabAdapter adapter = new AllTabAdapter(this, viewPager);
-        adapter.addTab("未选择","0", ShipSelectFragment.class);
-        adapter.addTab("已选择","1", ShipSelectFragment.class);
+        adapter.addTab("未选择", "0", ShipSelectFragment.class);
+        adapter.addTab("已选择", "1", ShipSelectFragment.class);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.addOnPageChangeListener(this);
     }
@@ -117,16 +123,20 @@ public class ShipSelectActivity extends BaseActivity implements ViewPager.OnPage
     private void updateUI(int position) {
         switch (position) {
             case 0://未选择
-                text_tile_del.setVisibility(View.VISIBLE);
-                if (isCancel) {
-                    text_tile_del.setText("全选");
-                }else {
-                    text_tile_del.setText("取消");
+                if (!isSingle) {
+                    text_tile_del.setVisibility(View.VISIBLE);
+                    if (isCancel) {
+                        text_tile_del.setText("全选");
+                    } else {
+                        text_tile_del.setText("取消");
+                    }
                 }
                 right.setText("提交");
                 break;
             case 1://已选择
-                text_tile_del.setVisibility(View.GONE);
+                if (!isSingle) {
+                    text_tile_del.setVisibility(View.GONE);
+                }
                 right.setText("");
                 break;
         }

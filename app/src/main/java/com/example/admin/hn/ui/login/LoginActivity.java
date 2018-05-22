@@ -302,7 +302,7 @@ public class LoginActivity extends BaseActivity {
                     ArrayList<ShipInfo.Ship> list = new ArrayList<>();
                     for (int i = 0; i < serverResponse.getMyShip().size(); i++) {
                         ShipInfo.Ship ship = serverResponse.getMyShip().get(i);
-                        list.add(new ShipInfo.Ship(ship.shipid,ship.shipname));
+                        list.add(new ShipInfo.Ship(ship.shipid,ship.shipname,true));
                     }
                     Intent intent_homepage = new Intent(LoginActivity.this, MainActivity.class);
                     Bundle bundle = new Bundle();

@@ -55,10 +55,11 @@ public class MaterialUseManagerFragment extends BaseFragment implements ViewPage
 	private void addChildFragment() {
 		AllChildTabAdapter adapter = new AllChildTabAdapter(getChildFragmentManager(), activity, viewPager);
 		adapter.addTab("待选","1", MaterialNotManagerFragment.class);
-		adapter.addTab("新品推荐","2", MaterialNotManagerFragment.class);
+		adapter.addTab("新品推荐","2", MaterialNewManagerFragment.class);
 		adapter.addTab("已选","3", MaterialManagerFragment.class);
 		adapter.addTab("申请单","4", ShipApplyingFragment.class);
 		adapter.addTab("领用单","5", ApplyedFragment.class);
+		viewPager.setOffscreenPageLimit(5);
 		tabLayout.setupWithViewPager(viewPager);
 		viewPager.addOnPageChangeListener(this);
 	}

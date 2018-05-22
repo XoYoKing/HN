@@ -14,9 +14,10 @@ public class ShipInfo {
         public String shipname;
         public String shipid;//船舶ID
         public boolean isSelect;//是否选中
-        public Ship(String shipid, String shipname) {
+        public Ship(String shipid, String shipname,boolean isSelect) {
             this.shipid = shipid;
             this.shipname = shipname;
+            this.isSelect = isSelect;
         }
     }
 }

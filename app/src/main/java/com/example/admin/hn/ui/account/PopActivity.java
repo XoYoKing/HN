@@ -110,7 +110,7 @@ public class PopActivity extends BaseActivity {
         pop_relative.setLayoutParams(layoutParams);
         view = View.inflate(this, layoutId, null);
         linear_top.addView(view);
-        if (requestCode == Constant.POP_NOT_MATERIAL) {//船舶资料管理
+        if (requestCode == Constant.POP_NOT_MATERIAL || requestCode == Constant.POP_NEW_MATERIAL ) {//船舶资料管理
             if (childItem == 0) {
                 tv_type_name.setText("订单领用-待选");
             } else if (childItem == 1) {
