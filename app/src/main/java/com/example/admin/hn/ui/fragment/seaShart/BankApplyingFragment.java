@@ -62,11 +62,11 @@ public class BankApplyingFragment extends BaseFragment implements OnRefreshListe
     private BankApplyingAdapter adapter;
     private View view;
     private int page = 1;
-    private int screen;
-    private String url = Api.BASE_URL + Api.GET_SUBMITTED_DOCUMENTS;
+    private String url = Api.BASE_URL + Api.GET_APPLY_ORDER;
     private String name;//搜索条件
     private String endDate;
     private String startDate;
+    private int type;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -124,7 +124,7 @@ public class BankApplyingFragment extends BaseFragment implements OnRefreshListe
     @Override
     public void initTitleBar() {
         Bundle bundle = getArguments();
-        screen = Integer.parseInt(bundle.getString("type"));
+        type = Integer.parseInt(bundle.getString("type"));
     }
 
 
@@ -144,7 +144,7 @@ public class BankApplyingFragment extends BaseFragment implements OnRefreshListe
         http.postJson(url, params, progressTitle, new RequestListener() {
             @Override
             public void requestSuccess(String json) {
-                Logger.e("申请单", json);
+                Logger.e("审核管理-申请单", json);
                 progressTitle = null;
                 if (GsonUtils.isSuccess(json)) {
                     TypeToken typeToken=new TypeToken<List<ApplyingInfo>>(){};
@@ -183,12 +183,14 @@ public class BankApplyingFragment extends BaseFragment implements OnRefreshListe
     @Override
     public void onLoadmore(RefreshLayout refreshlayout) {
         page = page + 1;
+        isRefresh = false;
         sendHttp(name);
     }
 
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
         page = 1;
+        isRefresh = true;
         sendHttp(name);
     }
 }

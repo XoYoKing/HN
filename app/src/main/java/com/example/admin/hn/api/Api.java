@@ -76,15 +76,14 @@ public class Api {
     public static final String GET_SUBMITTED_DOCUMENTS = "menusystem/computer/getSubmittedDocuments.action";
     //船舶资料管理 已选 提交数据
     public static final String SUBMIT_APPLY_ORDER = "menusystem/computer/submitApplyOrder.action";
-
     //申请单 列表查询
     public static final String GET_APPLY_ORDER = "menusystem/computer/getApplyOrder.action";
     //申请单详情 列表查询
     public static final String GET_APPLY_ORDER_DETAIL = "menusystem/computer/getApplyOrderDetail.action";
-
-
-
-
+    //领用单 列表查询
+    public static final String GET_RECEIVE_ORDER = "menusystem/computer/getReceiveOrder.action";
+    //领用单详情 列表查询
+    public static final String GET_RECEIVE_ORDER_DETAIL = "menusystem/computer/getReceiveOrderDetail.action";
 
 //    ================== 商城接口========================
 

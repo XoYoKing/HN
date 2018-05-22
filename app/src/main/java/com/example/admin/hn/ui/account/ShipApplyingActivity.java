@@ -103,10 +103,16 @@ public class ShipApplyingActivity extends BaseActivity implements OnRefreshListe
         context.startActivity(intent);
     }
 
-    @OnClick(R.id.text_title_back)
+    @OnClick({R.id.text_title_back,R.id.network_img})
     public void onClick(View v) {
-        if (v.getId() == R.id.text_title_back) {
-            finish();
+        switch (v.getId()) {
+            case R.id.network_img:
+                network_img.setVisibility(View.GONE);
+                sendHttp();
+                break;
+            case R.id.text_title_back:
+                finish();
+                break;
         }
     }
 
@@ -150,12 +156,14 @@ public class ShipApplyingActivity extends BaseActivity implements OnRefreshListe
     @Override
     public void onLoadmore(RefreshLayout refreshlayout) {
         page = page + 1;
+        isRefresh = false;
         sendHttp();
     }
 
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
         page = 1;
+        isRefresh = true;
         sendHttp();
     }
 }

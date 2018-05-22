@@ -5,8 +5,11 @@ import android.content.DialogInterface;
 import android.view.View;
 
 import com.example.admin.hn.R;
+import com.example.admin.hn.model.ApplyingInfo;
 import com.example.admin.hn.model.OrderInfo;
 import com.example.admin.hn.ui.account.AuditingApplyingActivity;
+import com.example.admin.hn.ui.account.ShipApplyingActivity;
+import com.example.admin.hn.utils.AbDateUtil;
 import com.example.admin.hn.utils.ToolAlert;
 import com.orhanobut.logger.Logger;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -18,7 +21,7 @@ import java.util.List;
  *
  * @date on 2017/7/31 15:35
  */
-public class BankApplyingAdapter extends CommonAdapter<OrderInfo.Order> {
+public class BankApplyingAdapter extends CommonAdapter<ApplyingInfo> {
 
     private boolean isDeleteAble = true;
 
@@ -27,11 +30,16 @@ public class BankApplyingAdapter extends CommonAdapter<OrderInfo.Order> {
     }
 
     @Override
-    protected void convert(ViewHolder viewHolder, OrderInfo.Order item, final int position) {
-        viewHolder.setOnClickListener(R.id.linear1, new View.OnClickListener() {
+    protected void convert(ViewHolder viewHolder, final ApplyingInfo info, final int position) {
+        viewHolder.setText(R.id.tv_name, info.shipname+"");
+        viewHolder.setText(R.id.tv_status, info.status + "");
+        viewHolder.setText(R.id.tv_numberNo, info.applyno + "");
+        viewHolder.setText(R.id.tv_date, AbDateUtil.getStringByFormat(info.applydate,AbDateUtil.dateFormatYMD)  + "");
+        viewHolder.setText(R.id.tv_number, info.amount + "");
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AuditingApplyingActivity.startActivity(mContext, 1, "");
+                ShipApplyingActivity.startActivity(mContext, info.applyno);
             }
         });
         viewHolder.setOnClickListener(R.id.bt_submit, new View.OnClickListener() {
@@ -49,12 +57,6 @@ public class BankApplyingAdapter extends CommonAdapter<OrderInfo.Order> {
                         dialog.dismiss();
                     }
                 });
-            }
-        });
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AuditingApplyingActivity.startActivity(mContext, 1, "");
             }
         });
     }
