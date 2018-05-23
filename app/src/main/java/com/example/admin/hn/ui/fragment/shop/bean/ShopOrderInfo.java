@@ -20,7 +20,7 @@ public class ShopOrderInfo implements Serializable {
     public String receiverNote;//收货人备注
     public String memberId;//会员ID
     public String memberName;//会员名称
-    public String status;//订单状态
+    public int status;//订单状态
     public double freight;//运费
     public double orderAmount;//订单金额
     public String expressId;//快递公司ID
@@ -36,7 +36,7 @@ public class ShopOrderInfo implements Serializable {
     public String orderSource;//订单来源
     public List<OrderItems> orderItems;
 
-    public class OrderItems{
+    public class OrderItems implements Serializable{
         public String id;
         public String orderId;//订单ID
         public String goodsId;//商品ID
@@ -44,10 +44,30 @@ public class ShopOrderInfo implements Serializable {
         public String goodsSpec;//产品规格
         public String goodsFullSpecs;//产品规格全称
         public String goodsName;//商品名称
-        public String goodsPrice;//商品单价
+        public double goodsPrice;//商品单价
         public String qty;//数量
-        public String amount;//商品总金额
+        public String imgUrl;//数量
+        public double amount;//商品总金额
         public String isComment;//是否已评价
         public String orderSource;//订单来源
+
+        @Override
+        public String toString() {
+            return "OrderItems{" +
+                    "id='" + id + '\'' +
+                    ", orderId='" + orderId + '\'' +
+                    ", goodsId='" + goodsId + '\'' +
+                    ", spuId='" + spuId + '\'' +
+                    ", goodsSpec='" + goodsSpec + '\'' +
+                    ", goodsFullSpecs='" + goodsFullSpecs + '\'' +
+                    ", goodsName='" + goodsName + '\'' +
+                    ", goodsPrice=" + goodsPrice +
+                    ", qty='" + qty + '\'' +
+                    ", imgUrl='" + imgUrl + '\'' +
+                    ", amount=" + amount +
+                    ", isComment='" + isComment + '\'' +
+                    ", orderSource='" + orderSource + '\'' +
+                    '}';
+        }
     }
 }

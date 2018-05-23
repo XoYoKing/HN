@@ -203,7 +203,7 @@ public class ShopHomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    GoodsDetailActivity.startActivity(mContext);
+
                 }
             });
         }
@@ -212,7 +212,7 @@ public class ShopHomeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    GoodsDetailActivity.startActivity(mContext);
+
                 }
             });
         }

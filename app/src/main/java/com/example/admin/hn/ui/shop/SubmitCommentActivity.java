@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import com.example.admin.hn.ui.fragment.shop.bean.ShopOrderInfo;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolString;
+import com.example.admin.hn.utils.ToolViewUtils;
 import com.example.admin.hn.volley.RequestListener;
 
 import java.util.ArrayList;
@@ -44,10 +46,14 @@ public class SubmitCommentActivity extends BaseActivity {
     EditText et_content;
     @Bind(R.id.ratingBar)
     RatingBar ratingBar;
+    @Bind(R.id.iv_img)
+    ImageView iv_img;
+
 
     private String url = Api.SHOP_BASE_URL + Api.GET_SAVE_COMMENT;
     private String content;
     private ShopOrderInfo info;
+    private ShopOrderInfo.OrderItems items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +86,10 @@ public class SubmitCommentActivity extends BaseActivity {
     @Override
     public void initView() {
         info = (ShopOrderInfo) getIntent().getSerializableExtra("info");
+        if (ToolString.isEmptyList(info.orderItems)) {
+            items = info.orderItems.get(0);
+            ToolViewUtils.glideImageList(info.orderItems.get(0).imgUrl, iv_img, R.drawable.load_fail);
+        }
     }
 
 
@@ -106,12 +116,12 @@ public class SubmitCommentActivity extends BaseActivity {
     }
 
     private void submitComment() {
-        params.put("orederId", info.id+"");
-        params.put("spuId", "spuId");
+        params.put("orederId", info.orderNo+"");
+        params.put("spuId", items.spuId + "");
         params.put("memberName", info.memberName + "");
-        params.put("goodsSpec", "goodsSpec");
-        params.put("goodsName", "goodsName");
-        params.put("score", ratingBar.getNumStars() + "");
+        params.put("goodsSpec", items.goodsSpec+"");
+        params.put("goodsName", items.goodsName+"");
+        params.put("score", (int)ratingBar.getRating() + "");
         params.put("content", content);
         http.post(url, params, "正在提交...", new RequestListener() {
             @Override

@@ -1,5 +1,6 @@
 package com.example.admin.hn.ui.shop;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -55,11 +56,11 @@ public class GoodsDetailActivity extends BaseActivity {
     @Bind(R.id.tv_cartNumber)
     TextView tv_cartNumber;
     private String url= Api.SHOP_BASE_URL+Api.GET_GOODS_DETAIL;
-    private GoodsListInfo.Goods info;
     private GoodsInfo goodsInfo;
     private LocalBroadcastManager localBroadcastManager;
     private BroadcastReceiver br;
     private AddressInfo defaultInfo;//默认地址
+    private String goodsId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,17 +76,9 @@ public class GoodsDetailActivity extends BaseActivity {
      *
      * @param context
      */
-    public static void startActivity(Context context) {
+    public static void startActivity(Context context,String goodsId) {
         Intent intent = new Intent(context, GoodsDetailActivity.class);
-        context.startActivity(intent);
-    }
-    /**
-     *
-     * @param context
-     */
-    public static void startActivity(Context context, GoodsListInfo.Goods info) {
-        Intent intent = new Intent(context, GoodsDetailActivity.class);
-        intent.putExtra("info", info);
+        intent.putExtra("goodsId", goodsId);
         context.startActivity(intent);
     }
 
@@ -97,7 +90,7 @@ public class GoodsDetailActivity extends BaseActivity {
     @Override
     public void initView() {
         initBroadcastReceiver();
-        info = (GoodsListInfo.Goods) getIntent().getSerializableExtra("info");
+        goodsId = getIntent().getStringExtra("goodsId");
     }
 
     @Override
@@ -149,7 +142,7 @@ public class GoodsDetailActivity extends BaseActivity {
     }
 
     private void sendHttp(){
-        http.get(url+info.id , params, progressTitle, new RequestListener() {
+        http.get(url+goodsId , params, progressTitle, new RequestListener() {
             @Override
             public void requestSuccess(String json) {
                 Logger.e("商品详情", json);
@@ -171,8 +164,8 @@ public class GoodsDetailActivity extends BaseActivity {
     private void setValue() {
         AllTabAdapter adapter = new AllTabAdapter(this, viewPager);
         adapter.addTab("商品", goodsInfo, GoodsFragment.class);
-        adapter.addTab("详情", info.descriptionUrl,GoodsDetailFragment.class);
-        adapter.addTab("评价", info.spuId, CommentFragment.class);
+        adapter.addTab("详情", goodsInfo.spu.descriptionUrl,GoodsDetailFragment.class);
+        adapter.addTab("评价", goodsInfo.goods.spuId, CommentFragment.class);
         viewPager.setOffscreenPageLimit(3);
         tabLayout.setupWithViewPager(viewPager);
     }
@@ -186,6 +179,7 @@ public class GoodsDetailActivity extends BaseActivity {
         viewPager.setCurrentItem(currentPage);
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
@@ -205,7 +199,7 @@ public class GoodsDetailActivity extends BaseActivity {
      */
     private void handleResult(Fragment fragment,int requestCode,int resultCode,Intent data) {
         fragment.onActivityResult(requestCode, resultCode, data);//调用每个Fragment的onActivityResult
-        List<Fragment> childFragment = fragment.getChildFragmentManager().getFragments(); //找到第二层Fragment
+        @SuppressLint("RestrictedApi") List<Fragment> childFragment = fragment.getChildFragmentManager().getFragments(); //找到第二层Fragment
         if(childFragment!=null)
             for(Fragment f:childFragment){
                 if(f!=null) {

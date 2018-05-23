@@ -39,6 +39,7 @@
             android:layout_marginLeft="@dimen/common_10dp"
             android:layout_marginTop="@dimen/common_10dp"
             android:layout_width="wrap_content"
+            android:isIndicator="false"
             android:layout_height="wrap_content"
             android:numStars="5"
             android:rating="5"
@@ -53,6 +54,7 @@
         android:hint="评价超过10字就可获得积分"
         android:gravity="top"
         android:padding="@dimen/common_10dp"
+        android:background="@drawable/shape_edit_background_rect"
         android:textColorHint="@color/text_color_hint" />
 
 </LinearLayout>

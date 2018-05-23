@@ -53,6 +53,7 @@ public class IRequest {
         params.put("timestamp", AbDateUtil.getCurrentDate(AbDateUtil.dateFormatYMD));
         params.put("userid", HNApplication.mApp.getUserId());//船舶用户ID 默认传递
         params.put("userId", HNApplication.mApp.getUserId());//船舶用户ID 默认传递
+        params.put("secretKey", "$2a$10$yVNcmCq7an33cV0D4r2kk.ieMx1Tylb30QSKATlmSWMrnsLibTqZq");//商城key
         params.put("memberId", "1");//商城用户ID 默认传递
         Logger.e("请求参数", params.toString());
     }

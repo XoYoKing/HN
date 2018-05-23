@@ -62,9 +62,7 @@ public class GoodsDetailFragment extends BaseFragment {
 					}
 				}
 		);
-		if (url != null) {
-			mWebView.loadUrl(url);
-		}
+		mWebView.loadUrl(url);
 	}
 
 	@Override

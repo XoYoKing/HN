@@ -17,6 +17,7 @@ import com.example.admin.hn.ui.adapter.ShopOrderListAdapter;
 import com.example.admin.hn.ui.adapter.ShopOrderManagerAdapter;
 import com.example.admin.hn.ui.fragment.shop.bean.ShopOrderInfo;
 import com.example.admin.hn.utils.GsonUtils;
+import com.example.admin.hn.utils.SpaceItemDecoration;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolRefreshView;
 import com.example.admin.hn.utils.ToolString;
@@ -77,6 +78,7 @@ public class ShopOrderManagerFragment extends BaseFragment implements OnLoadmore
 		refreshLayout = (RefreshLayout) view.findViewById(R.id.refreshLayout);
 		ToolRefreshView.setRefreshLayout(activity, refreshLayout, this, this);
 		recycleView.setLayoutManager(new LinearLayoutManager(activity));
+		recycleView.addItemDecoration(new SpaceItemDecoration(0,30,0,0));
 		adapter = new ShopOrderListAdapter(activity,list);
 		recycleView.setAdapter(adapter);
 	}
@@ -134,7 +136,7 @@ public class ShopOrderManagerFragment extends BaseFragment implements OnLoadmore
 				if (GsonUtils.isShopSuccess(json)) {
 					progressTitle = null;
 					TypeToken typeToken=new TypeToken<List<ShopOrderInfo>>(){};
-					List<ShopOrderInfo> data = (List<ShopOrderInfo>) GsonUtils.jsonToList2(json, typeToken, "content");
+					List<ShopOrderInfo> data = (List<ShopOrderInfo>) GsonUtils.jsonToList(json, typeToken, "data");
 					if (ToolString.isEmptyList(data)) {
 						if (isRefresh) {
 							list.clear();

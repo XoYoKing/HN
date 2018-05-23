@@ -36,7 +36,7 @@ public class GoodsListAdapter extends CommonAdapter<GoodsListInfo.Goods> {
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GoodsDetailActivity.startActivity(mContext,info);
+                GoodsDetailActivity.startActivity(mContext,info.id);
             }
         });
     }

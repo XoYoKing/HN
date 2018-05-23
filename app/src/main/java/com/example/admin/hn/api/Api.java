@@ -7,11 +7,11 @@ package com.example.admin.hn.api;
  */
 public class Api {
 
-//    public final static String BASE_URL = "http://zxs.tunnel.qydev.com/menusystem/";
-    public  static  String BASE_URL = "http://222.66.158.231:9000/";//船舶
-    public  static  String SHOP_BASE_URL = "http://172.16.0.10:8990/";//商城
+    //    public final static String BASE_URL = "http://zxs.tunnel.qydev.com/menusystem/";
+    public static String BASE_URL = "http://222.66.158.231:9000/";//船舶
+    public static String SHOP_BASE_URL = "http://172.16.0.10:8990/";//商城
 
-//    public  static  String BASE_URL = "http://58.67.133.129:8080/";
+    //    public  static  String BASE_URL = "http://58.67.133.129:8080/";
     //注册
     public static final String REGISTER = "menusystem/mobile/registered.action";
 
@@ -107,22 +107,32 @@ public class Api {
     //个人收货地址设置默认收货地址接口
     public static final String SET_DEFAULT_ADDRESS = "usr/addr/default";
     //订单查询接口
-    public static final String GET_LIST_ORDER = "sto/order/list";
+    public static final String GET_LIST_ORDER = "sto/order/list_order";
+
+    /**
+     * 根据订单状态增加/修改参数
+     * ID save请求，若参数带ID，则是修改，若不带ID就是新增
+     * 支付方式与支付流水号在支付的时候为必填参数!
+     * 支付方式: paymentType 0为未支付、1为支付宝支付、2为微信支付
+     * 支付流水号: paymentNo
+     * 订单状态:status 0为待付款 1为待发货 2为待收货 3为待评价 4订单完成
+     */
+    public static final String GET_SAVE_ORDER = "sto/order/save";
     //根据商品查询评论信息
     public static final String GET_LIST_COMMENT = "com/comment/list";
     //如果订单状态为待评价的状态，即:订单表 status:3; 时即可参加评论
     public static final String GET_SAVE_COMMENT = "com/comment/save";
     //根据商品ID查询商品的收藏量
-    public static final String GET_CONLLECT_LIST= "usr/goods/conllect/list";
+    public static final String GET_CONLLECT_LIST = "usr/goods/conllect/list";
     //根据商品订单新增接口 ID save请求，若参数带ID，则是修改，若不带ID就是新增
-    public static final String GET_ORDER_SAVE= "sto/order/save";
+    public static final String GET_ORDER_SAVE = "sto/order/save";
     //根据会员信息新增商品订单
-    public static final String GET_ORDER_ADD= "sto/order/add";
+    public static final String GET_ORDER_ADD = "sto/order/add";
     //	运费
-    public static final String GET_GOODS_FREIGHT= "sto/goods/freight";
+    public static final String GET_GOODS_FREIGHT = "sto/goods/freight";
 
     // id:文库ID ，当传入id时可根据id获取文库数据
-    public static final String GET_PUB_LIST= "lib/pub/list";
+    public static final String GET_PUB_LIST = "lib/pub/list";
 
 //    ================== 商城接口========================
 

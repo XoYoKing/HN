@@ -1,7 +1,7 @@
 package com.example.admin.hn.ui.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.GridLayoutManager;
+import android.content.DialogInterface;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,23 +13,27 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.admin.hn.R;
+import com.example.admin.hn.api.Api;
 import com.example.admin.hn.http.Constant;
-import com.example.admin.hn.model.HomeItem;
-import com.example.admin.hn.model.HomeTypeInfo;
 import com.example.admin.hn.ui.fragment.shop.bean.PayOrderInfo;
 import com.example.admin.hn.ui.fragment.shop.bean.ShopOrderInfo;
-import com.example.admin.hn.ui.shop.GoodsListActivity;
+import com.example.admin.hn.ui.shop.GoodsDetailActivity;
 import com.example.admin.hn.ui.shop.PayActivity;
-import com.example.admin.hn.ui.shop.ShopTypeListActivity;
 import com.example.admin.hn.ui.shop.StepActivity;
 import com.example.admin.hn.ui.shop.SubmitCommentActivity;
 import com.example.admin.hn.utils.AbMathUtil;
 import com.example.admin.hn.utils.GsonUtils;
+import com.example.admin.hn.utils.SpaceItemDecoration;
+import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolString;
 import com.example.admin.hn.utils.ToolViewUtils;
-import com.google.gson.reflect.TypeToken;
+import com.example.admin.hn.volley.IRequest;
+import com.example.admin.hn.volley.RequestListener;
+import com.orhanobut.logger.Logger;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 商品订单管理
@@ -79,53 +83,99 @@ public class ShopOrderListAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
     }
 
-    private void bindType1(HolderType1 holder, int position) {
+    private boolean isDeleteAble=true;
+    public void remove(int position) {
+        if (isDeleteAble) {//此时为增加动画效果，刷新部分数据源，防止删除错乱
+            isDeleteAble = false;//初始值为true,当点击删除按钮以后，休息0.5秒钟再让他为
+            //true,起到让数据源刷新完成的作用
+            list.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, getItemCount());
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(300);//休息
+                        isDeleteAble = true;//可点击按钮
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+        }
+    }
+
+    private void bindType1(HolderType1 holder,final int position) {
         final ShopOrderInfo info = list.get(position);
-//        List<ShopOrderInfo.OrderItems> orderItems = info.orderItems;
-//        ShopOrderInfo.OrderItems item = orderItems.get(0);
-//        ToolViewUtils.glideImageList(item.,holder.goods_img,R.drawable.load_fail);
-//        holder.goods_title.setText(item.goodsName + "");
-//        holder.goods_amount.setText(item.amount + "");
-        holder.tv_freight.setText("（含运费￥" + AbMathUtil.roundStr(info.freight, 2) + "）");
-        holder.all_goods_amount.setText("合计：￥" + AbMathUtil.roundStr(info.orderAmount, 2));
-        if (Constant.SHOP_ORDER_STATUS_NEW.equals(info.status)) {
+        List<ShopOrderInfo.OrderItems> orderItems = info.orderItems;
+        if (ToolString.isEmptyList(orderItems)) {
+            final ShopOrderInfo.OrderItems item = orderItems.get(0);
+            ToolViewUtils.glideImageList(item.imgUrl,holder.goods_img,R.drawable.load_fail);
+            holder.goods_title.setText(item.goodsName + "");
+            holder.ll_goods.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    GoodsDetailActivity.startActivity(mContext,item.id);
+                }
+            });
+        }
+        setOrderValue(holder, position, info);
+    }
+
+    /**
+     * 设置订单数据信息
+     * @param holder
+     * @param position
+     * @param info
+     */
+    private void setOrderValue(HolderType holder, final int position, final ShopOrderInfo info) {
+        holder.all_goods_number.setText("共"+1+"件商品");
+        holder.all_goods_amount.setText("￥" + AbMathUtil.roundStr(info.orderAmount, 2));
+//        holder.tv_freight.setText("（含运费￥" + AbMathUtil.roundStr(info.freight, 2) + "）");
+        if (Constant.SHOP_ORDER_STATUS_NEW==info.status) {
             holder.lock_logistics.setVisibility(View.GONE);
             holder.pay.setVisibility(View.VISIBLE);
             holder.pay.setText("去支付");
             holder.tv_status.setText("等待付款");
-        }else if (Constant.SHOP_ORDER_STATUS_PREPARE.equals(info.status)) {
+        }else if (Constant.SHOP_ORDER_STATUS_PREPARE==info.status) {
             holder.lock_logistics.setVisibility(View.VISIBLE);
             holder.pay.setVisibility(View.GONE);
             holder.tv_status.setText("等待发货");
-        }else if (Constant.SHOP_ORDER_STATUS_SEND.equals(info.status)) {
+        }else if (Constant.SHOP_ORDER_STATUS_SEND==info.status) {
             holder.lock_logistics.setVisibility(View.VISIBLE);
             holder.pay.setVisibility(View.VISIBLE);
             holder.pay.setText("确认收货");
             holder.tv_status.setText("等待收货");
-        }else if (Constant.SHOP_ORDER_STATUS_NOEVAL.equals(info.status)) {
+        }else if (Constant.SHOP_ORDER_STATUS_NOEVAL==info.status) {
             holder.lock_logistics.setVisibility(View.GONE);
             holder.pay.setVisibility(View.VISIBLE);
             holder.pay.setText("评价");
             holder.tv_status.setText("等待评价");
-         }else if(Constant.SHOP_ORDER_STATUS_FINISH.equals(info.status)){
+        }else if(Constant.SHOP_ORDER_STATUS_FINISH==info.status){
             holder.lock_logistics.setVisibility(View.GONE);
             holder.pay.setVisibility(View.VISIBLE);
             holder.pay.setText("再次购买");
             holder.tv_status.setText("已完成");
-         }
+        }
         holder.pay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Constant.SHOP_ORDER_STATUS_NOEVAL.equals(info.status)) {
+                if (Constant.SHOP_ORDER_STATUS_NOEVAL==info.status) {
                     //去待评价
                     SubmitCommentActivity.startActivity(mContext,info);
-                }else if (Constant.SHOP_ORDER_STATUS_NEW.equals(info.status)) {
+                }else if (Constant.SHOP_ORDER_STATUS_NEW==info.status) {
                     //去支付
                     PayOrderInfo payOrderInfo = new PayOrderInfo();
                     payOrderInfo.orderAmount = info.orderAmount;
                     payOrderInfo.orderNo = info.orderNo;
                     payOrderInfo.paymentNo = info.paymentNo;
                     PayActivity.startActivity(mContext,payOrderInfo);
+                }else if (Constant.SHOP_ORDER_STATUS_PREPARE==info.status) {
+                    //待发货
+                    updateOrder(position,info);
+                }else if (Constant.SHOP_ORDER_STATUS_SEND==info.status) {
+                    //待收货
+                    updateOrder(position,info);
                 }
             }
         });
@@ -135,15 +185,32 @@ public class ShopOrderListAdapter extends RecyclerView.Adapter<RecyclerView.View
                 StepActivity.startActivity(mContext);
             }
         });
+        holder.iv_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToolAlert.dialog(mContext, "删除订单", "是否确认删除此订单", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        remove(position);
+                    }
+                }, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
     }
 
-    private void bindType2(HolderType2 holder, int position) {
-        ShopOrderInfo info = list.get(position);
+
+    private void bindType2(HolderType2 holder,final int position) {
+        final ShopOrderInfo info = list.get(position);
         holder.item_recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
         ItemRecycleAdapter itemRecycleAdapter = new ItemRecycleAdapter(TYPE_TYPE1, info.orderItems);
         holder.item_recyclerView.setAdapter(itemRecycleAdapter);
-        holder.tv_freight.setText("（含运费￥" + AbMathUtil.roundStr(info.freight, 2) + "）");
-        holder.all_goods_amount.setText("合计：￥" + AbMathUtil.roundStr(info.orderAmount, 2));
+        setOrderValue(holder, position, info);
     }
 
     @Override
@@ -151,41 +218,55 @@ public class ShopOrderListAdapter extends RecyclerView.Adapter<RecyclerView.View
         return list.size();
     }
 
-    public class HolderType1 extends RecyclerView.ViewHolder {
-        private ImageView goods_img;
-        private TextView tv_status,all_goods_number, goods_title, single_goods_money, goods_amount, tv_freight, all_goods_amount;
+    public class HolderType extends RecyclerView.ViewHolder {
+        private ImageView iv_delete;
+        private TextView tv_status,all_goods_number, tv_freight, all_goods_amount;
         private Button lock_logistics, pay;
-        private LinearLayout btn_linear;
+        private LinearLayout ll_goods;
 
-        public HolderType1(View itemView) {
+        public HolderType(View itemView) {
             super(itemView);
-            goods_img = (ImageView) itemView.findViewById(R.id.goods_img);
+            iv_delete = (ImageView) itemView.findViewById(R.id.iv_delete);
             all_goods_number = (TextView) itemView.findViewById(R.id.all_goods_number);
-            goods_title = (TextView) itemView.findViewById(R.id.goods_title);
-            single_goods_money = (TextView) itemView.findViewById(R.id.single_goods_money);
-            goods_amount = (TextView) itemView.findViewById(R.id.goods_amount);
             tv_freight = (TextView) itemView.findViewById(R.id.tv_freight);
             all_goods_amount = (TextView) itemView.findViewById(R.id.all_goods_amount);
             lock_logistics = (Button) itemView.findViewById(R.id.lock_logistics);
             tv_status = (TextView) itemView.findViewById(R.id.tv_status);
             pay = (Button) itemView.findViewById(R.id.pay);
-            btn_linear = (LinearLayout) itemView.findViewById(R.id.btn_linear);
+            ll_goods= (LinearLayout) itemView.findViewById(R.id.ll_goods);
         }
     }
 
-    public class HolderType2 extends RecyclerView.ViewHolder {
+    /**
+     * 只有一件商品的时候
+     */
+    public class HolderType1 extends HolderType {
+        private ImageView goods_img;
+        private TextView  goods_title, single_goods_money, goods_number;
+        private LinearLayout ll_goods;
+
+        public HolderType1(View itemView) {
+            super(itemView);
+            goods_img = (ImageView) itemView.findViewById(R.id.goods_img);
+            goods_title = (TextView) itemView.findViewById(R.id.goods_title);
+            single_goods_money = (TextView) itemView.findViewById(R.id.single_goods_money);
+            goods_number = (TextView) itemView.findViewById(R.id.goods_number);
+            ll_goods= (LinearLayout) itemView.findViewById(R.id.ll_goods);
+        }
+    }
+
+    /**
+     * 存在多件商品的时候
+     */
+    public class HolderType2 extends HolderType {
         private RecyclerView item_recyclerView;
-        private TextView all_goods_number,tv_freight, all_goods_amount;
 
         public HolderType2(View itemView) {
             super(itemView);
             item_recyclerView = (RecyclerView) itemView.findViewById(R.id.item_recyclerView);
             item_recyclerView.setNestedScrollingEnabled(false);
             item_recyclerView.setFocusable(false);
-            all_goods_number = (TextView) itemView.findViewById(R.id.all_goods_number);
-            tv_freight = (TextView) itemView.findViewById(R.id.tv_freight);
-            all_goods_amount = (TextView) itemView.findViewById(R.id.all_goods_amount);
-
+            item_recyclerView.addItemDecoration(new SpaceItemDecoration(0, 0, 15, 15));
         }
     }
 
@@ -233,13 +314,39 @@ public class ShopOrderListAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
 
         private void bindType(HolderType holder, int position) {
-//            ToolViewUtils.glideImageList(info.imageurl,holder.type_icon,R.drawable.load_fail);
+            final ShopOrderInfo.OrderItems info = (ShopOrderInfo.OrderItems) data.get(position);
+            ToolViewUtils.glideImageList(info.imgUrl,holder.img,R.drawable.load_fail);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    GoodsDetailActivity.startActivity(mContext,info.id);
                 }
             });
         }
+    }
+
+    private String order_url = Api.SHOP_BASE_URL + Api.GET_SAVE_ORDER;
+    private void updateOrder(final int position,ShopOrderInfo orderInfo) {
+        Map map = new HashMap();
+        map.put("id", orderInfo.id+"");
+        map.put("paymentType", orderInfo.paymentType+"");
+        map.put("paymentNo", orderInfo.paymentNo+"");
+        map.put("status", (orderInfo.status+1)+"");
+        IRequest.post(mContext, order_url, map, "正在修改", new RequestListener() {
+            @Override
+            public void requestSuccess(String json) {
+                Logger.e("修改订单", json);
+                if (GsonUtils.isShopSuccess(json)) {
+                    remove(position);
+                } else {
+                    ToolAlert.showToast(mContext,GsonUtils.getError(json));
+                }
+            }
+
+            @Override
+            public void requestError(String message) {
+                ToolAlert.showToast(mContext,message);
+            }
+        });
     }
 }
