@@ -110,7 +110,7 @@ public class ShopOrderListAdapter extends RecyclerView.Adapter<RecyclerView.View
         List<ShopOrderInfo.OrderItems> orderItems = info.orderItems;
         if (ToolString.isEmptyList(orderItems)) {
             final ShopOrderInfo.OrderItems item = orderItems.get(0);
-            ToolViewUtils.glideImageList(item.imgUrl,holder.goods_img,R.drawable.load_fail);
+            ToolViewUtils.glideImageList(item.imageUrl,holder.goods_img,R.drawable.load_fail);
             holder.goods_title.setText(item.goodsName + "");
             holder.ll_goods.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -122,6 +122,13 @@ public class ShopOrderListAdapter extends RecyclerView.Adapter<RecyclerView.View
         setOrderValue(holder, position, info);
     }
 
+    private void bindType2(HolderType2 holder,final int position) {
+        final ShopOrderInfo info = list.get(position);
+        holder.item_recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+        ItemRecycleAdapter itemRecycleAdapter = new ItemRecycleAdapter(TYPE_TYPE1, info.orderItems);
+        holder.item_recyclerView.setAdapter(itemRecycleAdapter);
+        setOrderValue(holder, position, info);
+    }
     /**
      * 设置订单数据信息
      * @param holder
@@ -129,7 +136,7 @@ public class ShopOrderListAdapter extends RecyclerView.Adapter<RecyclerView.View
      * @param info
      */
     private void setOrderValue(HolderType holder, final int position, final ShopOrderInfo info) {
-        holder.all_goods_number.setText("共"+1+"件商品");
+        holder.all_goods_number.setText("共"+info.number+"件商品");
         holder.all_goods_amount.setText("￥" + AbMathUtil.roundStr(info.orderAmount, 2));
 //        holder.tv_freight.setText("（含运费￥" + AbMathUtil.roundStr(info.freight, 2) + "）");
         if (Constant.SHOP_ORDER_STATUS_NEW==info.status) {
@@ -204,14 +211,6 @@ public class ShopOrderListAdapter extends RecyclerView.Adapter<RecyclerView.View
         });
     }
 
-
-    private void bindType2(HolderType2 holder,final int position) {
-        final ShopOrderInfo info = list.get(position);
-        holder.item_recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
-        ItemRecycleAdapter itemRecycleAdapter = new ItemRecycleAdapter(TYPE_TYPE1, info.orderItems);
-        holder.item_recyclerView.setAdapter(itemRecycleAdapter);
-        setOrderValue(holder, position, info);
-    }
 
     @Override
     public int getItemCount() {
@@ -315,7 +314,7 @@ public class ShopOrderListAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         private void bindType(HolderType holder, int position) {
             final ShopOrderInfo.OrderItems info = (ShopOrderInfo.OrderItems) data.get(position);
-            ToolViewUtils.glideImageList(info.imgUrl,holder.img,R.drawable.load_fail);
+            ToolViewUtils.glideImageList(info.imageUrl,holder.img,R.drawable.load_fail);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

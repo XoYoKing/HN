@@ -64,6 +64,7 @@ public class MaterialNotSelectAdapter extends CommonAdapter<OrderNotUseInfo>{
                 if (hasFocus) {
                     tv_buy_number.addTextChangedListener(new MyTextWatcher(tv_buy_number, info));
                 }else {
+                    tv_buy_number.setText(info.quantity+"");//当失去焦点的时候设置输入框的值
                     tv_buy_number.clearTextChangedListeners();
                 }
             }

@@ -11,7 +11,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/common_15dp"
         android:singleLine="true"
-        android:text="自营商品"
+        android:text="自营店铺"
         android:textColor="@color/black"
         android:textSize="@dimen/common_15sp" />
 

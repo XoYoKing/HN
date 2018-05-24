@@ -88,7 +88,7 @@ public class SubmitCommentActivity extends BaseActivity {
         info = (ShopOrderInfo) getIntent().getSerializableExtra("info");
         if (ToolString.isEmptyList(info.orderItems)) {
             items = info.orderItems.get(0);
-            ToolViewUtils.glideImageList(info.orderItems.get(0).imgUrl, iv_img, R.drawable.load_fail);
+            ToolViewUtils.glideImageList(info.orderItems.get(0).imageUrl, iv_img, R.drawable.load_fail);
         }
     }
 

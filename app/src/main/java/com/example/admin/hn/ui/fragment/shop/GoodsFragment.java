@@ -362,7 +362,7 @@ public class GoodsFragment extends BaseFragment {
         shopCartInfo.setUsp(goodsInfo.spu.usp);
         shopCartInfo.setCurrGoodsSpecItemsIds(goodsInfo.currGoodsSpecItemsIds);
         shopCartInfos.add(shopCartInfo);
-        FirmOrderActivity.startActivity(activity, shopCartInfos, selectInfo);
+        FirmOrderActivity.startActivity(activity, shopCartInfos, selectInfo,false);
     }
 
     /**

@@ -106,7 +106,7 @@ public class Api {
     public static final String GET_DELETE_ADDRESS = "usr/addr/delete";
     //个人收货地址设置默认收货地址接口
     public static final String SET_DEFAULT_ADDRESS = "usr/addr/default";
-    //订单查询接口
+        //订单查询接口
     public static final String GET_LIST_ORDER = "sto/order/list_order";
 
     /**

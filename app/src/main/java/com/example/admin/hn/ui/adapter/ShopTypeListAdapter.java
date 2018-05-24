@@ -162,6 +162,8 @@ public class ShopTypeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 public void onClick(View v) {
                     if (info.operate==5) {
                         GoodsListActivity.startActivity(mContext,info);
+                    } else if (info.operate == 3) {
+                        GoodsDetailActivity.startActivity(mContext, info.value);
                     }
                 }
             });

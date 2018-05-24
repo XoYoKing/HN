@@ -138,7 +138,7 @@ public class GoodsDetailActivity extends BaseActivity {
         shopCartInfo.setUsp(goodsInfo.spu.usp);
         shopCartInfo.setCurrGoodsSpecItemsIds(goodsInfo.currGoodsSpecItemsIds);
         shopCartInfos.add(shopCartInfo);
-        FirmOrderActivity.startActivity(context, shopCartInfos, defaultInfo);
+        FirmOrderActivity.startActivity(context, shopCartInfos, defaultInfo,false);
     }
 
     private void sendHttp(){

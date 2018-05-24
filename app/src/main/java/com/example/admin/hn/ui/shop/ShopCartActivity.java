@@ -21,6 +21,7 @@ import com.example.admin.hn.ui.fragment.shop.bean.ShopCartInfo;
 import com.example.admin.hn.utils.AbMathUtil;
 
 import com.example.admin.hn.utils.GsonUtils;
+import com.example.admin.hn.utils.SpaceItemDecoration;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolRefreshView;
 import com.example.admin.hn.utils.ToolShopCartUtil;
@@ -136,7 +137,7 @@ public class ShopCartActivity extends BaseActivity implements OnRefreshListener{
             case R.id.go_pay:
                 List<ShopCartInfo> selectInfo = adapter.getSelectInfo(false);
                 if (ToolString.isEmptyList(selectInfo)) {
-                    FirmOrderActivity.startActivity(context, selectInfo,defaultInfo);
+                    FirmOrderActivity.startActivity(context, selectInfo,defaultInfo,true);
                 }else {
                     ToolAlert.showToast(context, "请选择需要结算的商品");
                 }
@@ -165,6 +166,7 @@ public class ShopCartActivity extends BaseActivity implements OnRefreshListener{
         //下拉刷新
         ToolRefreshView.setRefreshLayout(context,refreshLayout,this);
         recycleView.setLayoutManager(new LinearLayoutManager(context));
+        recycleView.addItemDecoration(new SpaceItemDecoration(0,20,0,0));
         adapter = new ShopCartAdapter(this, R.layout.item_shopping_cart, list);
         recycleView.setAdapter(adapter);
         adapter.setOnItemClickListener(new ShopCartAdapter.OnItemClickListener() {
@@ -182,8 +184,13 @@ public class ShopCartActivity extends BaseActivity implements OnRefreshListener{
 
     @Override
     public void initData() {
-        sendHttp();
         getAddress();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sendHttp();
     }
 
     private void sendHttp() {
@@ -239,6 +246,5 @@ public class ShopCartActivity extends BaseActivity implements OnRefreshListener{
     public void onRefresh(RefreshLayout refreshlayout) {
         isRefresh = true;
         sendHttp();
-        getAddress();
     }
 }

@@ -24,6 +24,7 @@ import com.example.admin.hn.utils.AbMathUtil;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.SpaceItemDecoration;
 import com.example.admin.hn.utils.ToolAlert;
+import com.example.admin.hn.utils.ToolShopCartUtil;
 import com.example.admin.hn.utils.ToolString;
 import com.example.admin.hn.volley.RequestListener;
 import com.google.gson.reflect.TypeToken;
@@ -77,6 +78,7 @@ public class FirmOrderActivity extends BaseActivity {
     private double sum_price;//总价格
     private double goods_price;//总价格
     private double sum_freight;//运费
+    private boolean isDelShopCar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,10 +93,11 @@ public class FirmOrderActivity extends BaseActivity {
     /**
      * @param context
      */
-    public static void startActivity(Context context, List<ShopCartInfo> orderInfo, AddressInfo addressInfo) {
+    public static void startActivity(Context context, List<ShopCartInfo> orderInfo, AddressInfo addressInfo,boolean isDelShopCar) {
         list = orderInfo;
         Intent intent = new Intent(context, FirmOrderActivity.class);
         intent.putExtra("addressInfo", addressInfo);
+        intent.putExtra("isDelShopCar", isDelShopCar);
         context.startActivity(intent);
     }
 
@@ -105,6 +108,7 @@ public class FirmOrderActivity extends BaseActivity {
         textTitleBack.setBackgroundResource(R.drawable.btn_back);
         Intent intent = getIntent();
         addressInfo = (AddressInfo) intent.getSerializableExtra("addressInfo");
+        isDelShopCar = intent.getBooleanExtra("isDelShopCar", false);
     }
 
     @Override
@@ -264,8 +268,13 @@ public class FirmOrderActivity extends BaseActivity {
             public void requestSuccess(String json) {
                 Logger.e("确认订单", json);
                 if (GsonUtils.isShopSuccess(json)) {
+                    if (isDelShopCar) {
+                        //删除购物车商品
+                        ToolShopCartUtil.deleteShopCartInfo(context, list);
+                    }
                     PayOrderInfo orderInfo = GsonUtils.jsonToBean2(json, PayOrderInfo.class);
                     PayActivity.startActivity(context,orderInfo);
+                    finish();
                 } else {
                     ToolAlert.showToast(context, GsonUtils.getError(json));
                 }

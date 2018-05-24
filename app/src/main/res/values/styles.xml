@@ -10,6 +10,11 @@
         <item name="android:launchMode">singleTask</item>
     </style>
 
+    <style name="Activity_Theme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:launchMode">singleTask</item>
+    </style>
+
     <style name="AppThemeGallery" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>

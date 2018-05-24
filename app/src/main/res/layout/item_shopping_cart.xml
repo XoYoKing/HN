@@ -24,7 +24,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:text="自营商品"
+                    android:text="自营店铺"
                     android:textColor="@color/black"
                     android:textSize="@dimen/common_15sp" />
                 <TextView

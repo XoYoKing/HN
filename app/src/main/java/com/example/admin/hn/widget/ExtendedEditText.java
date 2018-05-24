@@ -7,11 +7,13 @@ package com.example.admin.hn.widget;
 
 import java.util.ArrayList;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.widget.EditText;
 
+@SuppressLint("AppCompatCustomView")
 public class ExtendedEditText extends EditText {
 
     private ArrayList<TextWatcher> mListeners = null;

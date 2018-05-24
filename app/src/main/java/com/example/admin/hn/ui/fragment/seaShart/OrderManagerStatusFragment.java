@@ -8,24 +8,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import com.bigkoo.pickerview.TimePickerView;
-import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseFragment;
 import com.example.admin.hn.base.HNApplication;
 import com.example.admin.hn.http.Constant;
-import com.example.admin.hn.http.OkHttpUtil;
 import com.example.admin.hn.model.OrderInfo;
-import com.example.admin.hn.ui.account.OrderActivity;
 import com.example.admin.hn.ui.adapter.OrderAdapter;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.SpaceItemDecoration;
@@ -34,21 +24,13 @@ import com.example.admin.hn.utils.ToolRefreshView;
 import com.example.admin.hn.utils.ToolString;
 import com.example.admin.hn.volley.RequestListener;
 import com.orhanobut.logger.Logger;
-import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
-import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.squareup.okhttp.Request;
-
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -133,7 +115,7 @@ public class OrderManagerStatusFragment extends BaseFragment implements OnRefres
         switch (v.getId()) {
             case R.id.network_img:
                 network_img.setVisibility(View.GONE);
-                data(status, shipName, 0);
+                data(status, shipName);
                 break;
         }
     }
@@ -143,7 +125,7 @@ public class OrderManagerStatusFragment extends BaseFragment implements OnRefres
         super.onActivityCreated(savedInstanceState);
         if (getUserVisibleHint() && isFirstHttp) {
             isFirstHttp = false;
-            data(status, shipName, 0);
+            data(status, shipName);
         }
     }
 
@@ -152,22 +134,19 @@ public class OrderManagerStatusFragment extends BaseFragment implements OnRefres
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && http!=null) {
             isFirstHttp = false;
-            data(status, shipName, 0);
+            isRefresh = true;
+            data(status, shipName);
         }
     }
 
-    public void data(final int status, String shipName, final int Loadmore) {
+    public void data(final int status, String shipName) {
         params.put("ordernumber", shipName);
         params.put("starttime", startDate);
         params.put("endtime", endDate);
         params.put("shipnumber", shipName);
         params.put("shipname", shipName);
         params.put("status", status);
-        if (Loadmore == 0) {
-            params.put("page", "1");
-        } else {
-            params.put("page", page);
-        }
+        params.put("page", page);
         params.put("screen", screen);
         http.postJson(url_order, params, progressTitle, new RequestListener() {
             @Override
@@ -177,7 +156,7 @@ public class OrderManagerStatusFragment extends BaseFragment implements OnRefres
                 if (GsonUtils.isSuccess(json)) {
                     OrderInfo orderInfo = GsonUtils.jsonToBean(json, OrderInfo.class
                     );
-                    if (Loadmore == 0) {
+                    if (isRefresh) {
                         list.clear();
                     }
                     if (orderInfo.getDocuments().size() == 0) {
@@ -220,9 +199,9 @@ public class OrderManagerStatusFragment extends BaseFragment implements OnRefres
             progressTitle = "正在加载...";
             if (screen == childItem+1) {
                 if (shipName != null) {
-                    data(status, shipName, 0);
+                    data(status, shipName);
                 }else {
-                    data(status, "", 0);
+                    data(status, "");
                 }
             }
         }
@@ -231,12 +210,14 @@ public class OrderManagerStatusFragment extends BaseFragment implements OnRefres
     @Override
     public void onLoadmore(RefreshLayout refreshlayout) {
         page = page + 1;
-        data(status, shipName, 1);
+        isRefresh = false;
+        data(status, shipName);
     }
 
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
         page = 1;
-        data(status, shipName, 0);
+        isRefresh = true;
+        data(status, shipName);
     }
 }

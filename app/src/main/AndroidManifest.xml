@@ -4,12 +4,12 @@
 
     <!--&lt;!&ndash; 屏幕兼容模式配置 &ndash;&gt;-->
     <!--<supports-screens-->
-        <!--android:anyDensity="true"-->
-        <!--android:largeScreens="true"-->
-        <!--android:normalScreens="true"-->
-        <!--android:resizeable="true"-->
-        <!--android:smallScreens="true"-->
-        <!--android:xlargeScreens="true" />-->
+    <!--android:anyDensity="true"-->
+    <!--android:largeScreens="true"-->
+    <!--android:normalScreens="true"-->
+    <!--android:resizeable="true"-->
+    <!--android:smallScreens="true"-->
+    <!--android:xlargeScreens="true" />-->
 
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     //地图包、搜索包需要的基础权限
@@ -39,15 +39,15 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.GET_TASKS" />
 
     <application
+        android:name=".base.HNApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:name=".base.HNApplication"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.login.LoginActivity">
             <intent-filter>
@@ -74,86 +74,170 @@
         <activity
             android:name=".MainActivity"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".ui.login.FindPasswordActivity" />
-        <activity android:name=".ui.login.RegisterActivity" />
-        <activity android:name=".ui.login.ScanLoginActivity" />
+        <activity
+            android:name=".ui.login.FindPasswordActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.login.RegisterActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.login.ScanLoginActivity"
+            android:theme="@style/Activity_Theme" />
 
-        <activity android:name=".ui.account.OrderActivity" />
-        <activity android:name=".ui.account.ChangeLoginPasswordActivity" />
-        <activity android:name=".ui.account.InventoryActivity" />
-        <activity android:name=".ui.account.ChartActivity" />
-        <activity android:name=".ui.article.ArticleDetailsActivity" />
-        <activity android:name=".ui.account.PurchaseDetailActivity" />
-        <activity android:name=".ui.account.ReturnDetailActivity" />
-        <activity android:name=".ui.account.OrderUseDetailActivity" />
-        <activity android:name=".ui.account.ReadDrawDetailActivity" />
-        <activity android:name=".ui.account.ChartDetailsActivity" />
-        <activity android:name=".ui.account.ChangeBindPhoneNumberActivity" />
-        <activity android:name=".ui.account.AboutActivity" />
-        <activity android:name=".ui.account.NotsubmittedOrderActivity" />
-        <activity android:name=".ui.account.OverdueInventoryActivity" />
-        <activity android:name=".ui.account.PopActivity"
-            android:theme="@style/Theme.translucent"/>
-        <activity android:name=".ui.account.ShipApplyingActivity" />
-        <activity android:name=".ui.account.ShipApplyedActivity" />
-        <activity android:name=".ui.account.ShipSelectActivity" />
-        <activity android:name=".ui.account.AuditingApplyingActivity" />
-        //商城  ===============
-        <activity android:name=".ui.shop.ShopTypeListActivity" />
-        <activity android:name=".ui.shop.ShopCartActivity" />
-        <activity android:name=".ui.shop.FirmOrderActivity" />
-        <activity android:name=".ui.shop.PayActivity" />
-        <activity android:name=".ui.shop.SelectAddressActivity" />
-        <activity android:name=".ui.shop.ManagerAddressActivity" />
-        <activity android:name=".ui.shop.CreateAddressActivity" />
-        <activity android:name=".ui.shop.OrderManagerActivity" />
-        <activity android:name=".ui.shop.GoodsListActivity" />
-        <activity android:name=".ui.shop.GoodsDetailActivity" />
-        <activity android:name=".ui.shop.StepActivity" />
-        <activity android:name=".ui.shop.SearchActivity" />
-        <activity android:name=".ui.shop.SubmitCommentActivity" />
-        <activity android:name=".ui.shop.ProvinceActivity" />
-        <activity android:name=".ui.shop.CityActivity" />
-        <activity android:name=".ui.shop.AreaActivity" />
-        //商城  ===============
+        <activity
+            android:name=".ui.account.OrderActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.account.ChangeLoginPasswordActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.account.InventoryActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.account.ChartActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.article.ArticleDetailsActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.account.PurchaseDetailActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.account.ReturnDetailActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.account.OrderUseDetailActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.account.ReadDrawDetailActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.account.ChartDetailsActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.account.ChangeBindPhoneNumberActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.account.AboutActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.account.NotsubmittedOrderActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.account.OverdueInventoryActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.account.PopActivity"
+            android:theme="@style/Theme.translucent" />
+        <activity
+            android:name=".ui.account.ShipApplyingActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.account.ShipApplyedActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.account.ShipSelectActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.account.AuditingApplyingActivity"
+            android:theme="@style/Activity_Theme" />
+        //商城 ===============
+        <activity
+            android:name=".ui.shop.ShopTypeListActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.shop.ShopCartActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.shop.FirmOrderActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.shop.PayActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.shop.SelectAddressActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.shop.ManagerAddressActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.shop.CreateAddressActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.shop.OrderManagerActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.shop.GoodsListActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.shop.GoodsDetailActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.shop.StepActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.shop.SearchActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.shop.SubmitCommentActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.shop.ProvinceActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.shop.CityActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.shop.AreaActivity"
+            android:theme="@style/Activity_Theme" />
+        //商城 ===============
         <activity
             android:name=".ui.account.MessageCenterActivity"
-            android:launchMode="singleTask" />
+            android:theme="@style/Activity_Theme" />
 
         <activity
             android:name="cn.finalteam.rxgalleryfinal.ui.activity.MediaActivity"
+            android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeGallery"
-            android:exported="true" />
+            android:theme="@style/AppThemeGallery" />
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
-            android:theme="@style/AppThemeGallery"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeGallery" />
 
-        <activity android:name=".ui.login.AgreementActivity" />
-        <activity android:name=".ui.account.OrderdetailsActivity" />
-        <activity android:name=".ui.account.ChartUpdateActivity" />
-        <activity android:name=".ui.account.ChartUpdatedetailsActivity" />
+        <activity
+            android:name=".ui.login.AgreementActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.account.OrderdetailsActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.account.ChartUpdateActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
+            android:name=".ui.account.ChartUpdatedetailsActivity"
+            android:theme="@style/Activity_Theme" />
         <activity android:name=".ui.account.HtmlActivity"></activity>
 
         User defined. For test only 用户自定义的广播接收器
         <!--<receiver-->
-            <!--android:name=".receiver.MyReceiver"-->
-            <!--android:enabled="true"-->
-            <!--android:exported="false">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="cn.jpush.android.intent.REGISTRATION" />-->
-                <!--&lt;!&ndash; Required  用户注册SDK的intent &ndash;&gt;-->
-                <!--<action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />-->
-                <!--&lt;!&ndash; Required  用户接收SDK消息的intent &ndash;&gt;-->
-                <!--<action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />-->
-                <!--&lt;!&ndash; Required  用户接收SDK通知栏信息的intent &ndash;&gt;-->
-                <!--<action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />-->
-                <!--&lt;!&ndash; Required  用户打开自定义通知栏的intent &ndash;&gt;-->
-                <!--<action android:name="cn.jpush.android.intent.CONNECTION" />-->
-                <!--&lt;!&ndash; 接收网络变化 连接/断开 since 1.6.3 &ndash;&gt;-->
-                <!--<category android:name="com.example.admin.hn" />-->
-            <!--</intent-filter>-->
+        <!--android:name=".receiver.MyReceiver"-->
+        <!--android:enabled="true"-->
+        <!--android:exported="false">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="cn.jpush.android.intent.REGISTRATION" />-->
+        <!--&lt;!&ndash; Required  用户注册SDK的intent &ndash;&gt;-->
+        <!--<action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />-->
+        <!--&lt;!&ndash; Required  用户接收SDK消息的intent &ndash;&gt;-->
+        <!--<action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />-->
+        <!--&lt;!&ndash; Required  用户接收SDK通知栏信息的intent &ndash;&gt;-->
+        <!--<action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />-->
+        <!--&lt;!&ndash; Required  用户打开自定义通知栏的intent &ndash;&gt;-->
+        <!--<action android:name="cn.jpush.android.intent.CONNECTION" />-->
+        <!--&lt;!&ndash; 接收网络变化 连接/断开 since 1.6.3 &ndash;&gt;-->
+        <!--<category android:name="com.example.admin.hn" />-->
+        <!--</intent-filter>-->
         <!--</receiver>-->
 
     </application>

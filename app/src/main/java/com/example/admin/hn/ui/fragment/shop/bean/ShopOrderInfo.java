@@ -34,6 +34,7 @@ public class ShopOrderInfo implements Serializable {
     public String cancelDate;//取消时间
     public String receiveDate;//收货时间
     public String orderSource;//订单来源
+    public int number;//订单中的商品数量
     public List<OrderItems> orderItems;
 
     public class OrderItems implements Serializable{
@@ -46,7 +47,7 @@ public class ShopOrderInfo implements Serializable {
         public String goodsName;//商品名称
         public double goodsPrice;//商品单价
         public String qty;//数量
-        public String imgUrl;//数量
+        public String imageUrl;//图片地址
         public double amount;//商品总金额
         public String isComment;//是否已评价
         public String orderSource;//订单来源
@@ -63,7 +64,7 @@ public class ShopOrderInfo implements Serializable {
                     ", goodsName='" + goodsName + '\'' +
                     ", goodsPrice=" + goodsPrice +
                     ", qty='" + qty + '\'' +
-                    ", imgUrl='" + imgUrl + '\'' +
+                    ", imageUrl='" + imageUrl + '\'' +
                     ", amount=" + amount +
                     ", isComment='" + isComment + '\'' +
                     ", orderSource='" + orderSource + '\'' +

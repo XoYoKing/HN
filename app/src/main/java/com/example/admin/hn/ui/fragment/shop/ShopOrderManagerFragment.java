@@ -78,7 +78,7 @@ public class ShopOrderManagerFragment extends BaseFragment implements OnLoadmore
 		refreshLayout = (RefreshLayout) view.findViewById(R.id.refreshLayout);
 		ToolRefreshView.setRefreshLayout(activity, refreshLayout, this, this);
 		recycleView.setLayoutManager(new LinearLayoutManager(activity));
-		recycleView.addItemDecoration(new SpaceItemDecoration(0,30,0,0));
+		recycleView.addItemDecoration(new SpaceItemDecoration(0,20,0,0));
 		adapter = new ShopOrderListAdapter(activity,list);
 		recycleView.setAdapter(adapter);
 	}
@@ -104,7 +104,7 @@ public class ShopOrderManagerFragment extends BaseFragment implements OnLoadmore
 	@Override
 	public void setUserVisibleHint(boolean isVisibleToUser) {
 		super.setUserVisibleHint(isVisibleToUser);
-		if (isVisibleToUser && http != null) {
+		if (isVisibleToUser && isFirstHttp && http != null) {
 			isFirstHttp = false;
 			sendHttp();
 		}
@@ -161,9 +161,10 @@ public class ShopOrderManagerFragment extends BaseFragment implements OnLoadmore
 	public void onLoadmore(RefreshLayout refreshlayout) {
 		isRefresh = false;
 		page=page+1;
-		if (ToolRefreshView.isLoadMore(refreshlayout,page, totalPage)) {
-			sendHttp();
-		}
+		sendHttp();
+//		if (ToolRefreshView.isLoadMore(refreshlayout,page, totalPage)) {
+//			sendHttp();
+//		}
 	}
 
 	@Override
