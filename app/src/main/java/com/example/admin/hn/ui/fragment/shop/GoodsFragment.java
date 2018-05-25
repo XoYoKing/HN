@@ -155,8 +155,10 @@ public class GoodsFragment extends BaseFragment {
     @Override
     public void initData() {
         setValue(null);//设置商品信息
-        getAddress();//获取地址信息
-        getComment();//获取商品评论信息
+        if (goodsInfo != null) {
+            getAddress();//获取地址信息
+            getComment();//获取商品评论信息
+        }
     }
 
     private void setValue(GoodsInfo goods) {
@@ -186,6 +188,8 @@ public class GoodsFragment extends BaseFragment {
             if (tv_goods_price != null) {
                 tv_goods_price.setText("￥ " + goodsInfo.goods.goodsPrice + "");
             }
+        }else {
+
         }
     }
 
@@ -326,7 +330,9 @@ public class GoodsFragment extends BaseFragment {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ll_spec:
-                showPopWindow(v);
+                if (goodsInfo != null) {
+                    showPopWindow(v);
+                }
                 break;
             case R.id.rl_comment:
                 //跳转到评论页面

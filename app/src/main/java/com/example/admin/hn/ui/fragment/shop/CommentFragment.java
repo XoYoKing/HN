@@ -86,7 +86,9 @@ public class CommentFragment extends BaseFragment implements OnLoadmoreListener,
 	@Override
 	public void initData() {
 		Bundle bundle = getArguments();
-		spuId = bundle.getString("type");
+		if (bundle != null) {
+			spuId = bundle.getString("type");
+		}
 	}
 
 	@Override
@@ -108,7 +110,7 @@ public class CommentFragment extends BaseFragment implements OnLoadmoreListener,
 	}
 
 	private void sendHttp() {
-		params.put("spuId", spuId);
+		params.put("spuId", spuId+"");
 		params.put("page", page+"");
 		http.get(url, params, progressTitle, new RequestListener() {
 			@Override

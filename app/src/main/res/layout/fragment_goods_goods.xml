@@ -55,7 +55,7 @@
                             android:layout_marginLeft="@dimen/common_12dp"
                             android:gravity="center"
                             android:textStyle="bold"
-                            android:text="￥ 9999"
+                            android:text="￥ --"
                             android:textColor="@color/white"
                             android:textSize="@dimen/common_18sp" />
 
@@ -83,7 +83,7 @@
                             android:layout_marginBottom="@dimen/common_5dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="耐克"
+                            android:text="--"
                             android:textColor="@color/white"
                             android:textSize="@dimen/common_12sp" />
 
@@ -104,7 +104,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/common_10dp"
                         android:maxLines="2"
-                        android:text="金龙鱼橄榄原香食用油"
                         android:textColor="@color/black"
                         android:textSize="@dimen/common_15sp" />
                     <TextView
@@ -113,7 +112,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/common_5dp"
                         android:maxLines="2"
-                        android:text="金龙鱼橄榄原香食用金龙鱼橄榄原香食用油油"
                         android:textColor="@color/yellow_color"
                         android:textSize="@dimen/common_14sp" />
 
@@ -148,8 +146,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/text_color_hint"
-                            android:textSize="@dimen/common_14sp"
-                            android:text="6666" />
+                            android:textSize="@dimen/common_14sp" />
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -168,8 +165,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/text_color_hint"
-                            android:textSize="@dimen/common_14sp"
-                            android:text="上海中远集团" />
+                            android:textSize="@dimen/common_14sp" />
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -188,8 +184,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/text_color_hint"
-                            android:textSize="@dimen/common_14sp"
-                            android:text="上海" />
+                            android:textSize="@dimen/common_14sp" />
                     </LinearLayout>
                 </LinearLayout>
                 <View
@@ -221,7 +216,6 @@
                         android:layout_height="wrap_content"
                         android:maxLines="1"
                         android:layout_marginLeft="@dimen/common_10dp"
-                        android:text="红色 黄色  蓝色"
                         android:textColor="@color/black"
                         android:textSize="@dimen/common_15sp" />
 
@@ -261,7 +255,6 @@
                             android:maxLines="2"
                             android:layout_marginLeft="@dimen/common_10dp"
                             android:layout_marginRight="@dimen/common_15dp"
-                            android:text="上海市上海市上海市上海市上海市上海市上海市上海市上海市上海市"
                             android:textColor="@color/black"
                             android:textSize="@dimen/common_15sp" />
                     </LinearLayout>
@@ -285,7 +278,6 @@
                             android:layout_marginLeft="@dimen/common_10dp"
                             android:layout_height="wrap_content"
                             android:maxLines="2"
-                            android:text="20kg"
                             android:textColor="@color/black"
                             android:textSize="@dimen/common_15sp" />
 

@@ -18,8 +18,8 @@ public class HomeItem implements Serializable {
      * CHANNEL("频道编号"), // 频道编号 operate=6
      * BRAND_LIST("品牌列表"), // 品牌列表 operate=7
      */
-    public String imageurl;//图片地址
+    public String image;//图片地址
     public String name;//名称
-    public int operate;//操作
+    public String operate;//操作
     public String value;//
 }

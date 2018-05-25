@@ -2,6 +2,7 @@ package com.example.admin.hn.utils;
 
 import com.example.admin.hn.http.Constant;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
 
@@ -102,7 +103,6 @@ public class GsonUtils {
         }
         return list;
     }
-
     /**
      * json字符串解析为list集合
      *

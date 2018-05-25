@@ -148,24 +148,31 @@ public class GoodsDetailActivity extends BaseActivity {
                 Logger.e("商品详情", json);
                 if (GsonUtils.isShopSuccess(json)) {
                     goodsInfo = GsonUtils.jsonToBean2(json, GoodsInfo.class);
-                    setValue();
                 }else {
                     ToolAlert.showToast(context, GsonUtils.getError(json));
                 }
+                setValue();
             }
 
             @Override
             public void requestError(String message) {
                 ToolAlert.showToast(context,message);
+                setValue();
             }
         });
     }
 
     private void setValue() {
         AllTabAdapter adapter = new AllTabAdapter(this, viewPager);
-        adapter.addTab("商品", goodsInfo, GoodsFragment.class);
-        adapter.addTab("详情", goodsInfo.spu.descriptionUrl,GoodsDetailFragment.class);
-        adapter.addTab("评价", goodsInfo.goods.spuId, CommentFragment.class);
+        if (goodsInfo != null) {
+            adapter.addTab("商品", goodsInfo, GoodsFragment.class);
+            adapter.addTab("详情", goodsInfo.spu.descriptionUrl,GoodsDetailFragment.class);
+            adapter.addTab("评价", goodsInfo.goods.spuId, CommentFragment.class);
+        }else {
+            adapter.addTab("商品", goodsInfo, GoodsFragment.class);
+            adapter.addTab("详情", "",GoodsDetailFragment.class);
+            adapter.addTab("评价", "", CommentFragment.class);
+        }
         viewPager.setOffscreenPageLimit(3);
         tabLayout.setupWithViewPager(viewPager);
     }
