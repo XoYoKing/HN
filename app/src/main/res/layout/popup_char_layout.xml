@@ -6,73 +6,28 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/layout_background"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/common_20dp"
-            android:text="海图周期：" />
-
-        <Spinner
-            android:id="@+id/sp"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="@dimen/common_40dp"
-            android:layout_marginLeft="@dimen/common_10dp"
-            android:layout_marginRight="@dimen/common_20dp"></Spinner>
-
-    </LinearLayout>
-
-    <LinearLayout
         android:layout_marginTop="@dimen/common_1dp"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/layout_background"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/common_15dp"
+            android:textSize="@dimen/common_14sp"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/common_20dp"
-            android:text="海图编号：" />
-
-        <EditText
-            android:id="@+id/et_number"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="@dimen/common_40dp"
-            android:layout_marginLeft="@dimen/common_10dp"
-            android:layout_marginRight="@dimen/common_20dp"></EditText>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/common_1dp"
-        android:background="@drawable/layout_background"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/common_20dp"
-            android:text="海图名称：" />
+            android:textColor="@color/text_color"
+            android:text="资料名称：" />
 
         <com.example.admin.hn.widget.EditTextWithDel
             android:id="@+id/et_name"
-            android:layout_width="0dp"
-            android:layout_weight="2"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/common_40dp"
+            android:textSize="@dimen/common_14sp"
+            android:hint="请输入资料名称"
+            android:background="@drawable/layout_background"
+            android:textColorHint="@color/text_color_hint"
             android:layout_marginLeft="@dimen/common_10dp"
             android:layout_marginRight="@dimen/common_20dp"></com.example.admin.hn.widget.EditTextWithDel>
 

@@ -1,34 +1,32 @@
 package com.example.admin.hn.ui.fragment;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.ExpandableListView;
-import android.widget.PopupWindow;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.example.admin.hn.R;
+import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseFragment;
-import com.example.admin.hn.model.ScreenTypeInfo;
+import com.example.admin.hn.http.Constant;
+import com.example.admin.hn.model.LibraryTypeInfo;
 import com.example.admin.hn.ui.account.PopActivity;
 import com.example.admin.hn.ui.adapter.AllChildTabAdapter;
-import com.example.admin.hn.ui.adapter.ScreenTypeAdapter;
 import com.example.admin.hn.ui.fragment.read.ReadChartFragment;
 import com.example.admin.hn.ui.fragment.read.ReadDrawFragment;
 import com.example.admin.hn.ui.fragment.read.ReadMagazineFragment;
-import com.example.admin.hn.ui.shop.OrderManagerActivity;
-import com.example.admin.hn.ui.shop.ShopCartActivity;
+import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
-import com.example.admin.hn.utils.ToolAppUtils;
+import com.example.admin.hn.utils.ToolRefreshView;
+import com.example.admin.hn.utils.ToolString;
+import com.example.admin.hn.volley.RequestListener;
+import com.google.gson.reflect.TypeToken;
+import com.orhanobut.logger.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -51,10 +49,16 @@ public class ThreeFragment extends BaseFragment {
 	ViewPager viewPager;
 	@Bind(R.id.tabLayout)
 	TabLayout tabLayout;
-	@Bind(R.id.linear_show)
-	View linear_show;//
-
+	@Bind(R.id.network_disabled)
+	RelativeLayout network;
+	@Bind(R.id.network_img)
+	ImageView network_img;
+	@Bind(R.id.noData_img)
+	ImageView noData_img;
+	private String url = Api.SHOP_BASE_URL + Api.GET_CATEGORY_LIST;
 	private View view;
+	private List<LibraryTypeInfo> list;
+	private AllChildTabAdapter adapter;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -68,20 +72,49 @@ public class ThreeFragment extends BaseFragment {
 
 	@Override
 	public void initView() {
+		tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+		adapter = new AllChildTabAdapter(getChildFragmentManager(), activity, viewPager);
+		sendHttp();
+	}
+
+	private void sendHttp() {
+		http.get(url, params, progressTitle, new RequestListener() {
+			@Override
+			public void requestSuccess(String json) {
+				Logger.e("文库分类", json);
+				if (GsonUtils.isShopSuccess(json)) {
+					TypeToken typeToken=new TypeToken<List<LibraryTypeInfo>>(){};
+					list = (List<LibraryTypeInfo>) GsonUtils.jsonToList2(json, typeToken, "content");
+					if (ToolString.isEmptyList(list)) {
+						addChildFragment();
+					}
+				}else {
+					ToolAlert.showToast(activity, GsonUtils.getError(json));
+				}
+				ToolRefreshView.hintView(adapter,false,network,noData_img,network_img);
+			}
+
+			@Override
+			public void requestError(String message) {
+				ToolAlert.showToast(activity, message);
+				ToolRefreshView.hintView(adapter,true,network,noData_img,network_img);
+			}
+		});
 	}
 
 
 	@Override
 	public void initData() {
-		addChildFragment();
+
 	}
 
 	private void addChildFragment() {
-		AllChildTabAdapter adapter = new AllChildTabAdapter(getChildFragmentManager(), activity, viewPager);
-		adapter.addTab("航海通告", ReadChartFragment.class);
-		adapter.addTab("杂志", ReadDrawFragment.class);
-		adapter.addTab("出版物", ReadMagazineFragment.class);
-		viewPager.setOffscreenPageLimit(2);
+		//设置tabLayout 为滑动
+		for (int i = 0; i < list.size(); i++) {
+			LibraryTypeInfo typeInfo = list.get(i);
+			adapter.addTab(typeInfo.categoryName + "", typeInfo, i + "", ReadChartFragment.class);
+		}
+		viewPager.setOffscreenPageLimit(list.size());
 		tabLayout.setupWithViewPager(viewPager);
 	}
 
@@ -94,24 +127,18 @@ public class ThreeFragment extends BaseFragment {
 	}
 
 
-	@OnClick({R.id.text_tile_del})
+	@OnClick({R.id.text_tile_del,R.id.network_img})
 	public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.text_tile_del:
 				int currentItem = viewPager.getCurrentItem();
-				if (currentItem == 0) {
-					PopActivity.startActivity(activity, R.layout.popup_char_layout, 100);
-				} else if (currentItem == 1) {
-					PopActivity.startActivity(activity,R.layout.popup_draw_layout, 200);
-				} else if (currentItem == 2) {
-					PopActivity.startActivity(activity,R.layout.popup_magazine_layout, 300);
-				}
+				PopActivity.startActivity(activity, currentItem, R.layout.popup_char_layout, Constant.POP_LIB_TYPE);
+				break;
+			case R.id.network_img:
+				sendHttp();
+				network_img.setVisibility(View.GONE);
 				break;
 		}
 	}
 
-	@Override
-	public void onHiddenChanged(boolean hidden) {
-		super.onHiddenChanged(hidden);
-	}
 }

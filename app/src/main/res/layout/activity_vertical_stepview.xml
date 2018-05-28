@@ -18,6 +18,7 @@
         <ImageView
             android:id="@+id/goods_img"
             android:layout_width="80dp"
+            android:visibility="gone"
             android:layout_height="80dp"
             android:background="@drawable/tu" />
 
@@ -28,8 +29,14 @@
             android:layout_marginLeft="@dimen/common_10dp"
             android:layout_toRightOf="@+id/goods_img"
             android:orientation="horizontal">
-
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="快递公司："
+                android:textColor="@color/black"
+                android:textSize="@dimen/common_14sp" />
+            <TextView
+                android:id="@+id/tv_expressName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="顺风快递"
@@ -41,6 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/common_10dp"
                 android:text="已签收"
+                android:visibility="gone"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/common_14sp" />
         </LinearLayout>
@@ -63,6 +71,7 @@
                 android:textSize="@dimen/common_14sp" />
 
             <TextView
+                android:id="@+id/tv_orderNo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="15545659599"
@@ -83,11 +92,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="运单号："
+                android:text="快递单号："
                 android:textColor="@color/dove_gray"
                 android:textSize="@dimen/common_14sp" />
 
             <TextView
+                android:id="@+id/tv_expressNo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="8798798798789789798"
@@ -101,6 +111,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/linear3"
             android:layout_marginLeft="@dimen/common_10dp"
+            android:visibility="gone"
             android:layout_marginTop="@dimen/common_5dp"
             android:layout_toRightOf="@+id/goods_img"
             android:orientation="horizontal">
@@ -131,7 +142,6 @@
             android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/common_20dp"
             android:divider="@null"
             android:listSelector="@android:color/transparent"></ListView>
     </LinearLayout>

@@ -115,7 +115,7 @@ public class ShopOrderListAdapter extends RecyclerView.Adapter<RecyclerView.View
             holder.ll_goods.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    GoodsDetailActivity.startActivity(mContext,item.id);
+                    GoodsDetailActivity.startActivity(mContext,item.goodsId);
                 }
             });
         }
@@ -189,7 +189,7 @@ public class ShopOrderListAdapter extends RecyclerView.Adapter<RecyclerView.View
         holder.lock_logistics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StepActivity.startActivity(mContext);
+                StepActivity.startActivity(mContext,info);
             }
         });
         holder.iv_delete.setOnClickListener(new View.OnClickListener() {
@@ -318,7 +318,7 @@ public class ShopOrderListAdapter extends RecyclerView.Adapter<RecyclerView.View
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    GoodsDetailActivity.startActivity(mContext,info.id);
+                    GoodsDetailActivity.startActivity(mContext,info.goodsId);
                 }
             });
         }

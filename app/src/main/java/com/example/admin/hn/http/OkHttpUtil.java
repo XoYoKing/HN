@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Environment;
 
+import com.example.admin.hn.api.Api;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.UpdateManager;
 import com.example.admin.hn.widget.LoadingFragment;
@@ -243,6 +244,8 @@ public class OkHttpUtil {
         new AsyncDownload(context,progersssDialog,chartname).execute(request);
     }
 
+
+
     private static class AsyncDownload extends AsyncTask<Request, Long, Boolean> {
 
         private static final String TAG = "AsyncDownloader";
@@ -326,6 +329,107 @@ public class OkHttpUtil {
             ToolAlert.showToast(context, "下载完成", false);
         }
     }
+
+    /**
+     * 下载文件
+     *
+     * @param path
+     */
+    public static void downloadFile(Context context, final String path, LoadingFragment progressDialog, String fileName, DownloadListener downloadListener) {
+        String url;
+        if (path!=null && (path.startsWith("http") || path.startsWith("https"))) {
+            url = path;
+        }else {
+            url= Api.SHOP_BASE_URL.substring(0, Api.SHOP_BASE_URL.length() - 1)+path;
+        }
+        Request request = new Request.Builder().url(url).build();
+        new Download(context, downloadListener, progressDialog, fileName).execute(request);
+    }
+
+    private static class Download extends AsyncTask<Request, Long, File> {
+
+        private Context context;
+        private LoadingFragment progressDialog;
+        private DownloadListener downloadListener;
+        private String fileName;
+
+        public Download(Context context,DownloadListener downloadListener, LoadingFragment progressDialog, String fileName) {
+            this.context = context;
+            this.progressDialog=progressDialog;
+            this.downloadListener = downloadListener;
+            this.fileName=fileName;
+        }
+
+        @Override
+        protected File doInBackground(Request... params) {
+            Call call = mOkHttpClient.newCall(params[0]);
+            try {
+                Response response = call.execute();
+                if (response.code() == 200) {
+                    InputStream inputStream = null;
+                    OutputStream output = null;
+                    try {
+                        inputStream = response.body().byteStream();
+                        File file = new File(Environment.getExternalStorageDirectory(),fileName);
+                        output = new FileOutputStream(file);
+
+                        byte[] buff = new byte[1024 * 4];
+                        long downloaded = 0;
+                        long target = response.body().contentLength();
+                        publishProgress(0L, target);
+                        while (true) {
+                            int readed = inputStream.read(buff);
+                            if (readed == -1) {
+                                break;
+                            }
+                            //write buff
+                            output.write(buff, 0, readed);
+                            downloaded += readed;
+                            publishProgress(downloaded, target);
+                            if (isCancelled()) {
+                                return file;
+                            }
+                        }
+                        output.flush();
+                        return file;
+                    } catch (IOException ignore) {
+                        return null;
+                    } finally {
+                        if (inputStream != null) {
+                            inputStream.close();
+                        }
+                        if (output != null) {
+                            output.close();
+                        }
+                    }
+                } else {
+                    return null;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onProgressUpdate(Long... values) {
+
+        }
+
+        @Override
+        protected void onPostExecute(File file) {
+            //下载完成后
+            progressDialog.dismiss();
+            if (file != null) {
+                downloadListener.onSuccess(file);
+            }else {
+                downloadListener.onFailure();
+            }
+        }
+    }
+
+
+
     /**
      * 上传文件方法1   进度显示
      */

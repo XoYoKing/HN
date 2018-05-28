@@ -2,27 +2,26 @@ package com.example.admin.hn.ui.fragment.read;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseFragment;
 
+import com.example.admin.hn.http.Constant;
 import com.example.admin.hn.model.ArticleInfo;
-import com.example.admin.hn.model.OrderInfo;
+import com.example.admin.hn.model.LibraryTypeInfo;
 import com.example.admin.hn.ui.adapter.SeaMapAdapter;
-import com.example.admin.hn.ui.article.ArticleDetailsActivity;
 
 import com.example.admin.hn.utils.GsonUtils;
+import com.example.admin.hn.utils.SpaceItemDecoration;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolRefreshView;
 
@@ -63,11 +62,12 @@ public class ReadChartFragment extends BaseFragment implements OnRefreshListener
     private ArrayList<ArticleInfo> list = new ArrayList<>();
     private SeaMapAdapter adapter;
     private View view;
-    private int page, totalPage;
+    private int page, rows = 10, totalPage;
     private String url = Api.SHOP_BASE_URL + Api.GET_PUB_LIST;
     private RefreshLayout refreshLayout;
-    private View screen_view;
-    private PopupWindow window;
+    private String name;
+    private LibraryTypeInfo typeInfo;
+    private String type;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -86,18 +86,41 @@ public class ReadChartFragment extends BaseFragment implements OnRefreshListener
         ToolRefreshView.setRefreshLayout(activity, refreshLayout, this, this);
         adapter = new SeaMapAdapter(getActivity(), R.layout.item_sea_map_layout, list);
         recycleView.setFocusable(false);
+        recycleView.addItemDecoration(new SpaceItemDecoration(10,20,0,0));
         recycleView.setLayoutManager(new LinearLayoutManager(activity));
         recycleView.setAdapter(adapter);
     }
 
     @Override
     public void initData() {
-        sendHttp();
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            typeInfo = (LibraryTypeInfo) bundle.getSerializable("obj");
+            type = bundle.getString("type");
+        }
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (getUserVisibleHint() && isFirstHttp && http != null) {
+            isFirstHttp = false;
+            sendHttp();
+        }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && isFirstHttp && http != null) {
+            isFirstHttp = false;
+            sendHttp();
+        }
+    }
 
     @Override
     public void initTitleBar() {
+
     }
 
     @OnClick({R.id.network_img})
@@ -111,15 +134,23 @@ public class ReadChartFragment extends BaseFragment implements OnRefreshListener
     }
 
     public void sendHttp() {
-
+        params.put("categoryId", typeInfo.id+"");
+        params.put("rows", rows+"");
+        params.put("page", page + "");
+        if (ToolString.isEmpty(name)) {
+            params.put("pubTitle", name);
+        }else {
+            params.remove("pubTitle");
+        }
         http.get(url, params, progressTitle, new RequestListener() {
             @Override
             public void requestSuccess(String json) {
-                Logger.e("航海通告", json);
+                Logger.e("文库列表", json);
                 if (GsonUtils.isShopSuccess(json)) {
                     TypeToken typeToken = new TypeToken<List<ArticleInfo>>() {
                     };
                     List<ArticleInfo> data = (List<ArticleInfo>) GsonUtils.jsonToList2(json, typeToken, "content");
+                    totalPage = GsonUtils.getTotalPage(json);
                     if (ToolString.isEmptyList(data)) {
                         if (isRefresh) {
                             list.clear();
@@ -143,7 +174,15 @@ public class ReadChartFragment extends BaseFragment implements OnRefreshListener
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        if (resultCode == Constant.POP_LIB_TYPE && data != null) {
+            isRefresh = true;
+            name = data.getStringExtra("name");
+            String currentItem = data.getIntExtra("currentItem", 0)+"";
+            if (currentItem.equals(type)) {
+                //发送请求
+                sendHttp();
+            }
+        }
     }
 
     @Override

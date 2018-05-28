@@ -59,6 +59,7 @@ public class PopActivity extends BaseActivity {
     private TextView tv_date;
     private EditText et_dataNumber;
     private EditText et_chineseName;
+    private EditText et_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +133,9 @@ public class PopActivity extends BaseActivity {
                 tv_type_name.setText("审核管理-领用单");
             }
             initOrderManagerView(view);
+        }else if (requestCode == Constant.POP_LIB_TYPE) {//船舶资料管理
+            tv_type_name.setText("文库搜索");
+            initLibTypeView();
         }
 
     }
@@ -142,6 +146,12 @@ public class PopActivity extends BaseActivity {
     private void initNotMaterialView() {
         et_dataNumber = (EditText) view.findViewById(R.id.et_dataNumber);
         et_chineseName = (EditText) view.findViewById(R.id.et_chineseName);
+    }
+    /**
+     * 初始化船舶资料管理待选搜索控件
+     */
+    private void initLibTypeView() {
+        et_name = (EditText) view.findViewById(R.id.et_name);
     }
 
     /**
@@ -229,6 +239,9 @@ public class PopActivity extends BaseActivity {
                 } else if (requestCode == Constant.POP_NOT_MATERIAL) {//待选搜索
                     intent.putExtra("dataNumber", "");
                     intent.putExtra("chineseName", "");
+                }else if (requestCode == Constant.POP_LIB_TYPE) {//文库搜索
+                    intent.putExtra("name", "");
+                    intent.putExtra("currentItem", childItem);
                 }
                 setResult(requestCode,intent);
                 finish();
@@ -258,6 +271,10 @@ public class PopActivity extends BaseActivity {
                     String chineseName = et_chineseName.getText().toString();
                     intent.putExtra("dataNumber", dataNumber);
                     intent.putExtra("chineseName", chineseName);
+                }else if (requestCode == Constant.POP_LIB_TYPE) {//文库搜索
+                    String name = et_name.getText().toString();
+                    intent.putExtra("name", name);
+                    intent.putExtra("currentItem", childItem);
                 }
                 setResult(requestCode,intent);
                 finish();

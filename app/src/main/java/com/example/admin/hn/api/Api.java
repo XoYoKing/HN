@@ -128,11 +128,16 @@ public class Api {
     public static final String GET_ORDER_SAVE = "sto/order/save";
     //根据会员信息新增商品订单
     public static final String GET_ORDER_ADD = "sto/order/add";
-    //	运费
+    //运费
     public static final String GET_GOODS_FREIGHT = "sto/goods/freight";
+    //用于用户查询物流信息
+    public static final String GET_LOGISTICS = "logistics/search";
 
     // id:文库ID ，当传入id时可根据id获取文库数据
     public static final String GET_PUB_LIST = "lib/pub/list";
+    //查询文库分类
+    public static final String GET_CATEGORY_LIST = "lib/category/list";
+
 
 //    ================== 商城接口========================
 

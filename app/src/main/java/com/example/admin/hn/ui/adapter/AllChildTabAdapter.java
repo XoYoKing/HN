@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 
 import com.example.admin.hn.utils.ToolString;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class AllChildTabAdapter extends FragmentPagerAdapter {
         private Class<?> clazz;
         private String tab;
         private String type;
+        private Serializable obj;
 
         public TabInfo(String tab, Class<?> clazz) {
             this.tab = tab;
@@ -44,6 +46,17 @@ public class AllChildTabAdapter extends FragmentPagerAdapter {
         public TabInfo(String tab, String type, Class<?> clazz) {
             this.tab = tab;
             this.clazz = clazz;
+            this.type = type;
+        }
+        public TabInfo(String tab,  Serializable obj, Class<?> clazz) {
+            this.tab = tab;
+            this.clazz = clazz;
+            this.obj = obj;
+        }
+        public TabInfo(String tab,  Serializable obj,String type, Class<?> clazz) {
+            this.tab = tab;
+            this.clazz = clazz;
+            this.obj = obj;
             this.type = type;
         }
     }
@@ -72,16 +85,43 @@ public class AllChildTabAdapter extends FragmentPagerAdapter {
         list.add(info);
         notifyDataSetChanged();
     }
+    /**
+     * 如果使用同一个fragment
+     *
+     * @param tab   title
+     * @param obj  传递的对象数据
+     * @param clazz fragment 的类
+     */
+    public void addTab(String tab, Serializable obj, Class<?> clazz) {
+        TabInfo info = new TabInfo(tab, obj, clazz);
+        list.add(info);
+        notifyDataSetChanged();
+    }
+    /**
+     * 如果使用同一个fragment
+     *
+     * @param tab   title
+     * @param obj  传递的对象数据
+     * @param clazz fragment 的类
+     */
+    public void addTab(String tab, Serializable obj, String type,Class<?> clazz) {
+        TabInfo info = new TabInfo(tab, obj,type, clazz);
+        list.add(info);
+        notifyDataSetChanged();
+    }
 
     @Override
     public Fragment getItem(int arg0) {
         TabInfo tabinfo = list.get(arg0);
         Fragment fragment = Fragment.instantiate(context, tabinfo.clazz.getName());
-        if (ToolString.isNoBlankAndNoNull(tabinfo.type)) {
-            Bundle bundle = new Bundle();
+        Bundle bundle = new Bundle();
+        if (ToolString.isEmpty(tabinfo.type)) {
             bundle.putString("type", tabinfo.type);
-            fragment.setArguments(bundle);
         }
+        if (tabinfo.obj != null) {
+            bundle.putSerializable("obj", tabinfo.obj);
+        }
+        fragment.setArguments(bundle);
         return fragment;
     }
 

@@ -66,7 +66,8 @@ public class Constant {
      * 正在加载
      */
     public static final String LOADING = "正在加载...";
-
+    //文库搜索
+    public static final int POP_LIB_TYPE = 100;
     //船舶物料管理 待选搜索
     public static final int POP_NOT_MATERIAL = 800;
     //船舶物料管理 待选搜索 新品推荐
