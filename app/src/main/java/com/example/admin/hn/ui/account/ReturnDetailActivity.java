@@ -104,10 +104,10 @@ public class ReturnDetailActivity extends BaseActivity {
                 requestPermissions(permissions, mListener);
                 break;
             case R.id.text_tile_right:
-                if (file.exists()) {
+                if (file!=null && file.exists()) {
                     uploadImg();
                 }else {
-                    ToolAlert.showToast(context,"请选择图片");
+                    ToolAlert.showToast(context,"请先拍摄照片");
                 }
                 break;
             case R.id.img:
