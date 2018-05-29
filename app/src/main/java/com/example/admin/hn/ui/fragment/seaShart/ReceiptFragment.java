@@ -2,46 +2,39 @@ package com.example.admin.hn.ui.fragment.seaShart;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
 
-import com.bigkoo.pickerview.TimePickerView;
-import com.example.admin.hn.MainActivity;
+import android.widget.RelativeLayout;
+
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseFragment;
-import com.example.admin.hn.http.OkHttpUtil;
-import com.example.admin.hn.model.OrderInfo;
-import com.example.admin.hn.ui.account.PurchaseDetailActivity;
-import com.example.admin.hn.ui.account.ReturnDetailActivity;
-import com.example.admin.hn.ui.adapter.PurchaseAdapter;
+import com.example.admin.hn.http.Constant;
+import com.example.admin.hn.model.ApplyedInfo;
+
 import com.example.admin.hn.ui.adapter.ReceiptAdapter;
 import com.example.admin.hn.utils.GsonUtils;
+import com.example.admin.hn.utils.SpaceItemDecoration;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolRefreshView;
+import com.example.admin.hn.utils.ToolString;
+import com.example.admin.hn.volley.RequestListener;
+import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
-import com.scwang.smartrefresh.header.MaterialHeader;
+
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.squareup.okhttp.Request;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -54,34 +47,26 @@ import butterknife.OnClick;
  */
 public class ReceiptFragment extends BaseFragment implements OnRefreshListener,OnLoadmoreListener {
 
-    private static final String TAG = "ReceiptFragment";
-    @Bind(R.id.listView)
-    ListView listView;
-
+    @Bind(R.id.recycleView)
+    RecyclerView recycleView;
     @Bind(R.id.network_disabled)
     RelativeLayout network;
     @Bind(R.id.network_img)
     ImageView network_img;
     @Bind(R.id.noData_img)
     ImageView noData_img;
-
-    private String str = "";
-
-    private ArrayList<OrderInfo.Order> list = new ArrayList<>();
+    @Bind(R.id.refreshLayout)
+    RefreshLayout refreshLayout;
+    private ArrayList<ApplyedInfo> list = new ArrayList<>();
     private ReceiptAdapter adapter;
     private View view;
-    private int status = 1;
     private int page = 1;
-    private int screen = 1;
-    private String url_order = Api.BASE_URL + Api.ORDER;
-    private ArrayList<String> data_list;
-    private ArrayAdapter<String> arr_adapter;
-    private String value;//被选中的类别
-    private RefreshLayout refreshLayout;
+    private int rows = 10;
+    private String url = Api.BASE_URL + Api.GET_RECEIVE_ORDER;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_list_layout, container, false);
+        view = inflater.inflate(R.layout.fragment_recycle_layout, container, false);
         ButterKnife.bind(this, view);
         initTitleBar();
         initView();
@@ -89,28 +74,37 @@ public class ReceiptFragment extends BaseFragment implements OnRefreshListener,O
         return view;
     }
 
+
     @Override
     public void initView() {
         //下拉刷新
-        refreshLayout = (RefreshLayout) view.findViewById(R.id.refreshLayout);
-        ToolRefreshView.setRefreshLayout(activity,refreshLayout,this,this);
+        ToolRefreshView.setRefreshLayout(activity, refreshLayout, this, this);
+        adapter = new ReceiptAdapter(activity, R.layout.item_receipt_layout, list);
+        recycleView.setLayoutManager(new LinearLayoutManager(activity));
+        recycleView.addItemDecoration(new SpaceItemDecoration(10,20,0,0));
+        recycleView.setAdapter(adapter);
+    }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (getUserVisibleHint() && isFirstHttp) {
+            isFirstHttp = false;
+            sendHttp();
+        }
+    }
 
-        adapter = new ReceiptAdapter(getActivity(), R.layout.item_receipt_layout, list);
-        listView.setAdapter(adapter);
-
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser  && isFirstHttp) {
+            isFirstHttp = false;
+            isRefresh = true;
+            sendHttp();
+        }
     }
 
     @Override
     public void initData() {
-        // 设置搜索文本监听
-        data(1, "", 0);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ReturnDetailActivity.startActivity(activity, 0, list.get(position).getShipname());
-            }
-        });
-        listView.setTextFilterEnabled(true);
     }
 
 
@@ -118,53 +112,69 @@ public class ReceiptFragment extends BaseFragment implements OnRefreshListener,O
     public void initTitleBar() {
     }
 
-    @OnClick({ R.id.network_img})
+
+    @OnClick({R.id.network_img})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.network_img:
                 network_img.setVisibility(View.GONE);
-                data(1, str, 0);
-                refreshLayout.finishRefresh(1000);
+                sendHttp();
                 break;
         }
     }
 
+    public void sendHttp() {
+        params.put("page", page+"");
+        params.put("rows", rows+"");
+        http.postJson(url, params, progressTitle, new RequestListener() {
+            @Override
+            public void requestSuccess(String json) {
+                Logger.e("领用单列表", json);
+                progressTitle = null;
+                if (GsonUtils.isSuccess(json)) {
+                    TypeToken typeToken=new TypeToken<List<ApplyedInfo>>(){};
+                    List<ApplyedInfo> receives = (List<ApplyedInfo>) GsonUtils.jsonToList(json, typeToken, "receives");
+                    if (ToolString.isEmptyList(receives)) {
+                        if (isRefresh) {
+                            list.clear();
+                        }
+                        list.addAll(receives);
+                    }
+                }else {
+                    ToolAlert.showToast(activity, GsonUtils.getError(json));
+                }
+                ToolRefreshView.hintView(adapter,refreshLayout,false,network,noData_img,network_img);
+            }
 
+            @Override
+            public void requestError(String message) {
+                ToolAlert.showToast(activity, message);
+                ToolRefreshView.hintView(adapter,refreshLayout,true,network,noData_img,network_img);
+            }
+        });
+    }
     @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden) {
-            page = 1;
-            data(1, str, 0);
-        }
+    public void onLoadmore(RefreshLayout refreshlayout) {
+        page = page + 1;
+        isRefresh = false;
+        sendHttp();
     }
 
-
-    public void data(final int status, String down, final int Loadmore) {
-        for (int i = 0; i < 10; i++) {
-            list.add(new OrderInfo.Order());
-        }
-        adapter.notifyDataSetChanged();
+    @Override
+    public void onRefresh(RefreshLayout refreshlayout) {
+        isRefresh = true;
+        page = 1;
+        sendHttp();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        if (resultCode==1001){
+            //从详情页面返回
+            isRefresh = true;
+            sendHttp();
+        }
     }
 
-    @Override
-    public void onLoadmore(RefreshLayout refreshlayout) {
-        page = page + 1;
-        data(status, str, 1);
-        adapter.notifyDataSetChanged();
-        refreshlayout.finishLoadmore(1000);
-    }
-
-    @Override
-    public void onRefresh(RefreshLayout refreshlayout) {
-        page = 1;
-        data(1, str, 0);
-        refreshlayout.finishRefresh(1000);
-    }
 }

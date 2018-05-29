@@ -28,7 +28,7 @@ public class ErrorHelper {
         //获取错误信息里面的状态码
         Logger.e("error", error);
         String code = ToolString.filterNumber(error.getMessage());
-        if (ToolString.isEmpty(code)) {
+        if (!ToolString.isEmpty(code)) {
             //如果没有获取到状态码，就判断错误类型
             if (error instanceof SocketTimeoutException) {
                 return Constant.SOCKET_TIMEOUT_EXCEPTION;

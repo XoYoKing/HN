@@ -87,12 +87,19 @@ public class IRequest {
         }
         RequestManager.post(url, context, params, progressTitle, l);
     }
-    public static void post(Context context,String url, Map params,
-                     String progressTitle, RequestListener l) {
+      public static void post(Context context,String url, Map params,
+                            String progressTitle, RequestListener l) {
         if (params != null) {
             setParams(params);
         }
         RequestManager.post(url, context, params, progressTitle, l);
+    }
+    public static void postJson(Context context,String url, Map params,
+                            String progressTitle, RequestListener l) {
+        if (params != null) {
+            setParams(params);
+        }
+        RequestManager.postJson(url, context, params, progressTitle, l);
     }
 
     /**
@@ -125,6 +132,21 @@ public class IRequest {
             setParams(params);
         }
         RequestManager.postJson(url, context, params, progressTitle, l);
+    }
+    /**
+     *  返回String 带进度条
+     * （参数以json形式传递）
+     *
+     * @param url
+     * @param params
+     * @param l
+     */
+    public void postFile(String url, Map params, String progressTitle,
+                         RequestListener l) {
+        if (params != null) {
+            setParams(params);
+        }
+        RequestManager.postFile(url, context, params, progressTitle, l);
     }
 
     /**

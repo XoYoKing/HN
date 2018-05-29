@@ -19,6 +19,8 @@ import com.orhanobut.logger.Logger;
 public class ToolViewUtils {
 
      /**
+      *
+      * 商城加载图片
      * 在listView中获取图片
      * 使用glide 加载图片
      *
@@ -32,6 +34,27 @@ public class ToolViewUtils {
             url = imgUrl;
         }else {
             url= Api.SHOP_BASE_URL.substring(0, Api.SHOP_BASE_URL.length() - 1)+imgUrl;
+        }
+        Glide.with(HNApplication.mApp)
+                .load(url)
+                .error(resId)//加载失败显示的图片
+                .into(imageView);
+    }
+
+    /**
+     *
+     * 使用glide 加载图片
+     * 船舶加载图片
+     * @param imgUrl
+     * @param imageView
+     * @param resId
+     */
+    public static void glideImage(String imgUrl, final ImageView imageView, final int resId) {
+        String url;
+        if (imgUrl!=null && (imgUrl.startsWith("http") || imgUrl.startsWith("https"))) {
+            url = imgUrl;
+        }else {
+            url= Api.BASE_URL.substring(0, Api.BASE_URL.length() - 1)+imgUrl;
         }
         Glide.with(HNApplication.mApp)
                 .load(url)

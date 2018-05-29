@@ -1,5 +1,6 @@
 package com.example.admin.hn.ui.fragment.seaShart;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,11 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-
 import android.widget.ImageView;
-
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 
@@ -19,10 +16,8 @@ import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseFragment;
 
+import com.example.admin.hn.http.Constant;
 import com.example.admin.hn.model.ApplyedInfo;
-import com.example.admin.hn.model.ApplyingInfo;
-import com.example.admin.hn.model.OrderInfo;
-import com.example.admin.hn.ui.account.ShipApplyedActivity;
 import com.example.admin.hn.ui.adapter.ApplyedAdapter;
 
 import com.example.admin.hn.utils.GsonUtils;
@@ -37,8 +32,6 @@ import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-
-import com.zhy.adapter.abslistview.CommonAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +67,10 @@ public class ApplyedFragment extends BaseFragment implements OnRefreshListener,O
     private int rows = 10;
     private int type = 1;
     private String url = Api.BASE_URL + Api.GET_RECEIVE_ORDER;
+    private String name;
+    private String spValue;
+    private String startDate;
+    private String endDate;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -131,7 +128,7 @@ public class ApplyedFragment extends BaseFragment implements OnRefreshListener,O
         switch (v.getId()) {
             case R.id.network_img:
                 network_img.setVisibility(View.GONE);
-                refreshLayout.finishRefresh(1000);
+                sendHttp();
                 break;
         }
     }
@@ -180,4 +177,17 @@ public class ApplyedFragment extends BaseFragment implements OnRefreshListener,O
         sendHttp();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Constant.POP_SHIP_AUDITING && data != null) {
+            //从搜索页面返回
+//            name = data.getStringExtra("name");
+//            spValue = data.getStringExtra("spValue");
+//            startDate = data.getStringExtra("start");
+//            endDate = data.getStringExtra("end");
+//            isRefresh = true;
+//            sendHttp();
+        }
+    }
 }

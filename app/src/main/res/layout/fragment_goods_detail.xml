@@ -4,10 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <WebView
+    <TextView
         android:id="@+id/web"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none"></WebView>
+        android:scrollbars="none"></TextView>
 
 </RelativeLayout>

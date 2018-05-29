@@ -71,8 +71,8 @@ public class AuditingManagerFragment extends BaseFragment implements ViewPager.O
 
 	private void addChildFragment() {
 		AllChildTabAdapter adapter = new AllChildTabAdapter(getChildFragmentManager(), activity, viewPager);
-		adapter.addTab("申请单","1", BankApplyingFragment.class);
-		adapter.addTab("领用单","2", ApplyedFragment.class);
+		adapter.addTab("申请单","0", BankApplyingFragment.class);
+		adapter.addTab("领用单","1", ApplyedFragment.class);
 		tabLayout.setupWithViewPager(viewPager);
 		viewPager.addOnPageChangeListener(this);
 	}

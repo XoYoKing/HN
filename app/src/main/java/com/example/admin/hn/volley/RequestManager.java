@@ -14,6 +14,7 @@ import com.orhanobut.logger.Logger;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
@@ -266,6 +267,49 @@ public class RequestManager {
                 .url(url)
                 .content(json)
                 .mediaType(MediaType.parse("application/json"))
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        responseListener.onErrorResponse(e);
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        responseListener.onResponse(response);
+                    }
+
+                });
+    }
+
+
+    /**
+     * 返回String 带进度条（参数以json形式传递）
+     *
+     * @param url           接口
+     * @param tag           上下文
+     * @param params        post需要传的参数
+     * @param progressTitle 进度条文字  可以不传
+     * @param listener      回调
+     */
+    public static void postFile(String url, Object tag, Map params,
+                                String progressTitle, RequestListener listener) {
+        RequestManager.url = url;
+        if (tag != null) {
+            context = (Context) tag;
+        }
+        final ResponseListener responseListener;
+        if (progressTitle != null) {
+            LoadingFragment dialog = LoadingFragment.showLoading(((FragmentActivity) tag), progressTitle);
+            responseListener = responseListener(listener, true, dialog);
+        } else {
+            responseListener = responseListener(listener, false, null);
+        }
+        File file = (File) params.get("file");
+        OkHttpUtils
+                .postFile()
+                .url(url)
+                .file(file)
                 .build()
                 .execute(new StringCallback() {
                     @Override

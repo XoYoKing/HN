@@ -128,7 +128,9 @@ public class FourFragment2 extends BaseFragment implements ViewPager.OnPageChang
 						PopActivity.startActivity(activity, childCurrentItem,R.layout.popup_not_material__layout, Constant.POP_NEW_MATERIAL);
 					}
 				} else if (currentItem == 1) {
-					PopActivity.startActivity(activity,childCurrentItem,R.layout.popup_order_manager_layout, Constant.POP_SHIP_AUDITING);
+					if (childCurrentItem == 0) {
+						PopActivity.startActivity(activity,childCurrentItem,R.layout.popup_order_manager_layout2, Constant.POP_SHIP_AUDITING);
+					}
 				}
 				break;
 			case R.id.text_tile_right:
@@ -196,17 +198,17 @@ public class FourFragment2 extends BaseFragment implements ViewPager.OnPageChang
 	private void updateUI() {
 		switch (currentItem) {
 			case 0://订单领用
-				if (childCurrentItem == 0 || childCurrentItem==1) {
+				if (childCurrentItem == 0 || childCurrentItem==1) {//待选 新品推荐
 					text_tile_del.setVisibility(View.VISIBLE);
 					text_tile_del.setText("搜索");
 					right.setText("确认");
-				} else if (childCurrentItem == 2) {
+				} else if (childCurrentItem == 2) {//已选
 					text_tile_del.setVisibility(View.GONE);
 					right.setText("提交");
-				} else if (childCurrentItem == 3) {
+				} else if (childCurrentItem == 3) {//申请单
 					text_tile_del.setVisibility(View.GONE);
 					right.setText("");
-				} else if (childCurrentItem == 4) {
+				} else if (childCurrentItem == 4) {//领用单
 					text_tile_del.setVisibility(View.GONE);
 					right.setText("");
 				}else {
@@ -216,16 +218,16 @@ public class FourFragment2 extends BaseFragment implements ViewPager.OnPageChang
 				}
 			break;
 			case 1://审核管理
-				if (childCurrentItem == 0) {
+				if (childCurrentItem == 0) {//申请单
 					text_tile_del.setVisibility(View.VISIBLE);
 					text_tile_del.setText("搜索");
 					right.setText("");
-				} else if (childCurrentItem == 1) {
-					text_tile_del.setVisibility(View.VISIBLE);
+				} else if (childCurrentItem == 1) {//领用单
+					text_tile_del.setVisibility(View.GONE);
 					text_tile_del.setText("搜索");
 					right.setText("");
 				}else {
-					text_tile_del.setVisibility(View.VISIBLE);
+					text_tile_del.setVisibility(View.GONE);
 					text_tile_del.setText("搜索");
 					right.setText("");
 				}

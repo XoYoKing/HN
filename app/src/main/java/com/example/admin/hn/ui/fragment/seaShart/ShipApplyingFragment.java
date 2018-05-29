@@ -57,7 +57,7 @@ public class ShipApplyingFragment extends BaseFragment implements OnRefreshListe
     private ArrayList<ApplyingInfo> list = new ArrayList<>();
     private ShipApplyingAdapter adapter;
     private View view;
-    private int page = 1;
+    private int page = 1, rows = 10;
     private String url = Api.BASE_URL + Api.GET_APPLY_ORDER;
     private int screen;
 
@@ -123,11 +123,12 @@ public class ShipApplyingFragment extends BaseFragment implements OnRefreshListe
     }
 
     public void sendHttp() {
-        params.put("page", page);
+        params.put("page", page+"");
+        params.put("rows", rows+"");
         http.postJson(url, params, progressTitle, new RequestListener() {
             @Override
             public void requestSuccess(String json) {
-                Logger.e("申请单", json);
+                Logger.e("订单领用 申请单", json);
                 progressTitle = null;
                 if (GsonUtils.isSuccess(json)) {
                     TypeToken typeToken=new TypeToken<List<ApplyingInfo>>(){};

@@ -103,5 +103,5 @@ dependencies {
     implementation 'com.acker:simplezxing:1.5'
     //分包
     implementation 'com.android.support:multidex:1.0.1'
-    //打开PDF文件
+
 }

@@ -26,7 +26,7 @@ public class ApplyedAdapter extends CommonAdapter<ApplyedInfo> {
 
     @Override
     protected void convert(ViewHolder viewHolder, final ApplyedInfo info, int position) {
-        viewHolder.setTag(R.id.tv_type, info.operator + "");
+        viewHolder.setTag(R.id.tv_name, info.operator + "");
         viewHolder.setTag(R.id.tv_sum_money, AbMathUtil.roundStr(info.money, 2) + "");
         viewHolder.setTag(R.id.tv_numberNo, info.receiveno + "");
         viewHolder.setTag(R.id.tv_date, AbDateUtil.getStringByFormat(info.receivedate, AbDateUtil.dateFormatYMD) + "");

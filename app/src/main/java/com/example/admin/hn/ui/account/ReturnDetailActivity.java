@@ -11,18 +11,29 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.admin.hn.R;
+import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseActivity;
+import com.example.admin.hn.base.HNApplication;
 import com.example.admin.hn.base.PermissionsListener;
+import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolString;
+import com.example.admin.hn.utils.ToolViewUtils;
+import com.example.admin.hn.volley.RequestListener;
 import com.orhanobut.logger.Logger;
 
+import net.tsz.afinal.FinalHttp;
+import net.tsz.afinal.http.AjaxCallBack;
+import net.tsz.afinal.http.AjaxParams;
+
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -32,7 +43,7 @@ import cn.finalteam.rxgalleryfinal.utils.MediaScanner;
 
 
 /**
- * 退货详情
+ * 回执详情
  *
  * @author Administrator
  */
@@ -43,16 +54,19 @@ public class ReturnDetailActivity extends BaseActivity {
     TextView textTitle;
     @Bind(R.id.text_tile_right)
     TextView text_tile_right;
+    @Bind(R.id.bt)
+    Button bt;
     @Bind(R.id.img)
     ImageView img;
     private String[] permissions = {Manifest.permission.CAMERA};
-
-    private int id;
-    private String title;
+    private String url = Api.BASE_URL + Api.GET_RECEIPT_PHOTO;
+    private String upload_url= Api.BASE_URL + Api.UPLOAD;
+    private String receiveNo;
     private String photoPath;//显示的图片地址
     private String cropPath;//裁剪完成的输出地址
     private boolean isCrop;//是否裁剪  默认为false
-
+    private File file;
+    private FinalHttp fh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,52 +80,37 @@ public class ReturnDetailActivity extends BaseActivity {
     @Override
     public void initTitleBar() {
         Intent intent = getIntent();
-        id = intent.getIntExtra("id", 0);
-        title = intent.getStringExtra("title");
+        receiveNo = intent.getStringExtra("receiveNo");
         textTitle.setText("回执详情");
-        text_tile_right.setText("上传");
         textTitleBack.setBackgroundResource(R.drawable.btn_back);
     }
     /**
      *
      */
-    public static void startActivity(Context context, int id, String title) {
+    public static void startActivity(Context context,String receiveNo) {
         Intent intent = new Intent(context, ReturnDetailActivity.class);
-        intent.putExtra("id", id);
-        intent.putExtra("title", title);
-        context.startActivity(intent);
+        intent.putExtra("receiveNo", receiveNo);
+        ((Activity) context).startActivityForResult(intent, 1001);
     }
 
     @OnClick({R.id.text_title_back,R.id.bt,R.id.img,R.id.text_tile_right})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.text_title_back:
-                finish();
+                close();
             break;
             case R.id.bt:
                 isCrop = false;
                 requestPermissions(permissions, mListener);
                 break;
             case R.id.text_tile_right:
-                ToolAlert.showToast(context,"上传成功");
+                if (file.exists()) {
+                    uploadImg();
+                }else {
+                    ToolAlert.showToast(context,"请选择图片");
+                }
                 break;
             case R.id.img:
-                //编辑图片
-//                RxGalleryFinal.with(context)
-//                        .image()            //选择图片
-//                        .radio()            //单选
-//                        .crop()              //设置剪裁
-//                        .imageLoader(ImageLoaderType.GLIDE)     //调用glide图片加载器
-//                        .subscribe(new RxBusResultDisposable<ImageRadioResultEvent>() {
-//                            @Override
-//                            protected void onEvent(ImageRadioResultEvent baseResultEvent) throws Exception {
-//                                String filePath=baseResultEvent.getResult().getOriginalPath();
-//                                Logger.i("裁剪路径:" + filePath);
-//                                File file = new File(filePath);
-//                                Glide.with(context).load(file).into(img);
-//                            }
-//                        })
-//                    .openGallery();
                 isCrop = true;
                 //生成裁剪输出地址
                 cropPath = RxGalleryFinalApi.getModelPath();
@@ -119,6 +118,7 @@ public class ReturnDetailActivity extends BaseActivity {
                 break;
         }
     }
+
 
     private PermissionsListener mListener = new PermissionsListener() {
         @Override
@@ -170,6 +170,73 @@ public class ReturnDetailActivity extends BaseActivity {
     @Override
     public void initData() {
         super.initData();
+        fh = new FinalHttp();
+        sendHttp();
+    }
+
+    private void sendHttp() {
+        params.put("receiveNo", receiveNo + "");
+        http.postJson(url, params, progressTitle, new RequestListener() {
+            @Override
+            public void requestSuccess(String json) {
+                Logger.e("回执详情", json);
+                if (GsonUtils.isSuccess(json)) {
+                    String photoUrl = GsonUtils.getString(json, "photoUrl");
+                    if (ToolString.isEmpty(photoUrl)) {
+                        bt.setVisibility(View.GONE);
+                        ToolViewUtils.glideImage(photoUrl, img, R.drawable.load_fail);
+                    }else {
+                        text_tile_right.setText("上传");
+                        bt.setVisibility(View.VISIBLE);
+                    }
+                }else {
+                    ToolAlert.showToast(context, GsonUtils.getError(json));
+                }
+            }
+
+            @Override
+            public void requestError(String message) {
+                ToolAlert.showToast(context, message);
+            }
+        });
+    }
+    /**
+     * 上传图片
+     */
+    private void uploadImg() {
+        AjaxParams params = new AjaxParams();
+        params.put("userId", HNApplication.mApp.getUserId());//船舶用户ID 默认传递
+        params.put("receiveNo", receiveNo + "");
+        try {
+            params.put("file", file); // 上传文件
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        fh.post(upload_url, params, new AjaxCallBack<String>() {
+            @Override
+            public void onSuccess(String json) {
+                super.onSuccess(json);
+                Logger.e("上传成功", json);
+                if (GsonUtils.isSuccess(json)) {
+                    close();
+                } else {
+                    ToolAlert.showToast(context, GsonUtils.getError(json));
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                Logger.e("上传失败", strMsg);
+                ToolAlert.showToast(context, strMsg);
+            }
+        });
+
+    }
+
+    private void close() {
+        setResult(1001);
+        finish();
     }
 
     /**
@@ -185,7 +252,7 @@ public class ReturnDetailActivity extends BaseActivity {
         if (requestCode == RxGalleryFinalApi.TAKE_IMAGE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             photoPath = RxGalleryFinalApi.fileImagePath.getPath();
             Logger.i("拍照OK，图片路径:" + photoPath);
-            File file = new File(photoPath);
+            file = new File(photoPath);
             Glide.with(context).load(file).into(img);
         }
     }
@@ -211,11 +278,10 @@ public class ReturnDetailActivity extends BaseActivity {
         public boolean handleMessage(Message msg) {
             if (msg.what == 100) {
                 isCrop = false;//已裁剪完成 改变状态
-                File file = new File(cropPath);
+                file = new File(cropPath);
                 if (file.exists()) {
                     photoPath = cropPath;//修改当前显示的地址
                     Glide.with(context).load(file).into(img);
-
                 }
 
             }

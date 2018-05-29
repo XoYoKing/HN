@@ -276,4 +276,17 @@ public class GsonUtils {
         }
         return 0;
     }
+    /**
+     * 获取网络请求的错误信息
+     *
+     * @return
+     */
+    public static String getString(String json,String key) {
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            return jsonObject.optString(key);
+        } catch (Exception e) {
+        }
+        return "";
+    }
 }

@@ -15,7 +15,6 @@ import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseFragment;
 import com.example.admin.hn.http.Constant;
 import com.example.admin.hn.model.ApplyingInfo;
-import com.example.admin.hn.model.OrderInfo;
 import com.example.admin.hn.ui.adapter.BankApplyingAdapter;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.SpaceItemDecoration;
@@ -32,7 +31,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -61,12 +62,13 @@ public class BankApplyingFragment extends BaseFragment implements OnRefreshListe
     private ArrayList<ApplyingInfo> list = new ArrayList<>();
     private BankApplyingAdapter adapter;
     private View view;
-    private int page = 1;
-    private String url = Api.BASE_URL + Api.GET_APPLY_ORDER;
+    private int page=1, rows = 10;
+    private String url = Api.BASE_URL + Api.GET_VERIFY_APPLY_ORDER;
     private String name;//搜索条件
     private String endDate;
     private String startDate;
     private int type;
+    private String spValue;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -81,14 +83,7 @@ public class BankApplyingFragment extends BaseFragment implements OnRefreshListe
 
     @Override
     public void initView() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        endDate = sdf.format(new Date());
-        Calendar c = Calendar.getInstance();
-        c.add(Calendar.MONTH, -1);
-        startDate = sdf.format(c.getTime());
-
         //下拉刷新
-
         ToolRefreshView.setRefreshLayout(activity, refreshLayout, this, this);
         adapter = new BankApplyingAdapter(activity, R.layout.item_bank_applying_layout, list);
         recycleView.setLayoutManager(new LinearLayoutManager(activity));
@@ -96,6 +91,11 @@ public class BankApplyingFragment extends BaseFragment implements OnRefreshListe
         recycleView.setAdapter(adapter);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
 
     @Override
     public void initData() {
@@ -105,17 +105,19 @@ public class BankApplyingFragment extends BaseFragment implements OnRefreshListe
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (getUserVisibleHint() && http != null) {
-            sendHttp(name);
+        if (getUserVisibleHint() && http != null && isFirstHttp) {
+            isFirstHttp = false;
+            sendHttp();
         }
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser && http != null) {
+        if (isVisibleToUser && http != null && isFirstHttp) {
+            isFirstHttp = false;
             isRefresh = true;
-            sendHttp(name);
+            sendHttp();
         }
     }
 
@@ -133,19 +135,30 @@ public class BankApplyingFragment extends BaseFragment implements OnRefreshListe
         switch (v.getId()) {
             case R.id.network_img:
                 network_img.setVisibility(View.GONE);
-                sendHttp(name);
+                sendHttp();
                 break;
         }
     }
 
 
-    public void sendHttp(String name) {
-        params.put("page", page);
-        http.postJson(url, params, progressTitle, new RequestListener() {
+    public void sendHttp() {
+        Map map = new HashMap();
+        map.put("page", page);
+        map.put("rows", rows+"");
+        if (ToolString.isEmpty(startDate)) {
+            map.put("startDate", startDate+"");
+            map.put("endDate", endDate+"");
+        }
+        if (ToolString.isEmpty(name)) {
+            map.put("shipId", name+"");
+        }
+        if (ToolString.isEmpty(spValue)) {
+            map.put("spValue", spValue+"");
+        }
+        http.postJson(url, map, progressTitle, new RequestListener() {
             @Override
             public void requestSuccess(String json) {
                 Logger.e("审核管理-申请单", json);
-                progressTitle = null;
                 if (GsonUtils.isSuccess(json)) {
                     TypeToken typeToken=new TypeToken<List<ApplyingInfo>>(){};
                     List<ApplyingInfo> applys = (List<ApplyingInfo>) GsonUtils.jsonToList(json, typeToken, "applys");
@@ -173,10 +186,17 @@ public class BankApplyingFragment extends BaseFragment implements OnRefreshListe
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Constant.POP_SHIP_AUDITING && data != null) {
+            //从搜索页面返回
             name = data.getStringExtra("name");
+            spValue = data.getStringExtra("spValue");
             startDate = data.getStringExtra("start");
             endDate = data.getStringExtra("end");
-            sendHttp(name);
+            isRefresh = true;
+            sendHttp();
+        }else if (resultCode==1000){
+            //从详情页面返回
+            isRefresh = true;
+            sendHttp();
         }
     }
 
@@ -184,13 +204,13 @@ public class BankApplyingFragment extends BaseFragment implements OnRefreshListe
     public void onLoadmore(RefreshLayout refreshlayout) {
         page = page + 1;
         isRefresh = false;
-        sendHttp(name);
+        sendHttp();
     }
 
     @Override
     public void onRefresh(RefreshLayout refreshlayout) {
         page = 1;
         isRefresh = true;
-        sendHttp(name);
+        sendHttp();
     }
 }

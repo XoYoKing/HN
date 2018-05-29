@@ -5,17 +5,24 @@ import android.content.DialogInterface;
 import android.view.View;
 
 import com.example.admin.hn.R;
+import com.example.admin.hn.api.Api;
 import com.example.admin.hn.model.ApplyingInfo;
 import com.example.admin.hn.model.OrderInfo;
 import com.example.admin.hn.ui.account.AuditingApplyingActivity;
 import com.example.admin.hn.ui.account.ShipApplyingActivity;
 import com.example.admin.hn.utils.AbDateUtil;
+import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
+import com.example.admin.hn.utils.ToolString;
+import com.example.admin.hn.volley.IRequest;
+import com.example.admin.hn.volley.RequestListener;
 import com.orhanobut.logger.Logger;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -34,14 +41,27 @@ public class BankApplyingAdapter extends CommonAdapter<ApplyingInfo> {
         viewHolder.setText(R.id.tv_name, info.shipname+"");
         viewHolder.setText(R.id.tv_status, info.status + "");
         viewHolder.setText(R.id.tv_numberNo, info.applyno + "");
-        viewHolder.setText(R.id.tv_date, AbDateUtil.getStringByFormat(info.applydate,AbDateUtil.dateFormatYMD)  + "");
+        viewHolder.setText(R.id.tv_date, info.applydate + "");
         viewHolder.setText(R.id.tv_number, info.amount + "");
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShipApplyingActivity.startActivity(mContext, info.applyno);
+                if ("待审核".equals(info.status)) {
+                    AuditingApplyingActivity.startActivity(mContext, info.applyno);
+                } else if ("已审核".equals(info.status)) {
+                    ShipApplyingActivity.startActivity(mContext, info.applyno);
+                }else {
+                    ShipApplyingActivity.startActivity(mContext, info.applyno);
+                }
             }
         });
+        if ("待审核".equals(info.status)) {
+            viewHolder.getView(R.id.bt_submit).setVisibility(View.VISIBLE);
+        } else if ("已审核".equals(info.status)) {
+            viewHolder.getView(R.id.bt_submit).setVisibility(View.GONE);
+        }else {
+            viewHolder.getView(R.id.bt_submit).setVisibility(View.GONE);
+        }
         viewHolder.setOnClickListener(R.id.bt_submit, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,7 +69,7 @@ public class BankApplyingAdapter extends CommonAdapter<ApplyingInfo> {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        pass(position);
+                        passHttp(info,position);
                     }
                 }, new DialogInterface.OnClickListener() {
                     @Override
@@ -57,6 +77,29 @@ public class BankApplyingAdapter extends CommonAdapter<ApplyingInfo> {
                         dialog.dismiss();
                     }
                 });
+            }
+        });
+    }
+
+    private String url = Api.BASE_URL + Api.PASS_APPLY;
+    private void passHttp(ApplyingInfo info , final int position) {
+        Map map = new HashMap();
+        map.put("applyNo", info.applyno + "");
+        IRequest.postJson(mContext, url, map, "正在申请", new RequestListener() {
+            @Override
+            public void requestSuccess(String json) {
+                Logger.e("审核通过", json);
+                if (GsonUtils.isSuccess(json)) {
+                    ToolAlert.showToast(mContext, "审核通过");
+                    pass(position);
+                }else {
+                    ToolAlert.showToast(mContext, GsonUtils.getError(json));
+                }
+            }
+
+            @Override
+            public void requestError(String message) {
+                ToolAlert.showToast(mContext,message);
             }
         });
     }

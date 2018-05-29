@@ -6,11 +6,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.TimePickerView;
@@ -60,6 +63,10 @@ public class PopActivity extends BaseActivity {
     private EditText et_dataNumber;
     private EditText et_chineseName;
     private EditText et_name;
+    private Spinner sp;
+    private List<String> sp_list;
+    private ArrayAdapter spAdapter;
+    private String spValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,11 +127,6 @@ public class PopActivity extends BaseActivity {
             initNotMaterialView();
         } else if (requestCode == Constant.POP_ORDER_MANAGER) {//电子海图 订单管理
             tv_type_name.setText("订单管理");
-            if (childItem == 0) {
-
-            } else if (childItem == 1) {
-
-            }
             initOrderManagerView(view);
         }else if (requestCode == Constant.POP_SHIP_AUDITING) {//船舶资料管理 审核管理
             if (childItem == 0) {
@@ -132,7 +134,7 @@ public class PopActivity extends BaseActivity {
             } else if (childItem == 1) {
                 tv_type_name.setText("审核管理-领用单");
             }
-            initOrderManagerView(view);
+            initOrderManagerView2(view);
         }else if (requestCode == Constant.POP_LIB_TYPE) {//船舶资料管理
             tv_type_name.setText("文库搜索");
             initLibTypeView();
@@ -154,6 +156,91 @@ public class PopActivity extends BaseActivity {
         et_name = (EditText) view.findViewById(R.id.et_name);
     }
 
+    /**
+     * 初始化纸质订单管理搜索控件
+     * @param view
+     */
+    private void initOrderManagerView2(View view) {
+        startDate1 = (TextView) view.findViewById(R.id.startdate);
+        endDate1 = (TextView) view.findViewById(R.id.enddate);
+        et_name1 = (EditText) view.findViewById(R.id.et_name);
+        tv_date = (TextView) view.findViewById(R.id.tv_date);
+        sp = (Spinner) view.findViewById(R.id.sp);
+        setSpData();
+        if (childItem == 0) {
+            tv_date.setText("申请日期");
+        }else {
+            tv_date.setText("领用日期");
+        }
+        //初始化选择器的时间
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String date = sdf.format(new Date());
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.MONTH, -1);
+        startDate1.setText(sdf.format(c.getTime()));
+        endDate1.setText(date);
+
+        startDate1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //时间选择器
+                TimePickerView pvTime = new TimePickerView.Builder(context, new TimePickerView.OnTimeSelectListener() {
+                    @Override
+                    public void onTimeSelect(Date date, View v) {//选中事件回调
+                        startDate1.setText(new SimpleDateFormat("yyyy-MM-dd").format(date));
+                    }
+                }).isCyclic(true).setBackgroundId(0x00FFFFFF).setContentSize(21).setType(new boolean[]{true, true, true, false, false, false}).build();
+                pvTime.setDate(Calendar.getInstance());//注：根据需求来决定是否使用该方法（一般是精确到秒的情况），此项可以在弹出选择器的时候重新设置当前时间，避免在初始化之后由于时间已经设定，导致选中时间与当前时间不匹配的问题。
+                pvTime.show();
+            }
+        });
+
+        endDate1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //时间选择器
+                TimePickerView pTime = new TimePickerView.Builder(context, new TimePickerView.OnTimeSelectListener() {
+                    @Override
+                    public void onTimeSelect(Date date, View v) {//选中事件回调
+                        endDate1.setText(new SimpleDateFormat("yyyy-MM-dd").format(date));
+                    }
+                }).isCyclic(true).setBackgroundId(0x00FFFFFF).setContentSize(21).setType(new boolean[]{true, true, true, false, false, false}).build();
+                pTime.setDate(Calendar.getInstance());//注：根据需求来决定是否使用该方法（一般是精确到秒的情况），此项可以在弹出选择器的时候重新设置当前时间，避免在初始化之后由于时间已经设定，导致选中时间与当前时间不匹配的问题。
+                pTime.show();
+            }
+        });
+
+    }
+
+    /**
+     * 初始化 审核状态选择器
+     */
+    private void setSpData() {
+        //数据
+        sp_list = new ArrayList<>();
+        sp_list.add("请选择");
+        sp_list.add("待审核");
+        sp_list.add("已审核");
+        sp_list.add("审核通过");
+        //适配器
+        spAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, sp_list);
+        //设置样式
+        spAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //加载适配器
+        sp.setAdapter(spAdapter);
+        sp.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                spValue = sp_list.get(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+    }
     /**
      * 初始化电子海图订单管理搜索控件
      * @param view
@@ -216,7 +303,6 @@ public class PopActivity extends BaseActivity {
     @Override
     public void initData() {
 
-
     }
 
     @OnClick({R.id.bt_reset, R.id.bt_sure})
@@ -234,8 +320,8 @@ public class PopActivity extends BaseActivity {
                     intent.putExtra("end", curr_end);
                     intent.putExtra("childItem", childItem);
                 }else if (requestCode == Constant.POP_SHIP_AUDITING) {//审核申领搜索
-                    intent.putExtra("start", curr_start);
-                    intent.putExtra("end", curr_end);
+                    intent.putExtra("start", "");
+                    intent.putExtra("end", "");
                 } else if (requestCode == Constant.POP_NOT_MATERIAL) {//待选搜索
                     intent.putExtra("dataNumber", "");
                     intent.putExtra("chineseName", "");
@@ -254,7 +340,7 @@ public class PopActivity extends BaseActivity {
                     intent.putExtra("start", start);
                     intent.putExtra("end", end);
                     intent.putExtra("childItem", childItem);
-                    if (ToolString.isNoBlankAndNoNull(name)) {
+                    if (ToolString.isEmpty(name)) {
                         intent.putExtra("name", name);
                     }
                 }else if (requestCode == Constant.POP_SHIP_AUDITING) {//审核申领搜索
@@ -263,8 +349,11 @@ public class PopActivity extends BaseActivity {
                     String name = et_name1.getText().toString();
                     intent.putExtra("start", start);
                     intent.putExtra("end", end);
-                    if (ToolString.isNoBlankAndNoNull(name)) {
+                    if (ToolString.isEmpty(name)) {
                         intent.putExtra("name", name);
+                    }
+                    if (ToolString.isEmpty(spValue)) {
+                        intent.putExtra("spValue", spValue);
                     }
                 } else if (requestCode == Constant.POP_NOT_MATERIAL) {//待选搜索
                     String dataNumber = et_dataNumber.getText().toString();

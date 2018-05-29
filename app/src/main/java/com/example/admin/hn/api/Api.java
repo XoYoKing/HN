@@ -84,6 +84,17 @@ public class Api {
     public static final String GET_RECEIVE_ORDER = "menusystem/computer/getReceiveOrder.action";
     //领用单详情 列表查询
     public static final String GET_RECEIVE_ORDER_DETAIL = "menusystem/computer/getReceiveOrderDetail.action";
+    //审核管理 申请单 列表查询
+    public static final String GET_VERIFY_APPLY_ORDER = "menusystem/computer/verify/getApplyOrder.action";
+    //审核管理 申请单 通过审核
+    public static final String PASS_APPLY = "menusystem/computer/verify/passApply.action";
+    //审核管理 申请单 删除申请编号对应申请单中制定资料号申请明细
+    public static final String MODIFY_APPLY_DETAIL = "menusystem/computer/verify/modifyApplyDetail.action";
+    //回执详情
+    public static final String GET_RECEIPT_PHOTO = "menusystem/receiptPhoto/getPhoto.action";
+    //回执上传
+    public static final String UPLOAD = "menusystem/receiptPhoto/upload.action";
+
 
 //    ================== 商城接口========================
 
