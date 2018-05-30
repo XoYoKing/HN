@@ -116,7 +116,7 @@ public class MainActivity extends FragmentActivity {
     public static final String KEY_MESSAGE = "message";
     public static final String KEY_EXTRAS = "extras";
     public static List<ShipInfo.Ship> list = new ArrayList<>();
-    public int level;//用户级别  0：其他，1：船舶用户，2：海务主管
+    public int level;//用户级别  0：其他，1：船舶用户，2：海务主管 ;3，代表岸端海宁用户
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -132,13 +132,13 @@ public class MainActivity extends FragmentActivity {
         list = (ArrayList<ShipInfo.Ship>) intent.getSerializableExtra("list");
         //根据用户权限等级显示tab
         level = HNApplication.mApp.getUserType();
-        if (level==1 || level==2) {
+        if (level == 1 || level == 2 || level == 3) {
             // 船舶用户/海务主管显示界面：船位、文库、纸质海图、电子海图、更多；
             id_tab_tow.setVisibility(View.GONE);
         } else {
             // 其他用户显示界面：船位、商城、文库、更多
-//            id_tab_four.setVisibility(View.GONE);
-//            id_tab_four2.setVisibility(View.GONE);
+            id_tab_four.setVisibility(View.GONE);
+            id_tab_four2.setVisibility(View.GONE);
         }
         resetImgs();
         setSelect(SWITCH_TO_ONE);

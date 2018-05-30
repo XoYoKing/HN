@@ -83,7 +83,7 @@ public class FourFragment2 extends BaseFragment implements ViewPager.OnPageChang
 
 	private void addChildFragment() {
 		AllChildTabAdapter adapter = new AllChildTabAdapter(getChildFragmentManager(), activity, viewPager);
-		if (HNApplication.mApp.getUserType()==2) {
+		if (HNApplication.mApp.getUserType()==2 || HNApplication.mApp.getUserType() == 3) {
 			//海物主管
 			adapter.addTab("审核管理", AuditingManagerFragment.class);
 		}else {
@@ -199,7 +199,7 @@ public class FourFragment2 extends BaseFragment implements ViewPager.OnPageChang
 	private void updateUI() {
 		switch (currentItem) {
 			case 0://订单领用
-				if (HNApplication.mApp.getUserType() == 2) {
+				if (HNApplication.mApp.getUserType() == 2 || HNApplication.mApp.getUserType() == 3) {
 					// 订单审核 海物主管
 					if (childCurrentItem == 0) {//申请单
 						text_tile_del.setVisibility(View.VISIBLE);

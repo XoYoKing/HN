@@ -345,4 +345,17 @@ public class LoginActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 100 && data != null) {
+            String username = data.getStringExtra("username");
+            String password = data.getStringExtra("password");
+            etPassword.setText(password);
+            etName.setText(username);
+            ToolViewUtils.setSelection(etName);
+            ToolViewUtils.setSelection(etPassword);
+        }
+    }
 }

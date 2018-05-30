@@ -1,5 +1,6 @@
 package com.example.admin.hn.ui.login;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -97,7 +98,7 @@ public class RegisterActivity extends BaseActivity {
 
     public static void startActivity(Context context) {
         Intent intent = new Intent(context, RegisterActivity.class);
-        context.startActivity(intent);
+        ((Activity) context).startActivityForResult(intent, 100);
     }
 
     @Override
@@ -218,6 +219,10 @@ public class RegisterActivity extends BaseActivity {
             public void requestSuccess(String json) {
                 Logger.e("注册",json);
                 if (GsonUtils.isSuccess(json)) {
+                    Intent intent = new Intent();
+                    intent.putExtra("username", mEditUsername.getText().toString());
+                    intent.putExtra("password", mEditPassword.getText().toString());
+                    setResult(100,intent);
                     finish();
                 }
                 ToolAlert.showToast(context,GsonUtils.getError(json));

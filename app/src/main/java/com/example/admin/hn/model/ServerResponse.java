@@ -28,15 +28,15 @@ public class ServerResponse {
     private String phonenumber;
     private String username;
     private String companyid;
-    private int mobileusertype;
+    private int mobile_user_type;
     private List<ShipInfo.Ship> myShip;
 
     public int getMobileusertype() {
-        return mobileusertype;
+        return mobile_user_type;
     }
 
     public void setMobileusertype(int mobileusertype) {
-        this.mobileusertype = mobileusertype;
+        this.mobile_user_type = mobileusertype;
     }
 
     public List<ShipInfo.Ship> getMyShip() {

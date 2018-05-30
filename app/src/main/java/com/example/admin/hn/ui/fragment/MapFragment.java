@@ -108,7 +108,6 @@ public class MapFragment extends BaseFragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                String shipname = sp_list.get(position);
-               Logger.e("name", shipname + "");
                ship(shipname);
             }
 
