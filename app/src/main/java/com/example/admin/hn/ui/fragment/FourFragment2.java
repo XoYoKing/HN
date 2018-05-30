@@ -83,11 +83,12 @@ public class FourFragment2 extends BaseFragment implements ViewPager.OnPageChang
 
 	private void addChildFragment() {
 		AllChildTabAdapter adapter = new AllChildTabAdapter(getChildFragmentManager(), activity, viewPager);
-		if (true) {
-			adapter.addTab("订单领用", MaterialUseManagerFragment.class);
+		if (HNApplication.mApp.getUserType()==2) {
+			//海物主管
 			adapter.addTab("审核管理", AuditingManagerFragment.class);
 		}else {
-			adapter.addTab("审核管理", AuditingManagerFragment.class);
+			//普通船员
+			adapter.addTab("订单领用", MaterialUseManagerFragment.class);
 		}
 		adapter.addTab("回执", ReceiptFragment.class);
 		viewPager.setOffscreenPageLimit(3);
@@ -198,41 +199,44 @@ public class FourFragment2 extends BaseFragment implements ViewPager.OnPageChang
 	private void updateUI() {
 		switch (currentItem) {
 			case 0://订单领用
-				if (childCurrentItem == 0 || childCurrentItem==1) {//待选 新品推荐
-					text_tile_del.setVisibility(View.VISIBLE);
-					text_tile_del.setText("搜索");
-					right.setText("确认");
-				} else if (childCurrentItem == 2) {//已选
-					text_tile_del.setVisibility(View.GONE);
-					right.setText("提交");
-				} else if (childCurrentItem == 3) {//申请单
-					text_tile_del.setVisibility(View.GONE);
-					right.setText("");
-				} else if (childCurrentItem == 4) {//领用单
-					text_tile_del.setVisibility(View.GONE);
-					right.setText("");
+				if (HNApplication.mApp.getUserType() == 2) {
+					// 订单审核 海物主管
+					if (childCurrentItem == 0) {//申请单
+						text_tile_del.setVisibility(View.VISIBLE);
+						text_tile_del.setText("搜索");
+						right.setText("");
+					} else if (childCurrentItem == 1) {//领用单
+						text_tile_del.setVisibility(View.GONE);
+						text_tile_del.setText("搜索");
+						right.setText("");
+					}else {
+						text_tile_del.setVisibility(View.GONE);
+						text_tile_del.setText("搜索");
+						right.setText("");
+					}
 				}else {
-					text_tile_del.setVisibility(View.VISIBLE);
-					text_tile_del.setText("搜索");
-					right.setText("确认");
+					// 订单领用 普通船员
+					if (childCurrentItem == 0 || childCurrentItem==1) {//待选 新品推荐
+						text_tile_del.setVisibility(View.VISIBLE);
+						text_tile_del.setText("搜索");
+						right.setText("确认");
+					} else if (childCurrentItem == 2) {//已选
+						text_tile_del.setVisibility(View.GONE);
+						right.setText("提交");
+					} else if (childCurrentItem == 3) {//申请单
+						text_tile_del.setVisibility(View.GONE);
+						right.setText("");
+					} else if (childCurrentItem == 4) {//领用单
+						text_tile_del.setVisibility(View.GONE);
+						right.setText("");
+					}else {
+						text_tile_del.setVisibility(View.VISIBLE);
+						text_tile_del.setText("搜索");
+						right.setText("确认");
+					}
 				}
 			break;
-			case 1://审核管理
-				if (childCurrentItem == 0) {//申请单
-					text_tile_del.setVisibility(View.VISIBLE);
-					text_tile_del.setText("搜索");
-					right.setText("");
-				} else if (childCurrentItem == 1) {//领用单
-					text_tile_del.setVisibility(View.GONE);
-					text_tile_del.setText("搜索");
-					right.setText("");
-				}else {
-					text_tile_del.setVisibility(View.GONE);
-					text_tile_del.setText("搜索");
-					right.setText("");
-				}
-				break;
-			case 2://回执
+			case 1://回执
 				if (childCurrentItem == 0) {
 					text_tile_del.setVisibility(View.GONE);
 					right.setText("");
