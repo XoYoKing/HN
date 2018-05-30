@@ -69,7 +69,7 @@ public class MaterialNotManagerFragment extends BaseFragment implements OnRefres
     private View view;
     private String code;//资料编号
     private String cname;//中文名称
-    private int page = 1;
+    private int page = 1, rows = 10;
     private int type;
     private String url = Api.BASE_URL + Api.GET_DOCUMENTS;
     private String submit_url = Api.BASE_URL + Api.SUBMIT_DOCUMENTS;
@@ -130,7 +130,8 @@ public class MaterialNotManagerFragment extends BaseFragment implements OnRefres
         if (ToolString.isEmpty(cname)) {
             params.put("cname", cname);
         }
-        params.put("page", page);
+        params.put("page", page+"");
+        params.put("rows", rows+"");
         http.postJson(url, params, progressTitle, new RequestListener() {
             @Override
             public void requestSuccess(String json) {
@@ -205,7 +206,6 @@ public class MaterialNotManagerFragment extends BaseFragment implements OnRefres
         page = 1;
         sendHttp();
     }
-
 
     private void initBroadcastReceiver(){
         localBroadcastManager = LocalBroadcastManager.getInstance(activity);

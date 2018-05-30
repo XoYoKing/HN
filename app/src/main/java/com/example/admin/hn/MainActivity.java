@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -82,6 +83,18 @@ public class MainActivity extends FragmentActivity {
     @Bind(R.id.tv_prompt)
     ImageView prompt;
 
+    @Bind(R.id.id_tab_one)
+    LinearLayout id_tab_one;
+    @Bind(R.id.id_tab_tow)
+    LinearLayout id_tab_tow;
+    @Bind(R.id.id_tab_three)
+    LinearLayout id_tab_three;
+    @Bind(R.id.id_tab_four)
+    LinearLayout id_tab_four;
+    @Bind(R.id.id_tab_four2)
+    LinearLayout id_tab_four2;
+    @Bind(R.id.id_tab_five)
+    LinearLayout id_tab_five;
 
     private Fragment mTabOne;
     private Fragment mTabTow;
@@ -103,7 +116,7 @@ public class MainActivity extends FragmentActivity {
     public static final String KEY_MESSAGE = "message";
     public static final String KEY_EXTRAS = "extras";
     public static List<ShipInfo.Ship> list = new ArrayList<>();
-
+    public int level;//用户级别  0：其他，1：船舶用户，2：海务主管
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -117,6 +130,16 @@ public class MainActivity extends FragmentActivity {
     private void init() {
         Intent intent = getIntent();
         list = (ArrayList<ShipInfo.Ship>) intent.getSerializableExtra("list");
+        //根据用户权限等级显示tab
+        level = HNApplication.mApp.getUserType();
+        if (level==1 || level==2) {
+            // 船舶用户/海务主管显示界面：船位、文库、纸质海图、电子海图、更多；
+            id_tab_tow.setVisibility(View.GONE);
+        } else {
+            // 其他用户显示界面：船位、商城、文库、更多
+//            id_tab_four.setVisibility(View.GONE);
+//            id_tab_four2.setVisibility(View.GONE);
+        }
         resetImgs();
         setSelect(SWITCH_TO_ONE);
         //设置推送别名 以用户ID
@@ -130,7 +153,7 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void run() {
 //                LitePal.deleteDatabase("hn_shop_cart");
-                SQLiteDatabase db = Connector.getDatabase();
+                  Connector.getDatabase();
             }
         }).run();
     }

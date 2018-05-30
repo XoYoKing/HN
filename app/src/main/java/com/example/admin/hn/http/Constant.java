@@ -83,6 +83,8 @@ public class Constant {
     /**
      * 广播 action
      */
+    //船位
+    public static final String ACTION_MAP_FRAGMENT = "MapFragment";
     //船舶资料管理 已选择
     public static final String ACTION_MATERIAL_MANAGER_FRAGMENT = "MaterialManagerFragment";
     //船舶资料管理 未选择

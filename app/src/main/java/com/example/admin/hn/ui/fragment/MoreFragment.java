@@ -73,9 +73,8 @@ public class MoreFragment extends BaseFragment {
     @Bind(R.id.iv_search)
     ImageView search;
 
-
     private MyBaseAdapter myAdapter;
-    private int[] imageIds = {R.drawable.right,R.drawable.right, R.drawable.right, R.drawable.right, R.drawable.right, R.drawable.right, R.drawable.right};
+    private int[] imageIds;
     private String[] functionDesc;
     private String url_update = Api.BASE_URL + Api.UPDATE;
 
@@ -106,6 +105,10 @@ public class MoreFragment extends BaseFragment {
     public void initData() {
         super.initData();
         functionDesc = this.getResources().getStringArray(R.array.function_desc);
+        imageIds = new int[functionDesc.length];
+        for (int i = 0; i < functionDesc.length; i++) {
+            imageIds[i] = R.drawable.right;
+        }
     }
 
 

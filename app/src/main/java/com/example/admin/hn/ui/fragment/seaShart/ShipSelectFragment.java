@@ -79,7 +79,7 @@ public class ShipSelectFragment extends BaseFragment implements OnRefreshListene
     private BroadcastReceiver br;
     private ShipSelectActivity activity;
     private int type;//区分是否选择  0 未选择 1 已选择
-    private boolean isSingle=true;//区分是单选还是多选  true是单选  默认false是多选
+    private boolean isSingle;//区分是单选还是多选  true是单选  默认false是多选
     private boolean isClick;//区分是否可以点击选中 true可以 false不可以
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -99,6 +99,7 @@ public class ShipSelectFragment extends BaseFragment implements OnRefreshListene
         Bundle bundle = getArguments();
         type = Integer.parseInt(bundle.getString("type"));
         ToolRefreshView.setRefreshLayout(activity, refreshLayout, this, this);
+        isSingle = HNApplication.mApp.getUserType() == 1;//如果是船舶用户就是单选
         isClick = type == 0 ? true : false;
         adapter = new ShipAdapter(activity, R.layout.ship_adapter, list,isSingle,isClick);
         listView.setAdapter(adapter);
@@ -188,6 +189,10 @@ public class ShipSelectFragment extends BaseFragment implements OnRefreshListene
                     ToolAlert.showToast(activity, "提交成功", false);
                     MainActivity.list = new ArrayList<>(list_select);
                     activity.setCurrentItem(1);
+
+                    //刷新船位船舶数据
+                    Intent intent = new Intent(Constant.ACTION_MAP_FRAGMENT);
+                    LocalBroadcastManager.getInstance(activity).sendBroadcast(intent);
                 }else {
                     ToolAlert.showToast(activity,GsonUtils.getError(json));
                 }

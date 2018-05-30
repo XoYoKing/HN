@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.admin.hn.R;
 import com.example.admin.hn.base.BaseActivity;
+import com.example.admin.hn.base.HNApplication;
 import com.example.admin.hn.http.Constant;
 import com.example.admin.hn.ui.adapter.AllTabAdapter;
 import com.example.admin.hn.ui.fragment.seaShart.ShipSelectFragment;
@@ -38,7 +39,7 @@ public class ShipSelectActivity extends BaseActivity implements ViewPager.OnPage
     ViewPager viewPager;
     @Bind(R.id.tabLayout)
     TabLayout tabLayout;
-    private boolean isSingle = true;//区分是单选还是多选  true是单选  默认false是多选
+    private boolean isSingle;//区分是单选还是多选  true是单选  默认false是多选
     private boolean isCancel = true;
 
     @Override
@@ -55,6 +56,7 @@ public class ShipSelectActivity extends BaseActivity implements ViewPager.OnPage
         textTitle.setText("选择船舶");
         textTitleBack.setBackgroundResource(R.drawable.btn_back);
         right.setText("提交");
+        isSingle = HNApplication.mApp.getUserType() == 1;//如果是船舶用户就是单选
         if (!isSingle) {
             //如果可以多选
             text_tile_del.setVisibility(View.VISIBLE);

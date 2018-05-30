@@ -63,10 +63,10 @@ public class LoginActivity extends BaseActivity {
     EditText etName;
     @Bind(R.id.et_login_password)
     EditText etPassword;
-    @Bind(R.id.cb_agree_protocol)
-    CheckBox mCbAgreeProtocol;
     @Bind(R.id.iv_password)
     ImageView iv_password;
+    @Bind(R.id.iv_remember)
+    ImageView iv_remember;
     @Bind(R.id.rl_logins)
     RelativeLayout rl_logins;
     @Bind(R.id.sp_environment)
@@ -150,7 +150,7 @@ public class LoginActivity extends BaseActivity {
         String switches = HNApplication.mApp.getSwitche();
         if (isTest) {
             if (switches.equals("1")) {
-                mCbAgreeProtocol.setChecked(true);
+                iv_remember.setSelected(true);
                 etPassword.setText(password);
                 etName.setText(username);
                 login(username, password);
@@ -159,7 +159,7 @@ public class LoginActivity extends BaseActivity {
             }
         } else {
             if (switches.equals("1")) {
-                mCbAgreeProtocol.setChecked(true);
+                iv_remember.setSelected(true);
                 etPassword.setText(password);
                 etName.setText(username);
                 login(username, password);
@@ -182,13 +182,12 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {//生产环境
-                    Api.BASE_URL = "http://222.66.158.231:9000/";
+                    Api.BASE_URL = "http://22.266.158.231:9000/";
                     Api.SHOP_BASE_URL = "http://172.16.0.10:8990/";
                     isTest = false;
                 } else if (position == 1) {//测试环境
                     Api.BASE_URL = "http://10.18.4.31:9000/";
                     Api.SHOP_BASE_URL = "http://172.16.0.3:8990/";
-//                    Api.SHOP_BASE_URL = "http://10.17.107.65:8990/";
                     isTest = true;
                 }
                 HNApplication.mApp.setTestAmbient(isTest);
@@ -197,19 +196,19 @@ public class LoginActivity extends BaseActivity {
                 String switches =  HNApplication.mApp.getSwitche();
                 if (isTest) {
                     if (switches.equals("1")) {
-                        mCbAgreeProtocol.setChecked(true);
+                        iv_remember.setSelected(true);
                         etPassword.setText(password);
                         etName.setText(username);
-                        login(username, password);
+//                        login(username, password);
                     } else if (switches.equals("2")) {
                         etName.setText(username);
                     }
                 } else {
                     if (switches.equals("1")) {
-                        mCbAgreeProtocol.setChecked(true);
+                        iv_remember.setSelected(true);
                         etPassword.setText(password);
                         etName.setText(username);
-                        login(username, password);
+//                        login(username, password);
                     } else if (switches.equals("2")) {
                         etName.setText(username);
                     }
@@ -256,7 +255,7 @@ public class LoginActivity extends BaseActivity {
         activity.finish();
     }
 
-    @OnClick({R.id.tv_forget_password, R.id.text_title_back, R.id.btn_login_enter, R.id.text_tile_right})
+    @OnClick({R.id.tv_forget_password, R.id.text_title_back, R.id.btn_login_enter, R.id.text_tile_right,R.id.ll_remember})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_forget_password:
@@ -264,6 +263,9 @@ public class LoginActivity extends BaseActivity {
                 break;
             case R.id.text_tile_right:
                 RegisterActivity.startActivity(this);
+                break;
+            case R.id.ll_remember:
+                iv_remember.setSelected(!iv_remember.isSelected());
                 break;
             case R.id.btn_login_enter:
                 if (!ToolString.isNoBlankAndNoNull(etName.getText().toString())) {
@@ -295,11 +297,11 @@ public class LoginActivity extends BaseActivity {
         http.postJson(Api.BASE_URL + Api.LOGIN, params,"正在登录...", new RequestListener() {
             @Override
             public void requestSuccess(String json) {
-                Logger.i(TAG, json);
+                Logger.i("登录", json);
                 if (GsonUtils.isSuccess(json)) {
                     ServerResponse serverResponse = GsonUtils.jsonToBean(json, ServerResponse.class);
                     //保存登录信息
-                    saveLoginInfo(serverResponse,mCbAgreeProtocol.isChecked());
+                    saveLoginInfo(serverResponse,iv_remember.isSelected());
                     ArrayList<ShipInfo.Ship> list = new ArrayList<>();
                     for (int i = 0; i < serverResponse.getMyShip().size(); i++) {
                         ShipInfo.Ship ship = serverResponse.getMyShip().get(i);
@@ -334,6 +336,7 @@ public class LoginActivity extends BaseActivity {
         HNApplication.mApp.setUserName(serverResponse.getUsername());
         HNApplication.mApp.setPhone(serverResponse.getPhonenumber());
         HNApplication.mApp.setUserId(serverResponse.getUserid());
+        HNApplication.mApp.setUserType(serverResponse.getMobileusertype());
         HNApplication.mApp.setEmail(serverResponse.getEmail());
         HNApplication.mApp.setCompanyId(serverResponse.getCompanyid());
     }

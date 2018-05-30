@@ -252,4 +252,28 @@ public class HNApplication extends LitePalApplication {
             this.session.putInt("msgNumber", msgNumber);
         }
     }
+
+    /**
+     * 获取用户等级
+     * userType   0：其他，1：船舶用户，2：海务主管
+     * @return
+     */
+    public int getUserType() {
+        if (isTestAmbient()) {
+            return this.test_session.getInt("userType",0);
+        }
+        return this.session.getInt("userType",0);
+    }
+
+    /**
+     * 设置用户等级
+     * @param userType
+     */
+    public void setUserType(int userType) {
+        if (isTestAmbient()) {
+            this.test_session.putInt("userType", userType);
+        }else {
+            this.session.putInt("userType", userType);
+        }
+    }
 }

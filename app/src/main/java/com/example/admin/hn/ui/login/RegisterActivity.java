@@ -67,16 +67,21 @@ public class RegisterActivity extends BaseActivity {
     EditText et_company;
     @Bind(R.id.sp_environment)
     Spinner environment;
+    @Bind(R.id.sp_user)
+    Spinner sp_user;
     @Bind(R.id.cb)
     CheckBox cb;
     private String url_register = Api.BASE_URL + Api.REGISTER;
     private String url_email = Api.BASE_URL + Api.EMAIL;
     private String url_companyname = Api.BASE_URL + Api.COMPANYNAME;
     private List<String> data_list;
+    private List<String> user_list;
     private ArrayAdapter<String> arr_adapter;
+    private ArrayAdapter<String> user_adapter;
     private String company;
     private String phoneNumber;
     private String email;
+    private int user_type = -1;//默认是-1 未选择用户等级
 
 
     @Override
@@ -118,6 +123,8 @@ public class RegisterActivity extends BaseActivity {
                         ToolAlert.showToast(RegisterActivity.this, "用户名过于简单", false);
                     } else if (mEditPassword.length() < 6) {
                         ToolAlert.showToast(RegisterActivity.this, "密码过于简单，请重新输入", false);
+                    } else if (user_type==-1) {
+                        ToolAlert.showToast(RegisterActivity.this, "请选择用户类型", false);
                     } else if (et_company.length() <= 0 && cb.isChecked()) {
                         ToolAlert.showToast(RegisterActivity.this, "请填写所属公司", false);
                     } else if (company.equals("请选择") && !cb.isChecked()) {
@@ -200,6 +207,7 @@ public class RegisterActivity extends BaseActivity {
         map.put("password", mEditPassword.getText().toString());
         map.put("repeatpassword", mEditRepeatpassword.getText().toString());
         map.put("email", mEditemail.getText().toString());
+        map.put("mobileusertype",user_type);
         if (cb.isChecked()) {
             map.put("companyname", et_company.getText().toString());
         } else {
@@ -208,6 +216,7 @@ public class RegisterActivity extends BaseActivity {
         http.postJson(url_register, map, progressTitle, new RequestListener() {
             @Override
             public void requestSuccess(String json) {
+                Logger.e("注册",json);
                 if (GsonUtils.isSuccess(json)) {
                     finish();
                 }
@@ -229,11 +238,45 @@ public class RegisterActivity extends BaseActivity {
                 .setTextBefore("发送验证码")
                 .setLenght(60 * 1000)
                 .setTextSize(14);
-        //数据
-        data_list = new ArrayList<String>();
+        //初始化公司数据
+        setCompanyData();
+        //初始化用户类型
+        setUserData();
+        sendHttp();
+    }
+
+    private void setUserData() {
+        user_list = new ArrayList<>();
+        user_list.add("请选择");
+        user_list.add("其他");
+        user_list.add("船舶用户");
+        user_list.add("海务主管");
+        //适配器
+        user_adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, user_list);
+        //设置样式
+        user_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //加载适配器
+        sp_user.setAdapter(user_adapter);
+        sp_user.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position != 0) {
+                    user_type = position - 1;//用戶等級
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void setCompanyData() {
+        data_list = new ArrayList<>();
         data_list.add("请选择");
         //适配器
-        arr_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, data_list);
+        arr_adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, data_list);
         //设置样式
         arr_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //加载适配器
@@ -249,10 +292,13 @@ public class RegisterActivity extends BaseActivity {
 
             }
         });
+    }
 
+    private void sendHttp() {
         http.postJson(url_companyname, params, new RequestListener() {
             @Override
             public void requestSuccess(String json) {
+                Logger.e("公司列表",json);
                 if (GsonUtils.isSuccess(json)) {
                     CompanyInfo companyInfo = GsonUtils.jsonToBean(json, CompanyInfo.class
                     );
