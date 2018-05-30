@@ -138,9 +138,9 @@ public class ReadChartFragment extends BaseFragment implements OnRefreshListener
         params.put("rows", rows+"");
         params.put("page", page + "");
         if (ToolString.isEmpty(name)) {
-            params.put("pubTitle", name);
+            params.put("pubTitle_like", name);
         }else {
-            params.remove("pubTitle");
+            params.remove("pubTitle_like");
         }
         http.get(url, params, progressTitle, new RequestListener() {
             @Override
@@ -151,10 +151,10 @@ public class ReadChartFragment extends BaseFragment implements OnRefreshListener
                     };
                     List<ArticleInfo> data = (List<ArticleInfo>) GsonUtils.jsonToList2(json, typeToken, "content");
                     totalPage = GsonUtils.getTotalPage(json);
+                    if (isRefresh) {
+                        list.clear();
+                    }
                     if (ToolString.isEmptyList(data)) {
-                        if (isRefresh) {
-                            list.clear();
-                        }
                         list.addAll(data);
                     }
                 } else {

@@ -162,10 +162,10 @@ public class BankApplyingFragment extends BaseFragment implements OnRefreshListe
                 if (GsonUtils.isSuccess(json)) {
                     TypeToken typeToken=new TypeToken<List<ApplyingInfo>>(){};
                     List<ApplyingInfo> applys = (List<ApplyingInfo>) GsonUtils.jsonToList(json, typeToken, "applys");
+                    if (isRefresh) {
+                        list.clear();
+                    }
                     if (ToolString.isEmptyList(applys)) {
-                        if (isRefresh) {
-                            list.clear();
-                        }
                         list.addAll(applys);
                     }
                 }else {

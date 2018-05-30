@@ -32,5 +32,6 @@
             android:layout_marginRight="@dimen/common_20dp"></com.example.admin.hn.widget.EditTextWithDel>
 
     </LinearLayout>
+    <include layout="@layout/include_view_line"/>
 
 </LinearLayout>
