@@ -12,7 +12,8 @@
         android:id="@+id/bt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="拍照"/>
+        android:text="拍照"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/img"

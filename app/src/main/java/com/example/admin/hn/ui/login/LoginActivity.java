@@ -33,6 +33,7 @@ import com.example.admin.hn.model.ShipInfo;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolString;
+import com.example.admin.hn.utils.ToolViewUtils;
 import com.example.admin.hn.volley.RequestListener;
 import com.orhanobut.logger.Logger;
 
@@ -166,7 +167,7 @@ public class LoginActivity extends BaseActivity {
                 etName.setText(username);
             }
         }
-
+        ToolViewUtils.setSelection(etName);
         //数据
         data_list = new ArrayList<>();
         data_list.add("生产环境");

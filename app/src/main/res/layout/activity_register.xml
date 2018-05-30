@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="true"
-                android:fitsSystemWindows="true">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true">
 
     <include layout="@layout/public_title"></include>
 
@@ -30,13 +30,13 @@
             android:hint="用户名（仅支持字母数字下划线）"
             android:padding="@dimen/common_10dp"
             android:textColorHint="@color/light_gray"
-            android:textSize="@dimen/common_14sp"/>
+            android:textSize="@dimen/common_14sp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="@dimen/common_1dp"
 
-            android:background="@color/light_gray"/>
+            android:background="@color/light_gray" />
 
         <EditText
             android:id="@+id/et_telephone"
@@ -50,15 +50,14 @@
             android:maxLength="11"
             android:padding="@dimen/common_10dp"
             android:textColorHint="@color/light_gray"
-            android:textSize="@dimen/common_14sp"/>
-
+            android:textSize="@dimen/common_14sp" />
 
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="@dimen/common_1dp"
 
-            android:background="@color/light_gray"/>
+            android:background="@color/light_gray" />
 
         <EditText
             android:id="@+id/et_email"
@@ -70,13 +69,13 @@
             android:hint="设置邮箱"
             android:padding="@dimen/common_10dp"
             android:textColorHint="@color/light_gray"
-            android:textSize="@dimen/common_14sp"/>
+            android:textSize="@dimen/common_14sp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="@dimen/common_1dp"
 
-            android:background="@color/light_gray"/>
+            android:background="@color/light_gray" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -94,7 +93,7 @@
                 android:maxLength="6"
                 android:padding="@dimen/common_10dp"
                 android:textColorHint="@color/light_gray"
-                android:textSize="@dimen/common_14sp"/>
+                android:textSize="@dimen/common_14sp" />
 
             <com.example.admin.hn.widget.TimeButton
                 android:id="@+id/tb_send_validate_code"
@@ -106,14 +105,14 @@
                 android:clickable="true"
                 android:padding="@dimen/common_10dp"
                 android:text="发送验证码"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white" />
         </RelativeLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="@dimen/common_1dp"
 
-            android:background="@color/light_gray"/>
+            android:background="@color/light_gray" />
 
         <EditText
             android:id="@+id/et_login_password"
@@ -129,13 +128,12 @@
 
             android:singleLine="true"
             android:textColorHint="@color/light_gray"
-            android:textSize="@dimen/common_14sp"/>
+            android:textSize="@dimen/common_14sp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="@dimen/common_1dp"
-            android:background="@color/light_gray"
-            />
+            android:background="@color/light_gray" />
 
         <EditText
             android:id="@+id/et_confirm_password"
@@ -150,12 +148,12 @@
             android:padding="@dimen/common_10dp"
             android:singleLine="true"
             android:textColorHint="@color/light_gray"
-            android:textSize="@dimen/common_14sp"/>
+            android:textSize="@dimen/common_14sp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="@dimen/common_1dp"
-            android:background="@color/light_gray"/>
+            android:background="@color/light_gray" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -167,31 +165,32 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="公司:"/>
+                android:text="公司:" />
 
             <Spinner
                 android:id="@+id/sp_environment"
                 android:layout_width="0dp"
-                android:background="@color/white"
                 android:layout_height="wrap_content"
-                android:layout_weight="2" />
+                android:layout_weight="2"
+                android:background="@color/white" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="其他："/>
+                android:text="其他：" />
 
             <CheckBox
                 android:id="@+id/cb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
         </LinearLayout>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="@dimen/common_1dp"
-            android:background="@color/light_gray"/>
+            android:background="@color/light_gray" />
 
 
         <EditText
@@ -206,14 +205,13 @@
             android:padding="@dimen/common_10dp"
             android:textColorHint="@color/light_gray"
             android:textSize="@dimen/common_14sp"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </LinearLayout>
 
     <Button
         android:id="@+id/btn_confirm_register"
-
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/common_44dp"
         android:layout_below="@id/ll_register_panel"
         android:layout_marginLeft="@dimen/common_40dp"
         android:layout_marginRight="@dimen/common_40dp"
@@ -222,7 +220,7 @@
         android:gravity="center"
         android:text="确认注册"
         android:textColor="#FFFFFF"
-        android:textSize="18sp"/>
+        android:textSize="@dimen/common_15sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -236,28 +234,20 @@
             android:id="@+id/cb_agree_protocol"
             style="@style/custom_checkbox"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/common_2dp"
-            android:clickable="true"
-
-            android:drawablePadding="@dimen/common_10dp"
-            android:padding="@dimen/common_2dp"
-            android:text="我已阅读并同意"/>
+            android:paddingLeft="@dimen/common_5dp"
+            android:text="我已阅读并同意"
+            android:textColor="@color/text_gray_color"
+            android:textSize="@dimen/common_14sp" />
 
         <TextView
-
             android:id="@+id/tv_register_agreement"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/common_2dp"
             android:clickable="true"
-            android:padding="@dimen/common_2dp"
             android:text="《用户协议》"
-            android:textColor="@color/buttercup"/>
+            android:textColor="@color/buttercup"
+            android:textSize="@dimen/common_14sp" />
 
     </LinearLayout>
 </RelativeLayout>

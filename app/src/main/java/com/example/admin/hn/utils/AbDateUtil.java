@@ -195,6 +195,10 @@ public class AbDateUtil {
      */
     public static String getStringByFormat(String strDate, String format) {
         if (ToolString.isEmpty(strDate)) {
+            if (strDate.indexOf(" ") == -1) {
+                //如果没有找到空格
+                return strDate;
+            }
             try {
                 Calendar c = new GregorianCalendar();
                 SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat(dateFormatYMDHMS);

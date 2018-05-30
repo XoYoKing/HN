@@ -26,11 +26,11 @@ public class ApplyedAdapter extends CommonAdapter<ApplyedInfo> {
 
     @Override
     protected void convert(ViewHolder viewHolder, final ApplyedInfo info, int position) {
-        viewHolder.setTag(R.id.tv_name, info.operator + "");
-        viewHolder.setTag(R.id.tv_sum_money, AbMathUtil.roundStr(info.money, 2) + "");
-        viewHolder.setTag(R.id.tv_numberNo, info.receiveno + "");
-        viewHolder.setTag(R.id.tv_date, AbDateUtil.getStringByFormat(info.receivedate, AbDateUtil.dateFormatYMD) + "");
-        viewHolder.setTag(R.id.tv_number, info.totalamount + "");
+        viewHolder.setText(R.id.tv_name, info.operator + "");
+        viewHolder.setText(R.id.tv_sum_money, AbMathUtil.roundStr(info.money, 2) + "");
+        viewHolder.setText(R.id.tv_numberNo, info.receiveno + "");
+        viewHolder.setText(R.id.tv_date, AbDateUtil.getStringByFormat(info.receivedate, AbDateUtil.dateFormatYMD) + "");
+        viewHolder.setText(R.id.tv_number, info.totalamount + "");
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

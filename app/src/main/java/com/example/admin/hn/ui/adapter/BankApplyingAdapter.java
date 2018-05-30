@@ -41,7 +41,7 @@ public class BankApplyingAdapter extends CommonAdapter<ApplyingInfo> {
         viewHolder.setText(R.id.tv_name, info.shipname+"");
         viewHolder.setText(R.id.tv_status, info.status + "");
         viewHolder.setText(R.id.tv_numberNo, info.applyno + "");
-        viewHolder.setText(R.id.tv_date, info.applydate + "");
+        viewHolder.setText(R.id.tv_date, AbDateUtil.getStringByFormat(info.applydate,AbDateUtil.dateFormatYMD) + "");
         viewHolder.setText(R.id.tv_number, info.amount + "");
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

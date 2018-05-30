@@ -218,6 +218,7 @@ public class ReturnDetailActivity extends BaseActivity {
                 super.onSuccess(json);
                 Logger.e("上传成功", json);
                 if (GsonUtils.isSuccess(json)) {
+                    ToolAlert.showToast(context,"上传成功");
                     close();
                 } else {
                     ToolAlert.showToast(context, GsonUtils.getError(json));

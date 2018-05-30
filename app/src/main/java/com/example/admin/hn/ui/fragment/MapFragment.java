@@ -46,8 +46,6 @@ public class MapFragment extends BaseFragment {
     ImageView iv_search;
     @Bind(R.id.web)
     WebView mWebView;
-    @Bind(R.id.tv_text)
-    EditText tv_text;
     @Bind(R.id.sp)
     Spinner sp;
 
@@ -114,19 +112,6 @@ public class MapFragment extends BaseFragment {
 
     private void setUrl(String shipName){
         url = "http://api.shipxy.com/apicall/location?k=a7222a0180264aa99245ff2b53595a31&kw=" +shipName+ "&tip=1&track=1";
-    }
-
-    @OnClick({R.id.bt})
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.bt:
-                if (tv_text.getText().toString().length() < 1) {
-                    ToolAlert.showToast(getActivity(), "船舶名称不能为空", false);
-                    return;
-                }
-                ship(tv_text.getText().toString() );
-                break;
-        }
     }
 
     /**
