@@ -206,7 +206,7 @@ public class MainActivity extends FragmentActivity {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         hideFragment(transaction);
-        if (!isShipSelect()) {
+        if (!isShipSelect(i)) {
            return;
         }
         switch (i) {
@@ -276,11 +276,14 @@ public class MainActivity extends FragmentActivity {
         transaction.commit();
     }
 
-    private boolean isShipSelect() {
+    private boolean isShipSelect(int index) {
         if (list.size() == 0) {
             //如果沒有选择船舶 就跳转到选择船舶界面
             ToolAlert.showToast(MainActivity.this, "请选择船舶", false);
             ShipSelectActivity.startActivity(this);
+            if (index == SWITCH_TO_ONE) {
+                return true;
+            }
             return false;
         }
         return true;
