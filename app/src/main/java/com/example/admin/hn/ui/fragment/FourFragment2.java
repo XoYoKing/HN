@@ -57,8 +57,6 @@ public class FourFragment2 extends BaseFragment implements ViewPager.OnPageChang
 	private BroadcastReceiver br;
 	private int childCurrentItem;//子 fragment 所在页面
 	private int currentItem;//当前 fragment 所在页面
-	private MaterialUseManagerFragment useManagerFragment;
-	private AuditingManagerFragment auditingFragment;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -88,6 +86,7 @@ public class FourFragment2 extends BaseFragment implements ViewPager.OnPageChang
 			adapter.addTab("审核管理", AuditingManagerFragment.class);
 		}else {
 			//普通船员
+			right.setText("确认");
 			adapter.addTab("订单领用", MaterialUseManagerFragment.class);
 		}
 		adapter.addTab("回执", ReceiptFragment.class);
@@ -96,12 +95,6 @@ public class FourFragment2 extends BaseFragment implements ViewPager.OnPageChang
 		viewPager.setCurrentItem(0);
 		viewPager.addOnPageChangeListener(this);
 
-		Fragment item = adapter.getItem(0);
-		if (item instanceof MaterialUseManagerFragment) {
-			useManagerFragment = (MaterialUseManagerFragment) item;
-		} else if (item instanceof AuditingManagerFragment) {
-			auditingFragment = (AuditingManagerFragment) item;
-		}
 	}
 
 	@Override
@@ -109,7 +102,6 @@ public class FourFragment2 extends BaseFragment implements ViewPager.OnPageChang
 		textTitle.setText("船舶资料管理");
 		text_tile_del.setVisibility(View.VISIBLE);
 		text_tile_del.setText("搜索");
-		right.setText("确认");
 	}
 
 
@@ -122,15 +114,17 @@ public class FourFragment2 extends BaseFragment implements ViewPager.OnPageChang
 	public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.text_tile_del:
-				if (currentItem == 0) {
-					if (childCurrentItem == 0) {
-						PopActivity.startActivity(activity, childCurrentItem,R.layout.popup_not_material__layout, Constant.POP_NOT_MATERIAL);
-					} else if (childCurrentItem == 1) {
-						PopActivity.startActivity(activity, childCurrentItem,R.layout.popup_not_material__layout, Constant.POP_NEW_MATERIAL);
-					}
-				} else if (currentItem == 1) {
+				if (HNApplication.mApp.getUserType() == 2 || HNApplication.mApp.getUserType() == 3) {
+					//订单审核 申请单
 					if (childCurrentItem == 0) {
 						PopActivity.startActivity(activity,childCurrentItem,R.layout.popup_order_manager_layout2, Constant.POP_SHIP_AUDITING);
+					}
+				}else {
+					//订单领用
+					if (childCurrentItem == 0) {//待选
+						PopActivity.startActivity(activity, childCurrentItem,R.layout.popup_not_material__layout, Constant.POP_NOT_MATERIAL);
+					} else if (childCurrentItem == 1) {//新品推荐
+						PopActivity.startActivity(activity, childCurrentItem,R.layout.popup_not_material__layout, Constant.POP_NEW_MATERIAL);
 					}
 				}
 				break;
@@ -203,22 +197,15 @@ public class FourFragment2 extends BaseFragment implements ViewPager.OnPageChang
 					// 订单审核 海物主管
 					if (childCurrentItem == 0) {//申请单
 						text_tile_del.setVisibility(View.VISIBLE);
-						text_tile_del.setText("搜索");
-						right.setText("");
 					} else if (childCurrentItem == 1) {//领用单
 						text_tile_del.setVisibility(View.GONE);
-						text_tile_del.setText("搜索");
-						right.setText("");
 					}else {
 						text_tile_del.setVisibility(View.GONE);
-						text_tile_del.setText("搜索");
-						right.setText("");
 					}
 				}else {
 					// 订单领用 普通船员
 					if (childCurrentItem == 0 || childCurrentItem==1) {//待选 新品推荐
 						text_tile_del.setVisibility(View.VISIBLE);
-						text_tile_del.setText("搜索");
 						right.setText("确认");
 					} else if (childCurrentItem == 2) {//已选
 						text_tile_del.setVisibility(View.GONE);
@@ -231,7 +218,6 @@ public class FourFragment2 extends BaseFragment implements ViewPager.OnPageChang
 						right.setText("");
 					}else {
 						text_tile_del.setVisibility(View.VISIBLE);
-						text_tile_del.setText("搜索");
 						right.setText("确认");
 					}
 				}

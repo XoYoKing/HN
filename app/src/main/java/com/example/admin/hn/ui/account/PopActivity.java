@@ -91,7 +91,7 @@ public class PopActivity extends BaseActivity {
     /**
      * @param activity
      */
-    public static void startActivity(Activity activity,int childItem, int layoutId, int requestCode) {
+    public static void startActivity(Activity activity, int childItem, int layoutId, int requestCode) {
         Intent intent = new Intent(activity, PopActivity.class);
         intent.putExtra("childItem", childItem);
         intent.putExtra("layoutId", layoutId);
@@ -114,11 +114,11 @@ public class PopActivity extends BaseActivity {
 
         int windowWith = ToolAppUtils.getWindowWith(this);
         ViewGroup.LayoutParams layoutParams = pop_relative.getLayoutParams();
-        layoutParams.width = (int) (windowWith *0.8);
+        layoutParams.width = (int) (windowWith * 0.8);
         pop_relative.setLayoutParams(layoutParams);
         view = View.inflate(this, layoutId, null);
         linear_top.addView(view);
-        if (requestCode == Constant.POP_NOT_MATERIAL || requestCode == Constant.POP_NEW_MATERIAL ) {//船舶资料管理
+        if (requestCode == Constant.POP_NOT_MATERIAL || requestCode == Constant.POP_NEW_MATERIAL) {//船舶资料管理
             if (childItem == 0) {
                 tv_type_name.setText("订单领用-待选");
             } else if (childItem == 1) {
@@ -128,14 +128,14 @@ public class PopActivity extends BaseActivity {
         } else if (requestCode == Constant.POP_ORDER_MANAGER) {//电子海图 订单管理
             tv_type_name.setText("订单管理");
             initOrderManagerView(view);
-        }else if (requestCode == Constant.POP_SHIP_AUDITING) {//船舶资料管理 审核管理
+        } else if (requestCode == Constant.POP_SHIP_AUDITING) {//船舶资料管理 审核管理
             if (childItem == 0) {
                 tv_type_name.setText("审核管理-申请单");
             } else if (childItem == 1) {
                 tv_type_name.setText("审核管理-领用单");
             }
             initOrderManagerView2(view);
-        }else if (requestCode == Constant.POP_LIB_TYPE) {//船舶资料管理
+        } else if (requestCode == Constant.POP_LIB_TYPE) {//船舶资料管理
             tv_type_name.setText("文库搜索");
             initLibTypeView();
         }
@@ -149,6 +149,7 @@ public class PopActivity extends BaseActivity {
         et_dataNumber = (EditText) view.findViewById(R.id.et_dataNumber);
         et_chineseName = (EditText) view.findViewById(R.id.et_chineseName);
     }
+
     /**
      * 初始化船舶资料管理待选搜索控件
      */
@@ -158,6 +159,7 @@ public class PopActivity extends BaseActivity {
 
     /**
      * 初始化纸质订单管理搜索控件
+     *
      * @param view
      */
     private void initOrderManagerView2(View view) {
@@ -169,7 +171,7 @@ public class PopActivity extends BaseActivity {
         setSpData();
         if (childItem == 0) {
             tv_date.setText("申请日期");
-        }else {
+        } else {
             tv_date.setText("领用日期");
         }
         //初始化选择器的时间
@@ -241,8 +243,10 @@ public class PopActivity extends BaseActivity {
         });
 
     }
+
     /**
      * 初始化电子海图订单管理搜索控件
+     *
      * @param view
      */
     private void initOrderManagerView(View view) {
@@ -252,10 +256,10 @@ public class PopActivity extends BaseActivity {
         tv_date = (TextView) view.findViewById(R.id.tv_date);
         if (requestCode == Constant.POP_ORDER_MANAGER) {
             tv_date.setText("提交日期");
-        }else if (requestCode == Constant.POP_SHIP_AUDITING){
+        } else if (requestCode == Constant.POP_SHIP_AUDITING) {
             if (childItem == 0) {
                 tv_date.setText("申请日期");
-            }else {
+            } else {
                 tv_date.setText("领用日期");
             }
         }
@@ -319,17 +323,17 @@ public class PopActivity extends BaseActivity {
                     intent.putExtra("start", curr_start);
                     intent.putExtra("end", curr_end);
                     intent.putExtra("childItem", childItem);
-                }else if (requestCode == Constant.POP_SHIP_AUDITING) {//审核申领搜索
+                } else if (requestCode == Constant.POP_SHIP_AUDITING) {//审核申请单搜索
                     intent.putExtra("start", "");
                     intent.putExtra("end", "");
-                } else if (requestCode == Constant.POP_NOT_MATERIAL) {//待选搜索
+                } else if (requestCode == Constant.POP_NOT_MATERIAL || requestCode == Constant.POP_NEW_MATERIAL) {//待选搜索
                     intent.putExtra("dataNumber", "");
                     intent.putExtra("chineseName", "");
-                }else if (requestCode == Constant.POP_LIB_TYPE) {//文库搜索
+                } else if (requestCode == Constant.POP_LIB_TYPE) {//文库搜索
                     intent.putExtra("name", "");
                     intent.putExtra("currentItem", childItem);
                 }
-                setResult(requestCode,intent);
+                setResult(requestCode, intent);
                 finish();
                 break;
             case R.id.bt_sure:
@@ -343,7 +347,7 @@ public class PopActivity extends BaseActivity {
                     if (ToolString.isEmpty(name)) {
                         intent.putExtra("name", name);
                     }
-                }else if (requestCode == Constant.POP_SHIP_AUDITING) {//审核申领搜索
+                } else if (requestCode == Constant.POP_SHIP_AUDITING) {//审核申请单搜索
                     String start = startDate1.getText().toString();
                     String end = endDate1.getText().toString();
                     String name = et_name1.getText().toString();
@@ -355,17 +359,17 @@ public class PopActivity extends BaseActivity {
                     if (ToolString.isEmpty(spValue)) {
                         intent.putExtra("spValue", spValue);
                     }
-                } else if (requestCode == Constant.POP_NOT_MATERIAL) {//待选搜索
+                } else if (requestCode == Constant.POP_NOT_MATERIAL || requestCode == Constant.POP_NEW_MATERIAL) {//待选搜索
                     String dataNumber = et_dataNumber.getText().toString();
                     String chineseName = et_chineseName.getText().toString();
                     intent.putExtra("dataNumber", dataNumber);
                     intent.putExtra("chineseName", chineseName);
-                }else if (requestCode == Constant.POP_LIB_TYPE) {//文库搜索
+                } else if (requestCode == Constant.POP_LIB_TYPE) {//文库搜索
                     String name = et_name.getText().toString();
                     intent.putExtra("name", name);
                     intent.putExtra("currentItem", childItem);
                 }
-                setResult(requestCode,intent);
+                setResult(requestCode, intent);
                 finish();
                 break;
         }

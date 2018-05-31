@@ -29,6 +29,7 @@ import com.example.admin.hn.ui.adapter.UpdateAdapter;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolRefreshView;
+import com.example.admin.hn.utils.ToolString;
 import com.example.admin.hn.volley.RequestListener;
 import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -98,7 +99,7 @@ public class ChartUpdateActivity extends BaseActivity implements AdapterView.OnI
 		ButterKnife.bind(this);
 		initTitleBar();
 		initView();
-		data("", "1", 1);
+		data("", "1");
 	}
 
 
@@ -156,7 +157,8 @@ public class ChartUpdateActivity extends BaseActivity implements AdapterView.OnI
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				dates = lists.get(position);
 				page = 1;
-				data("", status, 1);
+				isRefresh = true;
+				data("", status);
 			}
 
 			@Override
@@ -176,9 +178,9 @@ public class ChartUpdateActivity extends BaseActivity implements AdapterView.OnI
 			// 当点击搜索按钮时触发该方法
 			@Override
 			public boolean onQueryTextSubmit(String query) {
-//                ToolAlert.showToast(getActivity(), "搜索" + query, false);
 				page = 1;
-				data(query, status, 1);
+				isRefresh = true;
+				data(query, status);
 				hide.setVisibility(View.GONE);
 				return false;
 			}
@@ -271,7 +273,7 @@ public class ChartUpdateActivity extends BaseActivity implements AdapterView.OnI
 	}
 
 
-	public void data(String scree, String statu, final int Loadmore) {
+	public void data(String scree, String status) {
 		Map map = new HashMap();
 		//screen(1全部2已同步3未同步)  status（1全部2船舶名称3船舶编号）
 		map.put("screen", screen);
@@ -280,7 +282,7 @@ public class ChartUpdateActivity extends BaseActivity implements AdapterView.OnI
 		map.put("shipnumber", scree);
 		map.put("userid", HNApplication.mApp.getUserId());
 		map.put("shipname", scree);
-		map.put("status", statu);
+		map.put("status", status);
 		http.postJson(url_chart, map, progressTitle, new RequestListener() {
 			@Override
 			public void requestSuccess(String json) {
@@ -289,15 +291,11 @@ public class ChartUpdateActivity extends BaseActivity implements AdapterView.OnI
 					UpdateInfo updateInfo = GsonUtils.jsonToBean(
 							json, UpdateInfo.class
 					);
-					if (Loadmore == 1) {
+					if (isRefresh) {
 						list.clear();
 					}
-					if (updateInfo.getDocuments().size()==0){
-						list.clear();
-					}else {
-						for (int i = 0; i < updateInfo.getDocuments().size(); i++) {
-							list.add(new UpdateInfo.update(updateInfo.getDocuments().get(i).getShipname(), updateInfo.getDocuments().get(i).getShipnumber(), updateInfo.getDocuments().get(i).getOrdertime(), updateInfo.getDocuments().get(i).getUpdatetime(), updateInfo.getDocuments().get(i).getSize(), updateInfo.getDocuments().get(i).getDownload(), updateInfo.getDocuments().get(i).getShipstatus()));
-						}
+					if (ToolString.isEmptyList(updateInfo.getDocuments())) {
+						list.addAll(updateInfo.getDocuments());
 					}
 				}else {
 					if (page==1) {
@@ -307,13 +305,13 @@ public class ChartUpdateActivity extends BaseActivity implements AdapterView.OnI
 						ToolAlert.showToast(ChartUpdateActivity.this, "已全部加载完成", false);
 					}
 				}
-				ToolRefreshView.hintView(adapter,false,network,noData_img,network_img);
+				ToolRefreshView.hintView(adapter,refreshLayout,false,network,noData_img,network_img);
 			}
 
 			@Override
 			public void requestError(String message) {
 				ToolAlert.showToast(context, message);
-				ToolRefreshView.hintView(adapter,true,network,noData_img,network_img);
+				ToolRefreshView.hintView(adapter,refreshLayout,true,network,noData_img,network_img);
 			}
 		});
 
@@ -369,20 +367,21 @@ public class ChartUpdateActivity extends BaseActivity implements AdapterView.OnI
 //                Toast.makeText(ChartUpdateActivity.this, "全部", Toast.LENGTH_SHORT).show();
 				screen = 1;
 				page = 1;
-				data("", "1", 1);
+				isRefresh = true;
+				data("", "1");
 				break;
 			case 1:
 				page = 1;
 				screen = 2;
-				data("", "1", 1);
-//                Toast.makeText(ChartUpdateActivity.this, "成功", Toast.LENGTH_SHORT).show();
+				isRefresh = true;
+				data("", "1");
 				break;
 
 			case 2:
 				page = 1;
 				screen = 3;
-				data("", "1", 1);
-//                Toast.makeText(ChartUpdateActivity.this, "失败", Toast.LENGTH_SHORT).show();
+				isRefresh = true;
+				data("", "1");
 				break;
 		}
 	}
@@ -390,14 +389,14 @@ public class ChartUpdateActivity extends BaseActivity implements AdapterView.OnI
 	@Override
 	public void onLoadmore(RefreshLayout refreshlayout) {
 		page = page + 1;
-		data("", "1", 2);
-		refreshlayout.finishLoadmore(1000);
+		isRefresh = false;
+		data("", "1");
 	}
 
 	@Override
 	public void onRefresh(RefreshLayout refreshlayout) {
 		page = 1;
-		data("", "1", 1);
-		refreshlayout.finishRefresh(1000);
+		isRefresh = true;
+		data("", "1");
 	}
 }

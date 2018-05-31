@@ -92,9 +92,9 @@ public class GoodsListActivity extends BaseActivity implements OnLoadmoreListene
     private HomeItem info;
     private String url = Api.SHOP_BASE_URL + Api.GET_GOODS_LIST;
     private String sort_price_asc = "goodsPrice,asc";//价格排序 升序asc
-    private String sort_price_dsc = "goodsPrice,dsc";//价格排序 降序desc
+    private String sort_price_dsc = "goodsPrice,desc";//价格排序 降序desc
     private String sort_count_asc = "orderCount,asc";//销量排序 升序asc
-    private String sort_count_dsc = "orderCount,dsc";//销量排序 降序desc
+    private String sort_count_dsc = "orderCount,desc";//销量排序 降序desc
     private String sort = "";//排序
     private int totalPages;//总页数
 
@@ -214,7 +214,7 @@ public class GoodsListActivity extends BaseActivity implements OnLoadmoreListene
         params.put("page", page+"");
         params.put("rows", rows+"");
         params.put("sort", sort);
-        params.put("columnName", info.name + "");
+        params.put("columnName_like", info.name + "");
         params.put("categoryId", info.value + "");
         http.get(url, params, progressTitle, new RequestListener() {
             @Override
