@@ -68,7 +68,7 @@ public class BankApplyingFragment extends BaseFragment implements OnRefreshListe
     private String endDate;
     private String startDate;
     private int type;
-    private String spValue;
+    private String status;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -152,8 +152,8 @@ public class BankApplyingFragment extends BaseFragment implements OnRefreshListe
         if (ToolString.isEmpty(name)) {
             map.put("shipId", name+"");
         }
-        if (ToolString.isEmpty(spValue)) {
-            map.put("spValue", spValue+"");
+        if (ToolString.isEmpty(status)) {
+            map.put("status", status+"");
         }
         http.postJson(url, map, progressTitle, new RequestListener() {
             @Override
@@ -188,7 +188,7 @@ public class BankApplyingFragment extends BaseFragment implements OnRefreshListe
         if (resultCode == Constant.POP_SHIP_AUDITING && data != null) {
             //从搜索页面返回
             name = data.getStringExtra("name");
-            spValue = data.getStringExtra("spValue");
+            status = data.getStringExtra("status");
             startDate = data.getStringExtra("start");
             endDate = data.getStringExtra("end");
             isRefresh = true;

@@ -66,7 +66,7 @@ public class PopActivity extends BaseActivity {
     private Spinner sp;
     private List<String> sp_list;
     private ArrayAdapter spAdapter;
-    private String spValue;
+    private String status;//审核状态
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -223,7 +223,6 @@ public class PopActivity extends BaseActivity {
         sp_list.add("请选择");
         sp_list.add("待审核");
         sp_list.add("已审核");
-        sp_list.add("审核通过");
         //适配器
         spAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, sp_list);
         //设置样式
@@ -233,7 +232,11 @@ public class PopActivity extends BaseActivity {
         sp.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                spValue = sp_list.get(position);
+                if (position == 1) {
+                    status = "2";//待审核
+                } else if (position == 2) {
+                    status = "3";//已审核
+                }
             }
 
             @Override
@@ -326,6 +329,7 @@ public class PopActivity extends BaseActivity {
                 } else if (requestCode == Constant.POP_SHIP_AUDITING) {//审核申请单搜索
                     intent.putExtra("start", "");
                     intent.putExtra("end", "");
+                    intent.putExtra("status", "");
                 } else if (requestCode == Constant.POP_NOT_MATERIAL || requestCode == Constant.POP_NEW_MATERIAL) {//待选搜索
                     intent.putExtra("dataNumber", "");
                     intent.putExtra("chineseName", "");
@@ -356,8 +360,8 @@ public class PopActivity extends BaseActivity {
                     if (ToolString.isEmpty(name)) {
                         intent.putExtra("name", name);
                     }
-                    if (ToolString.isEmpty(spValue)) {
-                        intent.putExtra("spValue", spValue);
+                    if (ToolString.isEmpty(status)) {
+                        intent.putExtra("status", status);
                     }
                 } else if (requestCode == Constant.POP_NOT_MATERIAL || requestCode == Constant.POP_NEW_MATERIAL) {//待选搜索
                     String dataNumber = et_dataNumber.getText().toString();
