@@ -116,7 +116,9 @@ public class MapFragment extends BaseFragment {
 
             }
         });
-        ship(MainActivity.list.get(0).shipname);
+        if (MainActivity.list.size() > 0) {
+            ship(MainActivity.list.get(0).shipname);
+        }
     }
 
     private void setUrl(String shipName){

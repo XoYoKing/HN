@@ -42,7 +42,6 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/common_1dp"
-
                     android:background="@color/light_gray" />
 
                 <EditText
@@ -55,6 +54,7 @@
                     android:hint="+86（11位手机号码）"
                     android:inputType="number"
                     android:maxLength="11"
+                    android:lines="1"
                     android:padding="@dimen/common_10dp"
                     android:textColorHint="@color/light_gray"
                     android:textSize="@dimen/common_14sp" />
@@ -74,6 +74,7 @@
                     android:drawablePadding="@dimen/common_10dp"
                     android:hint="设置邮箱"
                     android:padding="@dimen/common_10dp"
+                    android:lines="1"
                     android:textColorHint="@color/light_gray"
                     android:textSize="@dimen/common_14sp" />
 
@@ -94,6 +95,7 @@
                         android:drawableLeft="@drawable/mobile_phone_validate_code"
                         android:drawablePadding="@dimen/common_10dp"
                         android:hint="邮箱验证码"
+                        android:lines="1"
                         android:maxLength="6"
                         android:padding="@dimen/common_10dp"
                         android:textColorHint="@color/light_gray"
@@ -128,7 +130,7 @@
                     android:hint="设置登录密码"
                     android:inputType="textPassword"
                     android:padding="@dimen/common_10dp"
-                    android:singleLine="true"
+                    android:lines="1"
                     android:textColorHint="@color/light_gray"
                     android:textSize="@dimen/common_14sp" />
 
@@ -148,7 +150,7 @@
                     android:hint="确认密码"
                     android:inputType="textPassword"
                     android:padding="@dimen/common_10dp"
-                    android:singleLine="true"
+                    android:lines="1"
                     android:textColorHint="@color/light_gray"
                     android:textSize="@dimen/common_14sp" />
 
@@ -270,7 +272,7 @@
                     android:drawableLeft="@drawable/tab_company"
                     android:drawablePadding="@dimen/common_10dp"
                     android:hint="请输入所属公司"
-                    android:maxLength="11"
+                    android:lines="1"
                     android:padding="@dimen/common_10dp"
                     android:textColorHint="@color/light_gray"
                     android:textSize="@dimen/common_14sp"

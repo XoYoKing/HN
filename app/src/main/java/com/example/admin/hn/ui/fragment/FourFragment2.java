@@ -131,9 +131,15 @@ public class FourFragment2 extends BaseFragment implements ViewPager.OnPageChang
 			case R.id.text_tile_right:
 				if (childCurrentItem == 0 ||childCurrentItem == 1) {
 					final AlertDialog dialog = new AlertDialog(activity);
-					dialog.showDialog("资料提交", "是否确定提交资料到此船舶"
-							+ "\n船舶名称："+MainActivity.list.get(0).shipname
-							+ "\n船舶编号："+MainActivity.list.get(0).shipid, new AlertDialog.DialogOnClickListener() {
+					String title;
+					if (childCurrentItem == 0) {
+						title = "待选资料提交";
+					}else {
+						title = "新品资料提交";
+					}
+					dialog.showDialog(title, "是否确定提交资料到此船舶"
+							+ "\r\n船舶名称："+MainActivity.list.get(0).shipname
+							+ "\r\n船舶编号："+MainActivity.list.get(0).shipid, new AlertDialog.DialogOnClickListener() {
 						@Override
 						public void onPositiveClick() {
 							Intent intent = new Intent();
@@ -154,9 +160,9 @@ public class FourFragment2 extends BaseFragment implements ViewPager.OnPageChang
 
 				}else if (childCurrentItem == 2){
 					final AlertDialog dialog = new AlertDialog(activity);
-					dialog.showDialog("资料提交", "是否确定提交资料到此船舶"
-							+ "\n船舶名称："+MainActivity.list.get(0).shipname
-							+ "\n船舶编号："+MainActivity.list.get(0).shipid, new AlertDialog.DialogOnClickListener() {
+					dialog.showDialog("已选资料提交", "是否确定提交资料到此船舶"
+							+ "\r\n船舶名称："+MainActivity.list.get(0).shipname
+							+ "\r\n船舶编号："+MainActivity.list.get(0).shipid, new AlertDialog.DialogOnClickListener() {
 						@Override
 						public void onPositiveClick() {
 							Intent intent = new Intent(Constant.ACTION_MATERIAL_MANAGER_FRAGMENT);

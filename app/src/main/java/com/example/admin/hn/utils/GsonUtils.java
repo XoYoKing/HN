@@ -287,6 +287,6 @@ public class GsonUtils {
             return jsonObject.optString(key);
         } catch (Exception e) {
         }
-        return "";
+        return null;
     }
 }

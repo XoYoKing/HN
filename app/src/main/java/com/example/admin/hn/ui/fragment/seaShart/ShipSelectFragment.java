@@ -181,7 +181,7 @@ public class ShipSelectFragment extends BaseFragment implements OnRefreshListene
      * @param shipInfo
      */
     private void shipSelection(SubmitShipInfo shipInfo) {
-        http.postJson(url_select, shipInfo, progressTitle, new RequestListener() {
+        http.postJson(url_select, shipInfo, "提交中...", new RequestListener() {
             @Override
             public void requestSuccess(String json) {
                 Logger.i(TAG, json);

@@ -13,6 +13,7 @@ import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -23,9 +24,11 @@ import com.example.admin.hn.base.HNApplication;
 import com.example.admin.hn.base.PermissionsListener;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
+import com.example.admin.hn.utils.ToolRefreshView;
 import com.example.admin.hn.utils.ToolString;
 import com.example.admin.hn.utils.ToolViewUtils;
 import com.example.admin.hn.volley.RequestListener;
+import com.example.admin.hn.widget.LoadingFragment;
 import com.orhanobut.logger.Logger;
 
 import net.tsz.afinal.FinalHttp;
@@ -35,6 +38,7 @@ import net.tsz.afinal.http.AjaxParams;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -58,15 +62,25 @@ public class ReturnDetailActivity extends BaseActivity {
     Button bt;
     @Bind(R.id.img)
     ImageView img;
+
+    @Bind(R.id.network_disabled)
+    RelativeLayout network;
+    @Bind(R.id.network_img)
+    ImageView network_img;
+    @Bind(R.id.noData_img)
+    ImageView noData_img;
+
     private String[] permissions = {Manifest.permission.CAMERA};
     private String url = Api.BASE_URL + Api.GET_RECEIPT_PHOTO;
-    private String upload_url= Api.BASE_URL + Api.UPLOAD;
+    private String upload_url = Api.BASE_URL + Api.UPLOAD;
     private String receiveNo;
     private String photoPath;//显示的图片地址
     private String cropPath;//裁剪完成的输出地址
     private boolean isCrop;//是否裁剪  默认为false
     private File file;
     private FinalHttp fh;
+    private LoadingFragment loading;
+    private String photoUrl;//回执图片地址
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,30 +98,35 @@ public class ReturnDetailActivity extends BaseActivity {
         textTitle.setText("回执详情");
         textTitleBack.setBackgroundResource(R.drawable.btn_back);
     }
+
     /**
      *
      */
-    public static void startActivity(Context context,String receiveNo) {
+    public static void startActivity(Context context, String receiveNo) {
         Intent intent = new Intent(context, ReturnDetailActivity.class);
         intent.putExtra("receiveNo", receiveNo);
         ((Activity) context).startActivityForResult(intent, 1001);
     }
 
-    @OnClick({R.id.text_title_back,R.id.bt,R.id.img,R.id.text_tile_right})
+    @OnClick({R.id.text_title_back, R.id.bt, R.id.img, R.id.text_tile_right, R.id.network_img})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.text_title_back:
                 close();
-            break;
+                break;
+            case R.id.network_img:
+                network_img.setVisibility(View.GONE);
+                sendHttp();
+                break;
             case R.id.bt:
                 isCrop = false;
                 requestPermissions(permissions, mListener);
                 break;
             case R.id.text_tile_right:
-                if (file!=null && file.exists()) {
+                if (file != null && file.exists()) {
                     uploadImg();
-                }else {
-                    ToolAlert.showToast(context,"请先拍摄照片");
+                } else {
+                    ToolAlert.showToast(context, "请先拍摄照片");
                 }
                 break;
             case R.id.img:
@@ -131,38 +150,38 @@ public class ReturnDetailActivity extends BaseActivity {
             if (!isNeverAsk) {//请求权限没有全被勾选不再提示然后拒绝
                 ToolAlert.dialog(context, "权限申请",
                         "为了能正常使用拍摄照片功能，请授予所需权限!",
-                        "授权","取消",
+                        "授权", "取消",
                         new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        requestPermissions(permissions, mListener);
-                    }
-                }, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                requestPermissions(permissions, mListener);
+                            }
+                        }, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
             } else {//全被勾选不再提示
                 ToolAlert.dialog(context, "权限申请",
                         "为了能正常使用拍摄照片功能，请手动授予所需权限!",
-                        "授权","取消",
+                        "授权", "取消",
                         new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                        intent.setData(Uri.parse("package:" + getPackageName()));
-                        startActivity(intent);
-                    }
-                }, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                intent.setData(Uri.parse("package:" + getPackageName()));
+                                startActivity(intent);
+                            }
+                        }, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
 
-                    }
-                });
+                            }
+                        });
             }
         }
     };
@@ -181,25 +200,28 @@ public class ReturnDetailActivity extends BaseActivity {
             public void requestSuccess(String json) {
                 Logger.e("回执详情", json);
                 if (GsonUtils.isSuccess(json)) {
-                    String photoUrl = GsonUtils.getString(json, "photoUrl");
+                    photoUrl = GsonUtils.getString(json, "photoUrl");
                     if (ToolString.isEmpty(photoUrl)) {
                         bt.setVisibility(View.GONE);
                         ToolViewUtils.glideImage(photoUrl, img, R.drawable.load_fail);
-                    }else {
+                    } else {
                         text_tile_right.setText("上传");
                         bt.setVisibility(View.VISIBLE);
                     }
-                }else {
+                } else {
                     ToolAlert.showToast(context, GsonUtils.getError(json));
                 }
+                network.setVisibility(View.GONE);
             }
 
             @Override
             public void requestError(String message) {
                 ToolAlert.showToast(context, message);
+                ToolRefreshView.hintView(photoUrl, true, network, noData_img, network_img);
             }
         });
     }
+
     /**
      * 上传图片
      */
@@ -212,13 +234,15 @@ public class ReturnDetailActivity extends BaseActivity {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        loading = LoadingFragment.showLoading(context, "正在上传...");
         fh.post(upload_url, params, new AjaxCallBack<String>() {
             @Override
             public void onSuccess(String json) {
                 super.onSuccess(json);
                 Logger.e("上传成功", json);
+                LoadingFragment.dismiss(loading);
                 if (GsonUtils.isSuccess(json)) {
-                    ToolAlert.showToast(context,"上传成功");
+                    ToolAlert.showToast(context, "上传成功");
                     close();
                 } else {
                     ToolAlert.showToast(context, GsonUtils.getError(json));
@@ -228,6 +252,7 @@ public class ReturnDetailActivity extends BaseActivity {
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
+                LoadingFragment.dismiss(loading);
                 Logger.e("上传失败", strMsg);
                 ToolAlert.showToast(context, strMsg);
             }
@@ -274,7 +299,7 @@ public class ReturnDetailActivity extends BaseActivity {
         }
     }
 
-    private Handler handler=new Handler(new Handler.Callback() {
+    private Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
             if (msg.what == 100) {
@@ -290,4 +315,9 @@ public class ReturnDetailActivity extends BaseActivity {
         }
     });
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LoadingFragment.dismiss(loading);
+    }
 }

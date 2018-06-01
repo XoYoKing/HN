@@ -1,24 +1,39 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="true"
     android:fitsSystemWindows="true"
-    android:background="@drawable/layout_background"
-    android:orientation="vertical">
+    android:background="@drawable/layout_background">
 
     <include layout="@layout/public_title"/>
 
-    <Button
-        android:id="@+id/bt"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="拍照"
-        android:visibility="gone"/>
+        android:layout_below="@+id/title_layout"
+        android:orientation="vertical">
+        <Button
+            android:id="@+id/bt"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/common_44dp"
+            android:background="@drawable/shape_rect_blue_radius"
+            android:text="拍照"
+            android:layout_margin="@dimen/common_10dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/common_15sp"
+            android:visibility="gone"/>
 
-    <ImageView
-        android:id="@+id/img"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/img"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
-</LinearLayout>
+    <include layout="@layout/network_disabled"
+        android:layout_below="@+id/title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+</RelativeLayout>

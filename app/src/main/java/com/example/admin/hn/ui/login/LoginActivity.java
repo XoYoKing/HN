@@ -182,7 +182,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {//生产环境
-                    Api.BASE_URL = "http://22.266.158.231:9000/";
+                    Api.BASE_URL = "http://222.66.158.231:9000/";
                     Api.SHOP_BASE_URL = "http://172.16.0.10:8990/";
                     isTest = false;
                 } else if (position == 1) {//测试环境
