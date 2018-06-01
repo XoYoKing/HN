@@ -82,7 +82,7 @@ public class BankApplyingAdapter extends CommonAdapter<ApplyingInfo> {
     }
 
     private String url = Api.BASE_URL + Api.PASS_APPLY;
-    private void passHttp(ApplyingInfo info , final int position) {
+    private void passHttp(final ApplyingInfo info , final int position) {
         Map map = new HashMap();
         map.put("applyNo", info.applyno + "");
         IRequest.postJson(mContext, url, map, "正在申请", new RequestListener() {
@@ -91,6 +91,7 @@ public class BankApplyingAdapter extends CommonAdapter<ApplyingInfo> {
                 Logger.e("审核通过", json);
                 if (GsonUtils.isSuccess(json)) {
                     ToolAlert.showToast(mContext, "审核通过");
+                    info.status = "已审核";
                     pass(position);
                 }else {
                     ToolAlert.showToast(mContext, GsonUtils.getError(json));
@@ -109,8 +110,8 @@ public class BankApplyingAdapter extends CommonAdapter<ApplyingInfo> {
         if (isDeleteAble) {//此时为增加动画效果，刷新部分数据源，防止删除错乱
             isDeleteAble = false;//初始值为true,当点击删除按钮以后，休息0.5秒钟再让他为
             //true,起到让数据源刷新完成的作用
-            mDatas.remove(position);
-            notifyItemRemoved(position);
+//            mDatas.remove(position);
+//            notifyItemRemoved(position);
             notifyItemRangeChanged(position, getItemCount());
             new Thread(new Runnable() {
                 @Override
