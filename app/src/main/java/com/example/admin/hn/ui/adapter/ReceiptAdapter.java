@@ -26,6 +26,7 @@ public class ReceiptAdapter extends CommonAdapter<ApplyedInfo> {
 
     @Override
     protected void convert(ViewHolder viewHolder, final ApplyedInfo info, int position) {
+        viewHolder.setText(R.id.tv_is_receipt, info.is_receipt + "");
         viewHolder.setText(R.id.tv_name, info.operator + "");
         viewHolder.setText(R.id.tv_numberNo, info.receiveno + "");
         viewHolder.setText(R.id.tv_use_number, info.totalamount + "");
