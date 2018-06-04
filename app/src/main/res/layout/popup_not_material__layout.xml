@@ -18,7 +18,7 @@
             android:textSize="@dimen/common_14sp"
             android:textColor="@color/text_color"
             android:layout_gravity="center_vertical"
-            android:text="资料号：" />
+            android:text="资料编号：" />
 
         <com.example.admin.hn.widget.EditTextWithDel
             android:id="@+id/et_dataNumber"
@@ -49,14 +49,14 @@
             android:textSize="@dimen/common_14sp"
             android:layout_gravity="center_vertical"
             android:textColor="@color/text_color"
-            android:text="中文名：" />
+            android:text="资料名称：" />
 
         <com.example.admin.hn.widget.EditTextWithDel
             android:id="@+id/et_chineseName"
             android:layout_width="match_parent"
             android:layout_height="@dimen/common_40dp"
             android:textSize="@dimen/common_14sp"
-            android:hint="请输入中文名称"
+            android:hint="请输入资料名称"
             android:background="@drawable/layout_background"
             android:textColorHint="@color/text_color_hint"
             android:layout_marginLeft="@dimen/common_10dp"

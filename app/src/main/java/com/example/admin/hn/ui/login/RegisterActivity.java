@@ -267,6 +267,8 @@ public class RegisterActivity extends BaseActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position != 0) {
                     user_type = position - 1;//用戶等級
+                }else {
+                    user_type = -1;
                 }
             }
 

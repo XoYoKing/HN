@@ -50,7 +50,7 @@ public class IRequest {
      * @param params
      */
     private static void setParams(Map params) {
-        params.put("timestamp", AbDateUtil.getCurrentDate(AbDateUtil.dateFormatYMD));
+//        params.put("timestamp", AbDateUtil.getCurrentDate(AbDateUtil.dateFormatYMD));
         params.put("userid", HNApplication.mApp.getUserId());//船舶用户ID 默认传递
         params.put("userId", HNApplication.mApp.getUserId());//船舶用户ID 默认传递
         params.put("secretKey", "$2a$10$yVNcmCq7an33cV0D4r2kk.ieMx1Tylb30QSKATlmSWMrnsLibTqZq");//商城key

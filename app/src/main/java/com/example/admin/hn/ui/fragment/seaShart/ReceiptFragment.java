@@ -173,6 +173,7 @@ public class ReceiptFragment extends BaseFragment implements OnRefreshListener,O
         if (resultCode==1001){
             //从详情页面返回
             isRefresh = true;
+            page = 1;
             sendHttp();
         }
     }

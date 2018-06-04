@@ -191,11 +191,13 @@ public class BankApplyingFragment extends BaseFragment implements OnRefreshListe
             status = data.getStringExtra("status");
             startDate = data.getStringExtra("start");
             endDate = data.getStringExtra("end");
+            page = 1;
             isRefresh = true;
             sendHttp();
         }else if (resultCode==1000){
             //从详情页面返回
             isRefresh = true;
+            page = 1;
             sendHttp();
         }
     }

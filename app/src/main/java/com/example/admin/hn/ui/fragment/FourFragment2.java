@@ -129,6 +129,9 @@ public class FourFragment2 extends BaseFragment implements ViewPager.OnPageChang
 				}
 				break;
 			case R.id.text_tile_right:
+				if (MainActivity.list.size() == 0) {
+					return;
+				}
 				if (childCurrentItem == 0 ||childCurrentItem == 1) {
 					final AlertDialog dialog = new AlertDialog(activity);
 					String title;

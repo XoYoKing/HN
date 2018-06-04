@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,6 +19,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseActivity;
@@ -81,6 +85,7 @@ public class ReturnDetailActivity extends BaseActivity {
     private FinalHttp fh;
     private LoadingFragment loading;
     private String photoUrl;//回执图片地址
+    private LoadingFragment dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,7 +200,8 @@ public class ReturnDetailActivity extends BaseActivity {
 
     private void sendHttp() {
         params.put("receiveNo", receiveNo + "");
-        http.postJson(url, params, progressTitle, new RequestListener() {
+        dialog = LoadingFragment.showLoading(context, progressTitle);
+        http.postJson(url, params, new RequestListener() {
             @Override
             public void requestSuccess(String json) {
                 Logger.e("回执详情", json);
@@ -203,12 +209,14 @@ public class ReturnDetailActivity extends BaseActivity {
                     photoUrl = GsonUtils.getString(json, "photoUrl");
                     if (ToolString.isEmpty(photoUrl)) {
                         bt.setVisibility(View.GONE);
-                        ToolViewUtils.glideImage(photoUrl, img, R.drawable.load_fail);
+                        loadImage(photoUrl);
                     } else {
+                        LoadingFragment.dismiss(dialog);
                         text_tile_right.setText("上传");
                         bt.setVisibility(View.VISIBLE);
                     }
                 } else {
+                    LoadingFragment.dismiss(dialog);
                     ToolAlert.showToast(context, GsonUtils.getError(json));
                 }
                 network.setVisibility(View.GONE);
@@ -216,11 +224,42 @@ public class ReturnDetailActivity extends BaseActivity {
 
             @Override
             public void requestError(String message) {
+                LoadingFragment.dismiss(dialog);
                 ToolAlert.showToast(context, message);
                 ToolRefreshView.hintView(photoUrl, true, network, noData_img, network_img);
             }
         });
     }
+
+    private SimpleTarget target = new SimpleTarget<Bitmap>() {
+        @Override
+        public void onResourceReady(Bitmap bitmap, GlideAnimation glideAnimation) {
+            LoadingFragment.dismiss(dialog);
+            img.setImageBitmap(bitmap);
+        }
+
+        @Override
+        public void onLoadFailed(Exception e, Drawable errorDrawable) {
+            super.onLoadFailed(e, errorDrawable);
+            img.setImageDrawable(errorDrawable);
+            LoadingFragment.dismiss(dialog);
+        }
+    };
+
+    private void loadImage(String imgUrl) {
+        String url;
+        if (imgUrl!=null && (imgUrl.startsWith("http") || imgUrl.startsWith("https"))) {
+            url = imgUrl;
+        }else {
+            url= Api.BASE_URL.substring(0, Api.BASE_URL.length() - 1)+imgUrl;
+        }
+        Glide.with(HNApplication.getContext())
+                .load(url)
+                .asBitmap()
+                .error(R.drawable.load_fail)
+                .into(target);
+    }
+
 
     /**
      * 上传图片
@@ -319,5 +358,6 @@ public class ReturnDetailActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         LoadingFragment.dismiss(loading);
+        LoadingFragment.dismiss(dialog);
     }
 }
