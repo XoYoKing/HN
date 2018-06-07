@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -359,5 +360,13 @@ public class ReturnDetailActivity extends BaseActivity {
         super.onDestroy();
         LoadingFragment.dismiss(loading);
         LoadingFragment.dismiss(dialog);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            close();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

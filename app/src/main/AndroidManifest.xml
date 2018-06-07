@@ -133,6 +133,9 @@
             android:name=".ui.account.ShipApplyingActivity"
             android:theme="@style/Activity_Theme" />
         <activity
+            android:name=".ui.account.ReturnActivity"
+            android:theme="@style/Activity_Theme" />
+        <activity
             android:name=".ui.account.ShipApplyedActivity"
             android:theme="@style/Activity_Theme" />
         <activity

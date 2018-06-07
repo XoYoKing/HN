@@ -33,7 +33,7 @@ public class ShipApplyingAdapter extends CommonAdapter<ApplyingInfo> {
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShipApplyingActivity.startActivity(mContext, info.applyno);
+                ShipApplyingActivity.startActivity(mContext, info.applyno,info.status);
             }
         });
     }

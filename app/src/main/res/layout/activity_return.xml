@@ -1,0 +1,61 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:background="@drawable/layout_background">
+
+    <include layout="@layout/public_title"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/common_10dp"
+        android:layout_marginBottom="@dimen/common_10dp"
+        android:layout_marginLeft="@dimen/common_15dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="订单编号："
+            android:textColor="@color/text_gray_color"
+            android:textSize="@dimen/common_15sp" />
+
+        <TextView
+            android:id="@+id/tv_numberNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DIS180403001-3"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/common_15sp" />
+
+    </LinearLayout>
+
+
+    <EditText
+        android:id="@+id/et_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_120dp"
+        android:hint="请输入退回备注信息"
+        android:gravity="top"
+        android:textSize="@dimen/common_14sp"
+        android:padding="@dimen/common_15dp"
+        android:textColor="@color/text_color"
+        android:background="@drawable/shape_edit_background_rect"
+        android:textColorHint="@color/text_color_hint" />
+
+    <Button
+        android:id="@+id/bt_return"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_44dp"
+        android:layout_marginTop="@dimen/common_40dp"
+        android:layout_marginLeft="@dimen/common_15dp"
+        android:layout_marginRight="@dimen/common_15dp"
+        android:background="@drawable/shape_rect_blue_radius"
+        android:text="退回"
+        android:textColor="@color/white"
+        android:textSize="@dimen/common_16dp"
+        />
+</LinearLayout>

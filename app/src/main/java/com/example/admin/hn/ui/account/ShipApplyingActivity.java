@@ -49,6 +49,8 @@ public class ShipApplyingActivity extends BaseActivity implements OnRefreshListe
     TextView textTitleBack;
     @Bind(R.id.text_title)
     TextView textTitle;
+    @Bind(R.id.text_tile_right)
+    TextView text_tile_right;
     @Bind(R.id.recycleView)
     RecyclerView recycleView;
     @Bind(R.id.network_disabled)
@@ -65,6 +67,7 @@ public class ShipApplyingActivity extends BaseActivity implements OnRefreshListe
 
     private int page = 1;
     private String applyno;
+    private String status;//船舶用户传递的申请单状态
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +83,12 @@ public class ShipApplyingActivity extends BaseActivity implements OnRefreshListe
     public void initTitleBar() {
         Intent intent = getIntent();
         applyno = intent.getStringExtra("applyno");
+        status = intent.getStringExtra("status");
         textTitle.setText("申请详情");
         textTitleBack.setBackgroundResource(R.drawable.btn_back);
+        if ("已退回".equals(status)) {
+            text_tile_right.setText("复制订单");
+        }
     }
 
     @Override
@@ -100,6 +107,15 @@ public class ShipApplyingActivity extends BaseActivity implements OnRefreshListe
     public static void startActivity(Context context, String applyno) {
         Intent intent = new Intent(context, ShipApplyingActivity.class);
         intent.putExtra("applyno", applyno);
+        context.startActivity(intent);
+    }
+    /**
+     *
+     */
+    public static void startActivity(Context context, String applyno,String status) {
+        Intent intent = new Intent(context, ShipApplyingActivity.class);
+        intent.putExtra("applyno", applyno);
+        intent.putExtra("status", status);
         context.startActivity(intent);
     }
 

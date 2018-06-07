@@ -10,6 +10,7 @@ import com.example.admin.hn.api.Api;
 import com.example.admin.hn.model.ApplyingInfo;
 import com.example.admin.hn.model.OrderInfo;
 import com.example.admin.hn.ui.account.AuditingApplyingActivity;
+import com.example.admin.hn.ui.account.ReturnActivity;
 import com.example.admin.hn.ui.account.ShipApplyingActivity;
 import com.example.admin.hn.utils.AbDateUtil;
 import com.example.admin.hn.utils.GsonUtils;
@@ -51,8 +52,6 @@ public class BankApplyingAdapter extends CommonAdapter<ApplyingInfo> {
                     AuditingApplyingActivity.startActivity(mContext, info.applyno);
                 } else if ("已审核".equals(info.status)) {
                     ShipApplyingActivity.startActivity(mContext, info.applyno);
-                }else {
-                    ShipApplyingActivity.startActivity(mContext, info.applyno);
                 }
             }
         });
@@ -88,7 +87,7 @@ public class BankApplyingAdapter extends CommonAdapter<ApplyingInfo> {
         viewHolder.setOnClickListener(R.id.bt_return, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ReturnActivity.startActivity(mContext,info.applyno);
             }
         });
     }
