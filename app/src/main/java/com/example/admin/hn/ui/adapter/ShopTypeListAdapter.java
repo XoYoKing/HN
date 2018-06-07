@@ -54,14 +54,16 @@ public class ShopTypeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
+
     private void bindType(HolderType holder, int position) {
         HomeTypeInfo.Children info = list.get(position);
-        holder.mTvLabel.setText(info.sitMenu.menuNames+"");
         holder.item_recyclerView.setLayoutManager(new GridLayoutManager(mContext, 3));
         TypeToken typeToken = new TypeToken<List<HomeItem>>() {
         };
         List<HomeItem> data = (List<HomeItem>) GsonUtils.jsonToList(info.sitMenu.menuData, typeToken, "data");
         if (ToolString.isEmptyList(data)) {
+            holder.mTvLabel.setVisibility(View.VISIBLE);
+            holder.mTvLabel.setText(info.sitMenu.menuNames+"");
             ItemRecycleAdapter itemRecycleAdapter = new ItemRecycleAdapter(TYPE_TYPE1, data);
             holder.item_recyclerView.setAdapter(itemRecycleAdapter);
             holder.tv_item_more.setOnClickListener(new View.OnClickListener() {
@@ -70,8 +72,22 @@ public class ShopTypeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     ShopTypeListActivity.startActivity(mContext);
                 }
             });
+        }else {
+            holder.mTvLabel.setVisibility(View.GONE);
         }
+        if (onDataListener != null) {
+            onDataListener.onDataListener(true,position);
+        }
+    }
 
+    private OnDataListener onDataListener;
+
+    public void setOnDataListener(OnDataListener onDataListener) {
+        this.onDataListener = onDataListener;
+    }
+
+    public interface OnDataListener{
+        void onDataListener(boolean isNull,int position);
     }
 
     @Override

@@ -73,11 +73,10 @@
 
             <LinearLayout
                 android:id="@+id/ll_cart"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentLeft="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_marginRight="@dimen/common_40dp"
                 android:orientation="vertical">
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -117,7 +116,7 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/common_44dp"
             android:layout_weight="1"
-            android:background="@drawable/shape_rect_yellow"
+            android:background="@drawable/shape_rect_blue"
             android:text="加入购物车"
             android:textColor="@color/white"
             android:textSize="@dimen/common_15sp" />
@@ -127,7 +126,7 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/common_44dp"
             android:layout_weight="1"
-            android:background="@drawable/shape_rect_blue"
+            android:background="@drawable/shape_rect_red"
             android:text="立即购买"
             android:textColor="@color/white"
             android:textSize="@dimen/common_15sp" />

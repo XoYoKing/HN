@@ -15,7 +15,7 @@
         <item>修改密码</item>
         <item>修改邮箱</item>
         <item>检查更新</item>
-        <item>关于</item>
+        <item>应用信息</item>
         <!--<item>扫码登录</item>-->
     </string-array>
     <string-array name="about_desc">

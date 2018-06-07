@@ -3,6 +3,7 @@ package com.example.admin.hn.ui.adapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.View;
+import android.widget.Button;
 
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
@@ -55,12 +56,17 @@ public class BankApplyingAdapter extends CommonAdapter<ApplyingInfo> {
                 }
             }
         });
+        Button bt_submit = viewHolder.getView(R.id.bt_submit);
+        Button bt_return = viewHolder.getView(R.id.bt_return);
         if ("待审核".equals(info.status)) {
-            viewHolder.getView(R.id.bt_submit).setVisibility(View.VISIBLE);
+            bt_submit.setVisibility(View.VISIBLE);
+            bt_return.setVisibility(View.VISIBLE);
         } else if ("已审核".equals(info.status)) {
-            viewHolder.getView(R.id.bt_submit).setVisibility(View.GONE);
+            bt_submit.setVisibility(View.GONE);
+            bt_return.setVisibility(View.GONE);
         }else {
-            viewHolder.getView(R.id.bt_submit).setVisibility(View.GONE);
+            bt_submit.setVisibility(View.GONE);
+            bt_return.setVisibility(View.GONE);
         }
         viewHolder.setOnClickListener(R.id.bt_submit, new View.OnClickListener() {
             @Override
@@ -77,6 +83,12 @@ public class BankApplyingAdapter extends CommonAdapter<ApplyingInfo> {
                         dialog.dismiss();
                     }
                 });
+            }
+        });
+        viewHolder.setOnClickListener(R.id.bt_return, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }

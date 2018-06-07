@@ -183,11 +183,11 @@ public class LoginActivity extends BaseActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {//生产环境
                     Api.BASE_URL = "http://222.66.158.231:9000/";
-                    Api.SHOP_BASE_URL = "http://172.16.0.10:8990/";
+                    Api.SHOP_BASE_URL = "http://10.28.2.223:8990/";
                     isTest = false;
                 } else if (position == 1) {//测试环境
                     Api.BASE_URL = "http://10.18.4.31:9000/";
-                    Api.SHOP_BASE_URL = "http://172.16.0.3:8990/";
+                    Api.SHOP_BASE_URL = "http://10.28.2.223:8990/";
                     isTest = true;
                 }
                 HNApplication.mApp.setTestAmbient(isTest);

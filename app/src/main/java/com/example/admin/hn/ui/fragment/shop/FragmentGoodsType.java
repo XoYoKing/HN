@@ -19,8 +19,10 @@ import com.example.admin.hn.model.HomeInfo;
 import com.example.admin.hn.model.HomeItem;
 import com.example.admin.hn.model.HomeTypeInfo;
 import com.example.admin.hn.ui.adapter.ShopTypeListAdapter;
+import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolRefreshView;
 import com.example.admin.hn.utils.ToolString;
+import com.google.gson.reflect.TypeToken;
 
 
 import java.util.ArrayList;
@@ -60,6 +62,7 @@ public class FragmentGoodsType extends BaseFragment {
     @Override
     public void initData() {
     }
+
     @Override
     public void initView() {
         Bundle bundle = getArguments();

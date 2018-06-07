@@ -2,6 +2,8 @@ package com.example.admin.hn.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.view.WindowManager;
 
 import com.example.admin.hn.base.HNApplication;
@@ -33,5 +35,30 @@ public class ToolAppUtils {
         @SuppressWarnings("deprecation")
         int width = windowManager.getDefaultDisplay().getWidth();
         return width;
+    }
+
+
+    public static String getVersionName(Context context) {
+        try {
+            PackageManager pm = context.getPackageManager();
+            PackageInfo pi = pm.getPackageInfo(context.getPackageName(),
+                    PackageManager.GET_CONFIGURATIONS);
+            return pi.versionName;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public static int getVersionCode(Context context) {
+        try {
+            PackageManager pm = context.getPackageManager();
+            PackageInfo pi = pm.getPackageInfo(context.getPackageName(),
+                    PackageManager.GET_CONFIGURATIONS);
+            return pi.versionCode;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 }

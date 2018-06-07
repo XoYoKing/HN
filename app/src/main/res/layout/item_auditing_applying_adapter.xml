@@ -169,6 +169,7 @@
         android:layout_width="@dimen/common_60dp"
         android:layout_height="@dimen/common_30dp"
         android:gravity="center"
+        android:visibility="gone"
         android:textSize="@dimen/common_15sp"
         android:background="@drawable/shape_rect_red_radius"
         android:textColor="@color/white"

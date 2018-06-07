@@ -9,7 +9,7 @@ public class Api {
 
     //    public final static String BASE_URL = "http://zxs.tunnel.qydev.com/menusystem/";
     public static String BASE_URL = "http://222.66.158.231:9000/";//船舶
-    public static String SHOP_BASE_URL = "http://172.16.0.10:8990/";//商城
+    public static String SHOP_BASE_URL = "http://10.28.2.223:8990/";//商城
 
     //    public  static  String BASE_URL = "http://58.67.133.129:8080/";
     //注册

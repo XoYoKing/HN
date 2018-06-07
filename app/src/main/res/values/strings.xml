@@ -86,7 +86,7 @@
     <!--各个页面标题-->
     <string name="title_purchase_agreement">购买协议</string>
     <string name="title_register">注册</string>
-    <string name="title_about">关于</string>
+    <string name="title_about">应用信息</string>
     <string name="title_change_bind_phone_number">更改绑定手机号</string>
     <string name="title_change_password">修改密码</string>
     <string name="title_feedback">意见反馈</string>

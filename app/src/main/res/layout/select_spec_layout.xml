@@ -171,7 +171,7 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/common_44dp"
                     android:layout_weight="1"
-                    android:background="@drawable/shape_rect_yellow"
+                    android:background="@drawable/shape_rect_blue"
                     android:text="加入购物车"
                     android:textColor="@color/white"
                     android:textSize="@dimen/common_15dp" />
@@ -181,7 +181,7 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/common_44dp"
                     android:layout_weight="1"
-                    android:background="@drawable/shape_rect_blue"
+                    android:background="@drawable/shape_rect_red"
                     android:text="立即购买"
                     android:textColor="@color/white"
                     android:textSize="@dimen/common_15sp" />

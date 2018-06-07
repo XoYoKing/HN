@@ -129,6 +129,17 @@
                     android:textSize="@dimen/common_15sp" />
 
             </LinearLayout>
+            <Button
+                android:id="@+id/bt_return"
+                android:layout_toLeftOf="@+id/bt_submit"
+                android:layout_width="@dimen/common_60dp"
+                android:layout_below="@+id/linear"
+                android:layout_height="@dimen/common_30dp"
+                android:textSize="@dimen/common_15sp"
+                android:layout_marginRight="@dimen/common_20dp"
+                android:background="@drawable/shape_rect_gray_radius5"
+                android:textColor="@color/white"
+                android:text="退回"/>
 
             <Button
                 android:id="@+id/bt_submit"

@@ -81,10 +81,10 @@
     <color name="grey_dde1e7">#DDE1E7</color>
     <color name="red_f4333c">#F4333C</color>
     <color name="Seashell">#F1F1F1</color>
-    <color name="color_violet">#d7b1f0</color>
+    <color name="color_violet">#EEBDFE</color>
     <color name="color_press_violet">#c190e2</color>
     <color name="alabaster">#FAFAFA</color>
-
+    <color name="color_blue_1">#C9E8EB</color>
     <color name="grey_b2b2b2">#B2B2B2</color>
     <color name="blue_78d2f6">#78D2F6</color>
     <color name="blue_01aaee">#01AAEE</color>

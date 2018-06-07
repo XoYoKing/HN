@@ -215,7 +215,7 @@ public class GoodsListActivity extends BaseActivity implements OnLoadmoreListene
         params.put("rows", rows+"");
         params.put("sort", sort);
         params.put("columnName_like", info.name + "");
-        params.put("categoryId", info.value + "");
+//        params.put("categoryId", info.value + "");
         http.get(url, params, progressTitle, new RequestListener() {
             @Override
             public void requestSuccess(String json) {
