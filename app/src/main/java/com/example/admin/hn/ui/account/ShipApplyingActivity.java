@@ -100,7 +100,7 @@ public class ShipApplyingActivity extends BaseActivity implements OnRefreshListe
         textTitle.setText("申请详情");
         textTitleBack.setBackgroundResource(R.drawable.btn_back);
         if ("退回".equals(applyInfo.status)) {
-            text_tile_right.setText("复制订单");
+            text_tile_right.setText("重新提交");
             ll_remake.setVisibility(View.VISIBLE);
             tv_remake.setText("备注信息："+applyInfo.remark);
         }
