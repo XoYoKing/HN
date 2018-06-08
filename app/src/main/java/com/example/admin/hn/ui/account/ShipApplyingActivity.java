@@ -3,10 +3,12 @@ package com.example.admin.hn.ui.account;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -16,6 +18,7 @@ import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseActivity;
 import com.example.admin.hn.base.HNApplication;
+import com.example.admin.hn.http.Constant;
 import com.example.admin.hn.model.ApplyingDetailInfo;
 import com.example.admin.hn.model.ApplyingInfo;
 import com.example.admin.hn.model.OrderInfo;
@@ -30,6 +33,7 @@ import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolRefreshView;
 import com.example.admin.hn.utils.ToolString;
 import com.example.admin.hn.volley.RequestListener;
+import com.example.admin.hn.widget.AlertDialog;
 import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -56,6 +60,10 @@ public class ShipApplyingActivity extends BaseActivity implements OnRefreshListe
     TextView textTitle;
     @Bind(R.id.text_tile_right)
     TextView text_tile_right;
+    @Bind(R.id.tv_remake)
+    TextView tv_remake;
+    @Bind(R.id.ll_remake)
+    LinearLayout ll_remake;
     @Bind(R.id.recycleView)
     RecyclerView recycleView;
     @Bind(R.id.network_disabled)
@@ -73,13 +81,12 @@ public class ShipApplyingActivity extends BaseActivity implements OnRefreshListe
 
     private String submit_url = Api.BASE_URL + Api.SUBMIT_DOCUMENTS;
     private int page = 1;
-    private String applyno;
-    private String status;//船舶用户传递的申请单状态
+    private ApplyingInfo applyInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recycle_layout);
+        setContentView(R.layout.activity_ship_applying);
         ButterKnife.bind(this);
         initTitleBar();
         initView();
@@ -89,12 +96,13 @@ public class ShipApplyingActivity extends BaseActivity implements OnRefreshListe
     @Override
     public void initTitleBar() {
         Intent intent = getIntent();
-        applyno = intent.getStringExtra("applyno");
-        status = intent.getStringExtra("status");
+        applyInfo = (ApplyingInfo) intent.getSerializableExtra("info");
         textTitle.setText("申请详情");
         textTitleBack.setBackgroundResource(R.drawable.btn_back);
-        if ("退回".equals(status)) {
+        if ("退回".equals(applyInfo.status)) {
             text_tile_right.setText("复制订单");
+            ll_remake.setVisibility(View.VISIBLE);
+            tv_remake.setText("备注信息："+applyInfo.remark);
         }
     }
 
@@ -111,18 +119,9 @@ public class ShipApplyingActivity extends BaseActivity implements OnRefreshListe
     /**
      *
      */
-    public static void startActivity(Context context, String applyno) {
+    public static void startActivity(Context context, ApplyingInfo info) {
         Intent intent = new Intent(context, ShipApplyingActivity.class);
-        intent.putExtra("applyno", applyno);
-        context.startActivity(intent);
-    }
-    /**
-     *
-     */
-    public static void startActivity(Context context, String applyno,String status) {
-        Intent intent = new Intent(context, ShipApplyingActivity.class);
-        intent.putExtra("applyno", applyno);
-        intent.putExtra("status", status);
+        intent.putExtra("info", info);
         context.startActivity(intent);
     }
 
@@ -137,10 +136,31 @@ public class ShipApplyingActivity extends BaseActivity implements OnRefreshListe
                 finish();
                 break;
             case R.id.text_tile_right:
-                submit();
+                showDialog();
                 break;
         }
     }
+
+
+    private void showDialog(){
+        final AlertDialog dialog = new AlertDialog(context);
+        dialog.showDialog("重新提交", "是否确定重新把资料到此船舶"
+                + "\r\n船舶名称："+MainActivity.list.get(0).shipname
+                + "\r\n船舶编号："+MainActivity.list.get(0).shipid, new AlertDialog.DialogOnClickListener() {
+            @Override
+            public void onPositiveClick() {
+                submit();
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onNegativeClick() {
+                dialog.dismiss();
+            }
+        },true);
+    }
+
+
 
     //提交数据
     private void submit() {
@@ -186,7 +206,7 @@ public class ShipApplyingActivity extends BaseActivity implements OnRefreshListe
 
     public void sendHttp() {
         params.put("page", page + "");
-        params.put("applyNo", applyno);
+        params.put("applyNo", applyInfo.applyno+"");
         http.postJson(url, params, progressTitle, new RequestListener() {
             @Override
             public void requestSuccess(String json) {

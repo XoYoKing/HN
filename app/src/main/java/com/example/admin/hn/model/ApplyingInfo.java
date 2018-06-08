@@ -11,6 +11,7 @@ public class ApplyingInfo implements Serializable {
     public String applydate;//申请日期
     public String applyno;//申请编号
     public int row_num;//
+    public String remark;//备注信息
     public String status;//订单状态
     public String shipname;//船舶名称
     public int amount;//申请总数

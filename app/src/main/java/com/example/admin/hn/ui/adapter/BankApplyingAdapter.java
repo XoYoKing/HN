@@ -50,9 +50,9 @@ public class BankApplyingAdapter extends CommonAdapter<ApplyingInfo> {
                 if ("待审核".equals(info.status)) {
                     AuditingApplyingActivity.startActivity(mContext, info.applyno);
                 } else if ("已审核".equals(info.status)) {
-                    ShipApplyingActivity.startActivity(mContext, info.applyno);
+                    ShipApplyingActivity.startActivity(mContext, info);
                 } else if ("退回".equals(info.status)) {
-                    ShipApplyingActivity.startActivity(mContext, info.applyno);
+                    ShipApplyingActivity.startActivity(mContext, info);
                 }
             }
         });

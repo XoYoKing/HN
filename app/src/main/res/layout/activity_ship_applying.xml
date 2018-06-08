@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
+    android:clipToPadding="true"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+    <include layout="@layout/public_title"/>
+
+    <LinearLayout
+        android:id="@+id/ll_remake"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/layout_background"
+        android:paddingTop="@dimen/common_15dp"
+        android:visibility="gone"
+        android:paddingBottom="@dimen/common_15dp"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_remake"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/common_15dp"
+            android:layout_marginRight="@dimen/common_15dp"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/common_14sp"
+            android:text="111111111111111111111111111111"/>
+    </LinearLayout>
+
+
+    <include layout="@layout/include_recycle_view_layout"/>
+</LinearLayout>
