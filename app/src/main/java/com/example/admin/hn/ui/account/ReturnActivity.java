@@ -17,6 +17,7 @@ import com.example.admin.hn.base.BaseActivity;
 import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
 
+import com.example.admin.hn.utils.ToolString;
 import com.example.admin.hn.volley.RequestListener;
 import com.orhanobut.logger.Logger;
 
@@ -43,8 +44,9 @@ public class ReturnActivity extends BaseActivity {
     @Bind(R.id.bt_return)
     Button bt_return;
 
-    private String url = Api.BASE_URL + Api.GET_RECEIPT_PHOTO;
+    private String url = Api.BASE_URL + Api.BACK_APPLY;
     private String applyno;
+    private String remark;
 
 
     @Override
@@ -81,7 +83,12 @@ public class ReturnActivity extends BaseActivity {
                 close();
                 break;
             case R.id.bt_return:
-                returnApplyNo();
+                remark = et_content.getText().toString();
+                if (ToolString.isEmpty(remark)) {
+                    returnApplyNo();
+                }else {
+                    ToolAlert.showToast(context, "请输入退回备注");
+                }
                 break;
         }
     }
@@ -92,8 +99,9 @@ public class ReturnActivity extends BaseActivity {
     }
 
     private void returnApplyNo() {
-        params.put("applyno", applyno + "");
-        http.postJson(url, params, new RequestListener() {
+        params.put("applyNo", applyno + "");
+        params.put("remark", remark);
+        http.postJson(url, params, "正在退回...",new RequestListener() {
             @Override
             public void requestSuccess(String json) {
                 Logger.e("退回", json);

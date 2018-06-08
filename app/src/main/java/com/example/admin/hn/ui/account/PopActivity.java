@@ -223,6 +223,7 @@ public class PopActivity extends BaseActivity {
         sp_list.add("请选择");
         sp_list.add("待审核");
         sp_list.add("已审核");
+        sp_list.add("退回");
         //适配器
         spAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, sp_list);
         //设置样式
@@ -236,6 +237,8 @@ public class PopActivity extends BaseActivity {
                     status = "2";//待审核
                 } else if (position == 2) {
                     status = "3";//已审核
+                }else if (position == 2) {
+                    status = "4";//退回
                 }
             }
 

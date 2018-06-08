@@ -7,6 +7,7 @@ import java.io.Serializable;
  * 申请单 申请中 申请详情
  */
 public class ApplyingDetailInfo implements Serializable {
+    public String id;//资料ID
     public String publishat;//出版日期
     public String code;//资料号
     public String docid;//资料ID

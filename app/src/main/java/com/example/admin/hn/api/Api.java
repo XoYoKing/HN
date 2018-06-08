@@ -94,6 +94,10 @@ public class Api {
     public static final String GET_RECEIPT_PHOTO = "menusystem/receiptPhoto/getPhoto.action";
     //回执上传
     public static final String UPLOAD = "menusystem/receiptPhoto/upload.action";
+    //已选列表删除订单
+    public static final String DEL_SUMITTED_DOCUMENT = "menusystem/computer/delSumittedDocument.action";
+    //退回接口
+    public static final String BACK_APPLY = "menusystem/computer/verify/backApply.action";
 
 
 //    ================== 商城接口========================

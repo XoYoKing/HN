@@ -8,19 +8,26 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.example.admin.hn.R;
+import com.example.admin.hn.api.Api;
 import com.example.admin.hn.model.OrderInfo;
 import com.example.admin.hn.model.OrderNotUseInfo;
 import com.example.admin.hn.model.OrderUseInfo;
 import com.example.admin.hn.utils.AbDateUtil;
+import com.example.admin.hn.utils.GsonUtils;
 import com.example.admin.hn.utils.ToolAlert;
 import com.example.admin.hn.utils.ToolString;
 import com.example.admin.hn.utils.ToolViewUtils;
+import com.example.admin.hn.volley.IRequest;
+import com.example.admin.hn.volley.RequestListener;
 import com.example.admin.hn.widget.AlertDialog;
 import com.example.admin.hn.widget.ExtendedEditText;
+import com.orhanobut.logger.Logger;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ty
@@ -51,7 +58,7 @@ public class MaterialSelectAdapter extends CommonAdapter<OrderUseInfo> {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        remove(position);
+                        removeHttp(item,position);
                     }
                 }, new DialogInterface.OnClickListener() {
                     @Override
@@ -71,6 +78,28 @@ public class MaterialSelectAdapter extends CommonAdapter<OrderUseInfo> {
                     tv_buy_number.setText(item.quantity+"");//当失去焦点的时候设置输入框的值
                     tv_buy_number.clearTextChangedListeners();
                 }
+            }
+        });
+    }
+    private String url = Api.BASE_URL + Api.DEL_SUMITTED_DOCUMENT;
+    private void removeHttp(OrderUseInfo info,final int position) {
+        Map map = new HashMap();
+        map.put("docId", info.doc_id + "");
+        IRequest.postJson(mContext, url, map, "正在删除...", new RequestListener() {
+            @Override
+            public void requestSuccess(String json) {
+                Logger.e("删除订单", json);
+                if (GsonUtils.isSuccess(json)) {
+                    ToolAlert.showToast(mContext, "删除成功");
+                    remove(position);
+                }else {
+                    ToolAlert.showToast(mContext, GsonUtils.getError(json));
+                }
+            }
+
+            @Override
+            public void requestError(String message) {
+                ToolAlert.showToast(mContext,message);
             }
         });
     }

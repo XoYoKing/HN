@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
  * @date on 2017/7/31 15:35
  */
 public class BankApplyingAdapter extends CommonAdapter<ApplyingInfo> {
@@ -40,10 +39,10 @@ public class BankApplyingAdapter extends CommonAdapter<ApplyingInfo> {
 
     @Override
     protected void convert(ViewHolder viewHolder, final ApplyingInfo info, final int position) {
-        viewHolder.setText(R.id.tv_name, info.shipname+"");
+        viewHolder.setText(R.id.tv_name, info.shipname + "");
         viewHolder.setText(R.id.tv_status, info.status + "");
         viewHolder.setText(R.id.tv_numberNo, info.applyno + "");
-        viewHolder.setText(R.id.tv_date, AbDateUtil.getStringByFormat(info.applydate,AbDateUtil.dateFormatYMD) + "");
+        viewHolder.setText(R.id.tv_date, AbDateUtil.getStringByFormat(info.applydate, AbDateUtil.dateFormatYMD) + "");
         viewHolder.setText(R.id.tv_number, info.amount + "");
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +50,8 @@ public class BankApplyingAdapter extends CommonAdapter<ApplyingInfo> {
                 if ("待审核".equals(info.status)) {
                     AuditingApplyingActivity.startActivity(mContext, info.applyno);
                 } else if ("已审核".equals(info.status)) {
+                    ShipApplyingActivity.startActivity(mContext, info.applyno);
+                } else if ("退回".equals(info.status)) {
                     ShipApplyingActivity.startActivity(mContext, info.applyno);
                 }
             }
@@ -63,7 +64,7 @@ public class BankApplyingAdapter extends CommonAdapter<ApplyingInfo> {
         } else if ("已审核".equals(info.status)) {
             bt_submit.setVisibility(View.GONE);
             bt_return.setVisibility(View.GONE);
-        }else {
+        } else if ("退回".equals(info.status)){
             bt_submit.setVisibility(View.GONE);
             bt_return.setVisibility(View.GONE);
         }
@@ -74,7 +75,7 @@ public class BankApplyingAdapter extends CommonAdapter<ApplyingInfo> {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        passHttp(info,position);
+                        passHttp(info, position);
                     }
                 }, new DialogInterface.OnClickListener() {
                     @Override
@@ -87,13 +88,14 @@ public class BankApplyingAdapter extends CommonAdapter<ApplyingInfo> {
         viewHolder.setOnClickListener(R.id.bt_return, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ReturnActivity.startActivity(mContext,info.applyno);
+                ReturnActivity.startActivity(mContext, info.applyno);
             }
         });
     }
 
     private String url = Api.BASE_URL + Api.PASS_APPLY;
-    private void passHttp(final ApplyingInfo info , final int position) {
+
+    private void passHttp(final ApplyingInfo info, final int position) {
         Map map = new HashMap();
         map.put("applyNo", info.applyno + "");
         IRequest.postJson(mContext, url, map, "正在申请", new RequestListener() {
@@ -104,14 +106,14 @@ public class BankApplyingAdapter extends CommonAdapter<ApplyingInfo> {
                     ToolAlert.showToast(mContext, "审核通过");
                     info.status = "已审核";
                     pass(position);
-                }else {
+                } else {
                     ToolAlert.showToast(mContext, GsonUtils.getError(json));
                 }
             }
 
             @Override
             public void requestError(String message) {
-                ToolAlert.showToast(mContext,message);
+                ToolAlert.showToast(mContext, message);
             }
         });
     }

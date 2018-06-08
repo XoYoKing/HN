@@ -119,6 +119,7 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && screen == 3) {
             isRefresh = true;
+            page = 1;
             sendHttp();
         }
     }
@@ -159,8 +160,6 @@ public class MaterialManagerFragment extends BaseFragment implements OnRefreshLi
                     }
                     if (ToolString.isEmptyList(data)) {
                         list.addAll(data);
-                    }else {
-                        list.clear();
                     }
                 } else {
                     if (page != 1) {

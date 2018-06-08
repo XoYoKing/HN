@@ -11,12 +11,17 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.admin.hn.MainActivity;
 import com.example.admin.hn.R;
 import com.example.admin.hn.api.Api;
 import com.example.admin.hn.base.BaseActivity;
+import com.example.admin.hn.base.HNApplication;
 import com.example.admin.hn.model.ApplyingDetailInfo;
 import com.example.admin.hn.model.ApplyingInfo;
 import com.example.admin.hn.model.OrderInfo;
+import com.example.admin.hn.model.OrderNotUseInfo;
+import com.example.admin.hn.model.OrderNotUseSubmit;
+import com.example.admin.hn.model.SubmitListInfo;
 import com.example.admin.hn.ui.adapter.ShipApplyingAdapter;
 import com.example.admin.hn.ui.adapter.ShipApplyingDetailAdapter;
 import com.example.admin.hn.utils.GsonUtils;
@@ -62,9 +67,11 @@ public class ShipApplyingActivity extends BaseActivity implements OnRefreshListe
     @Bind(R.id.refreshLayout)
     RefreshLayout refreshLayout;
     private ShipApplyingDetailAdapter adapter;
+    private List<OrderNotUseSubmit> submits = new ArrayList<>();
     private ArrayList<ApplyingDetailInfo> list = new ArrayList<>();
     private String url = Api.BASE_URL + Api.GET_APPLY_ORDER_DETAIL;
 
+    private String submit_url = Api.BASE_URL + Api.SUBMIT_DOCUMENTS;
     private int page = 1;
     private String applyno;
     private String status;//船舶用户传递的申请单状态
@@ -86,7 +93,7 @@ public class ShipApplyingActivity extends BaseActivity implements OnRefreshListe
         status = intent.getStringExtra("status");
         textTitle.setText("申请详情");
         textTitleBack.setBackgroundResource(R.drawable.btn_back);
-        if ("已退回".equals(status)) {
+        if ("退回".equals(status)) {
             text_tile_right.setText("复制订单");
         }
     }
@@ -119,7 +126,7 @@ public class ShipApplyingActivity extends BaseActivity implements OnRefreshListe
         context.startActivity(intent);
     }
 
-    @OnClick({R.id.text_title_back,R.id.network_img})
+    @OnClick({R.id.text_title_back,R.id.network_img,R.id.text_tile_right})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.network_img:
@@ -129,6 +136,44 @@ public class ShipApplyingActivity extends BaseActivity implements OnRefreshListe
             case R.id.text_title_back:
                 finish();
                 break;
+            case R.id.text_tile_right:
+                submit();
+                break;
+        }
+    }
+
+    //提交数据
+    private void submit() {
+        if (submits.size() > 0) {
+            submits.clear();
+        }
+        if (ToolString.isEmptyList(list)) {
+            for (int i = 0; i < list.size(); i++) {
+                ApplyingDetailInfo info = list.get(i);
+                OrderNotUseSubmit useSubmit = new OrderNotUseSubmit(info.quantity,info.id, info.code, info.publishat, MainActivity.list.get(0).shipid
+                );
+                submits.add(useSubmit);
+            }
+            SubmitListInfo submitListInfo = new SubmitListInfo(HNApplication.mApp.getUserId(), submits);
+            http.postJson(submit_url, submitListInfo, "提交中...", new RequestListener() {
+                @Override
+                public void requestSuccess(String json) {
+                    Logger.e("申请单提交结果",json);
+                    if (GsonUtils.isSuccess(json)) {
+                        ToolAlert.showToast(context,"您的订单已重新提交到已选列表，请重新申请！");
+                        finish();
+                    }else {
+                        ToolAlert.showToast(context, GsonUtils.getError(json));
+                    }
+                }
+
+                @Override
+                public void requestError(String message) {
+                    ToolAlert.showToast(context, message);
+                }
+            });
+        }else {
+            ToolAlert.showToast(context, "资料列表为空");
         }
     }
 
