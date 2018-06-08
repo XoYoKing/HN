@@ -237,7 +237,7 @@ public class PopActivity extends BaseActivity {
                     status = "2";//待审核
                 } else if (position == 2) {
                     status = "3";//已审核
-                }else if (position == 2) {
+                }else if (position == 3) {
                     status = "4";//退回
                 }
             }
