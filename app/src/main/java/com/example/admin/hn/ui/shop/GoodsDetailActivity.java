@@ -109,9 +109,17 @@ public class GoodsDetailActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.add_shopping_cart:
+                if (goodsInfo == null) {
+                    ToolAlert.showToast(context, "数据加载失败，请重新获取");
+                    return;
+                }
                 ToolShopCartUtil.addShopCartInfo(context,goodsInfo,1);
                 break;
             case R.id.confirm_bid:
+                if (goodsInfo == null) {
+                    ToolAlert.showToast(context, "数据加载失败，请重新获取");
+                    return;
+                }
                 confirmOrder();
                 break;
             case R.id.ll_cart:

@@ -96,6 +96,7 @@ public class GoodsListActivity extends BaseActivity implements OnLoadmoreListene
     private String sort_count_asc = "orderCount,asc";//销量排序 升序asc
     private String sort_count_dsc = "orderCount,desc";//销量排序 降序desc
     private String sort = "";//排序
+    private String search_name;
     private int totalPages;//总页数
 
     @Override
@@ -130,6 +131,11 @@ public class GoodsListActivity extends BaseActivity implements OnLoadmoreListene
         adapter = new GoodsListAdapter(this, R.layout.item_goods_list, list);
         recycleView.setAdapter(adapter);
         info = (HomeItem) getIntent().getSerializableExtra("info");
+        if (ToolString.isEmpty(info.name)) {
+            search_tv.setVisibility(View.GONE);
+            search_tv_content.setVisibility(View.VISIBLE);
+            search_tv_content.setText(info.name+"");
+        }
     }
 
 
@@ -214,8 +220,14 @@ public class GoodsListActivity extends BaseActivity implements OnLoadmoreListene
         params.put("page", page+"");
         params.put("rows", rows+"");
         params.put("sort", sort);
-        params.put("columnName_like", info.name + "");
-//        params.put("categoryId", info.value + "");
+        if (ToolString.isEmpty(search_name)) {
+            params.put("goodsFullName_like", search_name + "");
+            params.remove("categoryId");
+        }else {
+            params.remove("goodsFullName_like");
+            params.put("categoryId", info.value + "");
+//            params.put("goodsFullName_like", info.name + "");
+        }
         http.get(url, params, progressTitle, new RequestListener() {
             @Override
             public void requestSuccess(String json) {
@@ -361,12 +373,13 @@ public class GoodsListActivity extends BaseActivity implements OnLoadmoreListene
         if (resultCode == 100 && data != null) {
             String search = data.getStringExtra("search");
             if (ToolString.isEmpty(search)) {
-                info.name = search;//搜索内容修改
+                search_name = search;//搜索内容修改
                 search_tv.setVisibility(View.GONE);
                 search_tv_content.setText(search);
                 search_tv_content.setVisibility(View.VISIBLE);
                 sendHttp();
             } else {
+                search_name = null;
                 search_tv.setVisibility(View.VISIBLE);
                 search_tv_content.setVisibility(View.GONE);
             }

@@ -134,7 +134,7 @@ public class MainActivity extends FragmentActivity {
         level = HNApplication.mApp.getUserType();
         if (level == 1 || level == 2 || level == 3) {
             // 船舶用户/海务主管显示界面：船位、文库、纸质海图、电子海图、更多；
-            id_tab_tow.setVisibility(View.GONE);
+//            id_tab_tow.setVisibility(View.GONE);
         } else {
             // 其他用户显示界面：船位、商城、文库、更多
             id_tab_four.setVisibility(View.GONE);
@@ -144,7 +144,7 @@ public class MainActivity extends FragmentActivity {
         setSelect(SWITCH_TO_ONE);
         //设置推送别名 以用户ID
         setAlias(HNApplication.mApp.getUserId());
-        //创建本地购物车数据库
+        //创建本地购物车数据库300
         createShopCartDb();
     }
 
